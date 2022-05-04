@@ -82,9 +82,11 @@ components:
         typeName:
           type: string
         id:
-          type: int64
+          type: integer
+          format: int64
         lastUpdateTimestamp:
-          type: int64
+          type: integer
+          format: int64
         identifier:
           type: string
         name:

@@ -73,6 +73,7 @@ paths:
                 type: string
       responses:
         "200":
+          description: "Successful provisioning of the stackpack"
           content:
             application/json:
               schema:
@@ -175,11 +176,13 @@ components:
             type: object
             properties:
               id:
-                type: int64
+                type: integer
+                format: int64
               status:
                 type: string
               lastUpdateTimestamp:
-                type: int64
+                type: integer
+                format: int64
               stackPackVersion:
                 type: string
             required:
@@ -200,7 +203,8 @@ components:
       type: object
       properties:
         id:
-          type: int64
+          type: integer
+          format: int64
         status:
           type: string
         name:
@@ -208,4 +212,5 @@ components:
         stackPackVersion:
           type: string
         lastUpdateTimestamp:
-          type: int64
+          type: integer
+          format: int64
