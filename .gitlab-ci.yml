@@ -7,7 +7,7 @@ stages:
     NIX_CONFIG: "experimental-features = nix-command flakes"
 
 openapi-validate:
-  extends: .base
+  extends: .nix-base
   stage: check
   rules:
     - when: always
@@ -15,7 +15,7 @@ openapi-validate:
     - nix develop -c openapi-generator-cli validate -i spec/api.yaml
 
 openapi-lint:
-  extends: .base
+  extends: .nix-base
   stage: check
   rules:
     - when: always
