@@ -14,4 +14,4 @@ Currently the api is not published/released. Client libraries are expected to pu
 
 - We would like to check for backwards compatibility when changing the api here
 - We might want to release the api somewhere if we want to make this accessible to the user.
-
+- Currently the api can be pulled without the pipelines being succesful, another reason to separately release it.
