@@ -12,7 +12,7 @@ openapi-validate:
   rules:
     - when: always
   script:
-    - nix develop -c openapi-generator-cli validate -i spec/api.yaml
+    - nix develop -c openapi-generator-cli validate -i spec/openapi.yaml
 
 openapi-lint:
   extends: .nix-base
@@ -20,4 +20,4 @@ openapi-lint:
   rules:
     - when: always
   script:
-    - nix develop -c npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec/api.yaml
+    - nix develop -c npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec/openapi.yaml
