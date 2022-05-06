@@ -481,10 +481,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/EventElement"
-        causingEvents:
-          type: array
-          items:
-            $ref: "#/components/schemas/EventRef"
         source:
           type: string
         category:
@@ -511,6 +507,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/EventTag"
+        causingEvents:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventRef"
       required:
         - name
         - identifier
