@@ -1,0 +1,23 @@
+stages:
+  - check
+
+.nix-base:
+  image: "nixos/nix:2.8.0"
+  variables:
+    NIX_CONFIG: "experimental-features = nix-command flakes"
+
+openapi-validate:
+  extends: .nix-base
+  stage: check
+  rules:
+    - when: always
+  script:
+    - nix develop -c openapi-generator-cli validate -i spec/openapi.yaml
+
+openapi-lint:
+  extends: .nix-base
+  stage: check
+  rules:
+    - when: always
+  script:
+    - nix develop -c npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec/openapi.yaml
