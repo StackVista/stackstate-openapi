@@ -188,8 +188,6 @@ components:
             type: object
         remediationHint:
           type: string
-        topologyMapping:
-          type: string
         intervalSeconds:
           type: integer
       required:
@@ -197,7 +195,6 @@ components:
         - name
         - functionId
         - arguments
-        - topologyMapping
         - intervalSeconds
 
     MonitorStatus:
