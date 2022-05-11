@@ -1,0 +1,47 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Trace API
+  version: "1.0.0"
+paths:
+  /traces:
+    get:
+      tags:
+        - traces
+      summary: "List traces"
+      description: "Gets you a list of traces that exist for topology and time selections."
+      operationId: getTraces
+      parameters:
+        - name: startTimestampMs
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: instant
+        - name: endTimestampMs
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: instant
+        - name: playHeadTimestampMs
+          in: query
+          schema:
+            type: integer
+            format: instant
+        - name: limit
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          $ref: "#/components/schemas/ExecuteScriptResponse"
+        "400":
+          description: Get Traces Error Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RequestError"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
