@@ -1,11 +1,11 @@
 paths:
-  /anomaly-feedback:
+  /anomalies/feedback:
     get:
       tags:
         - anomalyFeedback
-      summary: "Collect feedback on anomalies"
+      summary: "Export feedback on anomalies"
       description: ""
-      operationId: collectAnomalyFeedback
+      operationId: exportAnomalyFeedback
       parameters:
         - name: startTime
           in: query
@@ -34,6 +34,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/FeedbackWithContext"
+        "413":
+          description: "Too many anomalies."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyAnomaliesError"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 
@@ -343,4 +349,7 @@ components:
         - _type
         - elementIdentifiers
         - streamNodeId
+      type: object
+
+    TooManyAnomaliesError:
       type: object
