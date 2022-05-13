@@ -271,12 +271,12 @@ components:
       properties:
         errors:
           $ref: "#/components/schemas/MonitorStreamErrors"
-        aggregateMetrics:
+        metrics:
           $ref: "#/components/schemas/MonitorStreamMetrics"
         monitorHealthStateStateCount:
           type: integer
       required:
-        - aggregateMetrics
+        - metrics
         - monitorHealthStateStateCount
     MonitorStreamErrors:
       type: array
@@ -297,3 +297,5 @@ components:
       properties:
         healthStreamMetrics:
           $ref: "health_sync_service_api.yaml#/components/schemas/HealthStreamMetrics"
+      required:
+        - healthStreamMetrics          
