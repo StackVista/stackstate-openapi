@@ -203,9 +203,9 @@ components:
         monitor:
           $ref: "#/components/schemas/Monitor"
         status:
-          $ref: "health_sync.api.yaml#/components/schemas/HealthStreamStatus"
+          $ref: "#/components/schemas/MonitorStreamStatus"
         topologyMatchResult:
-          $ref: "health_sync.api.yaml#/components/schemas/TopologyMatchResult"
+          $ref: "health_sync_service_api.yaml#/components/schemas/TopologyMatchResult"
       required:
         - monitor
         - status
@@ -265,3 +265,35 @@ components:
       required:
         - statusCode
         - message
+        
+    MonitorStreamStatus:
+      type: object
+      properties:
+        errors:
+          $ref: "#/components/schemas/MonitorStreamErrors"
+        aggregateMetrics:
+          $ref: "#/components/schemas/MonitorStreamMetrics"
+        monitorHealthStateStateCount:
+          type: integer
+      required:
+        - aggregateMetrics
+        - monitorHealthStateStateCount
+    MonitorStreamErrors:
+      type: array
+      items:
+        $ref: "#/components/schemas/MonitorStreamError"
+    MonitorStreamError:
+      type: object
+      properties:
+        error:
+          type: string
+        count:
+          type: integer
+      required:
+        - error
+        - count
+    MonitorStreamMetrics:
+      type: object
+      properties:
+        healthStreamMetrics:
+          $ref: "health_sync_service_api.yaml#/components/schemas/HealthStreamMetrics"
