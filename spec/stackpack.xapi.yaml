@@ -87,7 +87,7 @@ paths:
         - stackpack
       parameters:
         - in: path
-          namme: stackName
+          name: stackName
           required: true
           schema:
             type: string
