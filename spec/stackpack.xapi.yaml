@@ -104,6 +104,14 @@ paths:
           applicationo/json:
             schema:
               type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
   parameters:
     stackName:
