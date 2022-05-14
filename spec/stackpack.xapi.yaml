@@ -95,7 +95,8 @@ paths:
           name: stackId
           required: true
           schema:
-            type: number
+            type: integers
+            format: int64
       summary: "Confirm manual steps"
       operationId: confirmManualSteps
       description: "Confirm manual steps oof the stackpack"
