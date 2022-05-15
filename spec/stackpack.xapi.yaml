@@ -100,9 +100,6 @@ paths:
       summary: "Confirm manual steps"
       operationId: confirmManualSteps
       description: "Confirm manual steps oof the stackpack"
-      requestBody:
-        content:
-          applicationo/json: {}
       responses:
         "200":
           description: "successful response"
