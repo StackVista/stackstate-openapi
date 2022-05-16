@@ -81,7 +81,7 @@ paths:
                 $ref: "#/components/schemas/ProvisionResponse"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-  /stackpack/{stackpackName}/confirm-manual-step/{stackpackInstanceId}:
+  /stackpack/{stackpackName}/confirm-manual-steps/{stackpackInstanceId}:
     post:
       tags:
         - stackpack
