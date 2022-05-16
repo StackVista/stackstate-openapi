@@ -69,7 +69,7 @@ paths:
   /server/info: { $ref: "server_info.api.yaml#/paths/%2Fserver%2Finfo" }
   /security/token: { $ref: "service_token.api.yaml#/paths/%2Fsecurity%2Ftoken" }
   /security/token/{serviceTokenId}: { $ref: "service_token.api.yaml#/paths/%2Fsecurity%2Ftoken%2F%7BserviceTokenId%7D" }
-  /anomalies/export: { $ref: "anomaly_feedback.api.yaml#/paths/%2Fanomalies%2Fexport" }
+  /anomalies/export: { $ref: "anomalies.api.yaml#/paths/%2Fanomalies%2Fexport" }
 security:
   - ApiToken: []
 components:

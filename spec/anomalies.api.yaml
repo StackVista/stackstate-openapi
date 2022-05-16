@@ -8,24 +8,28 @@ paths:
       operationId: exportAnomaly
       parameters:
         - name: startTime
+          description: "Beginning of timerange of to be exported anomalies.  Timestamp in unix millis."
           in: query
           required: true
           schema:
             type: integer
             format: int64
         - name: endTime
+          description: "End of timerange of to be exported anomalies.  Timestamp in unix millis."
           in: query
           required: false
           schema:
             type: integer
             format: int64
         - name: history
+          description: "Amount of historic data, leading up to the anomaly, to be exported.  Duration in unix millis."
           in: query
           required: false
           schema:
             type: integer
             format: int64
         - name: feedback
+          description: "Type of filtering to do on feedback.  Filtering on feedback is currently mandatory, with only the 'present' value being supporeted (feedback is available)."
           in: query
           required: true
           schema:
