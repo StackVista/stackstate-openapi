@@ -1,11 +1,11 @@
 paths:
-  /anomalies/feedback:
+  /anomalies/export:
     get:
       tags:
-        - anomalyFeedback
-      summary: "Export feedback on anomalies"
+        - exportAnomaly
+      summary: "Export anomalies with metric history and feedback"
       description: ""
-      operationId: exportAnomalyFeedback
+      operationId: exportAnomaly
       parameters:
         - name: startTime
           in: query
@@ -25,6 +25,12 @@ paths:
           schema:
             type: integer
             format: int64
+        - name: feedback
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [present]
       responses:
         "200":
           description: "Export feedback on anomalies."
@@ -33,7 +39,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/FeedbackWithContext"
+                  $ref: "#/components/schemas/AnomalyWithContext"
         "413":
           description: "Too many anomalies."
           content:
@@ -45,7 +51,7 @@ paths:
 
 components:
   schemas:
-    FeedbackWithContext:
+    AnomalyWithContext:
       properties:
         anomaly:
           $ref: "#/components/schemas/Annotation"
@@ -58,20 +64,19 @@ components:
       required:
         - anomaly
         - data
-        - feedback
       type: object
 
     Point:
       properties:
-        timestamp:
+        ts:
           type: number
           format: int64
-        value:
+        v:
           type: number
           format: double
       required:
-        - timestamp
-        - value
+        - ts
+        - v
       type: object
 
     Annotation:
@@ -353,3 +358,14 @@ components:
 
     TooManyAnomaliesError:
       type: object
+      properties:
+        message:
+          type: string
+        numberOfMatches:
+          type: integer
+          format: int64
+        maxAllowed:
+          type: integer
+          format: int64
+      required:
+        - message
