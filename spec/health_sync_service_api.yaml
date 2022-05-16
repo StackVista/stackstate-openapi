@@ -1,19 +1,6 @@
+# health_sync_service_api.yaml. Consists of components/concepts defined on the domain of the Health Sync Service meaning the platform that stores and attaches health states into topology data
+# While health_sync_api.yaml is one of the clients of the Health Sync Service. This client is responsible of accepting health state data from external sources and using the Health Sync Service to store them.
 components:
-  parameters:
-    healthStreamUrn:
-      in: path
-      name: healthStreamUrn
-      schema:
-        type: string
-      required: true
-      description: Urn of the health stream.
-    healthSyncSubStreamId:
-      in: path
-      name: healthSyncSubStreamId
-      required: true
-      schema:
-        type: string
-      description: Health synchronization sub stream id.
   schemas:
     StreamListItem:
       type: object
