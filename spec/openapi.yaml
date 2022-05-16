@@ -20,6 +20,7 @@ paths:
   /node/{nodeType}: { $ref: "node.xapi.yaml#/paths/%2Fnode%2F%7BnodeType%7D" }
   /stackpack: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack" }
   /stackpack/{stackName}/provision: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack%2F%7BstackName%7D%2Fprovision" }
+  /stackpack/{stackName}/deprovision/{stackId}: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack%2F%7BstackName%7D%2Fdeprovision%2F%7BstackId%7D" }
   /monitors: { $ref: "monitors.api.yaml#/paths/%2Fmonitors" }
   /monitor/{monitorId}: { $ref: "monitors.api.yaml#/paths/%2Fmonitor%2F%7BmonitorId%7D" }
   /monitor/{monitorId}/run: { $ref: "monitors.api.yaml#/paths/%2Fmonitor%2F%7BmonitorId%7D%2Frun" }
@@ -69,7 +70,7 @@ paths:
   /server/info: { $ref: "server_info.api.yaml#/paths/%2Fserver%2Finfo" }
   /security/token: { $ref: "service_token.api.yaml#/paths/%2Fsecurity%2Ftoken" }
   /security/token/{serviceTokenId}: { $ref: "service_token.api.yaml#/paths/%2Fsecurity%2Ftoken%2F%7BserviceTokenId%7D" }
-  /anomaly-feedback: { $ref: "anomaly_feedback.api.yaml#/paths/%2Fanomaly-feedback" }
+  /anomalies/export: { $ref: "anomalies.api.yaml#/paths/%2Fanomalies%2Fexport" }
 security:
   - ApiToken: []
 components:

@@ -1,30 +1,40 @@
 paths:
-  /anomaly-feedback:
+  /anomalies/export:
     get:
       tags:
-        - anomalyFeedback
-      summary: "Collect feedback on anomalies"
+        - exportAnomaly
+      summary: "Export anomalies with metric history and feedback"
       description: ""
-      operationId: collectAnomalyFeedback
+      operationId: exportAnomaly
       parameters:
         - name: startTime
+          description: "Beginning of timerange of to be exported anomalies.  Timestamp in unix millis."
           in: query
           required: true
           schema:
             type: integer
             format: int64
         - name: endTime
+          description: "End of timerange of to be exported anomalies.  Timestamp in unix millis."
           in: query
           required: false
           schema:
             type: integer
             format: int64
         - name: history
+          description: "Amount of historic data, leading up to the anomaly, to be exported.  Duration in unix millis."
           in: query
           required: false
           schema:
             type: integer
             format: int64
+        - name: feedback
+          description: "Type of filtering to do on feedback.  Filtering on feedback is currently mandatory, with only the 'present' value being supporeted (feedback is available)."
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [present]
       responses:
         "200":
           description: "Export feedback on anomalies."
@@ -33,13 +43,19 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/FeedbackWithContext"
+                  $ref: "#/components/schemas/AnomalyWithContext"
+        "413":
+          description: "Too many anomalies."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyAnomaliesError"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 
 components:
   schemas:
-    FeedbackWithContext:
+    AnomalyWithContext:
       properties:
         anomaly:
           $ref: "#/components/schemas/Annotation"
@@ -52,20 +68,19 @@ components:
       required:
         - anomaly
         - data
-        - feedback
       type: object
 
     Point:
       properties:
-        timestamp:
+        ts:
           type: number
           format: int64
-        value:
+        v:
           type: number
           format: double
       required:
-        - timestamp
-        - value
+        - ts
+        - v
       type: object
 
     Annotation:
@@ -344,3 +359,17 @@ components:
         - elementIdentifiers
         - streamNodeId
       type: object
+
+    TooManyAnomaliesError:
+      type: object
+      properties:
+        message:
+          type: string
+        numberOfMatches:
+          type: integer
+          format: int64
+        maxAllowed:
+          type: integer
+          format: int64
+      required:
+        - message
