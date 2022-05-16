@@ -188,8 +188,6 @@ components:
             type: object
         remediationHint:
           type: string
-        topologyMapping:
-          type: string
         intervalSeconds:
           type: integer
       required:
@@ -197,7 +195,6 @@ components:
         - name
         - functionId
         - arguments
-        - topologyMapping
         - intervalSeconds
 
     MonitorStatus:
@@ -205,14 +202,20 @@ components:
       properties:
         monitor:
           $ref: "#/components/schemas/Monitor"
-        status:
-          $ref: "health_sync.api.yaml#/components/schemas/HealthStreamStatus"
+        errors:
+          $ref: "#/components/schemas/MonitorErrors"
+        metrics:
+          $ref: "#/components/schemas/MonitorMetrics"
+        monitorHealthStateStateCount:
+          type: integer
         topologyMatchResult:
-          $ref: "health_sync.api.yaml#/components/schemas/TopologyMatchResult"
+          $ref: "health_sync_service_api.yaml#/components/schemas/TopologyMatchResult"
       required:
         - monitor
         - status
         - topologyMatchResult
+        - metrics
+        - monitorHealthStateStateCount
 
     MonitorRunResult:
       type: object
@@ -268,3 +271,25 @@ components:
       required:
         - statusCode
         - message
+
+    MonitorErrors:
+      type: array
+      items:
+        $ref: "#/components/schemas/MonitorError"
+    MonitorError:
+      type: object
+      properties:
+        error:
+          type: string
+        count:
+          type: integer
+      required:
+        - error
+        - count
+    MonitorMetrics:
+      type: object
+      properties:
+        healthSyncServiceMetrics:
+          $ref: "health_sync_service_api.yaml#/components/schemas/HealthStreamMetrics"
+      required:
+        - healthSyncServiceMetrics          
