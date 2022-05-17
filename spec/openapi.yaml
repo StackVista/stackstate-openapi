@@ -4,8 +4,8 @@ info:
   version: 0.0.1
   title: StackState API
   license:
-    name: Proprietary
-    url: "https://stackstate.com"
+    name: "Apache 2.0"
+    url: "https://www.apache.org/licenses/LICENSE-2.0.html"
   contact:
     name: StackState
     email: info@stackstate.com
