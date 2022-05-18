@@ -96,7 +96,7 @@ paths:
         "200":
           $ref: "#/components/responses/monitorStatus"
         "404":
-          $ref: "#/components/responses/monitorNotFoundError"
+          $ref: "#/components/responses/monitorStatusNotFoundError"
         "500":
           $ref: "#/components/responses/monitorApiError"
 
@@ -141,6 +141,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MonitorNotFoundError"
+    monitorStatusNotFoundError:
+      description: "monitor status was not found in the database"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorStatusNotFoundError"            
     monitorInvalidIntervalError:
       description: "Error response if an unsupported monitor interval was provided"
       content:
@@ -271,6 +277,19 @@ components:
       required:
         - statusCode
         - message
+
+    MonitorStatusNotFoundError:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - MonitorStatusNotFoundError
+        monitorId:
+          $ref: "#/components/schemas/MonitorId"
+      required:
+        - _type
+        - monitorId
 
     MonitorErrors:
       type: array
