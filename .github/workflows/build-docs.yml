@@ -1,0 +1,21 @@
+
+name: build-and-deploy-docs
+
+# Run on each push to master
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  test_job:
+    runs-on: ubuntu-latest
+    name: Build and deploy openapi docs
+    steps:
+      # To use this repository's private action, you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: redoc-cli test
+        uses: ./ # Uses an action in the root directory
+        with:
+          args: 'bundle /spec/openapi.yml -o /docs/index.html'
