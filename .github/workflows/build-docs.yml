@@ -14,6 +14,8 @@ jobs:
       # To use this repository's private action, you must check out the repository
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          ref: master
 
       - name: redoc-cli test
         uses: seeebiii/redoc-cli-github-action@v10
