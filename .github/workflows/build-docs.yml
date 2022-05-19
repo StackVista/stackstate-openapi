@@ -16,6 +16,6 @@ jobs:
         uses: actions/checkout@v2
 
       - name: redoc-cli test
-        uses: ./ # Uses an action in the root directory
+        uses: seeebiii/redoc-cli-github-action@v10
         with:
           args: 'bundle /spec/openapi.yml -o /docs/index.html'
