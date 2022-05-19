@@ -12,6 +12,7 @@ info:
     url: "https://stackstate.com"
   x-logo:
     url: "https://raw.githubusercontent.com/StackVista/stackstate-openapi/master/docs/StackState-Color.svg"
+    href: "https://stackvista.github.io/stackstate-openapi/"
 externalDocs:
   description: Documentation
   url: "https://docs.stackstate.com/"
