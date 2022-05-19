@@ -21,3 +21,11 @@ openapi-lint:
     - when: always
   script:
     - nix develop -c npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec/openapi.yaml
+
+publish-docs:
+  extends: .nix-base
+  stage: check
+  rules:
+    - when: always
+  script:
+    - nix develop -c scripts/publish.sh $CI_COMMIT_TAG 

@@ -19,6 +19,8 @@
             openapi-generator-cli
             nodejs-14_x
             bash
+            redoc-cli
+            awscli
           ]);
         };
       });
