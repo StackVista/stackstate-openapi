@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e && cd "$(dirname "$0")" && cd ../
+
+if [ -z "$1" ]
+then 
+  echo "Please enter a version number as a first argument to this script, e.g. 'publish.sh 1.0.3'"
+  exit 1
+fi
+
+VERSION=$1
+redoc-cli bundle spec/openapi.yaml -o dist/index.html
+
+DEST="s3://cli-dl.stackstate.com/openapi/$VERSION"
+echo "Uploading docs version $VERSION to $DEST" 
+aws s3 cp dist/index.html $DEST 

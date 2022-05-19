@@ -1,5 +1,6 @@
 stages:
   - check
+  - publish
 
 .nix-base:
   image: "nixos/nix:2.8.0"
@@ -21,3 +22,12 @@ openapi-lint:
     - when: always
   script:
     - nix develop -c npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec/openapi.yaml
+
+publish-docs:
+  extends: .nix-base
+  stage: publish
+  rules:
+    - if: '$CI_COMMIT_TAG && $CI_COMMIT_TAG =~ /^[1-9]\.*/'
+      when: on_success
+  script:
+    - nix develop -c scripts/publish.sh $CI_COMMIT_TAG
