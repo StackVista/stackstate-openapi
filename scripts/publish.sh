@@ -8,6 +8,19 @@ then
 fi
 
 VERSION=$1
+
+
+checkForVariable() {
+  if [[ -z ${!1+set} ]]; then
+    echo "Error: Define $1 environment variable"
+    exit 1
+  fi
+}
+
+checkForVariable AWS_DEFAULT_REGION
+checkForVariable AWS_ACCESS_KEY_ID
+checkForVariable AWS_SECRET_ACCESS_KEY
+
 redoc-cli bundle spec/openapi.yaml -o dist/index.html
 
 DEST="s3://cli-dl.stackstate.com/openapi/$VERSION"
