@@ -11,7 +11,7 @@ info:
     email: info@stackstate.com
     url: "https://stackstate.com"
   x-logo:
-    url: "https://raw.githubusercontent.com/StackVista/stackstate-openapi/master/docs/StackState-Color.svg"
+    url: "https://raw.githubusercontent.com/StackVista/stackstate-openapi/master/docs/StackState-Color-padding.png"
     href: "https://stackvista.github.io/stackstate-openapi/"
 externalDocs:
   description: Documentation
