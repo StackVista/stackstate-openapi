@@ -18,7 +18,7 @@ paths:
             application/json:
               schema:
                 $ref: "health_sync_service_api.yaml#/components/schemas/StreamList"
-  /synchronization/health/stream/{healthStreamUrn}/status:
+  /synchronization/health/streams/{healthStreamUrn}/status:
     parameters:
       - $ref: "#/components/parameters/healthStreamUrn"
     get:
@@ -38,7 +38,7 @@ paths:
           $ref: "#/components/responses/urnBadRequest"
         "404":
           $ref: "#/components/responses/healthStreamError"
-  /synchronization/health/stream/{healthStreamUrn}/clearErrors:
+  /synchronization/health/streams/{healthStreamUrn}/clearErrors:
     parameters:
       - $ref: "#/components/parameters/healthStreamUrn"
     post:
@@ -54,7 +54,7 @@ paths:
           $ref: "#/components/responses/urnBadRequest"
         "404":
           $ref: "#/components/responses/healthStreamError"
-  /synchronization/health/stream/{healthStreamUrn}:
+  /synchronization/health/streams/{healthStreamUrn}:
     parameters:
       - $ref: "#/components/parameters/healthStreamUrn"
     delete:
@@ -70,7 +70,7 @@ paths:
           $ref: "#/components/responses/urnBadRequest"
         "404":
           $ref: "#/components/responses/healthStreamError"
-  /synchronization/health/stream/{healthStreamUrn}/substreams:
+  /synchronization/health/streams/{healthStreamUrn}/substreams:
     parameters:
       - $ref: "#/components/parameters/healthStreamUrn"
     get:
@@ -90,7 +90,7 @@ paths:
           $ref: "#/components/responses/urnBadRequest"
         "404":
           $ref: "#/components/responses/healthStreamError"
-  /synchronization/health/stream/{healthStreamUrn}/topologyMatches:
+  /synchronization/health/streams/{healthStreamUrn}/topologyMatches:
     parameters:
       - $ref: "#/components/parameters/healthStreamUrn"
     get:
@@ -110,7 +110,7 @@ paths:
           $ref: "#/components/responses/urnBadRequest"
         "404":
           $ref: "#/components/responses/healthSubStreamError"
-  /synchronization/health/stream/{healthStreamUrn}/substream/{healthSyncSubStreamId}/status:
+  /synchronization/health/streams/{healthStreamUrn}/substream/{healthSyncSubStreamId}/status:
     parameters:
       - $ref: "#/components/parameters/healthStreamUrn"
       - $ref: "#/components/parameters/healthSyncSubStreamId"
@@ -131,7 +131,7 @@ paths:
           $ref: "#/components/responses/urnBadRequest"
         "404":
           $ref: "#/components/responses/healthSubStreamError"
-  /synchronization/health/stream/{healthStreamUrn}/substream/{healthSyncSubStreamId}/topologyMatches:
+  /synchronization/health/streams/{healthStreamUrn}/substream/{healthSyncSubStreamId}/topologyMatches:
     parameters:
       - $ref: "#/components/parameters/healthStreamUrn"
       - $ref: "#/components/parameters/healthSyncSubStreamId"
@@ -205,7 +205,7 @@ components:
         - $ref: "#/components/schemas/HealthStreamNotFound"
         - $ref: "#/components/schemas/HealthSubStreamNotFound"
       required:
-        - _type        
+        - _type
     HealthStreamNotFound:
       type: object
       properties:
@@ -231,4 +231,4 @@ components:
           type: string
       required:
         - urn
-        - _type        
+        - _type

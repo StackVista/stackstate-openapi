@@ -62,11 +62,11 @@ paths:
       operationId: runMonitor
       responses:
         "200":
-          $ref: "monitors.api.yaml#/components/responses/monitorRunResult"
+          $ref: "#/components/responses/monitorRunResult"
         "404":
           $ref: "#/components/responses/monitorNotFoundError"
         "500":
-          $ref: "monitors.api.yaml#/components/responses/monitorApiError"
+          $ref: "#/components/responses/monitorApiError"
 
   /monitors/{monitorIdOrUrn}/status:
     get:
