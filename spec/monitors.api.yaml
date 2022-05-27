@@ -29,6 +29,8 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/monitor"
+        "400":
+          $ref: "#/components/responses/invalidMonitorIdentifierError"
         "404":
           $ref: "#/components/responses/monitorNotFoundError"
         "500":
@@ -45,6 +47,8 @@ paths:
       responses:
         "204":
           description: "Return ok"
+        "400":
+          $ref: "#/components/responses/invalidMonitorIdentifierError"
         "404":
           $ref: "#/components/responses/monitorNotFoundError"
         "500":
@@ -63,6 +67,8 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/monitorRunResult"
+        "400":
+          $ref: "#/components/responses/invalidMonitorIdentifierError"
         "404":
           $ref: "#/components/responses/monitorNotFoundError"
         "500":
@@ -80,6 +86,8 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/monitorStatus"
+        "400":
+          $ref: "#/components/responses/invalidMonitorIdentifierError"
         "404":
           $ref: "#/components/responses/monitorStatusNotFoundError"
         "500":
@@ -126,6 +134,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MonitorStatus"
+    invalidMonitorIdentifierError:
+      description: "Invalid monitor id or identifier"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InvalidMonitorIdentifierError"
     monitorNotFoundError:
       description: "monitor was not found in the database"
       content:
@@ -233,6 +247,18 @@ components:
           enum:
             - id
             - urn
+    InvalidMonitorIdentifierError:
+      type: object
+      properties:
+        monitorIdOrUrn:
+          type: string
+        _type:
+          type: string
+          enum:
+            - InvalidMonitorIdentifier
+      required:
+        - monitorIdOrUrn
+        - _type
     MonitorNotFoundError:
       allOf:
         - $ref: "#/components/schemas/BaseMonitorError"
