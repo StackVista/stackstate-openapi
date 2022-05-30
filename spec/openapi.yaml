@@ -47,13 +47,13 @@ paths:
     {
       $ref: "health_sync.api.yaml#/paths/%2Fsynchronization%2Fhealth%2Fstreams%2F%7BhealthStreamUrn%7D%2FtopologyMatches",
     }
-  /synchronization/health/streams/{healthStreamUrn}/substream/{healthSyncSubStreamId}/status:
+  /synchronization/health/streams/{healthStreamUrn}/substreams/{healthSyncSubStreamId}/status:
     {
-      $ref: "health_sync.api.yaml#/paths/%2Fsynchronization%2Fhealth%2Fstreams%2F%7BhealthStreamUrn%7D%2Fsubstream%2F%7BhealthSyncSubStreamId%7D%2Fstatus",
+      $ref: "health_sync.api.yaml#/paths/%2Fsynchronization%2Fhealth%2Fstreams%2F%7BhealthStreamUrn%7D%2Fsubstreams%2F%7BhealthSyncSubStreamId%7D%2Fstatus",
     }
-  /synchronization/health/streams/{healthStreamUrn}/substream/{healthSyncSubStreamId}/topologyMatches:
+  /synchronization/health/streams/{healthStreamUrn}/substreams/{healthSyncSubStreamId}/topologyMatches:
     {
-      $ref: "health_sync.api.yaml#/paths/%2Fsynchronization%2Fhealth%2Fstreams%2F%7BhealthStreamUrn%7D%2Fsubstream%2F%7BhealthSyncSubStreamId%7D%2FtopologyMatches",
+      $ref: "health_sync.api.yaml#/paths/%2Fsynchronization%2Fhealth%2Fstreams%2F%7BhealthStreamUrn%7D%2Fsubstreams%2F%7BhealthSyncSubStreamId%7D%2FtopologyMatches",
     }
   /synchronization/topology/streams: { $ref: "topology_sync.api.yaml#/paths/%2Fsynchronization%2Ftopology%2Fstreams" }
   /synchronization/topology/streams/sync:

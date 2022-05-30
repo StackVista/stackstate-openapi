@@ -110,7 +110,7 @@ paths:
           $ref: "#/components/responses/urnBadRequest"
         "404":
           $ref: "#/components/responses/healthSubStreamError"
-  /synchronization/health/streams/{healthStreamUrn}/substream/{healthSyncSubStreamId}/status:
+  /synchronization/health/streams/{healthStreamUrn}/substreams/{healthSyncSubStreamId}/status:
     parameters:
       - $ref: "#/components/parameters/healthStreamUrn"
       - $ref: "#/components/parameters/healthSyncSubStreamId"
@@ -131,7 +131,7 @@ paths:
           $ref: "#/components/responses/urnBadRequest"
         "404":
           $ref: "#/components/responses/healthSubStreamError"
-  /synchronization/health/streams/{healthStreamUrn}/substream/{healthSyncSubStreamId}/topologyMatches:
+  /synchronization/health/streams/{healthStreamUrn}/substreams/{healthSyncSubStreamId}/topologyMatches:
     parameters:
       - $ref: "#/components/parameters/healthStreamUrn"
       - $ref: "#/components/parameters/healthSyncSubStreamId"
