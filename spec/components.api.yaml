@@ -12,7 +12,6 @@ paths:
         - $ref: '#/components/parameters/componentId'
         - $ref: '#/components/parameters/queryTime'
         - $ref: '#/components/parameters/streamIds'
-
       responses:
         200:
           $ref: '#/components/responses/latestsSnapshots'
@@ -20,7 +19,6 @@ paths:
           $ref: '#/components/responses/notFoundError'
         500:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-
 components:
   parameters:
     componentId:

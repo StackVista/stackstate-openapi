@@ -73,7 +73,7 @@ paths:
   /security/token: { $ref: "service_token.api.yaml#/paths/%2Fsecurity%2Ftoken" }
   /security/token/{serviceTokenId}: { $ref: "service_token.api.yaml#/paths/%2Fsecurity%2Ftoken%2F%7BserviceTokenId%7D" }
   /anomalies/export: { $ref: "anomalies.api.yaml#/paths/%2Fanomalies%2Fexport" }
-  /components/{compomentId}/streams/latest: { $ref: './components.api.yaml' }
+  /components/{componentId}/streams/latest: { $ref: 'components.api.yaml' }
 security:
   - ApiToken: []
 components:
