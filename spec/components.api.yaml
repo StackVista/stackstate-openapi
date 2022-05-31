@@ -1,0 +1,161 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Compoments API
+  version: "1.0.0"
+paths:
+  /components/{componentId}/streams/latest:
+    get:
+      summary: "Get the latests metrics"
+      description: "Gets a top 3 metrics for a datapoint"
+      parameters:
+        - $ref: '#/components/parameters/componentId'
+        - $ref: '#/components/parameters/queryTime'
+        - $ref: '#/components/parameters/streamIds'
+
+      responses:
+        200:
+          $ref: '#/components/responses/latestsSnapshots'
+        404:
+          $ref: '#/components/responses/notFoundError'
+        500:
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
+components:
+  parameters:
+    componentId:
+      in: path
+      name: componentId
+      required: true
+      schema:
+        $ref: '#/components/schemas/ComponentId'
+      description: "The Identifier of a component"
+    queryTime:
+      in: path
+      name: queryTime
+      required: true
+      schema:
+        $ref: '#/components/schemas/QueryTime'
+      description: "A Data point for a query"
+    streamIds:
+      in: path
+      name: streamIds
+      required: true
+      schema:
+        $ref: '#/components/schemas/StreamsId'
+      description: "Ids of streams to query for"
+  schemas:
+    ComponentId:
+      type: integer
+      format: int64
+    QueryTime:
+      type: integer
+      format: instant
+    StreamIds:
+      type: array
+      items:
+        type: integer
+        format: int64
+    LatestTelemetryStreamMetrics:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - LatestTelemetryStreamMetrics
+        streamId:
+          type: integer
+          format: int64
+        data:
+          $ref: "#/components/schema/MetricData"
+      required:
+        - _type
+        - streamId
+        - data
+    MetricData:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - MetricData
+        isPartial:
+          type: boolean
+        result:
+          type: array
+          items:
+            $ref: "#/components/schema/TimeSeries"
+      required:
+        - _type
+        - result
+    TimeSeries:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - TimeSeries
+        id:
+          $ref: "#/components/schema/TimeSeriesId"
+        points:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+        tags:
+          type: array
+          items:
+            type: string
+        annotations:
+          type: array
+          items:
+            type: string
+    TimeSeriesId:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - TimeSeriesId
+        elementId:
+          type: integer
+          format: int64
+
+  responses:
+    notFoundError:
+      description: "Component not found error"
+      content:
+        application/json:
+          schema:
+            type: object
+            discriminator:
+              propertyName: _type
+            properties:
+              _type:
+                type: string
+                enum:
+                  - ComponentNotFoundError
+              componentId:
+                $ref: "#/components/schemas/ComponentId"
+            required:
+              - _type
+              - componentId
+    latestSnapshots:
+      description: "the latest 3 metrics"
+      content:
+        application/json:
+          schema:
+            type: object
+            discriminator:
+              propertyName: _type
+            properties:
+              _type:
+                type: string
+                enum:
+                  - TelemetryLatestsSnapshotResponse
+              streamSnaphots:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LatestsTelemetryStreamMetrics"
+
