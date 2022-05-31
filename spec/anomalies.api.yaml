@@ -73,7 +73,7 @@ components:
     Point:
       properties:
         ts:
-          type: number
+          type: integer
           format: int64
         v:
           type: number
