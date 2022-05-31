@@ -3,6 +3,7 @@ openapi: 3.0.3
 info:
   title: Compoments API
   version: "1.0.0"
+
 paths:
   /components/{componentId}/streams/latest:
     get:
@@ -13,12 +14,13 @@ paths:
         - $ref: '#/components/parameters/queryTime'
         - $ref: '#/components/parameters/streamIds'
       responses:
-        200:
-          $ref: '#/components/responses/latestsSnapshots'
-        404:
+        "200":
+          $ref: '#/components/responses/latestSnapshots'
+        "404":
           $ref: '#/components/responses/notFoundError'
-        500:
+        "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
 components:
   parameters:
     componentId:
@@ -29,18 +31,18 @@ components:
         $ref: '#/components/schemas/ComponentId'
       description: "The Identifier of a component"
     queryTime:
-      in: path
+      in: query
       name: queryTime
       required: true
       schema:
         $ref: '#/components/schemas/QueryTime'
       description: "A Data point for a query"
     streamIds:
-      in: path
+      in: query
       name: streamIds
       required: true
       schema:
-        $ref: '#/components/schemas/StreamsId'
+        $ref: '#/components/schemas/StreamIds'
       description: "Ids of streams to query for"
   schemas:
     ComponentId:
@@ -65,7 +67,7 @@ components:
           type: integer
           format: int64
         data:
-          $ref: "#/components/schema/MetricData"
+          $ref: "#/components/schemas/MetricData"
       required:
         - _type
         - streamId
@@ -82,7 +84,7 @@ components:
         result:
           type: array
           items:
-            $ref: "#/components/schema/TimeSeries"
+            $ref: "#/components/schemas/TimeSeries"
       required:
         - _type
         - result
@@ -94,7 +96,7 @@ components:
           enum:
             - TimeSeries
         id:
-          $ref: "#/components/schema/TimeSeriesId"
+          $ref: "#/components/schemas/TimeSeriesId"
         points:
           type: array
           items:
@@ -151,9 +153,8 @@ components:
               _type:
                 type: string
                 enum:
-                  - TelemetryLatestsSnapshotResponse
+                  - TelemetryLatestSnapshotsResponse
               streamSnaphots:
                 type: array
                 items:
-                  $ref: "#/components/schemas/LatestsTelemetryStreamMetrics"
-
+                  $ref: "#/components/schemas/LatestTelemetryStreamMetrics"
