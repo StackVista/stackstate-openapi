@@ -4,7 +4,7 @@ info:
   title: Service Token API
   version: "1.0.0"
 paths:
-  /security/token:
+  /security/tokens:
     get:
       tags:
         - serviceToken
@@ -43,7 +43,7 @@ paths:
                 $ref: "#/components/schemas/ServiceTokenCreateError"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-  /security/token/{serviceTokenId}:
+  /security/tokens/{serviceTokenId}:
     delete:
       tags:
         - serviceToken
