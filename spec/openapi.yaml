@@ -69,9 +69,14 @@ paths:
   /anomalies/export: { $ref: "anomalies.api.yaml#/paths/%2Fanomalies%2Fexport" }
 security:
   - ApiToken: []
+  - ServiceToken: []
 components:
   securitySchemes:
     ApiToken:
       type: apiKey
       in: header
       name: X-API-Token
+    ServiceToken:
+      type: apiKey
+      in: header
+      name: X-API-Key
