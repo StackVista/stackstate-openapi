@@ -16,6 +16,23 @@ paths:
           $ref: "#/components/responses/monitors"
         "500":
           $ref: "#/components/responses/monitorApiError"
+    post:
+      tags:
+        - monitor
+      summary: "Validate monitor"
+      description: "Validate monitor STJ file"
+      operationId: verifyMonitor
+      requestBody:
+        required: true
+        content:
+          plain/text:
+            schema:
+              type: string
+      responses:
+        "200":
+          $ref: "#/components/responses/validateMonitor"
+        "500":
+          $ref: "#/components/responses/monitorApiError"
 
   /monitors/{monitorIdOrUrn}:
     get:
@@ -115,7 +132,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MonitorList"
-
+    validateMonitor:
+      description: "result of STJ validation"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorValidation"
     monitor:
       description: "Full representation of a monitor"
       content:
@@ -320,3 +342,18 @@ components:
           $ref: "health_sync_service_api.yaml#/components/schemas/HealthStreamMetrics"
       required:
         - healthSyncServiceMetrics
+    MonitorValidation:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - MonitorValidation
+        containsMonitor:
+          type: boolean
+        containsMonitorFunction:
+          type: boolean
+      required:
+        - _type
+        - containsMonitor
+        - containsMonitorFunction
