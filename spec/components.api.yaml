@@ -8,7 +8,7 @@ paths:
   /components/{componentId}/streams/latest:
     get:
       summary: "Get the latests metrics"
-      description: "Gets a top 3 metrics for a datapoint"
+      description: "Gets a top 3 metrics for a datapoint, always takes the last 15 minutes before provided timepoint"
       parameters:
         - $ref: '#/components/parameters/componentId'
         - $ref: '#/components/parameters/queryTime'
@@ -36,7 +36,7 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/QueryTime'
-      description: "A Data point for a query"
+      description: "A Data point for a query either point from timeline or 'now' if livemode"
     streamIds:
       in: query
       name: streamIds
@@ -66,61 +66,14 @@ components:
         streamId:
           type: integer
           format: int64
-        data:
-          $ref: "#/components/schemas/MetricData"
+        timestamp:
+          type: integer
+          format: int64
+        value:
+          type: number
       required:
         - _type
         - streamId
-        - data
-    MetricData:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - MetricData
-        isPartial:
-          type: boolean
-        result:
-          type: array
-          items:
-            $ref: "#/components/schemas/TimeSeries"
-      required:
-        - _type
-        - result
-    TimeSeries:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - TimeSeries
-        id:
-          $ref: "#/components/schemas/TimeSeriesId"
-        points:
-          type: array
-          items:
-            type: array
-            items:
-              type: number
-        tags:
-          type: array
-          items:
-            type: string
-        annotations:
-          type: array
-          items:
-            type: string
-    TimeSeriesId:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - TimeSeriesId
-        elementId:
-          type: integer
-          format: int64
 
   responses:
     notFoundError:
