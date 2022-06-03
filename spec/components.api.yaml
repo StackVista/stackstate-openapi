@@ -66,11 +66,14 @@ components:
         streamId:
           type: integer
           format: int64
-        timestamp:
-          type: integer
-          format: int64
-        value:
-          type: number
+        metric:
+          type: object
+          properties:
+            timestamp:
+              type: integer
+              format: int64
+            value:
+              type: number
       required:
         - _type
         - streamId
