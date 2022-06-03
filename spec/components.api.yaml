@@ -1,0 +1,116 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Compoments API
+  version: "1.0.0"
+
+paths:
+  /components/{componentId}/streams/latest:
+    get:
+      summary: "Get the latests metrics"
+      description: "Gets a top 3 metrics for a datapoint, always takes the last 15 minutes before provided timepoint"
+      parameters:
+        - $ref: '#/components/parameters/componentId'
+        - $ref: '#/components/parameters/queryTime'
+        - $ref: '#/components/parameters/streamIds'
+      responses:
+        "200":
+          $ref: '#/components/responses/latestSnapshots'
+        "404":
+          $ref: '#/components/responses/notFoundError'
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
+components:
+  parameters:
+    componentId:
+      in: path
+      name: componentId
+      required: true
+      schema:
+        $ref: '#/components/schemas/ComponentId'
+      description: "The Identifier of a component"
+    queryTime:
+      in: query
+      name: queryTime
+      required: true
+      schema:
+        $ref: '#/components/schemas/QueryTime'
+      description: "A Data point for a query either point from timeline or 'now' if livemode"
+    streamIds:
+      in: query
+      name: streamIds
+      required: true
+      schema:
+        $ref: '#/components/schemas/StreamIds'
+      description: "Ids of streams to query for"
+  schemas:
+    ComponentId:
+      type: integer
+      format: int64
+    QueryTime:
+      type: integer
+      format: instant
+    StreamIds:
+      type: array
+      items:
+        type: integer
+        format: int64
+    LatestTelemetryStreamMetrics:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - LatestTelemetryStreamMetrics
+        streamId:
+          type: integer
+          format: int64
+        metric:
+          type: object
+          properties:
+            timestamp:
+              type: integer
+              format: int64
+            value:
+              type: number
+      required:
+        - _type
+        - streamId
+
+  responses:
+    notFoundError:
+      description: "Component not found error"
+      content:
+        application/json:
+          schema:
+            type: object
+            discriminator:
+              propertyName: _type
+            properties:
+              _type:
+                type: string
+                enum:
+                  - ComponentNotFoundError
+              componentId:
+                $ref: "#/components/schemas/ComponentId"
+            required:
+              - _type
+              - componentId
+    latestSnapshots:
+      description: "the latest 3 metrics"
+      content:
+        application/json:
+          schema:
+            type: object
+            discriminator:
+              propertyName: _type
+            properties:
+              _type:
+                type: string
+                enum:
+                  - TelemetryLatestSnapshotsResponse
+              streamSnaphots:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LatestTelemetryStreamMetrics"
