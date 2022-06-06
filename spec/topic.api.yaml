@@ -18,15 +18,19 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 
 components:
-  schemas:
-    Topic:
-      type: object
-      properties:
-        name:
-          type: string
   responses:
     TopicList:
       description: "list of topic"
-      type: array
-      items:
-        $ref: "#/components/schemas/Topic"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Topic"
+  schemas:
+    Topic:
+      type: object
+      description: "topic object"
+      properties:
+        name:
+          type: string
