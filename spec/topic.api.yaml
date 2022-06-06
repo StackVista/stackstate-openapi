@@ -26,6 +26,7 @@ components:
           type: string
   responses:
     TopicList:
+      description: "list of topic"
       type: array
       items:
         $ref: "#/components/schemas/Topic"
