@@ -12,6 +12,8 @@ paths:
       operationId: getTopic
       description: "Get topic list"
       responses:
+        "200":
+          $ref: "#/components/responses/TopicList"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 
@@ -22,6 +24,7 @@ components:
       properties:
         name:
           type: string
+  responses:
     TopicList:
       type: array
       items:
