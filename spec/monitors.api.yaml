@@ -19,20 +19,54 @@ paths:
     post:
       tags:
         - monitor
-      summary: "Validate monitor"
-      description: "Validate monitor STJ file"
-      operationId: verifyMonitor
+        - import
+      summary: "Import and validate monitor settings"
+      description: "Import StackState Templated JSON (STJ) and validate it."
+      operationId: importSettings
       requestBody:
         required: true
         content:
           plain/text:
             schema:
               type: string
+      parameters:
+        - name: timeoutSeconds
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: namespace
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: unlocked
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - fail
+              - skip
+              - overwrite
       responses:
         "200":
-          $ref: "#/components/responses/validateMonitor"
+          description: The full description of all imported nodes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        "400":
+          description: "Failure to parse the STJ."
+          content:
+            application/json:
+              schema:
+                $ref: "generic_error_handling.xapi.yaml#/components/schemas/GenericErrorsResponse"
         "500":
-          $ref: "#/components/responses/monitorApiError"
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 
   /monitors/{monitorIdOrUrn}:
     get:
@@ -342,18 +376,3 @@ components:
           $ref: "health_sync_service_api.yaml#/components/schemas/HealthStreamMetrics"
       required:
         - healthSyncServiceMetrics
-    MonitorValidation:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - MonitorValidation
-        containsMonitor:
-          type: boolean
-        containsMonitorFunction:
-          type: boolean
-      required:
-        - _type
-        - containsMonitor
-        - containsMonitorFunction
