@@ -22,7 +22,7 @@ paths:
         - import
       summary: "Import and validate monitor settings"
       description: "Import StackState Templated JSON (STJ) and validate it."
-      operationId: importSettings
+      operationId: importAndValidateMonitor
       requestBody:
         required: true
         content:
