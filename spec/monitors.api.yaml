@@ -60,7 +60,7 @@ paths:
                 items:
                   type: object
         "400":
-          description: "Failure to parse the STJ."
+          description: "Failure to parse the STJ or file doesn't contain neither Monitor nor MonitorFunction."
           content:
             application/json:
               schema:
