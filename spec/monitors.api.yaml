@@ -19,10 +19,9 @@ paths:
     post:
       tags:
         - monitor
-        - import
       summary: "Import and validate monitor settings"
-      description: "Import StackState Templated JSON (STJ) and validate it."
-      operationId: importAndValidateMonitor
+      description: "Apply a StackState Templated JSON (STJ) file containing Monitors and MonitorFunctions"
+      operationId: applyMonitor
       requestBody:
         required: true
         content:
