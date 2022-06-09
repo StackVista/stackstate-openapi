@@ -51,21 +51,11 @@ paths:
               - overwrite
       responses:
         "200":
-          description: The full description of all imported nodes.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
+          $ref: "#/components/responses/monitorImportResult"
         "400":
-          description: "Failure to parse the STJ or file doesn't contain neither Monitor nor MonitorFunction."
-          content:
-            application/json:
-              schema:
-                $ref: "generic_error_handling.xapi.yaml#/components/schemas/GenericErrorsResponse"
+          $ref: "#/components/responses/monitorImportError"
         "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+          $ref: "#/components/responses/monitorApiError"
 
   /monitors/{monitorIdOrUrn}:
     get:
@@ -213,6 +203,19 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MonitorApiError"
+    monitorImportResult:
+      description: "Full representation of imported data"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorImportResult"
+    monitorImportError:
+      description: "Failure to parse the STJ or file doesn't contain neither Monitor nor MonitorFunction"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorImportError"
+
   schemas:
     MonitorIdOrUrn:
       type: string
@@ -375,3 +378,21 @@ components:
           $ref: "health_sync_service_api.yaml#/components/schemas/HealthStreamMetrics"
       required:
         - healthSyncServiceMetrics
+    MonitorImportResult:
+      type: object
+      properties:
+        result:
+          type: object
+      required:
+        - result
+    MonitorImportError:
+      type: object
+      properties:
+        error:
+          type: string
+        details:
+          type: string
+      required:
+        - error
+        - details
+
