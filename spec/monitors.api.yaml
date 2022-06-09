@@ -27,7 +27,7 @@ paths:
         content:
           text/plain:
             schema:
-              type: string
+              $ref: "#/components/schemas/RequestBody"
       parameters:
         - name: timeoutSeconds
           in: query
@@ -404,4 +404,6 @@ components:
       required:
         - error
         - details
+    RequestBody:
+      type: string
 
