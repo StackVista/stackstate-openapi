@@ -27,9 +27,7 @@ paths:
         content:
           text/plain:
             schema:
-              type: object
-              additionalProperties:
-                type: string
+              type: string
       parameters:
         - name: timeoutSeconds
           in: query
