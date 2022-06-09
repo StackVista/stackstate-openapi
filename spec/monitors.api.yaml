@@ -21,7 +21,7 @@ paths:
         - monitor
       summary: "Import and validate monitor settings"
       description: "Apply a StackState Templated JSON (STJ) file containing Monitors and MonitorFunctions"
-      operationId: applyMonitor
+      operationId: importMonitor
       requestBody:
         required: true
         content:
