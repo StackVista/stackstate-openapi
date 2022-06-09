@@ -25,9 +25,11 @@ paths:
       requestBody:
         required: true
         content:
-          text/*:
+          text/plain:
             schema:
-              type: string
+              type: object
+              additionalProperties:
+                type: string
       parameters:
         - name: timeoutSeconds
           in: query
