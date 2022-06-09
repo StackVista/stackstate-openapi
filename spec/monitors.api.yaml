@@ -28,6 +28,7 @@ paths:
           text/plain:
             schema:
               type: string
+              required: true
       parameters:
         - name: timeoutSeconds
           in: query
