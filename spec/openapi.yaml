@@ -10,6 +10,9 @@ info:
     name: StackState
     email: info@stackstate.com
     url: "https://stackstate.com"
+  x-logo:
+    url: "https://raw.githubusercontent.com/StackVista/stackstate-docs/master/resources/logo/StackState-Color-padding.png"
+    href: "#top"
 externalDocs:
   description: Documentation
   url: "https://docs.stackstate.com/"
