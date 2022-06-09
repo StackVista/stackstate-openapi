@@ -14,7 +14,7 @@ paths:
       requestBody:
         required: true
         content:
-          plain/text:
+          text/plain:
             schema:
               type: string
       parameters:

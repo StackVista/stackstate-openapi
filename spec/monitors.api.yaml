@@ -25,7 +25,7 @@ paths:
       requestBody:
         required: true
         content:
-          plain/text:
+          text/plain:
             schema:
               type: string
       parameters:
@@ -41,6 +41,15 @@ paths:
           schema:
             type: string
         - name: unlocked
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - fail
+              - skip
+              - overwrite
+        - name: locked
           in: query
           required: false
           schema:
