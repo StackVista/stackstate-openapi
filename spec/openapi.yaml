@@ -69,6 +69,7 @@ paths:
   /anomalies/export: { $ref: "anomalies.api.yaml#/paths/%2Fanomalies%2Fexport" }
   /components/{componentId}/streams/latest: { $ref: 'components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentId%7D%2Fstreams%2Flatest' }
   /topic: { $ref: 'topic.api.yaml#/paths/%2Ftopic'}
+  /topic/{topicName}: { $ref: 'topic.api.yaml#/paths/%2Ftopic%2F%7BtopicName%7D'}
 security:
   - ApiToken: []
   - ServiceToken: []

@@ -8,12 +8,40 @@ paths:
     get:
       tags:
         - topic
-      summary: "Topic API"
+      summary: "Topic list API"
       operationId: listTopics
       description: "Get topic list"
       responses:
         "200":
           $ref: "#/components/responses/TopicList"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /topic/{topicName}:
+    get:
+      tags:
+        - topic
+      summary: "topic details API"
+      operationId: getTopic
+      description: "Get topic details"
+      parameters:
+        - name: topicName
+          description: "Name of the topic"
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "details of the topic"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TopicDetails"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 
@@ -36,3 +64,16 @@ components:
           type: string
       required:
         - name
+    TopicDetails:
+      type: object
+      properties:
+        message:
+          type: object
+          properties:
+            IntakeHealthMessage:
+              type: object
+              properties:
+                payload:
+                  type: object
+                  additionalProperties:
+                    type: string
