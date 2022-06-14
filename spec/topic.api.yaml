@@ -41,7 +41,7 @@ paths:
                   messages:
                     type: array
                     items:
-                      $ref: "#/components/schemas/TopicMessages"
+                      $ref: "#/components/schemas/TopicMessage"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 
@@ -71,7 +71,3 @@ components:
           type: object
           additionalProperties:
             type: string
-    TopicMessages:
-      type: array
-      items:
-        $ref: "#/components/schemas/TopicMessage"
