@@ -41,7 +41,7 @@ paths:
                   messages:
                     type: array
                     items:
-                      $ref: "#/components/schemas/TopicDetails"
+                      $ref: "#/components/schemas/TopicMessages"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 
@@ -64,16 +64,14 @@ components:
           type: string
       required:
         - name
-    TopicDetails:
+    TopicMessage:
       type: object
       properties:
         message:
           type: object
-          properties:
-            IntakeHealthMessage:
-              type: object
-              properties:
-                payload:
-                  type: object
-                  additionalProperties:
-                    type: string
+          additionalProperties:
+            type: string
+    TopicMessages:
+      type: array
+      items:
+        $ref: "#/components/schemas/TopicMessage"
