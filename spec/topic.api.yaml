@@ -70,4 +70,4 @@ components:
         message:
           type: object
           additionalProperties:
-            type: Any
+            type: object
