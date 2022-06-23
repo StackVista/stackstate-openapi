@@ -1,7 +1,7 @@
 # OpenApi header is included in this file to support code highlighting in VSCode
 openapi: 3.0.3
 info:
-  title: Compoments API
+  title: Components API
   version: "1.0.0"
 
 paths:
@@ -17,9 +17,9 @@ paths:
         - $ref: '#/components/parameters/streamIds'
       responses:
         "200":
-          $ref: '#/components/responses/latestSnapshots'
+          $ref: '#/components/responses/telemetryLatestSnapshotsResponse'
         "404":
-          $ref: '#/components/responses/notFoundError'
+          $ref: '#/components/responses/componentNotFoundError'
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 
@@ -58,8 +58,21 @@ components:
       items:
         type: integer
         format: int64
+    SingleMetric:
+      type: object
+      properties:
+        timestamp:
+          type: integer
+          format: int64
+        value:
+          type: number
+      required:
+        - timestamp
+        - value
     LatestTelemetryStreamMetrics:
       type: object
+      discriminator:
+        propertyName: _type
       properties:
         _type:
           type: string
@@ -69,50 +82,52 @@ components:
           type: integer
           format: int64
         metric:
-          type: object
-          properties:
-            timestamp:
-              type: integer
-              format: int64
-            value:
-              type: number
+          $ref: "#/components/schemas/SingleMetric"
       required:
         - _type
         - streamId
+    TelemetryLatestSnapshotsResponse:
+      type: object
+      discriminator:
+        propertyName: _type
+      properties:
+        _type:
+          type: string
+          enum:
+            - TelemetryLatestSnapshotsResponse
+        streamSnapshots:
+          type: array
+          items:
+            $ref: "#/components/schemas/LatestTelemetryStreamMetrics"
+      required:
+        - _type
+        - streamSnapshots
+    ComponentNotFoundError:
+      type: object
+      discriminator:
+        propertyName: _type
+      properties:
+        _type:
+          type: string
+          enum:
+            - ComponentNotFoundError
+        componentId:
+          $ref: "#/components/schemas/ComponentId"
+      required:
+        - _type
+        - componentId
 
   responses:
-    notFoundError:
+    componentNotFoundError:
       description: "Component not found error"
       content:
         application/json:
           schema:
-            type: object
-            discriminator:
-              propertyName: _type
-            properties:
-              _type:
-                type: string
-                enum:
-                  - ComponentNotFoundError
-              componentId:
-                $ref: "#/components/schemas/ComponentId"
-            required:
-              - _type
-              - componentId
-    latestSnapshots:
-      description: "the latest 3 metrics"
+            $ref: "#/components/schemas/ComponentNotFoundError"
+    telemetryLatestSnapshotsResponse:
+      description: "the latest metrics for provided stream ids"
       content:
         application/json:
           schema:
-            type: object
-            discriminator:
-              propertyName: _type
-            properties:
-              _type:
-                type: string
-                enum:
-                  - TelemetryLatestSnapshotsResponse
-              streamSnaphots:
-                type: array
-                items:
-                  $ref: "#/components/schemas/LatestTelemetryStreamMetrics"
+            $ref: "#/components/schemas/TelemetryLatestSnapshotsResponse"
+
