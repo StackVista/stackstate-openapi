@@ -7,8 +7,6 @@ info:
 paths:
   /components/{componentId}/streams/latest:
     get:
-      tags:
-        - component
       summary: "Get the latests metrics"
       description: "Gets a top 3 metrics for a datapoint, always takes the last 15 minutes before provided timepoint"
       parameters:
