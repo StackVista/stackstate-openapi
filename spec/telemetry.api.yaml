@@ -1,0 +1,283 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Anomalies API
+  version: "1.0.0"
+
+components:
+  schemas:
+    TelemetryStreamPriority:
+      enum:
+        - None
+        - High
+        - Medium
+        - Low
+      type: string
+    MetricValuation:
+      enum:
+        - higher-is-better
+        - lower-is-better
+      type: string
+    StreamPriority:
+      enum:
+        - HIGH
+        - MEDIUM
+        - LOW
+      type: string
+    DownsamplingMethod:
+      enum:
+        - MEAN
+        - PERCENTILE_25
+        - PERCENTILE_50
+        - PERCENTILE_75
+        - PERCENTILE_90
+        - PERCENTILE_95
+        - PERCENTILE_98
+        - PERCENTILE_99
+        - MAX
+        - MIN
+        - SUM
+        - EVENT_COUNT
+        - SUM_NO_ZEROS
+        - EVENT_COUNT_NO_ZEROS
+      type: string
+    DataType:
+      enum:
+        - METRICS
+        - TOPOLOGY_ELEMENTS
+        - EVENTS
+      type: string
+    TelemetryQueryCondition:
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+      required:
+        - key
+        - value
+      type: object
+    TelemetryStreamDefinition:
+      type: object
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/MetricTelemetryStreamDefinition"
+        - $ref: "#/components/schemas/EventTelemetryStreamDefinition"
+      required:
+        - _type
+    EventTelemetryQuery:
+      type: object
+      discriminator:
+        propertyName: _type
+      properties:
+        _type:
+          type: string
+          enum:
+            - EventTelemetryQuery
+        conditions:
+          items:
+            $ref: "#/components/schemas/TelemetryQueryCondition"
+          type: array
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - conditions
+    TelemetryQuery:
+      type: object
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/EventTelemetryQuery"
+        - $ref: "#/components/schemas/MetricTelemetryQuery"
+      required:
+        - _type
+    TopologyMapping:
+      type: object
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/FieldMapping"
+      required:
+        - _type
+    FieldMapping:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - FieldMapping
+        eventField:
+          type: string
+        tagKey:
+          type: string
+      required:
+        - _type
+        - eventField
+        - tagKey
+    MetricTelemetryStreamDefinition:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - MetricTelemetryStreamDefinition
+        bindQuery:
+          type: string
+        dataSourceId:
+          type: integer
+          format: int64
+        description:
+          type: string
+        id:
+          type: integer
+          format: int64
+        identifier:
+          type: string
+        labels:
+          items:
+            type: string
+          type: array
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        metricValuation:
+          $ref: "#/components/schemas/MetricValuation"
+        name:
+          type: string
+        ownedBy:
+          type: string
+        priority:
+          $ref: "#/components/schemas/TelemetryStreamPriority"
+        telemetryQuery:
+          $ref: "#/components/schemas/MetricTelemetryQuery"
+        topologyMapping:
+          items:
+            $ref: "#/components/schemas/TopologyMapping"
+          type: array
+      required:
+        - _type
+        - bindQuery
+        - dataSourceId
+        - labels
+        - metricValuation
+        - name
+        - priority
+        - telemetryQuery
+        - topologyMapping
+    EventTelemetryStreamDefinition:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - EventTelemetryStreamDefinition
+        bindQuery:
+          type: string
+        dataSourceId:
+          type: integer
+          format: int64
+        description:
+          type: string
+        id:
+          type: integer
+          format: int64
+        identifier:
+          type: string
+        labels:
+          items:
+            type: string
+          type: array
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        name:
+          type: string
+        ownedBy:
+          type: string
+        priority:
+          $ref: "#/components/schemas/TelemetryStreamPriority"
+        telemetryQuery:
+          $ref: "#/components/schemas/EventTelemetryQuery"
+        topologyMapping:
+          items:
+            $ref: "#/components/schemas/TopologyMapping"
+          type: array
+      required:
+        - _type
+        - bindQuery
+        - dataSourceId
+        - labels
+        - name
+        - priority
+        - telemetryQuery
+        - topologyMapping
+    MetricTelemetryQuery:
+      type: object
+      discriminator:
+        propertyName: _type
+      properties:
+        _type:
+          type: string
+          enum:
+            - MetricTelemetryQuery
+        aggregation:
+          $ref: "#/components/schemas/DownsamplingMethod"
+        baseline:
+          $ref: "#/components/schemas/Baseline"
+        conditions:
+          items:
+            $ref: "#/components/schemas/TelemetryQueryCondition"
+          type: array
+        groupBy:
+          items:
+            type: string
+          type: array
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        metricField:
+          type: string
+      required:
+        - _type
+        - aggregation
+        - conditions
+    Baseline:
+      type: object
+      discriminator:
+        propertyName: _type
+      properties:
+        _type:
+          type: string
+          enum:
+            - Baseline
+        arguments:
+          type: array
+          items:
+            $ref: "arguments.api.yaml#/components/schemas/Argument"
+        description:
+          type: string
+        function:
+          type: integer
+          format: int64
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        name:
+          type: string
+      required:
+        - _type
+        - arguments
+        - function
+        - name

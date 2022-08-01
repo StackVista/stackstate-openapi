@@ -6,6 +6,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/GenericErrorsResponse"
+    stackElementNotFound:
+      description: "Error when handling an element which cannot be found."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/StackElementNotFound"
   schemas:
     GenericErrorsResponse:
       type: object
@@ -41,4 +47,24 @@ components:
           format: int64
       required:
         - _type
+        - message
+    StackElementNotFound:
+      type: object
+      discriminator:
+        propertyName: _type
+      properties:
+        _type:
+          type: string
+          enum:
+            - StackElementNotFound
+        objectType:
+          type: string
+        objectId:
+          type: string
+        message:
+          type: string
+      required:
+        - _type
+        - objectType
+        - objectId
         - message

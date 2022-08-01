@@ -290,10 +290,10 @@ components:
           type: integer
         conditions:
           items:
-            $ref: "#/components/schemas/TelemetryQueryCondition"
+            $ref: "telemetry.api.yaml#/components/schemas/TelemetryQueryCondition"
           type: array
         aggregationMethod:
-          $ref: "#/components/schemas/DownsamplingMethod"
+          $ref: "telemetry.api.yaml#/components/schemas/DownsamplingMethod"
         bucketSize:
           format: int64
           type: integer
@@ -307,34 +307,6 @@ components:
         - conditions
         - dataSourceId
         - queryHash
-      type: object
-
-    DownsamplingMethod:
-      enum:
-        - MEAN
-        - PERCENTILE_25
-        - PERCENTILE_50
-        - PERCENTILE_75
-        - PERCENTILE_90
-        - PERCENTILE_95
-        - PERCENTILE_98
-        - PERCENTILE_99
-        - MAX
-        - MIN
-        - SUM
-        - EVENT_COUNT
-        - SUM_NO_ZEROS
-        - EVENT_COUNT_NO_ZEROS
-      type: string
-
-    TelemetryQueryCondition:
-      properties:
-        key:
-          type: string
-        value:
-          type: string
-      required:
-        - key
       type: object
 
     Reference:

@@ -5,24 +5,196 @@ info:
   version: "1.0.0"
 
 paths:
+  /components/{componentId}/streams:
+    get:
+      tags:
+        - component
+      summary: "List all streams from the component"
+      description: "List all streams from the component"
+      operationId: getComponentStreams
+      parameters:
+        - $ref: "#/components/parameters/componentId"
+        - $ref: "#/components/parameters/queryTime"
+      responses:
+        "200": 
+          $ref: "stack_element.api.yaml#/components/responses/telemetryStreamDefinitionCollection"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    post:
+      tags:
+        - component
+      summary: "Create the Stream on the component"
+      description: "Adds a DataStream/TelemetryStreamDefinition on the component"
+      operationId: createComponentStreams
+      parameters:
+        - $ref: "#/components/parameters/componentId"
+      requestBody:
+        $ref: "stack_element.api.yaml#/components/requestBodies/dataStream"
+      responses:
+        "201": 
+          $ref: "stack_element.api.yaml#/components/responses/telemetryStreamDefinition"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /components/{componentId}/streams/latest:
     get:
       tags:
         - component
       summary: "Get the latests metrics"
       description: "Gets a top 3 metrics for a datapoint, always takes the last 15 minutes before provided timepoint"
+      operationId: getLatestMetrics
       parameters:
         - $ref: '#/components/parameters/componentId'
         - $ref: '#/components/parameters/queryTime'
         - $ref: '#/components/parameters/streamIds'
       responses:
         "200":
-          $ref: '#/components/responses/telemetryLatestSnapshotsResponse'
+          $ref: '#/components/responses/telemetryLatestSnapshots'
         "404":
           $ref: '#/components/responses/componentNotFoundError'
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-
+  /components/{componentId}/streams/{streamId}:
+    get:
+      tags:
+        - component
+      summary: "Get the stream from the component"
+      description: "Get a Specific stream from the component"
+      operationId: getComponentStream
+      parameters:
+        - $ref: "#/components/parameters/componentId"
+        - $ref: "#/components/parameters/queryTime"
+        - $ref: "#/components/parameters/streamId"
+      responses:
+        "200": 
+          $ref: "stack_element.api.yaml#/components/responses/telemetryStreamDefinition"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    put:
+      tags:
+        - component
+      summary: "Update the stream on the component"
+      description: "Update a Specific stream from the component"
+      operationId: updateComponentStream
+      parameters:
+        - $ref: "#/components/parameters/componentId"
+        - $ref: "#/components/parameters/streamId"
+      requestBody:
+        $ref: "stack_element.api.yaml#/components/requestBodies/dataStream"
+      responses:
+        "200": 
+          $ref: "stack_element.api.yaml#/components/responses/telemetryStreamDefinition"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    delete:
+      tags:
+        - component
+      summary: "Delete the stream from the component"
+      description: "Delete a Specific stream from the component"
+      operationId: deleteComponentStream
+      parameters:
+        - $ref: "#/components/parameters/componentId"
+        - $ref: "#/components/parameters/streamId"
+      responses:
+        "204": 
+          description: "Return ok"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /components/{componentId}/checks:
+    get:
+      tags:
+        - component
+      summary: "List all checks from the component"
+      description: "List all checks from the component"
+      operationId: "getComponentChecks"
+      parameters:
+        - $ref: "#/components/parameters/componentId"
+        - $ref: "#/components/parameters/queryTime"
+      responses:
+        "200": 
+          $ref: "stack_element.api.yaml#/components/responses/elementCheckCollection"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    post:
+      tags:
+        - component
+      summary: "Create the Checks on the component"
+      description: "Adds a Check on the component"
+      operationId: "createComponentCheck"
+      parameters:
+        - $ref: "#/components/parameters/componentId"
+      requestBody:
+        $ref: "stack_element.api.yaml#/components/requestBodies/elementCheck"
+      responses:
+        "201": 
+          $ref: "stack_element.api.yaml#/components/responses/elementCheck"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /components/{componentId}/checks/{checkId}:
+    get:
+      tags:
+        - component
+      summary: "Get the check from the component"
+      description: "Get a Specific check from the component"
+      operationId: "getComponentCheck"
+      parameters:
+        - $ref: "#/components/parameters/componentId"
+        - $ref: "#/components/parameters/queryTime"
+        - $ref: "#/components/parameters/checkId"
+      responses:
+        "200": 
+          $ref: "stack_element.api.yaml#/components/responses/elementCheck"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    put:
+      tags:
+        - component
+      summary: "Update the check on the component"
+      description: "Update a Specific check from the component"
+      operationId: "updateComponentCheck"
+      parameters:
+        - $ref: "#/components/parameters/componentId"
+        - $ref: "#/components/parameters/checkId"
+      requestBody:
+        $ref: "stack_element.api.yaml#/components/requestBodies/elementCheck"
+      responses:
+        "200": 
+          $ref: "stack_element.api.yaml#/components/responses/elementCheck"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    delete:
+      tags:
+        - component
+      summary: "Delete the check from the component"
+      description: "Delete a Specific check from the component"
+      operationId: "deleteComponentCheck"
+      parameters:
+        - $ref: "#/components/parameters/componentId"
+        - $ref: "#/components/parameters/checkId"
+      responses:
+        "204": 
+          description: "Return ok"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
   parameters:
     componentId:
@@ -32,12 +204,26 @@ components:
       schema:
         $ref: '#/components/schemas/ComponentId'
       description: "The Identifier of a component"
+    streamId:
+      in: path
+      name: streamId
+      required: true
+      schema:
+        $ref: 'stack_element.api.yaml#/components/schemas/StreamId'
+      description: "The Identifier of a stream"
+    checkId:
+      in: path
+      name: checkId
+      required: true
+      schema:
+        $ref: 'stack_element.api.yaml#/components/schemas/CheckId'
+      description: "The Identifier of a Check"
     queryTime:
       in: query
       name: queryTime
       required: true
       schema:
-        $ref: '#/components/schemas/QueryTime'
+        $ref: 'stack_element.api.yaml#/components/schemas/QueryTime'
       description: "A Data point for a query either point from timeline or 'now' if livemode"
     streamIds:
       in: query
@@ -46,13 +232,23 @@ components:
       schema:
         $ref: '#/components/schemas/StreamIds'
       description: "Ids of streams to query for"
+  responses:
+    componentNotFoundError:
+      description: "Component not found error"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ComponentNotFoundError"
+    telemetryLatestSnapshots:
+      description: "the latest metrics for provided stream ids"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TelemetryLatestSnapshotsResponse"
   schemas:
     ComponentId:
       type: integer
       format: int64
-    QueryTime:
-      type: integer
-      format: instant
     StreamIds:
       type: array
       items:
@@ -69,6 +265,22 @@ components:
       required:
         - timestamp
         - value
+    TelemetryLatestSnapshotsResponse:
+      type: object
+      discriminator:
+        propertyName: _type
+      properties:
+        _type:
+          type: string
+          enum:
+            - TelemetryLatestSnapshotsResponse
+        streamSnapshots:
+          type: array
+          items:
+            $ref: "#/components/schemas/LatestTelemetryStreamMetrics"
+      required:
+        - _type
+        - streamSnapshots
     LatestTelemetryStreamMetrics:
       type: object
       discriminator:
@@ -86,22 +298,6 @@ components:
       required:
         - _type
         - streamId
-    TelemetryLatestSnapshotsResponse:
-      type: object
-      discriminator:
-        propertyName: _type
-      properties:
-        _type:
-          type: string
-          enum:
-            - TelemetryLatestSnapshotsResponse
-        streamSnapshots:
-          type: array
-          items:
-            $ref: "#/components/schemas/LatestTelemetryStreamMetrics"
-      required:
-        - _type
-        - streamSnapshots
     ComponentNotFoundError:
       type: object
       discriminator:
@@ -116,18 +312,3 @@ components:
       required:
         - _type
         - componentId
-
-  responses:
-    componentNotFoundError:
-      description: "Component not found error"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ComponentNotFoundError"
-    telemetryLatestSnapshotsResponse:
-      description: "the latest metrics for provided stream ids"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/TelemetryLatestSnapshotsResponse"
-
