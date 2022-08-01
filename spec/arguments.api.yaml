@@ -1,0 +1,638 @@
+openapi: 3.0.3
+info:
+  title: Components API
+  version: "1.0.0"
+
+components:
+  schemas:
+    AnomalyDirection:
+      enum:
+        - RISE
+        - DROP
+        - RUNNING
+        - ANY
+      type: string
+    StsEventStreamFilter:
+      enum:
+        - STATE_CHANGES_OR_CREATED_DELETED
+        - STATE_CHANGES_OR_CREATED_UPDATED_DELETED
+        - LIFE_CYCLE_EVENTS
+        - STATE_CHANGES
+        - HEALTH_STATE_CHANGES
+        - PROPAGATED_HEALTH_STATE_CHANGES
+        - VIEW_HEALTH_STATE_CHANGES
+        - ANOMALY_EVENT
+        - PROBLEM_EVENT
+      type: string
+    RunStateValue:
+      enum:
+        - UNKNOWN
+        - STARTING
+        - RUNNING
+        - STOPPING
+        - STOPPED
+        - DEPLOYED
+        - DEPLOYING
+      type: string
+    PropagatedHealthStateValue:
+      enum:
+        - UNKNOWN
+        - PROPAGATION_ERROR
+        - DEVIATING
+        - FLAPPING
+        - CRITICAL
+      type: string
+    WindowingMethod:
+      enum:
+        - SLIDING
+        - BATCHING
+      type: string
+    Argument:
+      type: object
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/ArgumentAnomalyDirectionVal"
+        - $ref: "#/components/schemas/ArgumentBooleanVal"
+        - $ref: "#/components/schemas/ArgumentComponentTypeRef"
+        - $ref: "#/components/schemas/ArgumentBaselineMetricStreamRef"
+        - $ref: "#/components/schemas/ArgumentRelationTypeRef"
+        - $ref: "#/components/schemas/ArgumentExtTopoRelation"
+        - $ref: "#/components/schemas/ArgumentStsEventStreamVal"
+        - $ref: "#/components/schemas/ArgumentMetricStreamId"
+        - $ref: "#/components/schemas/ArgumentQueryViewRef"
+        - $ref: "#/components/schemas/ArgumentRunStateVal"
+        - $ref: "#/components/schemas/ArgumentLongVal"
+        - $ref: "#/components/schemas/ArgumentStructTypeVal"
+        - $ref: "#/components/schemas/ArgumentDoubleVal"
+        - $ref: "#/components/schemas/ArgumentStateVal"
+        - $ref: "#/components/schemas/ArgumentNodeIdVal"
+        - $ref: "#/components/schemas/ArgumentExtTopoComponent"
+        - $ref: "#/components/schemas/ArgumentEventStreamRef"
+        - $ref: "#/components/schemas/ArgumentPropagatedHealthStateVal"
+        - $ref: "#/components/schemas/ArgumentSimpleTrainingPeriodicityVal"
+        - $ref: "#/components/schemas/ArgumentDurationVal"
+        - $ref: "#/components/schemas/ArgumentStringVal"
+        - $ref: "#/components/schemas/ArgumentMetricStreamRef"
+        - $ref: "#/components/schemas/ArgumentScriptMetricQueryVal"
+      required:
+        - _type
+    ArgumentStringVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentStringVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          type: string
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentDurationVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentDurationVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentSimpleTrainingPeriodicityVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentSimpleTrainingPeriodicityVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          $ref: "#/components/schemas/SimpleTrainingPeriodicity"
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentPropagatedHealthStateVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentPropagatedHealthStateVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          $ref: "#/components/schemas/PropagatedHealthStateValue"
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentEventStreamRef:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentEventStreamRef
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        stream:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - parameter
+        - stream
+    ArgumentExtTopoComponent:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentExtTopoComponent
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        extTopoElement:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - parameter
+        - extTopoElement
+    ArgumentNodeIdVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentNodeIdVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentStateVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentStateVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          $ref: "checks.api.yaml#/components/schemas/HealthStateValue"
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentDoubleVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentDoubleVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          type: number
+          format: double
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentStructTypeVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentStructTypeVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          type: string
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentLongVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentLongVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentRunStateVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentRunStateVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          $ref: "#/components/schemas/RunStateValue"
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentQueryViewRef:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentQueryViewRef
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        queryView:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - parameter
+        - queryView
+    ArgumentMetricStreamId:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentMetricStreamId
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        stream:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - parameter
+        - stream
+    ArgumentStsEventStreamVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentStsEventStreamVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        filter:
+          $ref: "#/components/schemas/StsEventStreamFilter"
+      required:
+        - _type
+        - parameter
+        - filter
+    ArgumentExtTopoRelation:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentExtTopoRelation
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        extTopoElement:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - parameter
+        - extTopoElement
+    ArgumentRelationTypeRef:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentRelationTypeRef
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        relationType:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - parameter
+        - relationType
+    ArgumentBaselineMetricStreamRef:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentBaselineMetricStreamRef
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        stream:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - parameter
+        - stream
+    ArgumentBooleanVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentBooleanVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          type: boolean
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentAnomalyDirectionVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentAnomalyDirectionVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          $ref: "#/components/schemas/AnomalyDirection"
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentExtTopologyElement:
+      type: object
+      oneOf:
+        - $ref: "#/components/schemas/ArgumentExtTopoRelation"
+        - $ref: "#/components/schemas/ArgumentExtTopoComponent"
+      required:
+        - _type
+    ArgumentComponentTypeRef:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentComponentTypeRef
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        componentType:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - parameter
+        - componentType
+    ArgumentMetricStreamRef:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentMetricStreamRef
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        maxWindow:
+          type: integer
+          format: int64
+        stream:
+          type: integer
+          format: int64
+        downsamplingMethod:
+          $ref: "telemetry.api.yaml#/components/schemas/DownsamplingMethod"
+        windowingMethod:
+          $ref: "#/components/schemas/WindowingMethod"
+      required:
+        - _type
+        - parameter
+        - stream
+    ArgumentScriptMetricQueryVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentScriptMetricQueryVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        script:
+          type: string
+      required:
+        - _type
+        - function
+        - parameter
+        - script
+    SimpleTrainingPeriodicity:
+      type: object
+      discriminator:
+        propertyName: _type
+      properties:
+        _type:
+          type: string
+          enum:
+            - SimpleTrainingPeriodicity
+        id:
+          type: integer
+          format: int64
+        fundamentalPeriod:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        trainingWindowPeriods:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - fundamentalPeriod
+        - trainingWindowPeriods

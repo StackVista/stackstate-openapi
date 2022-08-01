@@ -70,7 +70,15 @@ paths:
   /security/tokens: { $ref: "service_token.api.yaml#/paths/%2Fsecurity%2Ftokens" }
   /security/tokens/{serviceTokenId}: { $ref: "service_token.api.yaml#/paths/%2Fsecurity%2Ftokens%2F%7BserviceTokenId%7D" }
   /anomalies/export: { $ref: "anomalies.api.yaml#/paths/%2Fanomalies%2Fexport" }
+  /components/{componentId}/streams: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentId%7D%2Fstreams" }
+  /components/{componentId}/streams/{streamId}: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentId%7D%2Fstreams%2F%7BstreamId%7D" }
   /components/{componentId}/streams/latest: { $ref: 'components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentId%7D%2Fstreams%2Flatest' }
+  /components/{componentId}/checks: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentId%7D%2Fchecks" }
+  /components/{componentId}/checks/{checkId}: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentId%7D%2Fchecks%2F%7BcheckId%7D" }
+  /relations/{relationId}/streams: { $ref: "relations.api.yaml#/paths/%2Frelations%2F%7BrelationId%7D%2Fstreams" }
+  /relations/{relationId}/streams/{streamId}: { $ref: "relations.api.yaml#/paths/%2Frelations%2F%7BrelationId%7D%2Fstreams%2F%7BstreamId%7D" }
+  /relations/{relationId}/checks: { $ref: "relations.api.yaml#/paths/%2Frelations%2F%7BrelationId%7D%2Fchecks" }
+  /relations/{relationId}/checks/{checkId}: { $ref: "relations.api.yaml#/paths/%2Frelations%2F%7BrelationId%7D%2Fchecks%2F%7BcheckId%7D" }
 security:
   - ApiToken: []
   - ServiceToken: []
