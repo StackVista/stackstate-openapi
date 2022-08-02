@@ -18,7 +18,8 @@ externalDocs:
   url: "https://docs.stackstate.com/"
 paths:
   /import: { $ref: "import.xapi.yaml#/paths/%2Fimport" }
-  /export: { $ref: "export.xapi.yaml#/paths/%2Fexport" }
+  /export: { $ref: "export.api.yaml#/paths/%2Fexport" }
+  /export/{typeName}/{nodeId}: {$ref: "export.api.yaml#/paths/%2Fexport%2F%7BtypeName%7D%2F%7BnodeId%7D" }
   /node: { $ref: "node.xapi.yaml#/paths/%2Fnode" }
   /node/{nodeType}: { $ref: "node.xapi.yaml#/paths/%2Fnode%2F%7BnodeType%7D" }
   /stackpack: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack" }

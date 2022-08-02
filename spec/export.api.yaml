@@ -1,0 +1,111 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Export API
+  version: "1.0.0"
+paths:
+  /export:
+    post:
+      tags:
+        - export
+      summary: "Export settings"
+      description: "Export StackState Templated JSON (STJ) setting nodes."
+      operationId: exportSettings
+      parameters:
+        - $ref: "#/components/parameters/timeoutSeconds"
+        - $ref: "#/components/parameters/onlyByIdentifier"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/export"
+      responses:
+        "200":
+          description: "Full description of all nodes."
+          content:
+            text/plain:
+              schema:
+                type: string
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
+  /export/{typeName}/{nodeId}:
+    post:
+      tags:
+        - export
+      summary: "Export Settings for single Node"
+      description: "Export Stackstate Templated JSON (STJ) settings for a single node."
+      operationId: exportSingleNodeSettings
+      parameters:
+        - $ref: "#/components/parameters/typeName"
+        - $ref: "#/components/parameters/nodeId"
+        - $ref: "#/components/parameters/timeoutSeconds"
+        - $ref: "#/components/parameters/onlyByIdentifier"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: string
+      responses:
+        "200":
+          description: "A description of single node."
+          content:
+            text/plain:
+              schema:
+                type: string
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
+components:
+  parameters:
+    typeName:
+      in: path
+      name: typeName
+      required: true
+      schema:
+        $ref: "#/components/schemas/TypeName"
+    nodeId:
+      in: path
+      name: nodeId
+      required: true
+      schema:
+        $ref: "#/components/schemas/NodeId"
+    timeoutSeconds:
+      in: query
+      name: timeoutSeconds
+      schema:
+        type: integer
+        format: int64
+    onlyByIdentifier:
+      in: query
+      name: onlyByIdentifier
+      schema:
+        type: boolean
+  schemas:
+    TypeName:
+      type: string
+    NodeId:
+      type: integer
+      format: int64
+    export:
+      type: object
+      properties:
+        nodesWithIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        allNodesOfTypes:
+          type: array
+          items:
+            type: string
+        namespace:
+          type: string
+        allowReferences:
+          type: array
+          items:
+            type: string
