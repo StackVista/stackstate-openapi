@@ -27,6 +27,8 @@ paths:
             text/plain:
               schema:
                 type: string
+        "400":
+          $ref: "#/components/responses/invalidExportNamespaceError"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 
@@ -57,10 +59,19 @@ paths:
             text/plain:
               schema:
                 type: string
+        "400":
+          $ref: "#/components/responses/invalidExportNamespaceError"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 
 components:
+  responses:
+    invalidExportNamespaceError:
+      description: "Invalid namespace for exported node(s)"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InvalidExportNamespaceError"
   parameters:
     typeName:
       in: path
@@ -109,3 +120,17 @@ components:
           type: array
           items:
             type: string
+    InvalidExportNamespaceError:
+      type: object
+      discriminator:
+        propertyName: _type
+      properties:
+        _type:
+          type: string
+          enum:
+            - InvalidNamespaceError
+        message:
+          type: string
+      required:
+        - _type
+        - message
