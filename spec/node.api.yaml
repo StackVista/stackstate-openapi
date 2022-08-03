@@ -1,0 +1,337 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Node API
+  version: "1.0.0"
+paths:
+  /node:
+    get:
+      tags:
+        - node
+      summary: "Node API"
+      description: "list all node types"
+      operationId: nodeListTypes
+      responses:
+        "200":
+          description: "listing of all node types"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NodeTypeInfoContainer"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /node/suggestions:
+    get:
+      tags:
+        - node
+      operationId: getSuggestions
+      summary: "Node list suggestions"
+      description: "Response with node list sugestions"
+      parameters:
+        - $ref: "#/components/parameters/queryTime"
+        - $ref: "#/components/parameters/prefix"
+        - $ref: "#/components/parameters/limit"
+      responses:
+        "200":
+          $ref: "#/components/responses/nodeInfoList"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /node/{nodeType}:
+    get:
+      tags:
+        - node
+      parameters:
+        - $ref: "#/components/parameters/nodeType"
+        - $ref: "#/components/parameters/queryTime"
+        - $ref: "#/components/parameters/fullNode"
+        - $ref: "#/components/parameters/manual"
+        - $ref: "#/components/parameters/namespace"
+        - $ref: "#/components/parameters/ownedBy"
+      summary: "Node type API"
+      description: "list all nodes of that type"
+      operationId: getNodesOfType
+      responses:
+        "200":
+          $ref: "#/components/responses/nodeOrInfoList"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    post:
+      tags:
+        - node
+      operationId: persistNodes
+      parameters:
+        - $ref: "#/components/parameters/force"
+      description: "persist a list of nodes"
+      requestBody:
+        $ref: "#/components/requestBodies/nodes"
+      responses:
+        "200":
+          description: "a list of nodes"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Nodes"
+        "400":
+          $ref: "#/components/responses/apiExceptionError"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /node/{nodeType}/{nodeId}:
+    get:
+      tags:
+        - node
+      operationId: getNodeById
+      description: "get a node by nodeId"
+      parameters:
+        - $ref: "#/components/parameters/nodeType"
+        - $ref: "#/components/parameters/nodeId"
+        - $ref: "#/components/parameters/queryTime"
+      responses:
+        "200":
+          description: "a node with provided ID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Node"
+        "400":
+          $ref: "#/components/responses/apiExceptionError"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    delete:
+      tags:
+        - node
+      operationId: deleteNode
+      description: "delete a node with provided ID"
+      parameters:
+        - $ref: "#/components/parameters/force"
+      responses:
+        "200":
+          description: OK
+        "400":
+          $ref: "#/components/responses/apiExceptionError"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /node/{nodeType}/{nodeId}/unlock:
+    post:
+      operationId: unlockNode
+      tags:
+        - node
+      description: "Unlock a node"
+      responses:
+        "200":
+          description: "A unlocked Node"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Node"
+        "400":
+          $ref: "#/components/responses/apiExceptionError"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
+
+components:
+  requestBodies:
+    nodes:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NodesReq"
+  responses:
+    apiExceptionError:
+      description: "Api Exception"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NodeApiError"
+    nodeInfoList:
+      description: "a list of nodes"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/NodeInfo"
+    nodeOrInfoList:
+      description: "a list of nodes or node info items"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NodeOrNodeInfo"
+  parameters:
+    queryTime:
+      name: queryTime
+      in: query
+      required: false
+      schema:
+        type: integer
+        format: int64
+    prefix:
+      name: prefix
+      in: query
+      required: true
+      schema:
+        type: string
+    limit:
+      name: limit
+      in: query
+      required: true
+      schema:
+        type: integer
+        format: int64
+    nodeType:
+      name: nodeType
+      in: path
+      required: true
+      schema:
+        type: string
+    nodeId:
+      name: nodeId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+    fullNode:
+      name: fullNode
+      in: query
+      required: false
+      schema:
+        type: boolean
+    manual:
+      name: manual
+      in: query
+      required: false
+      schema:
+        type: boolean
+    namespace:
+      name: namespace
+      in: query
+      required: false
+      schema:
+        type: string
+    ownedBy:
+      name: ownedBy
+      in: query
+      required: false
+      schema:
+        type: string
+    force:
+      name: force
+      in: query
+      required: false
+      schema:
+        type: boolean
+  schemas:
+    NodeTypeInfo:
+      type: object
+      properties:
+        typeName:
+          type: string
+        description:
+          type: string
+      required:
+        - typeName
+        - description
+    NodeTypeInfoContainer:
+      type: object
+      properties:
+        nodeTypes:
+          type: array
+          items:
+            $ref: "#/components/schemas/NodeTypeInfo"
+      required:
+        - nodeTypes
+    Node:
+      type: object
+      discriminator:
+        propertyName: _type
+      properties:
+        _type:
+          type: string
+          enum:
+            - Node
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+      required:
+        - _type
+    NodeRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+    Nodes:
+      type: array
+      items:
+        $ref: "#/components/schemas/Node"
+    NodesReq:
+      type: array
+      items:
+        $ref: "#/components/schemas/NodeRequest"
+    NodeInfo:
+      type: object
+      discriminator:
+        propertyName: _type
+      properties:
+        _type:
+          type: string
+          enum:
+            - NodeInfo
+        typeName:
+          type: string
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        identifier:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        ownedBy:
+          type: string
+        manual:
+          type: boolean
+        isSettingsNode:
+          type: boolean
+      required:
+        - typeName
+        - manual
+        - isSettingsNode
+        - _type
+    NodeOrNodeInfo:
+      type: array
+      items:
+        oneOf:
+          - $ref: "#/components/schemas/Node"
+          - $ref: "#/components/schemas/NodeInfo"
+        discriminator:
+          propertyName: _type
+    NodeApiError:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - NodeApiError
+        message:
+          type: string
+        errorCode:
+          type: integer
+          format: int64
+      required:
+        - message
+        - errorCode
+        - _type
+
