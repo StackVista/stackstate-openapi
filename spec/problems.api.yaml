@@ -1,0 +1,68 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Components API
+  version: "1.0.0"
+
+paths:
+  /problems/{problemId}/contributing-events:
+    get:
+      tags:
+        - problem
+        - event
+      summary: "List possible events which led to the problem"
+      description: "Resulting events are ordered by likeness to be an actual problem contributor"
+      operationId: getProblemContributingEvents
+      parameters:
+        - $ref: "#/components/parameters/problemId"
+        - $ref: "#/components/parameters/topologyTime"
+        - $ref: "#/components/parameters/limit"
+      responses:
+        "200":
+          $ref: "#/components/responses/ContributingEventsCollection"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
+components:
+  parameters:
+    problemId:
+      name: problemId
+      description: The problem id number.
+      in: path
+      required: true
+      schema: { $ref: "#/components/schemas/ProblemId" }
+    topologyTime:
+      name: topologyTime
+      in: query
+      description: "A timestamp at which resources will be queried. If not given the resources are quired for current time."
+      required: false
+      schema: { $ref: "#/components/schemas/Instant" }
+    limit:
+      name: limit
+      in: query
+      required: false
+      description: "Maximum number of resources to be returned in result."
+      schema: { $ref: "#/components/schemas/Limit" }
+  responses:
+    ContributingEventsCollection:
+      description: "Collection of the problem contributing events. Sorted from the most probable contributing event to the least probable one"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "events.api.yaml#/components/schemas/TopologyEvent"
+  schemas:
+    ProblemId:
+      type: integer
+      format: int64
+    Instant:
+      type: integer
+      format: instant
+    Limit:
+      type: integer
+      format: int32
+      minimum: 1
+      maximum: 20

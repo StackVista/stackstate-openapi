@@ -79,6 +79,7 @@ paths:
   /relations/{relationId}/streams/{streamId}: { $ref: "relations.api.yaml#/paths/%2Frelations%2F%7BrelationId%7D%2Fstreams%2F%7BstreamId%7D" }
   /relations/{relationId}/checks: { $ref: "relations.api.yaml#/paths/%2Frelations%2F%7BrelationId%7D%2Fchecks" }
   /relations/{relationId}/checks/{checkId}: { $ref: "relations.api.yaml#/paths/%2Frelations%2F%7BrelationId%7D%2Fchecks%2F%7BcheckId%7D" }
+  /problems/{problemId}/contributing-events: { $ref: "problems.api.yaml#/paths/%2Fproblems%2F%7BproblemId%7D%2Fcontributing-events" }
 security:
   - ApiToken: []
   - ServiceToken: []
