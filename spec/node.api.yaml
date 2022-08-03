@@ -8,7 +8,7 @@ paths:
     get:
       tags:
         - node
-      summary: "Node API"
+      summary: "List of node types"
       description: "list all node types"
       operationId: nodeListTypes
       responses:
@@ -61,7 +61,8 @@ paths:
       operationId: persistNodes
       parameters:
         - $ref: "#/components/parameters/force"
-      description: "persist a list of nodes"
+      description: "Persist a list of nodes"
+      summary: "Persist a list of nodes."
       requestBody:
         $ref: "#/components/requestBodies/nodes"
       responses:
@@ -81,6 +82,7 @@ paths:
         - node
       operationId: getNodeById
       description: "get a node by nodeId"
+      summary: "Get a node by nodeId"
       parameters:
         - $ref: "#/components/parameters/nodeType"
         - $ref: "#/components/parameters/nodeId"
@@ -101,6 +103,7 @@ paths:
         - node
       operationId: deleteNode
       description: "delete a node with provided ID"
+      summary: "Delete a node with provided nodeId"
       parameters:
         - $ref: "#/components/parameters/nodeType"
         - $ref: "#/components/parameters/nodeId"
@@ -118,6 +121,7 @@ paths:
       tags:
         - node
       description: "Unlock a node"
+      summary: "Unlock a node"
       parameters:
         - $ref: "#/components/parameters/nodeType"
         - $ref: "#/components/parameters/nodeId"
