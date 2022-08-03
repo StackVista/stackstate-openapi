@@ -19,6 +19,8 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/ContributingEventsCollection"
+        "400":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "404":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound"
         "500":
