@@ -102,6 +102,8 @@ paths:
       operationId: deleteNode
       description: "delete a node with provided ID"
       parameters:
+        - $ref: "#/components/parameters/nodeType"
+        - $ref: "#/components/parameters/nodeId"
         - $ref: "#/components/parameters/force"
       responses:
         "200":
@@ -116,6 +118,9 @@ paths:
       tags:
         - node
       description: "Unlock a node"
+      parameters:
+        - $ref: "#/components/parameters/nodeType"
+        - $ref: "#/components/parameters/nodeId"
       responses:
         "200":
           description: "A unlocked Node"
