@@ -1,7 +1,7 @@
 # OpenApi header is included in this file to support code highlighting in VSCode
 openapi: 3.0.3
 info:
-  title: Components API
+  title: Problems API
   version: "1.0.0"
 
 paths:
@@ -9,7 +9,6 @@ paths:
     get:
       tags:
         - problem
-        - event
       summary: "List possible events which led to the problem"
       description: "Resulting events are ordered by likeness to be an actual problem contributor"
       operationId: getProblemContributingEvents
