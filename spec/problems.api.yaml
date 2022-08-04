@@ -145,10 +145,10 @@ components:
             - TopologyTimeOutOfRange
         message:
           type: string
-        topologyTime:
+        topologyTimeMs:
           type: integer
           format: instant
-        lowerBound:
+        lowerBoundMs:
           type: integer
           format: instant
         upperBound:
@@ -157,8 +157,8 @@ components:
         - _type
         - message
         - topologyTime
-        - lowerBound
-        - upperBound
+        - lowerBoundMs
+        - upperBoundMs
     GetCausingEventsNotFound:
       oneOf:
         - $ref: "#/components/schemas/ProblemNotFound"
@@ -179,7 +179,7 @@ components:
         problemId:
           type: integer
           format: int64
-        requestTime:
+        requestTimeMs:
           type: integer
           format: instant
       required:
@@ -196,14 +196,14 @@ components:
             - DataUnavailable
         message:
           type: string
-        requestTime:
+        requestTimeMs:
           type: integer
           format: instant
-        availableSince:
+        availableSinceMs:
           type: integer
           format: instant
       required:
         - _type
         - message
-        - requestTime
-        - availableSince
+        - requestTimeMs
+        - availableSinceMs
