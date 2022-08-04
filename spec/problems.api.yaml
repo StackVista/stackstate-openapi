@@ -18,11 +18,11 @@ paths:
         - $ref: "#/components/parameters/limit"
       responses:
         "200":
-          $ref: "#/components/responses/CausingEvents"
+          $ref: "#/components/responses/GetCausingEventsResult"
         "400":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+          $ref: "#/components/responses/GetCausingEventsBadRequest"
         "404":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound"
+          $ref: "#/components/responses/GetCausingEventsNotFound"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 
@@ -47,11 +47,21 @@ components:
       description: "Maximum number of resources to be returned in result."
       schema: { $ref: "#/components/schemas/Limit" }
   responses:
-    CausingEvents:
-      description: "Collection of the problem causing events. Sorted from the most probable contributing event to the least probable one"
+    GetCausingEventsResult:
+      description: Get events causing a problem successfull result
       content:
         application/json:
-          schema: { $ref: "#/components/schemas/CausingEvents" }
+          schema: { $ref: "#/components/schemas/GetCausingEventsResult" }
+    GetCausingEventsBadRequest:
+      description: Events causing a problem can not be got because of the bad request
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/GetCausingEventsBadRequest" }
+    GetCausingEventsNotFound:
+      description: Events causing a problem can not be got because some elements cannot be found
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/GetCausingEventsNotFound" }
   schemas:
     ProblemId:
       type: integer
@@ -63,12 +73,137 @@ components:
       type: integer
       format: int32
       minimum: 1
-    CausingEvents:
+    GetCausingEventsResult:
+      oneOf:
+        - $ref: "#/components/schemas/CausingEventsResult"
+        - $ref: "#/components/schemas/TooManyTopologyResults"
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+    CausingEventsResult:
       type: object
       properties:
+        _type:
+          type: string
+          enum:
+            - CausingEventsResult
         items:
           type: array
           items:
             $ref: "events.api.yaml#/components/schemas/TopologyEvent"
       required:
+        - _type
         - items
+    TooManyTopologyResults:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - TooManyTopologyResults
+      required:
+        - _type
+    GetCausingEventsBadRequest:
+      oneOf:
+        - $ref: "#/components/schemas/LimitOutOfRange"
+        - $ref: "#/components/schemas/TopologyTimeOutOfRange"
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+    LimitOutOfRange:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - LimitOutOfRange
+        message:
+          type: string
+        limit:
+          type: integer
+          format: int32
+        lowerBound:
+          type: integer
+          format: int32
+        upperBound:
+          type: integer
+          format: int32
+      required:
+        - _type
+        - message
+        - limit
+        - lowerBound
+        - upperBound
+    TopologyTimeOutOfRange:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - TopologyTimeOutOfRange
+        message:
+          type: string
+        topologyTime:
+          type: integer
+          format: instant
+        lowerBound:
+          type: integer
+          format: instant
+        upperBound:
+          type: string
+      required:
+        - _type
+        - message
+        - topologyTime
+        - lowerBound
+        - upperBound
+    GetCausingEventsNotFound:
+      oneOf:
+        - $ref: "#/components/schemas/ProblemNotFound"
+        - $ref: "#/components/schemas/DataUnavailable"
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+    ProblemNotFound:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ProblemNotFound
+        message:
+          type: string
+        problemId:
+          type: integer
+          format: int64
+        requestTime:
+          type: integer
+          format: instant
+      required:
+        - _type
+        - message
+        - problemId
+        - requestTimeMs
+    DataUnavailable:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - DataUnavailable
+        message:
+          type: string
+        requestTime:
+          type: integer
+          format: instant
+        availableSince:
+          type: integer
+          format: instant
+      required:
+        - _type
+        - message
+        - requestTime
+        - availableSince
