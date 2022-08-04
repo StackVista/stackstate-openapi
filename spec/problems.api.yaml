@@ -5,20 +5,20 @@ info:
   version: "1.0.0"
 
 paths:
-  /problems/{problemId}/contributing-events:
+  /problems/{problemId}/causing-events:
     get:
       tags:
         - problem
       summary: "List possible events which led to the problem"
-      description: "Resulting events are ordered by likeness to be an actual problem contributor"
-      operationId: getProblemContributingEvents
+      description: "Resulting events are ordered by likeness to be an actual problem cause"
+      operationId: getProblemCausingEvents
       parameters:
         - $ref: "#/components/parameters/problemId"
         - $ref: "#/components/parameters/topologyTime"
         - $ref: "#/components/parameters/limit"
       responses:
         "200":
-          $ref: "#/components/responses/ContributingEventsCollection"
+          $ref: "#/components/responses/CausingEvents"
         "400":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "404":
@@ -47,14 +47,11 @@ components:
       description: "Maximum number of resources to be returned in result."
       schema: { $ref: "#/components/schemas/Limit" }
   responses:
-    ContributingEventsCollection:
-      description: "Collection of the problem contributing events. Sorted from the most probable contributing event to the least probable one"
+    CausingEvents:
+      description: "Collection of the problem causing events. Sorted from the most probable contributing event to the least probable one"
       content:
         application/json:
-          schema:
-            type: array
-            items:
-              $ref: "events.api.yaml#/components/schemas/TopologyEvent"
+          schema: { $ref: "#/components/schemas/CausingEvents" }
   schemas:
     ProblemId:
       type: integer
@@ -66,4 +63,12 @@ components:
       type: integer
       format: int32
       minimum: 1
-      maximum: 25
+    CausingEvents:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "events.api.yaml#/components/schemas/TopologyEvent"
+      required:
+        - items
