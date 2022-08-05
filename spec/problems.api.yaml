@@ -156,9 +156,9 @@ components:
       required:
         - _type
         - message
-        - topologyTime
+        - topologyTimeMs
         - lowerBoundMs
-        - upperBoundMs
+        - upperBound
     GetCausingEventsNotFound:
       oneOf:
         - $ref: "#/components/schemas/ProblemNotFound"
