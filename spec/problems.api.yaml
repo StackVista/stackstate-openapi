@@ -25,6 +25,8 @@ paths:
           $ref: "#/components/responses/GetCausingEventsNotFound"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/GetCausingEventsServiceUnaivailable"
 
 components:
   parameters:
@@ -62,6 +64,11 @@ components:
       content:
         application/json:
           schema: { $ref: "#/components/schemas/GetCausingEventsNotFound" }
+    GetCausingEventsServiceUnaivailable:
+      description: Events causing a problem can not be got because of the problems with one of the services
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/GetCausingEventsServiceUnaivailable" }
   schemas:
     ProblemId:
       type: integer
@@ -77,6 +84,7 @@ components:
       oneOf:
         - $ref: "#/components/schemas/CausingEventsResult"
         - $ref: "#/components/schemas/TooManyTopologyResults"
+        - $ref: "#/components/schemas/CausingEventsAreNotAvailableForTheTime"
       discriminator:
         propertyName: _type
       required:
@@ -96,6 +104,15 @@ components:
         - _type
         - items
     TooManyTopologyResults:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - TooManyTopologyResults
+      required:
+        - _type
+    CausingEventsAreNotAvailableForTheTime:
       type: object
       properties:
         _type:
@@ -207,3 +224,35 @@ components:
         - message
         - requestTimeMs
         - availableSinceMs
+    GetCausingEventsServiceUnaivailable:
+      oneOf:
+        - $ref: "#/components/schemas/TooManyActiveQueries"
+        - $ref: "#/components/schemas/GetTopologyTimeout"
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+    TooManyActiveQueries:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - TooManyActiveQueries
+        message:
+          type: string
+      required:
+        - _type
+        - message
+    GetTopologyTimeout:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - GetTopologyTimeout
+        message:
+          type: string
+      required:
+        - _type
+        - message
