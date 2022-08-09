@@ -82,6 +82,7 @@ paths:
 security:
   - ApiToken: []
   - ServiceToken: []
+  - ServiceBearer: []
 components:
   securitySchemes:
     ApiToken:
@@ -92,3 +93,7 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+    ServiceBearer:
+      type: apiKey
+      in: header
+      name: X-API-ServiceBearer
