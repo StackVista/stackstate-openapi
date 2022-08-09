@@ -96,4 +96,4 @@ components:
     ServiceBearer:
       type: apiKey
       in: header
-      name: X-API-Service-Bearer
+      name: X-API-ServiceBearer
