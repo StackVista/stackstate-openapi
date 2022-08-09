@@ -52,7 +52,12 @@ paths:
       operationId: getNodesOfType
       responses:
         "200":
-          $ref: "#/components/responses/nodeOrInfoList"
+          description: "a list of nodes"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Nodes"
+
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 #    post:
@@ -161,12 +166,6 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/NodeInfo"
-    nodeOrInfoList:
-      description: "a list of nodes or node info items"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/NodeOrNodeInfo"
   parameters:
     queryTime:
       name: queryTime
