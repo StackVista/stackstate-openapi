@@ -55,27 +55,27 @@ paths:
           $ref: "#/components/responses/nodeOrInfoList"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-    post:
-      tags:
-        - node
-      operationId: persistNodes
-      parameters:
-        - $ref: "#/components/parameters/force"
-      description: "Persist a list of nodes"
-      summary: "Persist a list of nodes."
-      requestBody:
-        $ref: "#/components/requestBodies/nodes"
-      responses:
-        "200":
-          description: "a list of nodes"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Nodes"
-        "400":
-          $ref: "#/components/responses/apiExceptionError"
-        "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+#    post:
+#      tags:
+#        - node
+#      operationId: persistNodes
+#      parameters:
+#        - $ref: "#/components/parameters/force"
+#      description: "Persist a list of nodes"
+#      summary: "Persist a list of nodes."
+#      requestBody:
+#        $ref: "#/components/requestBodies/nodes"
+#      responses:
+#        "200":
+#          description: "a list of nodes"
+#          content:
+#            application/json:
+#              schema:
+#                $ref: "#/components/schemas/Nodes"
+#        "400":
+#          $ref: "#/components/responses/apiExceptionError"
+#        "500":
+#          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /node/{nodeType}/{nodeId}:
     get:
       tags:
@@ -322,11 +322,7 @@ components:
     NodeOrNodeInfo:
       type: array
       items:
-        oneOf:
-          - $ref: "#/components/schemas/Node"
-          - $ref: "#/components/schemas/NodeInfo"
-        discriminator:
-          propertyName: _type
+        type: object
     NodeApiError:
       type: object
       properties:
