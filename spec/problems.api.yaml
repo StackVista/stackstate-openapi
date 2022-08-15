@@ -253,6 +253,9 @@ components:
             - GetTopologyTimeout
         message:
           type: string
+        timeoutSeconds:
+          type: integer
       required:
         - _type
         - message
+        - timeoutSeconds
