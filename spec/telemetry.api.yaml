@@ -1,7 +1,7 @@
 # OpenApi header is included in this file to support code highlighting in VSCode
 openapi: 3.0.3
 info:
-  title: Anomalies API
+  title: Telemetry Components
   version: "1.0.0"
 
 components:

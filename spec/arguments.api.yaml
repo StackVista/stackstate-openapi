@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Components API
+  title: Argument Components
   version: "1.0.0"
 
 components:
