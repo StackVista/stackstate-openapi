@@ -202,12 +202,18 @@ components:
           type: string
         intervalSeconds:
           type: integer
+        tags:
+          type: array
+          items:
+            type: string
+
       required:
         - id
         - name
         - functionId
         - arguments
         - intervalSeconds
+        - tags
 
     MonitorRunResult:
       type: object
