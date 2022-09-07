@@ -1,0 +1,225 @@
+openapi: 3.0.3
+info:
+  title: Stackstate prometheus Components
+  version: "0.0.1"
+
+components:
+  schemas:
+    Query:
+      type: string
+    Time:
+      type: string
+      pattern: '(^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$)|(^[0-9]{10}$)'
+    Timeout:
+      type: string
+      pattern: '^((([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?|0)$'
+    Step:
+      type: string
+      pattern: '(^((([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?|0)$)|(^[0-9]+$)'
+    QueryRequest:
+      type: object
+      properties:
+        query:
+          $ref: "#/components/schemas/Query"
+        time:
+          $ref: "#/components/schemas/Time"
+        timeout:
+          $ref: "#/components/schemas/Timeout"
+      required:
+        - query
+    QueryRangeRequest:
+      type: object
+      properties:
+        query:
+          $ref: "#/components/schemas/Query"
+        start:
+          $ref: "#/components/schemas/Time"
+        end:
+          $ref: "#/components/schemas/Time"
+        step:
+          $ref: "#/components/schemas/Step"
+        timeout:
+          $ref: "#/components/schemas/Timeout"
+      required:
+        - query
+        - start
+        - end
+        - step
+    QueryExemplarRequest:
+      type: object
+      properties:
+        query:
+          $ref: "#/components/schemas/Query"
+        start:
+          $ref: "#/components/schemas/Time"
+        end:
+          $ref: "#/components/schemas/Time"
+      required:
+        - query
+        - start
+        - end
+    Envelope:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          $ref: "#/components/schemas/Data"
+        errorType:
+          type: string
+        error:
+          type: string
+        warnings:
+          type: array
+          items:
+            type: "string"
+      required:
+        - status
+    ExemplarEnvelope:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          $ref: "#/components/schemas/ExemplarData"
+        errorType:
+          type: string
+        error:
+          type: string
+        warnings:
+          type: array
+          items:
+            type: "string"
+      required:
+        - status
+    Data:
+      type: object
+      discriminator:
+        propertyName: resultType
+      oneOf:
+        - $ref: "#/components/schemas/Matrix"
+        - $ref: "#/components/schemas/Vector"
+        - $ref: "#/components/schemas/Scalar"
+        - $ref: "#/components/schemas/DataString"
+      required:
+        - resultType
+    Scalar:
+      type: object
+      properties:
+        resultType:
+          type: string
+          enum:
+            - scalar
+        result:
+          $ref: "#/components/schemas/ValueTuple"
+      required:
+        - resultType
+        - result
+    DataString:
+      type: object
+      properties:
+        resultType:
+          type: string
+          enum:
+            - string
+        result:
+          $ref: "#/components/schemas/ValueTuple"
+      required:
+        - resultType
+        - result
+    Vector:
+      type: object
+      properties:
+        resultType:
+          type: string
+          enum:
+            - vector
+        result:
+          type: array
+          items:
+            $ref: "#/components/schemas/VectorResult"
+      required:
+        - resultType
+        - result
+    Matrix:
+      type: object
+      properties:
+        resultType:
+          type: string
+          enum:
+            - matrix
+        result:
+          type: array
+          items:
+            $ref: "#/components/schemas/DataResult"
+      required:
+        - resultType
+        - result
+    DataResult:
+      type: object
+      properties:
+        metric:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValueTuple"
+        values:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValueTuple"
+      required:
+        - metric
+        - values
+    VectorResult:
+      type: object
+      properties:
+        metric:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValueTuple"
+        values:
+            $ref: "#/components/schemas/ValueTuple"
+      required:
+        - metric
+        - values
+    ValueTuple:
+      type: object
+      properties:
+        time:
+          type: integer
+          format: int64
+        value:
+          type: string
+      required:
+        - time
+        - value
+    ExemplarData:
+      type: object
+      properties:
+        seriesLabels:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValueTuple"
+        exemplars:
+          type: array
+          items:
+            $ref: "#/components/schemas/Exemplar"
+      required:
+        - seriesLabels
+        - exemplars
+    Exemplar:
+      type: object
+      properties:
+        labels:
+          $ref: "#/components/schemas/ValueTuple"
+        value:
+          type: string
+        timestamp:
+          type: integer
+          format: int64
+      required:
+        - labels
+        - value
+        - timestamp
+
+
+
