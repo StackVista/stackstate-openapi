@@ -170,19 +170,19 @@ components:
     query:
       required: true
       content:
-        application/x-www-form-urlencoded:
+        application/json:
           schema:
             $ref: "prometheus.api.yaml#/components/schemas/QueryRequest"
     queryRange:
       required: true
       content:
-        application/x-www-form-urlencoded:
+        application/json:
           schema:
             $ref: "prometheus.api.yaml#/components/schemas/QueryRangeRequest"
     exemplarRange:
       required: true
       content:
-        application/x-www-form-urlencoded:
+        application/json:
           schema:
             $ref: "prometheus.api.yaml#/components/schemas/QueryExemplarRequest"
   responses:
