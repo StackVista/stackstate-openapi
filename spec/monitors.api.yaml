@@ -319,10 +319,41 @@ components:
       required:
         - error
         - count
+    MonitorRuntimeMetrics:
+      type: object
+      properties:
+        unknownCount:
+          type: integer
+          description: "Representing the count of the monitors results that are UNKNOWN and are mapped to topology."
+        clearCount:
+          type: integer
+          description: "Representing the count of the monitors results that are CLEAR and are mapped to topology."
+        deviatingCount:
+          type: integer
+          description: "Representing the count of the monitors results that are DEVIATING and are mapped to topology."
+        criticalCount:
+          type: integer
+          description: "Representing the count of the monitors results that are CRITICAL and are mapped to topology."
+        lastRunTimestamp:
+          type: integer
+          format: int64
+          description: "Representing the epoch millis of the last monitor run."
+        lastSuccessfulRunTimestamp:
+          type: integer
+          format: int64
+          description: "Representing the epoch millis of the last monitor successful run."
+        lastFailedRunTimestamp:
+          type: integer
+          format: int64
+          description: "Representing the epoch millis of the last monitor failed run."
+
     MonitorMetrics:
       type: object
       properties:
         healthSyncServiceMetrics:
           $ref: "health_sync_service_api.yaml#/components/schemas/HealthStreamMetrics"
+        runtimeMetrics:
+          $ref: "#/components/schemas/MonitorRuntimeMetrics"
       required:
         - healthSyncServiceMetrics
+        - runtimeMetrics
