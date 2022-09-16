@@ -1,0 +1,115 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: StackState Subscription API
+  version: "1.0.0"
+paths:
+  /subscription:
+    get:
+      tags:
+        - subscription
+      summary: "Get subscription info"
+      description: "Get the state of the StackState license"
+      operationId: getSubscription
+      responses:
+        "200":
+          description: "Subscription information"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionState"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    post:
+      tags:
+        - subscription
+      summary: "Submit a new license to update the subscription"
+      description: "Update the StackState license"
+      operationId: postSubscription
+      requestBody:
+        description: "The new license"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewLicense"
+      responses:
+        "200":
+          description: "Subscription information"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionState"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+components:
+  schemas:
+    NewLicense:
+      type: object
+      required:
+        - key
+      properties:
+        key:
+          type: string
+    Subscription:
+      properties:
+        tenant:
+          type: string
+        expiryTimestampMs:
+          type: integer
+          format: int64
+        plan:
+          type: string
+      required:
+        - tenant
+        - plan
+    SubscriptionState:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/ExpiredSubscription"
+        - $ref: "#/components/schemas/UnlicensedSubscription"
+        - $ref: "#/components/schemas/LicensedSubscription"
+      required:
+        - _type
+      type: object
+    ExpiredSubscription:
+      type: object
+      required:
+        - _type
+        - subscription
+      properties:
+        _type:
+          type: string
+          enum:
+            - ExpiredSubscription
+        subscription:
+          $ref: "#/components/schemas/Subscription"
+    LicensedSubscription:
+      type: object
+      required:
+        - _type
+        - subscription
+      properties:
+        _type:
+          type: string
+          enum:
+            - LicensedSubscription
+        subscription:
+          $ref: "#/components/schemas/Subscription"
+    UnlicensedSubscription:
+      type: object
+      required:
+        - _type
+        - reason
+      properties:
+        _type:
+          type: string
+          enum:
+            - UnlicensedSubscription
+        reason:
+          type: string
+          enum:
+            - Missin
+            - Invalid
+
