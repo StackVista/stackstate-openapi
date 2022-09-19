@@ -81,9 +81,9 @@ paths:
   /relations/{relationId}/checks: { $ref: "relations.api.yaml#/paths/%2Frelations%2F%7BrelationId%7D%2Fchecks" }
   /relations/{relationId}/checks/{checkId}: { $ref: "relations.api.yaml#/paths/%2Frelations%2F%7BrelationId%7D%2Fchecks%2F%7BcheckId%7D" }
   /problems/{problemId}/causing-events: { $ref: "problems.api.yaml#/paths/%2Fproblems%2F%7BproblemId%7D%2Fcausing-events" }
-  /v1alpha1/query: { $ref: "prometheus_read.api.yaml#/paths/%2Fv1alpha1%2Fquery" }
-  /v1alpha1/query_range: { $ref: "prometheus_read.api.yaml#/paths/%2Fv1alpha1%2Fquery%5Frange" }
-  /v1alpha1/query_exemplars: { $ref: "prometheus_read.api.yaml#/paths/%2Fv1alpha1%2Fquery%5Fexemplars" }
+  /v1alpha1/query: { $ref: "prometheus_query.api.yaml#/paths/%2Fv1alpha1%2Fquery" }
+  /v1alpha1/query_range: { $ref: "prometheus_query.api.yaml#/paths/%2Fv1alpha1%2Fquery%5Frange" }
+  /v1alpha1/query_exemplars: { $ref: "prometheus_query.api.yaml#/paths/%2Fv1alpha1%2Fquery%5Fexemplars" }
 security:
   - ApiToken: []
   - ServiceToken: []
