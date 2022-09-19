@@ -159,9 +159,9 @@ components:
       type: object
       properties:
         metric:
-          type: array
-          items:
-            $ref: "#/components/schemas/ValueTuple"
+          type: object
+          additionalProperties:
+            type: string
         values:
           type: array
           items:
@@ -173,9 +173,9 @@ components:
       type: object
       properties:
         metric:
-          type: array
-          items:
-            $ref: "#/components/schemas/ValueTuple"
+          type: object
+          additionalProperties:
+            type: string
         values:
             $ref: "#/components/schemas/ValueTuple"
       required:
@@ -185,8 +185,8 @@ components:
       type: object
       properties:
         time:
-          type: integer
-          format: int64
+          type: number
+          format: float
         value:
           type: string
       required:
