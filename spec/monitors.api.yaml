@@ -44,7 +44,7 @@ paths:
       requestBody:
         $ref: "#/components/requestBodies/monitorPatch"
       summary: "Update some monitor properties"
-      description: "Performs an update on the monitor base properties. If a monitor status is set to DISABLED it won't produce health states"
+      description: "Performs a patch on the monitor base properties."
       operationId: patchMonitor
       responses:
         "200":
@@ -205,6 +205,7 @@ components:
       enum:
         - ENABLED
         - DISABLED
+      description: "If a monitor status is set to DISABLED it won't produce any health states but it can still be run manually to inspect it's output"
 
     MonitorList:
       type: object
