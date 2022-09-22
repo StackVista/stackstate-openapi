@@ -109,7 +109,7 @@ paths:
         "400":
           $ref: "#/components/responses/invalidMonitorIdentifierError"
         "404":
-          $ref: "#/components/responses/monitorStatusNotFoundError"
+          $ref: "#/components/responses/monitorNotFoundError"
         "500":
           $ref: "#/components/responses/monitorApiError"
 
@@ -173,12 +173,6 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MonitorSaveError"
-    monitorStatusNotFoundError:
-      description: "monitor status was not found in the database"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/MonitorStatusNotFoundError"
     monitorApiError:
       description: "container for all error response"
       content:
@@ -362,19 +356,6 @@ components:
         - intervalSeconds
         - _type
 
-    MonitorStatusNotFoundError:
-      allOf:
-        - $ref: "#/components/schemas/BaseMonitorError"
-        - type: object
-          properties:
-            _type:
-              type: string
-              enum:
-                - MonitorStatusNotFoundError
-      required:
-        - _type
-        - monitorId
-        - monitorIdType
     MonitorApiError:
       allOf:
         - $ref: "#/components/schemas/BaseMonitorError"
