@@ -35,7 +35,7 @@ paths:
     #     content:
     #       application/x-www-form-urlencoded:
     #         schema:
-    #           $ref: "prometheus.api.yaml#/components/schemas/QueryRequest"
+    #           $ref: "prometheus.api.yaml#/components/schemas/PromQueryRequest"
     #   responses:
     #     "201": 
     #       $ref: "#/components/responses/successEnvelope"
@@ -77,7 +77,7 @@ paths:
     #     content:
     #       application/x-www-form-urlencoded:
     #         schema:
-    #           $ref: "prometheus.api.yaml#/components/schemas/QueryRangeRequest"
+    #           $ref: "prometheus.api.yaml#/components/schemas/PromQueryRangeRequest"
     #   responses:
     #     "201": 
     #       $ref: "#/components/responses/successEnvelope"
@@ -117,7 +117,7 @@ paths:
     #     content:
     #       application/x-www-form-urlencoded:
     #         schema:
-    #           $ref: "prometheus.api.yaml#/components/schemas/QueryExemplarRequest"
+    #           $ref: "prometheus.api.yaml#/components/schemas/PromQueryExemplarRequest"
     #   responses:
     #     "201": 
     #       $ref: "#/components/responses/successExemplarEnvelope"
@@ -134,14 +134,14 @@ components:
       name: query
       required: true
       schema:
-        $ref: "prometheus.api.yaml#/components/schemas/Query"
+        $ref: "prometheus.api.yaml#/components/schemas/PromQuery"
       description: "Prometheus expression query string"
     time:
       in: query
       name: time
       required: false
       schema:
-        $ref: "prometheus.api.yaml#/components/schemas/Time"
+        $ref: "prometheus.api.yaml#/components/schemas/PromTime"
       description: "Evaluation timestamp in rfc3339 format or unix format"
       example: "2015-07-01T20:10:51.781Z or 1660817432"
     timeout:
@@ -149,14 +149,14 @@ components:
       name: timeout
       required: false
       schema:
-        $ref: "prometheus.api.yaml#/components/schemas/Timeout"
+        $ref: "prometheus.api.yaml#/components/schemas/PromTimeout"
       description: "Evaluation timeout"
     start:
       in: query
       name: start
       required: true
       schema:
-        $ref: "prometheus.api.yaml#/components/schemas/Time"
+        $ref: "prometheus.api.yaml#/components/schemas/PromTime"
       description: "Start timestamp in rfc3339 format or unix format"
       example: "2015-07-01T20:10:51.781Z or 1660817432"
     end:
@@ -164,7 +164,7 @@ components:
       name: end
       required: true
       schema:
-        $ref: "prometheus.api.yaml#/components/schemas/Time"
+        $ref: "prometheus.api.yaml#/components/schemas/PromTime"
       description: "End timestamp in rfc3339 format or unix format"
       example: "2015-07-01T20:10:51.781Z or 1660817432"
     step:
@@ -172,7 +172,7 @@ components:
       name: step
       required: true
       schema:
-        $ref: "prometheus.api.yaml#/components/schemas/Step"
+        $ref: "prometheus.api.yaml#/components/schemas/PromStep"
       description: Query resolution step width in duration format or float number of seconds.
       example: "5m or 300"
   responses:
@@ -181,22 +181,22 @@ components:
       content:
         application/json:
           schema:
-            $ref: "prometheus.api.yaml#/components/schemas/Envelope"
+            $ref: "prometheus.api.yaml#/components/schemas/PromEnvelope"
     successExemplarEnvelope:
       description: "JSON response envelope"
       content:
         application/json:
           schema:
-            $ref: "prometheus.api.yaml#/components/schemas/ExemplarEnvelope"
+            $ref: "prometheus.api.yaml#/components/schemas/PromExemplarEnvelope"
     invalidParameters:
       description: "Parameters are missing or incorrect"
       content:
         application/json:
           schema:
-            $ref: "prometheus.api.yaml#/components/schemas/Envelope"
+            $ref: "prometheus.api.yaml#/components/schemas/PromEnvelope"
     unprocessableEntity:
       description: "Expression can't be executed (RFC4918)"
       content:
         application/json:
           schema:
-            $ref: "prometheus.api.yaml#/components/schemas/Envelope"
+            $ref: "prometheus.api.yaml#/components/schemas/PromEnvelope"

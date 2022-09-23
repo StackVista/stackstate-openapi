@@ -5,66 +5,66 @@ info:
 
 components:
   schemas:
-    Query:
+    PromQuery:
       type: string
-    Time:
+    PromTime:
       type: string
       pattern: '(^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$)|(^[0-9]{10}$)'
-    Timeout:
+    PromTimeout:
       type: string
       pattern: '^((([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?|0)$'
-    Step:
+    PromStep:
       type: string
       pattern: '(^((([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?|0)$)|(^[0-9]+$)'
-    QueryRequest:
+    PromQueryRequest:
       type: object
       properties:
         query:
-          $ref: "#/components/schemas/Query"
+          $ref: "#/components/schemas/PromQuery"
         time:
-          $ref: "#/components/schemas/Time"
+          $ref: "#/components/schemas/PromTime"
         timeout:
-          $ref: "#/components/schemas/Timeout"
+          $ref: "#/components/schemas/PromTimeout"
       required:
         - query
-    QueryRangeRequest:
+    PromQueryRangeRequest:
       type: object
       properties:
         query:
-          $ref: "#/components/schemas/Query"
+          $ref: "#/components/schemas/PromQuery"
         start:
-          $ref: "#/components/schemas/Time"
+          $ref: "#/components/schemas/PromTime"
         end:
-          $ref: "#/components/schemas/Time"
+          $ref: "#/components/schemas/PromTime"
         step:
-          $ref: "#/components/schemas/Step"
+          $ref: "#/components/schemas/PromStep"
         timeout:
-          $ref: "#/components/schemas/Timeout"
+          $ref: "#/components/schemas/PromTimeout"
       required:
         - query
         - start
         - end
         - step
-    QueryExemplarRequest:
+    PromQueryExemplarRequest:
       type: object
       properties:
         query:
-          $ref: "#/components/schemas/Query"
+          $ref: "#/components/schemas/PromQuery"
         start:
-          $ref: "#/components/schemas/Time"
+          $ref: "#/components/schemas/PromTime"
         end:
-          $ref: "#/components/schemas/Time"
+          $ref: "#/components/schemas/PromTime"
       required:
         - query
         - start
         - end
-    Envelope:
+    PromEnvelope:
       type: object
       properties:
         status:
           type: string
         data:
-          $ref: "#/components/schemas/Data"
+          $ref: "#/components/schemas/PromData"
         errorType:
           type: string
         error:
@@ -75,7 +75,7 @@ components:
             type: "string"
       required:
         - status
-    ExemplarEnvelope:
+    PromExemplarEnvelope:
       type: object
       properties:
         status:
@@ -83,7 +83,7 @@ components:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/ExemplarData"
+            $ref: "#/components/schemas/PromExemplarData"
         errorType:
           type: string
         error:
@@ -94,23 +94,23 @@ components:
             type: "string"
       required:
         - status
-    Data:
+    PromData:
       type: object
       discriminator:
         propertyName: resultType
         mapping:
-          matrix: "#/components/schemas/Matrix"
-          vector: "#/components/schemas/Vector"
-          scalar: "#/components/schemas/Scalar"
-          string: "#/components/schemas/DataString"
+          matrix: "#/components/schemas/PromMatrix"
+          vector: "#/components/schemas/PromVector"
+          scalar: "#/components/schemas/PromScalar"
+          string: "#/components/schemas/PromDataString"
       oneOf:
-        - $ref: "#/components/schemas/Matrix"
-        - $ref: "#/components/schemas/Vector"
-        - $ref: "#/components/schemas/Scalar"
-        - $ref: "#/components/schemas/DataString"
+        - $ref: "#/components/schemas/PromMatrix"
+        - $ref: "#/components/schemas/PromVector"
+        - $ref: "#/components/schemas/PromScalar"
+        - $ref: "#/components/schemas/PromDataString"
       required:
         - resultType
-    Scalar:
+    PromScalar:
       type: object
       properties:
         resultType:
@@ -118,11 +118,11 @@ components:
           enum:
             - scalar
         result:
-          $ref: "#/components/schemas/ValueTuple"
+          $ref: "#/components/schemas/PromSample"
       required:
         - resultType
         - result
-    DataString:
+    PromDataString:
       type: object
       properties:
         resultType:
@@ -130,11 +130,11 @@ components:
           enum:
             - string
         result:
-          $ref: "#/components/schemas/ValueTuple"
+          $ref: "#/components/schemas/PromSample"
       required:
         - resultType
         - result
-    Vector:
+    PromVector:
       type: object
       properties:
         resultType:
@@ -144,11 +144,11 @@ components:
         result:
           type: array
           items:
-            $ref: "#/components/schemas/VectorResult"
+            $ref: "#/components/schemas/PromVectorResult"
       required:
         - resultType
         - result
-    Matrix:
+    PromMatrix:
       type: object
       properties:
         resultType:
@@ -158,11 +158,11 @@ components:
         result:
           type: array
           items:
-            $ref: "#/components/schemas/DataResult"
+            $ref: "#/components/schemas/PromDataResult"
       required:
         - resultType
         - result
-    DataResult:
+    PromDataResult:
       type: object
       properties:
         metric:
@@ -172,11 +172,11 @@ components:
         values:
           type: array
           items:
-            $ref: "#/components/schemas/ValueTuple"
+            $ref: "#/components/schemas/PromSample"
       required:
         - metric
         - values
-    VectorResult:
+    PromVectorResult:
       type: object
       properties:
         metric:
@@ -184,22 +184,26 @@ components:
           additionalProperties:
             type: string
         value:
-          $ref: "#/components/schemas/ValueTuple"
+          $ref: "#/components/schemas/PromSample"
       required:
         - metric
         - value
-    ValueTuple:
-      type: object
-      properties:
-        time:
-          type: number
-          format: float
-        value:
-          type: string
-      required:
-        - time
-        - value
-    ExemplarData:
+    PromSample:
+      type: array
+      items:
+        oneOf:
+          - type: number
+            format: unix_timestamp
+          - type: string
+            format: sample_value
+        description: Unix timestamp with sample value (as a string)
+      x-as-tuple: true
+      minItems: 2
+      maxItems: 2
+      description: |
+        This is always a tuple represented as an array with in first position the unix timestamp as 
+        a float with precision 3 in seconds) and in second position the sample value as a string.
+    PromExemplarData:
       type: object
       properties:
         seriesLabels:
@@ -209,11 +213,11 @@ components:
         exemplars:
           type: array
           items:
-            $ref: "#/components/schemas/Exemplar"
+            $ref: "#/components/schemas/PromExemplar"
       required:
         - seriesLabels
         - exemplars
-    Exemplar:
+    PromExemplar:
       type: object
       properties:
         labels:
