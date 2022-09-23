@@ -81,7 +81,9 @@ components:
         status:
           type: string
         data:
-          $ref: "#/components/schemas/ExemplarData"
+          type: array
+          items:
+            $ref: "#/components/schemas/ExemplarData"
         errorType:
           type: string
         error:
@@ -96,6 +98,11 @@ components:
       type: object
       discriminator:
         propertyName: resultType
+        mapping:
+          matrix: "#/components/schemas/Matrix"
+          vector: "#/components/schemas/Vector"
+          scalar: "#/components/schemas/Scalar"
+          string: "#/components/schemas/DataString"
       oneOf:
         - $ref: "#/components/schemas/Matrix"
         - $ref: "#/components/schemas/Vector"
@@ -176,11 +183,11 @@ components:
           type: object
           additionalProperties:
             type: string
-        values:
-            $ref: "#/components/schemas/ValueTuple"
+        value:
+          $ref: "#/components/schemas/ValueTuple"
       required:
         - metric
-        - values
+        - value
     ValueTuple:
       type: object
       properties:
@@ -196,9 +203,9 @@ components:
       type: object
       properties:
         seriesLabels:
-          type: array
-          items:
-            $ref: "#/components/schemas/ValueTuple"
+          type: object
+          additionalProperties:
+            type: string
         exemplars:
           type: array
           items:
@@ -210,16 +217,15 @@ components:
       type: object
       properties:
         labels:
-          $ref: "#/components/schemas/ValueTuple"
+          type: object
+          additionalProperties:
+            type: string
         value:
           type: string
         timestamp:
-          type: integer
-          format: int64
+          type: number
+          format: float
       required:
         - labels
         - value
         - timestamp
-
-
-

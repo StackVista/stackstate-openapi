@@ -118,7 +118,7 @@ components:
         _type:
           type: string
           enum:
-            - TooManyTopologyResults
+            - CausingEventsAreNotAvailableForTheTime
       required:
         - _type
     GetCausingEventsBadRequest:
