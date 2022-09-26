@@ -7,7 +7,7 @@ paths:
   /admin/retention/window:
     get:
       tags:
-        - retentionWindow
+        - admin
       summary: "Get retention window"
       description: "Get StackGraph retention window."
       operationId: getRetentionWindow
@@ -24,7 +24,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     post:
       tags:
-        - retentionWindow
+        - admin
       summary: "Set retention window"
       description: "Set StackGraph retention window and optionally schedule data removal."
       operationId: setRetentionWindow
@@ -52,7 +52,7 @@ paths:
   /admin/retention/currentEpoch:
     get:
       tags:
-        - retentionEpoch
+        - admin
       summary: "Get retention epoch"
       description: "Get StackGraph retention epoch."
       operationId: getRetentionEpoch
@@ -71,7 +71,7 @@ paths:
   /admin/retention/removeExpiredData:
     post:
       tags:
-        - removeExpiredData
+        - admin
       summary: "Remove expired data from StackGraph"
       description: "Either schedule removal or immediately remove expired data from StackGraph"
       operationId: removeExpiredData
