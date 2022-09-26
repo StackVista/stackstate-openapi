@@ -36,7 +36,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/WindowsMs"
+              $ref: "#/components/schemas/WindowMs"
       responses:
         "200":
           description: "Currently set retention window."
