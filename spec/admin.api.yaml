@@ -1,0 +1,50 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Admin API
+  version: "1.0.0"
+paths:
+  /admin/retention/window:
+    get:
+      tags:
+        - retentionWindow
+      summary: "Get retention window"
+      description: "Get StackGraph retention window."
+      operationId: getRetentionWindow
+      responses:
+        "200":
+          $ref: "#/components/schemas/WindowMs"
+        "409":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    post:
+      tags:
+        - retentionWindow
+      summary: "Set retention window"
+      description: "Set StackGraph retention window and optionally schedule data removal."
+      operationId: setRetentionWindow
+      parameters:
+        - $ref: "#/components/parameters/scheduleRemoval"
+      responses:
+        "200":
+          $ref: "#/components/schemas/WindowMs"
+        "409":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
+components:
+  schemas:
+    WindowMs:
+      properties:
+        windowMs:
+          type: integer
+          format: int64
+  parameters:
+    scheduleRemoval:
+      in: query
+      name: scheduleRemoval
+      schema:
+        type: boolean
+      description: "If set, makes StackState schedule removal of expired data according to the set retention window."
