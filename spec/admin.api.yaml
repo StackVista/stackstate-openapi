@@ -33,6 +33,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
   /admin/retention/currentEpoch:
     get:
       tags:
@@ -48,6 +49,23 @@ paths:
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 
+  /admin/retention/removeExpiredData:
+    post:
+      tags:
+        - removeExpiredData
+      summary: "Remove expired data from StackGraph"
+      description: "Either schedule removal or immediately remove expired data from StackGraph"
+      operationId: removeExpiredData
+      parameters:
+        - $ref: "#/components/parameters/immediately"
+      responses:
+        "200":
+          $ref: "#/components/schemas/RemovalProgress"
+        "409":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
 components:
   schemas:
     WindowMs:
@@ -55,11 +73,26 @@ components:
         windowMs:
           type: integer
           format: int64
+
     EpochTx:
       properties:
         epochTx:
           type: integer
           format: int64
+
+    RemovalProgress:
+      properties:
+        progress:
+          type: object
+          properties:
+            _type:
+              type: string
+              enum:
+                - RemovalInProgress
+                - RemovalSucceeded
+                - RemovalFailed
+          required:
+            - _type
   parameters:
     scheduleRemoval:
       in: query
@@ -67,3 +100,10 @@ components:
       schema:
         type: boolean
       description: "If set, makes StackState schedule removal of expired data according to the set retention window."
+
+    immediately:
+      in: query
+      name: expireImmediatelyAndRestart
+      schema:
+        type: boolean
+      description: "If set, makes StackState remove expired data immediately and restart afterwards."
