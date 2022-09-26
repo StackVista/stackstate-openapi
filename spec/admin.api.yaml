@@ -33,12 +33,31 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /admin/retention/currentEpoch:
+    get:
+      tags:
+        - retentionEpoch
+      summary: "Get retention epoch"
+      description: "Get StackGraph retention epoch."
+      operationId: getRetentionEpoch
+      responses:
+        "200":
+          $ref: "#/components/schemas/EpochTx"
+        "409":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 
 components:
   schemas:
     WindowMs:
       properties:
         windowMs:
+          type: integer
+          format: int64
+    EpochTx:
+      properties:
+        epochTx:
           type: integer
           format: int64
   parameters:
