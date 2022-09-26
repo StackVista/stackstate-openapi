@@ -84,9 +84,9 @@ paths:
   /v1alpha1/query: { $ref: "prometheus_query.api.yaml#/paths/%2Fv1alpha1%2Fquery" }
   /v1alpha1/query_range: { $ref: "prometheus_query.api.yaml#/paths/%2Fv1alpha1%2Fquery%5Frange" }
   /v1alpha1/query_exemplars: { $ref: "prometheus_query.api.yaml#/paths/%2Fv1alpha1%2Fquery%5Fexemplars" }
-  /admin/retention/window: { $ref: "admin.api.yaml#paths/%2Fadmin%2Fretention%2Fwindow"}
-  /admin/retention/currentEpoch: { $ref: "admin.api.yaml#paths/%2Fadmin%2Fretention%2FcurrentEpoch"}
-  /admin/retention/removeExpiredData: { $ref: "admin.api.yaml#paths/%2Fadmin%2Fretention%2FremoveExpiredData"}
+  /admin/retention/window: { $ref: "admin.api.yaml#/paths/%2Fadmin%2Fretention%2Fwindow"}
+  /admin/retention/currentEpoch: { $ref: "admin.api.yaml#/paths/%2Fadmin%2Fretention%2FcurrentEpoch"}
+  /admin/retention/removeExpiredData: { $ref: "admin.api.yaml#/paths/%2Fadmin%2Fretention%2FremoveExpiredData"}
 security:
   - ApiToken: []
   - ServiceToken: []
