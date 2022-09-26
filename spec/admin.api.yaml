@@ -13,7 +13,11 @@ paths:
       operationId: getRetentionWindow
       responses:
         "200":
-          $ref: "#/components/schemas/WindowMs"
+          description: "Currently set retention window."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WindowMs"
         "409":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "500":
@@ -26,9 +30,20 @@ paths:
       operationId: setRetentionWindow
       parameters:
         - $ref: "#/components/parameters/scheduleRemoval"
+      requestBody:
+        description: "The new retention window value."
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WindowsMs"
       responses:
         "200":
-          $ref: "#/components/schemas/WindowMs"
+          description: "Currently set retention window."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WindowMs"
         "409":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "500":
@@ -43,7 +58,11 @@ paths:
       operationId: getRetentionEpoch
       responses:
         "200":
-          $ref: "#/components/schemas/EpochTx"
+          description: "Currently set retention transaction epoch."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EpochTx"
         "409":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "500":
