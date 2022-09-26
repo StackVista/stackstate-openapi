@@ -79,7 +79,11 @@ paths:
         - $ref: "#/components/parameters/immediately"
       responses:
         "200":
-          $ref: "#/components/schemas/RemovalProgress"
+          description: "Removal progress."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RemovalProgress"
         "409":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "500":
