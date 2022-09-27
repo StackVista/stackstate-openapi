@@ -233,7 +233,7 @@ components:
           type: string
         timestamp:
           type: number
-          format: float
+          format: unix_timestamp
       required:
         - labels
         - value
