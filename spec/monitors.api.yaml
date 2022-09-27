@@ -257,6 +257,7 @@ components:
         - intervalSeconds
         - tags
         - status
+        - lastUpdateTimestamp
 
     MonitorPatch:
       type: object
