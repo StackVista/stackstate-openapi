@@ -17,9 +17,9 @@ externalDocs:
   description: Documentation
   url: "https://docs.stackstate.com/"
 paths:
-  /admin/retention/window: { $ref: "admin.api.yaml#/paths/%2Fadmin%2Fretention%2Fwindow"}
-  /admin/retention/currentEpoch: { $ref: "admin.api.yaml#/paths/%2Fadmin%2Fretention%2FcurrentEpoch"}
-  /admin/retention/removeExpiredData: { $ref: "admin.api.yaml#/paths/%2Fadmin%2Fretention%2FremoveExpiredData"}
+  /retention/window: { $ref: "retention.api.yaml#/paths/%2Fretention%2Fwindow"}
+  /retention/currentEpoch: { $ref: "retention.api.yaml#/paths/%2Fretention%2FcurrentEpoch"}
+  /retention/removeExpiredData: { $ref: "retention.api.yaml#/paths/%2Fretention%2FremoveExpiredData"}
 security:
   - ApiToken: []
   - ServiceToken: []
