@@ -245,6 +245,9 @@ components:
             type: string
         status:
           $ref: "#/components/schemas/MonitorStatusValue"
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
 
       required:
         - id
