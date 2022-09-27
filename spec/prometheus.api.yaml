@@ -197,7 +197,12 @@ components:
           - type: string
             format: sample_value
         description: Unix timestamp with sample value (as a string)
-      x-as-tuple: true
+      x-as-tuple: 
+        values:
+          - type: number
+            format: unix_timestamp
+          - type: string
+            format: sample_value
       minItems: 2
       maxItems: 2
       description: |
@@ -228,7 +233,7 @@ components:
           type: string
         timestamp:
           type: number
-          format: float
+          format: unix_timestamp
       required:
         - labels
         - value
