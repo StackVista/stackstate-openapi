@@ -23,8 +23,10 @@ paths:
           $ref: "#/components/responses/invalidParameters"
         "422":
           $ref: "#/components/responses/unprocessableEntity"
-        "503":
+        "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailable"
     # post:
     #   tags:
     #     - query
@@ -65,8 +67,10 @@ paths:
           $ref: "#/components/responses/invalidParameters"
         "422":
           $ref: "#/components/responses/unprocessableEntity"
-        "503":
+        "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailable"
     # post:
     #   tags:
     #     - query
@@ -102,11 +106,13 @@ paths:
         "200":
           $ref: "#/components/responses/successExemplarEnvelope"
         "400":
-          $ref: "#/components/responses/invalidParameters"
+          $ref: "#/components/responses/invalidParametersExemplar"
         "422":
-          $ref: "#/components/responses/unprocessableEntity"
-        "503":
+          $ref: "#/components/responses/unprocessableEntityExemplar"
+        "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailableExemplar"
     # post:
     #   tags:
     #     - query
@@ -182,12 +188,6 @@ components:
         application/json:
           schema:
             $ref: "prometheus.api.yaml#/components/schemas/PromEnvelope"
-    successExemplarEnvelope:
-      description: "JSON response envelope"
-      content:
-        application/json:
-          schema:
-            $ref: "prometheus.api.yaml#/components/schemas/PromExemplarEnvelope"
     invalidParameters:
       description: "Parameters are missing or incorrect"
       content:
@@ -200,3 +200,33 @@ components:
         application/json:
           schema:
             $ref: "prometheus.api.yaml#/components/schemas/PromEnvelope"
+    serviceUnavailable:
+      description: "when queries time out or abort"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromEnvelope"
+    successExemplarEnvelope:
+      description: "JSON response envelope"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromExemplarEnvelope"
+    invalidParametersExemplar:
+      description: "Parameters are missing or incorrect"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromExemplarEnvelope"
+    unprocessableEntityExemplar:
+      description: "Expression can't be executed (RFC4918)"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromExemplarEnvelope"
+    serviceUnavailableExemplar:
+      description: "when queries time out or abort"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromExemplarEnvelope"
