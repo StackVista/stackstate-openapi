@@ -5,7 +5,7 @@ info:
   version: "0.0.1"
 
 paths:
-  /v1alpha1/query:
+  /metrics/query:
     get:
       tags:
         - query
@@ -47,7 +47,7 @@ paths:
     #       $ref: "#/components/responses/unprocessableEntity"
     #     "503":
     #       $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-  /v1alpha1/query_range:
+  /metrics/query_range:
     get:
       tags:
         - query
@@ -91,7 +91,7 @@ paths:
     #       $ref: "#/components/responses/unprocessableEntity"
     #     "503":
     #       $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-  /v1alpha1/query_exemplars:
+  /metrics/query_exemplars:
     get:
       tags:
         - query
