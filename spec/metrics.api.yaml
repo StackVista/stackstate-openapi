@@ -5,10 +5,10 @@ info:
   version: "0.0.1"
 
 paths:
-  /v1alpha1/query:
+  /metrics/query:
     get:
       tags:
-        - query
+        - metric
       summary: "Instant query at a single point in time"
       description: "The endpoint evaluates an instant query at a single point in time"
       operationId: getInstantQuery
@@ -23,11 +23,13 @@ paths:
           $ref: "#/components/responses/invalidParameters"
         "422":
           $ref: "#/components/responses/unprocessableEntity"
-        "503":
+        "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailable"
     # post:
     #   tags:
-    #     - query
+    #     - metric
     #   summary: "Instant query at a single point in time"
     #   description: "The endpoint evaluates an instant query at a single point in time"
     #   operationId: postInstantQuery
@@ -45,10 +47,10 @@ paths:
     #       $ref: "#/components/responses/unprocessableEntity"
     #     "503":
     #       $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-  /v1alpha1/query_range:
+  /metrics/query_range:
     get:
       tags:
-        - query
+        - metric
       summary: "Query over a range of time"
       description: "The endpoint evaluates an expression query over a range of time"
       operationId: getRangeQuery
@@ -65,11 +67,13 @@ paths:
           $ref: "#/components/responses/invalidParameters"
         "422":
           $ref: "#/components/responses/unprocessableEntity"
-        "503":
+        "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailable"
     # post:
     #   tags:
-    #     - query
+    #     - metric
     #   summary: "Query over a range of time"
     #   description: "The endpoint evaluates an expression query over a range of time"
     #   operationId: postRangeQuery
@@ -87,10 +91,10 @@ paths:
     #       $ref: "#/components/responses/unprocessableEntity"
     #     "503":
     #       $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-  /v1alpha1/query_exemplars:
+  /metrics/query_exemplars:
     get:
       tags:
-        - query
+        - metric
       summary: "Experimental: Exemplars for a specific time range"
       description: "Experimental: The returns a list of exemplars for a valid PromQL query for a specific time range"
       operationId: getExemplarsQuery
@@ -102,14 +106,16 @@ paths:
         "200":
           $ref: "#/components/responses/successExemplarEnvelope"
         "400":
-          $ref: "#/components/responses/invalidParameters"
+          $ref: "#/components/responses/invalidParametersExemplar"
         "422":
-          $ref: "#/components/responses/unprocessableEntity"
-        "503":
+          $ref: "#/components/responses/unprocessableEntityExemplar"
+        "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailableExemplar"
     # post:
     #   tags:
-    #     - query
+    #     - metric
     #   summary: "Experimental: Exemplars for a specific time range"
     #   description: "Experimental: The returns a list of exemplars for a valid PromQL query for a specific time range"
     #   operationId: postExemplarsQuery
@@ -182,12 +188,6 @@ components:
         application/json:
           schema:
             $ref: "prometheus.api.yaml#/components/schemas/PromEnvelope"
-    successExemplarEnvelope:
-      description: "JSON response envelope"
-      content:
-        application/json:
-          schema:
-            $ref: "prometheus.api.yaml#/components/schemas/PromExemplarEnvelope"
     invalidParameters:
       description: "Parameters are missing or incorrect"
       content:
@@ -200,3 +200,33 @@ components:
         application/json:
           schema:
             $ref: "prometheus.api.yaml#/components/schemas/PromEnvelope"
+    serviceUnavailable:
+      description: "when queries time out or abort"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromEnvelope"
+    successExemplarEnvelope:
+      description: "JSON response envelope"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromExemplarEnvelope"
+    invalidParametersExemplar:
+      description: "Parameters are missing or incorrect"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromExemplarEnvelope"
+    unprocessableEntityExemplar:
+      description: "Expression can't be executed (RFC4918)"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromExemplarEnvelope"
+    serviceUnavailableExemplar:
+      description: "when queries time out or abort"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromExemplarEnvelope"
