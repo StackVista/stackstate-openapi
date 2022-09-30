@@ -92,18 +92,25 @@ paths:
 components:
   schemas:
     WindowMs:
+      type: object
       properties:
         windowMs:
           type: integer
           format: int64
+      required:
+        - windowMs
 
     EpochTx:
+      type: object
       properties:
         epochTx:
           type: integer
           format: int64
+      required:
+        - epochTx
 
     RemovalProgress:
+      type: object
       properties:
         progress:
           type: object
@@ -116,6 +123,8 @@ components:
                 - RemovalFailed
           required:
             - _type
+      required:
+        - progress
   parameters:
     scheduleRemoval:
       in: query
