@@ -21,6 +21,7 @@ paths:
   /export: { $ref: "export.xapi.yaml#/paths/%2Fexport" }
   /node: { $ref: "node.xapi.yaml#/paths/%2Fnode" }
   /node/{nodeType}: { $ref: "node.xapi.yaml#/paths/%2Fnode%2F%7BnodeType%7D" }
+  /node/{nodeType}/{nodeId}/unlock: { $ref: "node.xapi.yaml#/paths/%2Fnode%2F%7BnodeType%7D%2F%7BnodeId%7D%2Funlock" }
   /stackpack: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack" }
   /stackpack/{stackName}/provision: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack%2F%7BstackName%7D%2Fprovision" }
   /stackpack/{stackName}/deprovision/{stackId}: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack%2F%7BstackName%7D%2Fdeprovision%2F%7BstackId%7D" }
