@@ -1,0 +1,31 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Permissions API
+  version: "1.0.0"
+paths:
+  /security/permissions/list:
+    get:
+      tags:
+        - permissions
+      summary: "List permissions"
+      description: "Get a list of available permissions"
+      operationId: getPermissions
+      responses:
+        "200":
+          description: "A list of permissions"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Permissions"
+components:
+  schemas:
+    Permissions:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+        - permissions
