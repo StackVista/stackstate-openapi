@@ -71,6 +71,7 @@ paths:
   /security/tokens: { $ref: "service_token.api.yaml#/paths/%2Fsecurity%2Ftokens" }
   /security/tokens/{serviceTokenId}: { $ref: "service_token.api.yaml#/paths/%2Fsecurity%2Ftokens%2F%7BserviceTokenId%7D" }
   /security/permissions/list: { $ref: "permissions.api.yaml#/paths/%2Fsecurity%2Fpermissions%2Flist" }
+  /security/permissions/{subject}: { $ref: "permissions.api.yaml#/paths/%2Fsecurity%2Fpermissions%2F%7Bsubject%7D" }
   /subscription: { $ref: "subscription.xapi.yaml#/paths/%2Fsubscription" }
   /anomalies/export: { $ref: "anomalies.api.yaml#/paths/%2Fanomalies%2Fexport" }
   /components/{componentId}/streams: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentId%7D%2Fstreams" }

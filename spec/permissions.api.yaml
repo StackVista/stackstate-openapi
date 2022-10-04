@@ -18,14 +18,59 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Permissions"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /security/permissions/{subject}:
+    get:
+      tags:
+        - permissions
+      summary: "Describe permissions"
+      description: "Describe permissions granted to a subject"
+      operationId: describePermissions
+      parameters:
+        - $ref: "#/components/parameters/subject"
+      responses:
+        "200":
+          description: "A permission description for a subject"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PermissionDescription"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
+  parameters:
+    subject:
+      in: path
+      name: subject
+      required: true
+      schema:
+        $ref: "#/components/schemas/Subject"
   schemas:
+    Subject:
+      type: string
+    Permission:
+      type: string
+    PermissionList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Permission"
     Permissions:
       type: object
       properties:
         permissions:
-          type: array
-          items:
-            type: string
+          $ref: "#/components/schemas/PermissionList"
       required:
+        - permissions
+    PermissionDescription:
+      type: object
+      properties:
+        subjectHandle:
+          $ref: "#/components/schemas/Subject"
+        permissions:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/PermissionList"
+      required:
+        - subjectHandle
         - permissions
