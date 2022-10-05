@@ -38,6 +38,56 @@ paths:
                 $ref: "#/components/schemas/PermissionDescription"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    post:
+      tags:
+        - permissions
+      summary: "Grant permissions"
+      description: "Grant permissions to a subject"
+      operationId: grantPermissions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GrantPermission"
+      parameters:
+        - $ref: "#/components/parameters/subject"
+      responses:
+        "200":
+          description: "A permission description for a subject"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PermissionDescription"
+        "400":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    delete:
+      tags:
+        - permissions
+      summary: "Revoke permissions"
+      description: "Revoke permissions of a subject"
+      operationId: revokePermissions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RevokePermission"
+      parameters:
+        - $ref: "#/components/parameters/subject"
+      responses:
+        "200":
+          description: "A permission description for a subject"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PermissionDescription"
+        "400":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
   parameters:
     subject:
@@ -48,6 +98,8 @@ components:
         $ref: "#/components/schemas/Subject"
   schemas:
     Subject:
+      type: string
+    Resource:
       type: string
     Permission:
       type: string
@@ -74,3 +126,23 @@ components:
       required:
         - subjectHandle
         - permissions
+    GrantPermission:
+      type: object
+      properties:
+        permission:
+          $ref: "#/components/schemas/Permission"
+        resourceName:
+          $ref: "#/components/schemas/Resource"
+      required:
+        - permission
+        - resourceName
+    RevokePermission:
+      type: object
+      properties:
+        permission:
+          $ref: "#/components/schemas/Permission"
+        resource:
+          $ref: "#/components/schemas/Resource"
+      required:
+        - permission
+        - resource
