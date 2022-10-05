@@ -1,0 +1,55 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Subject API
+  version: "1.0.0"
+paths:
+  /security/subjects/{subject}:
+    put:
+      tags:
+        - subject
+      summary: "Create a subject"
+      description: "Create a new security subject"
+      operationId: createSubject
+      parameters:
+        - $ref: "#/components/parameters/subject"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSubject"
+      responses:
+        "200":
+          description: "Subject created"
+        "400":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+components:
+  parameters:
+    subject:
+      in: path
+      name: subject
+      required: true
+      schema:
+        $ref: "#/components/schemas/Subject"
+  schemas:
+    Subject:
+      type: string
+    Query:
+      type: string
+    Version:
+      type: string
+      enum:
+        - "0.0.1"
+    CreateSubject:
+      type: object
+      properties:
+        query:
+          $ref: "#/components/schemas/Query"
+        version:
+          $ref: "#/components/schemas/Version"
+      required:
+        - version
+        - query
