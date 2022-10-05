@@ -65,21 +65,13 @@ paths:
       summary: "Revoke permissions"
       description: "Revoke permissions of a subject"
       operationId: revokePermissions
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RevokePermission"
       parameters:
         - $ref: "#/components/parameters/subject"
+        - $ref: "#/components/parameters/resource"
+        - $ref: "#/components/parameters/permission"
       responses:
         "200":
-          description: "A permission description for a subject"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PermissionDescription"
+          description: "Permission was revoked."
         "400":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "500":
@@ -92,6 +84,18 @@ components:
       required: true
       schema:
         $ref: "#/components/schemas/Subject"
+    resource:
+      in: query
+      name: resource
+      required: true
+      schema:
+        $ref: "#/components/schemas/Resource"
+    permission:
+      in: query
+      name: permission
+      required: true
+      schema:
+        $ref: "#/components/schemas/Permission"
   schemas:
     Subject:
       type: string
@@ -132,13 +136,3 @@ components:
       required:
         - permission
         - resourceName
-    RevokePermission:
-      type: object
-      properties:
-        permission:
-          $ref: "#/components/schemas/Permission"
-        resource:
-          $ref: "#/components/schemas/Resource"
-      required:
-        - permission
-        - resource
