@@ -27,26 +27,28 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "503":
           $ref: "#/components/responses/serviceUnavailable"
-    # post:
-    #   tags:
-    #     - metric
-    #   summary: "Instant query at a single point in time"
-    #   description: "The endpoint evaluates an instant query at a single point in time"
-    #   operationId: postInstantQuery
-    #   requestBody:
-    #     content:
-    #       application/x-www-form-urlencoded:
-    #         schema:
-    #           $ref: "prometheus.api.yaml#/components/schemas/PromQueryRequest"
-    #   responses:
-    #     "201": 
-    #       $ref: "#/components/responses/successEnvelope"
-    #     "400":
-    #       $ref: "#/components/responses/invalidParameters"
-    #     "422":
-    #       $ref: "#/components/responses/unprocessableEntity"
-    #     "503":
-    #       $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    post:
+      tags:
+        - metric
+      summary: "Instant query at a single point in time"
+      description: "The endpoint evaluates an instant query at a single point in time"
+      operationId: postInstantQuery
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "prometheus.api.yaml#/components/schemas/PromQueryRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/successEnvelope"
+        "400":
+          $ref: "#/components/responses/invalidParameters"
+        "422":
+          $ref: "#/components/responses/unprocessableEntity"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailable"
   /metrics/query_range:
     get:
       tags:
@@ -71,26 +73,28 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "503":
           $ref: "#/components/responses/serviceUnavailable"
-    # post:
-    #   tags:
-    #     - metric
-    #   summary: "Query over a range of time"
-    #   description: "The endpoint evaluates an expression query over a range of time"
-    #   operationId: postRangeQuery
-    #   requestBody:
-    #     content:
-    #       application/x-www-form-urlencoded:
-    #         schema:
-    #           $ref: "prometheus.api.yaml#/components/schemas/PromQueryRangeRequest"
-    #   responses:
-    #     "201": 
-    #       $ref: "#/components/responses/successEnvelope"
-    #     "400":
-    #       $ref: "#/components/responses/invalidParameters"
-    #     "422":
-    #       $ref: "#/components/responses/unprocessableEntity"
-    #     "503":
-    #       $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    post:
+      tags:
+        - metric
+      summary: "Query over a range of time"
+      description: "The endpoint evaluates an expression query over a range of time"
+      operationId: postRangeQuery
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "prometheus.api.yaml#/components/schemas/PromQueryRangeRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/successEnvelope"
+        "400":
+          $ref: "#/components/responses/invalidParameters"
+        "422":
+          $ref: "#/components/responses/unprocessableEntity"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailable"
   /metrics/query_exemplars:
     get:
       tags:
@@ -113,26 +117,28 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "503":
           $ref: "#/components/responses/serviceUnavailableExemplar"
-    # post:
-    #   tags:
-    #     - metric
-    #   summary: "Experimental: Exemplars for a specific time range"
-    #   description: "Experimental: The returns a list of exemplars for a valid PromQL query for a specific time range"
-    #   operationId: postExemplarsQuery
-    #   requestBody:
-    #     content:
-    #       application/x-www-form-urlencoded:
-    #         schema:
-    #           $ref: "prometheus.api.yaml#/components/schemas/PromQueryExemplarRequest"
-    #   responses:
-    #     "201": 
-    #       $ref: "#/components/responses/successExemplarEnvelope"
-    #     "400":
-    #       $ref: "#/components/responses/invalidParameters"
-    #     "422":
-    #       $ref: "#/components/responses/unprocessableEntity"
-    #     "503":
-    #       $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    post:
+      tags:
+        - metric
+      summary: "Experimental: Exemplars for a specific time range"
+      description: "Experimental: The returns a list of exemplars for a valid PromQL query for a specific time range"
+      operationId: postExemplarsQuery
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "prometheus.api.yaml#/components/schemas/PromQueryExemplarRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/successExemplarEnvelope"
+        "400":
+          $ref: "#/components/responses/invalidParametersExemplar"
+        "422":
+          $ref: "#/components/responses/unprocessableEntityExemplar"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailableExemplar"
 components:
   parameters:
     query:
