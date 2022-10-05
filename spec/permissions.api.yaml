@@ -54,11 +54,7 @@ paths:
         - $ref: "#/components/parameters/subject"
       responses:
         "200":
-          description: "A permission description for a subject"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PermissionDescription"
+          description: "Permission was granted."
         "400":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "500":
