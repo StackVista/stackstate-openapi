@@ -29,6 +29,8 @@ paths:
       operationId: describePermissions
       parameters:
         - $ref: "#/components/parameters/subject"
+        - $ref: "#/components/parameters/resource"
+        - $ref: "#/components/parameters/permission"
       responses:
         "200":
           description: "A permission description for a subject"
@@ -80,20 +82,18 @@ components:
   parameters:
     subject:
       in: path
-      name: subject
       required: true
+      name: subject
       schema:
         $ref: "#/components/schemas/Subject"
     resource:
       in: query
       name: resource
-      required: true
       schema:
         $ref: "#/components/schemas/Resource"
     permission:
       in: query
       name: permission
-      required: true
       schema:
         $ref: "#/components/schemas/Permission"
   schemas:
