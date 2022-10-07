@@ -38,6 +38,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PermissionDescription"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     post:
@@ -59,6 +61,8 @@ paths:
           description: "Permission was granted."
         "400":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     delete:
@@ -75,6 +79,8 @@ paths:
         "200":
           description: "Permission was revoked."
         "400":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "404":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
