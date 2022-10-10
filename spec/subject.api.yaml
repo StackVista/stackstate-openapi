@@ -61,6 +61,22 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    delete:
+      tags:
+        - subject
+      summary: "Delete a subject"
+      description: "Remove a security subject"
+      operationId: deleteSubject
+      parameters:
+        - $ref: "#/components/parameters/subject"
+      responses:
+        "200":
+          description: "Subject deleted"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
 components:
   parameters:
     subject:
