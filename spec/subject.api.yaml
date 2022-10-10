@@ -4,7 +4,42 @@ info:
   title: Subject API
   version: "1.0.0"
 paths:
+  /security/subjects:
+    get:
+      tags:
+        - subject
+      summary: "List subjects"
+      description: "List all subjects and their scopes"
+      operationId: listSubjects
+      responses:
+        "200":
+          description: "Subject list"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubjectList"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /security/subjects/{subject}:
+    get:
+      tags:
+        - subject
+      summary: "Get subject"
+      description: "Describe a subject and its scope"
+      operationId: getSubject
+      parameters:
+        - $ref: "#/components/parameters/subject"
+      responses:
+        "200":
+          description: "Subject config"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubjectConfig"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     put:
       tags:
         - subject
@@ -53,3 +88,16 @@ components:
       required:
         - version
         - query
+    SubjectConfig:
+      type: object
+      properties:
+        handle:
+          $ref: "#/components/schemas/Subject"
+        scopeQuery:
+          $ref: "#/components/schemas/Query"
+      required:
+        - handle
+    SubjectList:
+      type: array
+      items:
+        $ref: "#/components/schemas/SubjectConfig"
