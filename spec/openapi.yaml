@@ -90,6 +90,7 @@ paths:
   /metrics/query_range: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Fquery%5Frange" }
   /metrics/query_exemplars: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Fquery%5Fexemplars" }
   /topic: { $ref: "topic.api.yaml#/paths/%2Ftopic" }
+  /topic/{topic}: { $ref: "topic.api.yaml#/paths/%2Ftopic%2F%7Btopic%7D" }
 security:
   - ApiToken: []
   - ServiceToken: []
