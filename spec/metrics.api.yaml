@@ -121,6 +121,8 @@ paths:
       summary: "List of label values for a provided label name"
       description: "The endpoint returns a list of label values for a provided label name"
       operationId: postLabelValues
+      parameters:
+        - $ref: "#/components/parameters/label"
       requestBody:
         content:
           application/x-www-form-urlencoded:

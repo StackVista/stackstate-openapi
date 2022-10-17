@@ -84,7 +84,7 @@ components:
         end:
           $ref: "#/components/schemas/PromTime"
       required:
-        - query
+        - match[]
         - start
         - end
     PromLabelsRequest:
@@ -99,8 +99,6 @@ components:
     PromLabelValuesRequest:
       type: object
       properties:
-        label:
-          $ref: "#/components/schemas/PromLabel"
         start:
           $ref: "#/components/schemas/PromTime"
         end:
@@ -344,9 +342,7 @@ components:
         status:
           type: string
         data:
-          type: array
-          items:
-            $ref: "#/components/schemas/PromMetadata"
+          $ref: "#/components/schemas/PromMetadata"
         errorType:
           type: string
         error:
@@ -360,8 +356,8 @@ components:
     PromMetadata:
       type: object
       additionalProperties:
-        $ref: '#/components/schemas/PromMetadataObjects'
-    PromMetadataObjects:
-      type: object
-      additionalProperties:
-        type: string
+        type: array
+        items:
+          type: object
+          additionalProperties:
+            type: string
