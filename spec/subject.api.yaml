@@ -92,8 +92,6 @@ components:
       type: string
     Version:
       type: string
-      enum:
-        - "0.0.1"
     CreateSubject:
       type: object
       properties:
