@@ -5,6 +5,182 @@ info:
   version: "0.0.1"
 
 paths:
+  /metrics/metadata:
+    get:
+      tags:
+        - metadata
+      summary: "Metadata about metrics currently scraped from targets"
+      description: "The endpoint returns metadata about metrics currently scraped from targets. However, it does not provide any target information. This is considered experimental and might change in the future"
+      operationId: getMetadata
+      parameters:
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/metric"
+      responses:
+        "200":  
+          $ref: "#/components/responses/successMetadataEnvelope"
+        "400":
+          $ref: "#/components/responses/invalidParametersMetadata"
+        "422":
+          $ref: "#/components/responses/unprocessableEntityMetadata"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailableMetadata"
+    post:
+      tags:
+        - metadata
+      summary: "Metadata about metrics currently scraped from targets"
+      description: "The endpoint returns metadata about metrics currently scraped from targets. However, it does not provide any target information. This is considered experimental and might change in the future"
+      operationId: postMetadata
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "prometheus.api.yaml#/components/schemas/PromMetadataRequest"
+      responses:
+        "200":  
+          $ref: "#/components/responses/successMetadataEnvelope"
+        "400":
+          $ref: "#/components/responses/invalidParametersMetadata"
+        "422":
+          $ref: "#/components/responses/unprocessableEntityMetadata"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailableMetadata"
+  /metrics/labels:
+    get:
+      tags:
+        - labels
+      summary: "List of label names"
+      description: "The endpoint returns a list of label names"
+      operationId: getLabels
+      parameters:
+        - $ref: "#/components/parameters/startOptional"
+        - $ref: "#/components/parameters/endOptional"
+        - $ref: "#/components/parameters/matchOptional"
+      responses:
+        "200":  
+          $ref: "#/components/responses/successLabelEnvelope"
+        "400":
+          $ref: "#/components/responses/invalidParametersLabel"
+        "422":
+          $ref: "#/components/responses/unprocessableEntityLabel"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailableLabel"
+    post:
+      tags:
+        - labels
+      summary: "List of label names"
+      description: "The endpoint returns a list of label names"
+      operationId: postLabels
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "prometheus.api.yaml#/components/schemas/PromLabelsRequest"
+      responses:
+        "200":  
+          $ref: "#/components/responses/successLabelEnvelope"
+        "400":
+          $ref: "#/components/responses/invalidParametersLabel"
+        "422":
+          $ref: "#/components/responses/unprocessableEntityLabel"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailableLabel"
+  /metrics/label/{label}/values:
+    get:
+      tags:
+        - labels
+      summary: "List of label values for a provided label name"
+      description: "The endpoint returns a list of label values for a provided label name"
+      operationId: getLabelValues
+      parameters:
+        - $ref: "#/components/parameters/label"
+        - $ref: "#/components/parameters/startOptional"
+        - $ref: "#/components/parameters/endOptional"
+        - $ref: "#/components/parameters/matchOptional"
+      responses:
+        "200":  
+          $ref: "#/components/responses/successLabelEnvelope"
+        "400":
+          $ref: "#/components/responses/invalidParametersLabel"
+        "422":
+          $ref: "#/components/responses/unprocessableEntityLabel"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailableLabel"
+    post:
+      tags:
+        - labels
+      summary: "List of label values for a provided label name"
+      description: "The endpoint returns a list of label values for a provided label name"
+      operationId: postLabelValues
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "prometheus.api.yaml#/components/schemas/PromLabelValuesRequest"
+      responses:
+        "200":  
+          $ref: "#/components/responses/successLabelEnvelope"
+        "400":
+          $ref: "#/components/responses/invalidParametersLabel"
+        "422":
+          $ref: "#/components/responses/unprocessableEntityLabel"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailableLabel"
+  /metrics/series:
+    get:
+      tags:
+        - series
+      summary: "List of time series that match a certain label set"
+      description: "The endpoint returns the list of time series that match a certain label set"
+      operationId: getSeries
+      parameters:
+        - $ref: "#/components/parameters/match"
+        - $ref: "#/components/parameters/start"
+        - $ref: "#/components/parameters/end"
+      responses:
+        "200":  
+          $ref: "#/components/responses/successSeriesEnvelope"
+        "400":
+          $ref: "#/components/responses/invalidParametersSeries"
+        "422":
+          $ref: "#/components/responses/unprocessableEntitySeries"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailableSeries"
+    post:
+      tags:
+        - series
+      summary: "List of time series that match a certain label set"
+      description: "The endpoint returns the list of time series that match a certain label set"
+      operationId: postSeries
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "prometheus.api.yaml#/components/schemas/PromSeriesRequest"
+      responses:
+        "200":  
+          $ref: "#/components/responses/successSeriesEnvelope"
+        "400":
+          $ref: "#/components/responses/invalidParametersSeries"
+        "422":
+          $ref: "#/components/responses/unprocessableEntitySeries"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailableSeries"
   /metrics/query:
     get:
       tags:
@@ -141,6 +317,13 @@ paths:
           $ref: "#/components/responses/serviceUnavailableExemplar"
 components:
   parameters:
+    label:
+      in: path
+      name: label
+      required: true
+      schema:
+        $ref: "prometheus.api.yaml#/components/schemas/PromLabel"
+      description: "Prometheus query label"
     query:
       in: query
       name: query
@@ -187,7 +370,56 @@ components:
         $ref: "prometheus.api.yaml#/components/schemas/PromStep"
       description: Query resolution step width in duration format or float number of seconds.
       example: "5m or 300"
+    match:
+      in: query
+      name: match[]
+      required: true
+      schema:
+        $ref: "prometheus.api.yaml#/components/schemas/PromMatch"
+      description: "Repeated series selector argument that selects the series to return. At least one match[] argument must be provided."
+      example: "process_start_time_seconds{job='prometheus'}"
+    matchOptional:
+      in: query
+      name: match[]
+      required: false
+      schema:
+        $ref: "prometheus.api.yaml#/components/schemas/PromMatchOptional"
+      description: "Repeated series selector argument that selects the series from which to read the label names. Optional."
+      example: "process_start_time_seconds{job='prometheus'}"
+    startOptional:
+      in: query
+      name: start
+      required: false
+      schema:
+        $ref: "prometheus.api.yaml#/components/schemas/PromTime"
+      description: "Start timestamp in rfc3339 format or unix format"
+      example: "2015-07-01T20:10:51.781Z or 1660817432"
+    endOptional:
+      in: query
+      name: end
+      required: false
+      schema:
+        $ref: "prometheus.api.yaml#/components/schemas/PromTime"
+      description: "End timestamp in rfc3339 format or unix format"
+      example: "2015-07-01T20:10:51.781Z or 1660817432"
+    limit:
+      in: query
+      name: limit
+      required: true
+      schema:
+        $ref: "prometheus.api.yaml#/components/schemas/PromLimit"
+      description: "Maximum number of metrics to return."
+      example: "2"
+    metric:
+      in: query
+      name: metric
+      required: false
+      schema:
+        $ref: "prometheus.api.yaml#/components/schemas/PromMetric"
+      description: "A metric name to filter metadata for. All metric metadata is retrieved if left empty."
+      example: "http_requests_total"
   responses:
+    ### Instant/Range Query
     successEnvelope:
       description: "JSON response envelope"
       content:
@@ -212,6 +444,7 @@ components:
         application/json:
           schema:
             $ref: "prometheus.api.yaml#/components/schemas/PromEnvelope"
+    ### Exemplar Query
     successExemplarEnvelope:
       description: "JSON response envelope"
       content:
@@ -236,3 +469,78 @@ components:
         application/json:
           schema:
             $ref: "prometheus.api.yaml#/components/schemas/PromExemplarEnvelope"
+    ### Series
+    successSeriesEnvelope:
+      description: "JSON response envelope for series"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromSeriesEnvelope"
+    invalidParametersSeries:
+      description: "Parameters are missing or incorrect"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromSeriesEnvelope"
+    unprocessableEntitySeries:
+      description: "Expression can't be executed (RFC4918)"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromSeriesEnvelope"
+    serviceUnavailableSeries:
+      description: "When requests time out or abort"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromSeriesEnvelope"
+    ### Label
+    successLabelEnvelope:
+      description: "JSON response envelope for labels"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromLabelsEnvelope"
+    invalidParametersLabel:
+      description: "Parameters are missing or incorrect"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromLabelsEnvelope"
+    unprocessableEntityLabel:
+      description: "Expression can't be executed (RFC4918)"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromLabelsEnvelope"
+    serviceUnavailableLabel:
+      description: "When requests time out or abort"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromLabelsEnvelope"
+    ### Metadata
+    successMetadataEnvelope:
+      description: "JSON response envelope for metadata"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromMetadataEnvelope"
+    invalidParametersMetadata:
+      description: "Parameters are missing or incorrect"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromMetadataEnvelope"
+    unprocessableEntityMetadata:
+      description: "Expression can't be executed (RFC4918)"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromMetadataEnvelope"
+    serviceUnavailableMetadata:
+      description: "When requests time out or abort"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromMetadataEnvelope"

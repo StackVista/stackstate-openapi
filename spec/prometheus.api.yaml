@@ -16,6 +16,22 @@ components:
     PromStep:
       type: string
       pattern: '(^((([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?|0)$)|(^[0-9]+$)'
+    PromMatch:
+      type: array
+      items:
+        type: string
+      minItems: 1
+    PromMatchOptional:
+      type: array
+      items:
+        type: string
+    PromLabel:
+      type: string
+    PromMetric:
+      type: string
+    PromLimit:
+      type: integer
+      format: int64
     PromQueryRequest:
       type: object
       properties:
@@ -58,6 +74,50 @@ components:
         - query
         - start
         - end
+    PromSeriesRequest:
+      type: object
+      properties:
+        match[]:
+          $ref: "#/components/schemas/PromMatch"
+        start:
+          $ref: "#/components/schemas/PromTime"
+        end:
+          $ref: "#/components/schemas/PromTime"
+      required:
+        - query
+        - start
+        - end
+    PromLabelsRequest:
+      type: object
+      properties:
+        start:
+          $ref: "#/components/schemas/PromTime"
+        end:
+          $ref: "#/components/schemas/PromTime"
+        match[]:
+          $ref: "#/components/schemas/PromMatchOptional"
+    PromLabelValuesRequest:
+      type: object
+      properties:
+        label:
+          $ref: "#/components/schemas/PromLabel"
+        start:
+          $ref: "#/components/schemas/PromTime"
+        end:
+          $ref: "#/components/schemas/PromTime"
+        match[]:
+          $ref: "#/components/schemas/PromMatchOptional"
+      required:
+          - label
+    PromMetadataRequest:
+      type: object
+      properties:
+        limit:
+          $ref: "#/components/schemas/PromLimit"
+        metric:
+          $ref: "#/components/schemas/PromMetric"
+      required:
+          - limit
     PromEnvelope:
       type: object
       properties:
@@ -238,3 +298,70 @@ components:
         - labels
         - value
         - timestamp
+    PromSeriesEnvelope:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: string
+        errorType:
+          type: string
+        error:
+          type: string
+        warnings:
+          type: array
+          items:
+            type: "string"
+      required:
+        - status
+    PromLabelsEnvelope:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            type: string
+        errorType:
+          type: string
+        error:
+          type: string
+        warnings:
+          type: array
+          items:
+            type: "string"
+      required:
+        - status
+    PromMetadataEnvelope:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/PromMetadata"
+        errorType:
+          type: string
+        error:
+          type: string
+        warnings:
+          type: array
+          items:
+            type: "string"
+      required:
+        - status
+    PromMetadata:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/PromMetadataObjects'
+    PromMetadataObjects:
+      type: object
+      additionalProperties:
+        type: string

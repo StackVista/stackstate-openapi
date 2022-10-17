@@ -90,6 +90,10 @@ paths:
   /metrics/query: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Fquery" }
   /metrics/query_range: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Fquery%5Frange" }
   /metrics/query_exemplars: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Fquery%5Fexemplars" }
+  /metrics/labels: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Flabels" }
+  /metrics/label/{label}/values: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Flabel%2F%7Blabel%7D%2Fvalues" }
+  /metrics/series: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Fseries" }
+  /metrics/metadata: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Fmetadata" }
   /topic: { $ref: "topic.api.yaml#/paths/%2Ftopic" }
   /topic/{topic}: { $ref: "topic.api.yaml#/paths/%2Ftopic%2F%7Btopic%7D" }
 security:
