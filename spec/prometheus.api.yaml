@@ -73,14 +73,14 @@ components:
     PromSeriesRequest:
       type: object
       properties:
-        match[]:
+        match:
           $ref: "#/components/schemas/PromMatch"
         start:
           $ref: "#/components/schemas/PromTime"
         end:
           $ref: "#/components/schemas/PromTime"
       required:
-        - match[]
+        - match
         - start
         - end
     PromLabelsRequest:
@@ -90,7 +90,7 @@ components:
           $ref: "#/components/schemas/PromTime"
         end:
           $ref: "#/components/schemas/PromTime"
-        match[]:
+        match:
           $ref: "#/components/schemas/PromMatch"
     PromLabelValuesRequest:
       type: object
@@ -99,7 +99,7 @@ components:
           $ref: "#/components/schemas/PromTime"
         end:
           $ref: "#/components/schemas/PromTime"
-        match[]:
+        match:
           $ref: "#/components/schemas/PromMatch"
     PromMetadataRequest:
       type: object
