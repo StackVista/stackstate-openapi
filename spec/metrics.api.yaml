@@ -385,7 +385,7 @@ components:
       name: match[]
       required: false
       schema:
-        $ref: "prometheus.api.yaml#/components/schemas/PromMatchOptional"
+        $ref: "prometheus.api.yaml#/components/schemas/PromMatch"
       description: "Repeated series selector argument that selects the series from which to read the label names. Optional."
       example: "process_start_time_seconds{job='prometheus'}"
     startOptional:
