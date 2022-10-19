@@ -461,7 +461,6 @@ components:
         eventType:
           type: string
       required:
-        - _type
         - title
         - eventId
         - eventTimestamp

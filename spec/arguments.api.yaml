@@ -608,7 +608,6 @@ components:
           type: string
       required:
         - _type
-        - function
         - parameter
         - script
     SimpleTrainingPeriodicity:
