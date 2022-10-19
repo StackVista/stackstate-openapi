@@ -8,7 +8,7 @@ paths:
   /metrics/metadata:
     get:
       tags:
-        - metadata
+        - metric
       summary: "Metadata about metrics currently scraped from targets"
       description: "The endpoint returns metadata about metrics currently scraped from targets. However, it does not provide any target information. This is considered experimental and might change in the future"
       operationId: getMetadata
@@ -28,7 +28,7 @@ paths:
           $ref: "#/components/responses/serviceUnavailableMetadata"
     post:
       tags:
-        - metadata
+        - metric
       summary: "Metadata about metrics currently scraped from targets"
       description: "The endpoint returns metadata about metrics currently scraped from targets. However, it does not provide any target information. This is considered experimental and might change in the future"
       operationId: postMetadata
@@ -51,7 +51,7 @@ paths:
   /metrics/labels:
     get:
       tags:
-        - labels
+        - metric
       summary: "List of label names"
       description: "The endpoint returns a list of label names"
       operationId: getLabels
@@ -72,7 +72,7 @@ paths:
           $ref: "#/components/responses/serviceUnavailableLabel"
     post:
       tags:
-        - labels
+        - metric
       summary: "List of label names"
       description: "The endpoint returns a list of label names"
       operationId: postLabels
@@ -95,7 +95,7 @@ paths:
   /metrics/label/{label}/values:
     get:
       tags:
-        - labels
+        - metric
       summary: "List of label values for a provided label name"
       description: "The endpoint returns a list of label values for a provided label name"
       operationId: getLabelValues
@@ -117,7 +117,7 @@ paths:
           $ref: "#/components/responses/serviceUnavailableLabel"
     post:
       tags:
-        - labels
+        - metric
       summary: "List of label values for a provided label name"
       description: "The endpoint returns a list of label values for a provided label name"
       operationId: postLabelValues
@@ -142,7 +142,7 @@ paths:
   /metrics/series:
     get:
       tags:
-        - series
+        - metric
       summary: "List of time series that match a certain label set"
       description: "The endpoint returns the list of time series that match a certain label set"
       operationId: getSeries
@@ -163,7 +163,7 @@ paths:
           $ref: "#/components/responses/serviceUnavailableSeries"
     post:
       tags:
-        - series
+        - metric
       summary: "List of time series that match a certain label set"
       description: "The endpoint returns the list of time series that match a certain label set"
       operationId: postSeries
