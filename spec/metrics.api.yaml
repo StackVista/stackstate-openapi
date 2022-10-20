@@ -376,6 +376,7 @@ components:
       in: query
       name: match[]
       required: true
+      explode: true
       schema:
         $ref: "prometheus.api.yaml#/components/schemas/PromMatch"
       description: "Repeated series selector argument that selects the series to return. At least one match[] argument must be provided."
@@ -384,6 +385,7 @@ components:
       in: query
       name: match[]
       required: false
+      explode: true
       schema:
         $ref: "prometheus.api.yaml#/components/schemas/PromMatch"
       description: "Repeated series selector argument that selects the series from which to read the label names. Optional."
