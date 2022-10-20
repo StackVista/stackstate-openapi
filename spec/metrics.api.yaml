@@ -81,6 +81,10 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: "prometheus.api.yaml#/components/schemas/PromLabelsRequest"
+            encoding:
+              match[]:
+                style: form
+                explode: true
       responses:
         "200":  
           $ref: "#/components/responses/successLabelEnvelope"
@@ -128,6 +132,10 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: "prometheus.api.yaml#/components/schemas/PromLabelValuesRequest"
+            encoding:
+              match[]:
+                style: form
+                explode: true
       responses:
         "200":  
           $ref: "#/components/responses/successLabelEnvelope"
@@ -172,6 +180,10 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: "prometheus.api.yaml#/components/schemas/PromSeriesRequest"
+            encoding:
+              match[]:
+                style: form
+                explode: true
       responses:
         "200":  
           $ref: "#/components/responses/successSeriesEnvelope"
