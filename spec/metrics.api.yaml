@@ -13,8 +13,8 @@ paths:
       description: "The endpoint returns metadata about metrics currently scraped from targets. However, it does not provide any target information. This is considered experimental and might change in the future"
       operationId: getMetadata
       parameters:
-        - $ref: "#/components/parameters/limit"
-        - $ref: "#/components/parameters/metric"
+        - $ref: "#/components/parameters/limitOptional"
+        - $ref: "#/components/parameters/metricOptional"
       responses:
         "200":  
           $ref: "#/components/responses/successMetadataEnvelope"
@@ -156,8 +156,8 @@ paths:
       operationId: getSeries
       parameters:
         - $ref: "#/components/parameters/match"
-        - $ref: "#/components/parameters/start"
-        - $ref: "#/components/parameters/end"
+        - $ref: "#/components/parameters/startOptional"
+        - $ref: "#/components/parameters/endOptional"
       responses:
         "200":  
           $ref: "#/components/responses/successSeriesEnvelope"
@@ -294,8 +294,8 @@ paths:
       operationId: getExemplarsQuery
       parameters:
         - $ref: "#/components/parameters/query"
-        - $ref: "#/components/parameters/start"
-        - $ref: "#/components/parameters/end"
+        - $ref: "#/components/parameters/startOptional"
+        - $ref: "#/components/parameters/endOptional"
       responses:
         "200":
           $ref: "#/components/responses/successExemplarEnvelope"
@@ -418,15 +418,15 @@ components:
         $ref: "prometheus.api.yaml#/components/schemas/PromTime"
       description: "End timestamp in rfc3339 format or unix format"
       example: "2015-07-01T20:10:51.781Z or 1660817432"
-    limit:
+    limitOptional:
       in: query
       name: limit
-      required: true
+      required: false
       schema:
         $ref: "prometheus.api.yaml#/components/schemas/PromLimit"
       description: "Maximum number of metrics to return."
       example: "2"
-    metric:
+    metricOptional:
       in: query
       name: metric
       required: false

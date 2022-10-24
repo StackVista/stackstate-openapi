@@ -68,8 +68,6 @@ components:
           $ref: "#/components/schemas/PromTime"
       required:
         - query
-        - start
-        - end
     PromSeriesRequest:
       type: object
       properties:
@@ -81,8 +79,6 @@ components:
           $ref: "#/components/schemas/PromTime"
       required:
         - match[]
-        - start
-        - end
     PromLabelsRequest:
       type: object
       properties:
@@ -108,8 +104,6 @@ components:
           $ref: "#/components/schemas/PromLimit"
         metric:
           $ref: "#/components/schemas/PromMetric"
-      required:
-          - limit
     PromEnvelope:
       type: object
       properties:
