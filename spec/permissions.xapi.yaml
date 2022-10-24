@@ -1,0 +1,144 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Permissions API
+  version: "1.0.0"
+paths:
+  /security/permissions/list:
+    get:
+      tags:
+        - permissions
+      summary: "List permissions"
+      description: "Get a list of available permissions"
+      operationId: getPermissions
+      responses:
+        "200":
+          description: "A list of permissions"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Permissions"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /security/permissions/{subject}:
+    get:
+      tags:
+        - permissions
+      summary: "Describe permissions"
+      description: "Describe permissions granted to a subject"
+      operationId: describePermissions
+      parameters:
+        - $ref: "#/components/parameters/subject"
+        - $ref: "#/components/parameters/resource"
+        - $ref: "#/components/parameters/permission"
+      responses:
+        "200":
+          description: "A permission description for a subject"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PermissionDescription"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    post:
+      tags:
+        - permissions
+      summary: "Grant permissions"
+      description: "Grant permissions to a subject"
+      operationId: grantPermissions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GrantPermission"
+      parameters:
+        - $ref: "#/components/parameters/subject"
+      responses:
+        "200":
+          description: "Permission was granted."
+        "400":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    delete:
+      tags:
+        - permissions
+      summary: "Revoke permissions"
+      description: "Revoke permissions of a subject"
+      operationId: revokePermissions
+      parameters:
+        - $ref: "#/components/parameters/subject"
+        - $ref: "#/components/parameters/resource"
+        - $ref: "#/components/parameters/permission"
+      responses:
+        "200":
+          description: "Permission was revoked."
+        "400":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+components:
+  parameters:
+    subject:
+      in: path
+      required: true
+      name: subject
+      schema:
+        $ref: "#/components/schemas/Subject"
+    resource:
+      in: query
+      name: resource
+      schema:
+        $ref: "#/components/schemas/Resource"
+    permission:
+      in: query
+      name: permission
+      schema:
+        $ref: "#/components/schemas/Permission"
+  schemas:
+    Subject:
+      type: string
+    Resource:
+      type: string
+    Permission:
+      type: string
+    PermissionList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Permission"
+    Permissions:
+      type: object
+      properties:
+        permissions:
+          $ref: "#/components/schemas/PermissionList"
+      required:
+        - permissions
+    PermissionDescription:
+      type: object
+      properties:
+        subjectHandle:
+          $ref: "#/components/schemas/Subject"
+        permissions:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/PermissionList"
+      required:
+        - subjectHandle
+        - permissions
+    GrantPermission:
+      type: object
+      properties:
+        permission:
+          $ref: "#/components/schemas/Permission"
+        resourceName:
+          $ref: "#/components/schemas/Resource"
+      required:
+        - permission
+        - resourceName

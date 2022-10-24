@@ -311,7 +311,6 @@ components:
           $ref: "health_sync_service_api.yaml#/components/schemas/TopologyMatchResult"
       required:
         - monitor
-        - status
         - metrics
 
     BaseMonitorError:
@@ -332,7 +331,7 @@ components:
         _type:
           type: string
           enum:
-            - InvalidMonitorIdentifier
+            - InvalidMonitorIdentifierError
       required:
         - monitorIdOrUrn
         - _type
@@ -357,6 +356,8 @@ components:
           type: integer
         _type:
           type: string
+          enum:
+            - MonitorInvalidIntervalError
       required:
         - intervalSeconds
         - _type

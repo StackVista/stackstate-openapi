@@ -1,0 +1,117 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Subject API
+  version: "1.0.0"
+paths:
+  /security/subjects:
+    get:
+      tags:
+        - subject
+      summary: "List subjects"
+      description: "List all subjects and their scopes"
+      operationId: listSubjects
+      responses:
+        "200":
+          description: "Subject list"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubjectList"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /security/subjects/{subject}:
+    get:
+      tags:
+        - subject
+      summary: "Get subject"
+      description: "Describe a subject and its scope"
+      operationId: getSubject
+      parameters:
+        - $ref: "#/components/parameters/subject"
+      responses:
+        "200":
+          description: "Subject config"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubjectConfig"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    put:
+      tags:
+        - subject
+      summary: "Create a subject"
+      description: "Create a new security subject"
+      operationId: createSubject
+      parameters:
+        - $ref: "#/components/parameters/subject"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSubject"
+      responses:
+        "200":
+          description: "Subject created"
+        "400":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    delete:
+      tags:
+        - subject
+      summary: "Delete a subject"
+      description: "Remove a security subject"
+      operationId: deleteSubject
+      parameters:
+        - $ref: "#/components/parameters/subject"
+      responses:
+        "200":
+          description: "Subject deleted"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
+components:
+  parameters:
+    subject:
+      in: path
+      name: subject
+      required: true
+      schema:
+        $ref: "#/components/schemas/Subject"
+  schemas:
+    Subject:
+      type: string
+    Query:
+      type: string
+    Version:
+      type: string
+    CreateSubject:
+      type: object
+      properties:
+        query:
+          $ref: "#/components/schemas/Query"
+        version:
+          $ref: "#/components/schemas/Version"
+      required:
+        - version
+        - query
+    SubjectConfig:
+      type: object
+      properties:
+        handle:
+          $ref: "#/components/schemas/Subject"
+        scopeQuery:
+          $ref: "#/components/schemas/Query"
+      required:
+        - handle
+    SubjectList:
+      type: array
+      items:
+        $ref: "#/components/schemas/SubjectConfig"

@@ -1,0 +1,141 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Retention API
+  version: "1.0.0"
+paths:
+  /retention/window:
+    get:
+      tags:
+        - retention
+      summary: "Get retention window"
+      description: "Get StackGraph retention window."
+      operationId: getRetentionWindow
+      responses:
+        "200":
+          description: "Currently set retention window."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WindowMs"
+        "409":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    post:
+      tags:
+        - retention
+      summary: "Set retention window"
+      description: "Set StackGraph retention window and optionally schedule data removal."
+      operationId: setRetentionWindow
+      parameters:
+        - $ref: "#/components/parameters/scheduleRemoval"
+      requestBody:
+        description: "The new retention window value."
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WindowMs"
+      responses:
+        "200":
+          description: "Currently set retention window."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WindowMs"
+        "409":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
+  /retention/currentEpoch:
+    get:
+      tags:
+        - retention
+      summary: "Get retention epoch"
+      description: "Get StackGraph retention epoch."
+      operationId: getRetentionEpoch
+      responses:
+        "200":
+          description: "Currently set retention transaction epoch."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EpochTx"
+        "409":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
+  /retention/removeExpiredData:
+    post:
+      tags:
+        - retention
+      summary: "Remove expired data from StackGraph"
+      description: "Either schedule removal or immediately remove expired data from StackGraph"
+      operationId: removeExpiredData
+      parameters:
+        - $ref: "#/components/parameters/immediately"
+      responses:
+        "200":
+          description: "Removal progress."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RemovalProgress"
+        "409":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
+components:
+  schemas:
+    WindowMs:
+      type: object
+      properties:
+        windowMs:
+          type: integer
+          format: int64
+      required:
+        - windowMs
+
+    EpochTx:
+      type: object
+      properties:
+        epochTx:
+          type: integer
+          format: int64
+      required:
+        - epochTx
+
+    RemovalProgress:
+      type: object
+      properties:
+        progress:
+          type: object
+          properties:
+            _type:
+              type: string
+              enum:
+                - RemovalInProgress
+                - RemovalSucceeded
+                - RemovalFailed
+          required:
+            - _type
+      required:
+        - progress
+  parameters:
+    scheduleRemoval:
+      in: query
+      name: scheduleRemoval
+      schema:
+        type: boolean
+      description: "If set, makes StackState schedule removal of expired data according to the set retention window."
+
+    immediately:
+      in: query
+      name: expireImmediatelyAndRestart
+      schema:
+        type: boolean
+      description: "If set, makes StackState remove expired data immediately and restart afterwards."

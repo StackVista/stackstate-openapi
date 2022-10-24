@@ -25,11 +25,7 @@ paths:
       tags:
         - node
       parameters:
-        - in: path
-          name: nodeType
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/nodeType"
         - in: query
           name: namespace
           required: false
@@ -52,7 +48,64 @@ paths:
                 $ref: "#/components/schemas/NodeList"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /node/{nodeType}/{nodeId}:
+    delete:
+      tags:
+        - node
+      parameters:
+        - $ref: "#/components/parameters/nodeType"
+        - $ref: "#/components/parameters/nodeId"
+        - in: query
+          name: timeoutSeconds
+          schema:
+            type: integer
+            format: int64
+      summary: "Node deletion API"
+      description: "Delete a locked node"
+      operationId: delete
+      responses:
+        "200":
+          description: "Node deleted"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /node/{nodeType}/{nodeId}/unlock:
+    post:
+      tags:
+        - node
+      parameters:
+        - $ref: "#/components/parameters/nodeType"
+        - $ref: "#/components/parameters/nodeId"
+      summary: "Node unlock API"
+      description: "Unlock a locked node"
+      operationId: unlock
+      responses:
+        "200":
+          description: "Unlocked node"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Node"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
 components:
+  parameters:
+    nodeType:
+      in: path
+      name: nodeType
+      required: true
+      schema:
+        type: string
+    nodeId:
+      in: path
+      name: nodeId
+      required: true
+      schema:
+        type: integer
+        format: int64
+
   schemas:
 
     NodeTypes:

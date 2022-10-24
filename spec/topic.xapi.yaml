@@ -1,0 +1,112 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Topic API
+  version: "1.0.0"
+paths:
+  /topic:
+    get:
+      tags:
+        - topic
+      summary: "List topics"
+      description: "List all Kafka topics available in StackState"
+      operationId: list
+      responses:
+        "200":
+          description: "Topic list"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TopicList"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /topic/{topic}:
+    get:
+      tags:
+        - topic
+      summary: "Describe a topic"
+      description: "List Kafka messages on the topic of choice"
+      operationId: describe
+      parameters:
+        - $ref: "#/components/parameters/topic"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+        - $ref: "#/components/parameters/partition"
+      responses:
+        "200":
+          description: "Message list"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Messages"
+        "400":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "404":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
+components:
+  parameters:
+    topic:
+      in: path
+      name: topic
+      required: true
+      schema:
+        $ref: "#/components/schemas/TopicName"
+    limit:
+      in: query
+      name: limit
+      schema:
+        type: integer
+    offset:
+      in: query
+      name: offset
+      schema:
+        type: integer
+    partition:
+      in: query
+      name: partition
+      schema:
+        type: integer
+  schemas:
+    TopicName:
+      type: string
+    Topic:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/TopicName"
+      required:
+        - name
+    TopicList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Topic"
+    Message:
+      type: object
+      properties:
+        key:
+          type: string
+        partition:
+          type: integer
+        offset:
+          type: integer
+        message:
+          type: object
+      required:
+        - key
+        - partition
+        - offset
+        - message
+    MessageList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Message"
+    Messages:
+      type: object
+      properties:
+        messages:
+          $ref: "#/components/schemas/MessageList"
+      required:
+        - messages
