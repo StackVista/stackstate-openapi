@@ -50,7 +50,7 @@ paths:
         "200":
           $ref: "#/components/responses/monitor"
         "400":
-          $ref: "#/components/responses/monitorSaveError"
+          $ref: "#/components/responses/monitorValidationError"
         "404":
           $ref: "#/components/responses/monitorNotFoundError"
         "500":
@@ -113,6 +113,19 @@ paths:
         "500":
           $ref: "#/components/responses/monitorApiError"
 
+  /monitors/overview:
+    get:
+      tags:
+        - monitor
+      summary: "List monitors overview"
+      description: "List all available monitor in the system with their function and runtime data"
+      operationId: getMonitorsOverview
+      responses:
+        "200":
+          $ref: "#/components/responses/monitorsOverview"
+        "500":
+          $ref: "#/components/responses/monitorApiError"
+
 components:
   parameters:
     monitorIdOrUrn:
@@ -136,13 +149,18 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MonitorList"
-
     monitor:
       description: "Full representation of a monitor"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/Monitor"
+    monitorsOverview:
+      description: "List of all available monitors with their function and runtime data"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorOverview"
     monitorRunResult:
       description: "Full representation of the result of a monitor run"
       content:
@@ -167,12 +185,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MonitorNotFoundError"
-    monitorSaveError:
-      description: "monitor could not be saved in the database"
+    monitorValidationError:
+      description: "monitor request has errors"
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/MonitorSaveError"
+            $ref: "#/components/schemas/MonitorValidationError"
     monitorApiError:
       description: "container for all error response"
       content:
@@ -214,6 +232,16 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Monitor"
+      required:
+        - monitors
+
+    MonitorOverview:
+      type: object
+      properties:
+        monitors:
+          type: array
+          items:
+            $ref: "#/components/schemas/MonitorStatus"
       required:
         - monitors
 
@@ -259,6 +287,27 @@ components:
         - status
         - lastUpdateTimestamp
 
+    MonitorFunction:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        identifier:
+          type: string
+        description:
+          type: string
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+
+      required:
+        - id
+        - name
+        - lastUpdateTimestamp
+
     MonitorPatch:
       type: object
       properties:
@@ -279,7 +328,7 @@ components:
         status:
           $ref: "#/components/schemas/MonitorStatusValue"
 
-    MonitorSaveError:
+    MonitorValidationError:
       discriminator:
         propertyName: _type
       oneOf:
@@ -301,6 +350,8 @@ components:
       properties:
         monitor:
           $ref: "#/components/schemas/Monitor"
+        function:
+          $ref: "#/components/schemas/MonitorFunction"
         errors:
           $ref: "#/components/schemas/MonitorErrors"
         metrics:
@@ -311,6 +362,7 @@ components:
           $ref: "health_sync_service_api.yaml#/components/schemas/TopologyMatchResult"
       required:
         - monitor
+        - function
         - metrics
 
     BaseMonitorError:
