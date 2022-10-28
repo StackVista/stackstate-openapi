@@ -97,6 +97,7 @@ paths:
   /metrics/metadata: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Fmetadata" }
   /topic: { $ref: "topic.xapi.yaml#/paths/%2Ftopic" }
   /topic/{topic}: { $ref: "topic.xapi.yaml#/paths/%2Ftopic%2F%7Btopic%7D" }
+  /warnings: { $ref: "warnings.api.yaml#/paths/%2Fwarnings" }
 security:
   - ApiToken: []
   - ServiceToken: []

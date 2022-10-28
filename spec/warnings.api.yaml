@@ -1,0 +1,61 @@
+openapi: 3.0.3
+info:
+  title: warnings API
+  version: "1.0.0"
+paths:
+  /warnings:
+    get:
+      tags:
+        - warning
+      summary: "Sends the status of the system"
+      description: "Sends the status of the system"
+      operationId: getAllTheWarnings
+      responses:
+        "200":
+          $ref: "#/components/responses/warnings"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+components:
+  responses:
+    warnings: 
+      description: "List of all warnings in the system"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/WarningList"
+    warningsApiError:
+      description: "container for all error response"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/WarningsApiError"
+  schemas:
+    WarningList:
+      type: object
+      properties:
+        warnings:
+          type: array
+          items:
+            $ref: "#/components/schemas/Warning"
+      required:
+        - warnings
+    Warning:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - ReceiverRateLimit
+            - StackgraphStorageLimit
+            - ElasticSearchStorageLimit
+        level:
+          type: string
+          enum:
+            - Warning
+            - Critical
+        message:
+          type: string
+      required:
+        - type
+        - level
+        - message
