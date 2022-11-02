@@ -9,7 +9,7 @@ paths:
       tags:
         - stackpack
       summary: "StackPack API"
-      operationId: stackpackUpload
+      operationId: stackPackUpload
       description: "upload a StackPack"
       requestBody:
         content:
@@ -37,7 +37,7 @@ paths:
       tags:
         - stackpack
       summary: "StackPack API"
-      operationId: stackpackList
+      operationId: stackPackList
       description: "list of stackpack"
       responses:
         "200":
@@ -45,7 +45,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StackpackList"
+                $ref: "#/components/schemas/StackPackList"
         "400":
           description: "bad request"
           content:
@@ -56,12 +56,12 @@ paths:
                   type: string
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-  /stackpack/{stackName}/provision:
+  /stackpack/{stackPackName}/provision:
     post:
       tags:
         - stackpack
       parameters:
-        - $ref: "#/components/parameters/stackName"
+        - $ref: "#/components/parameters/stackPackName"
       summary: "Provision API"
       operationId: provisionDetails
       description: "Provision details"
@@ -81,22 +81,13 @@ paths:
                 $ref: "#/components/schemas/ProvisionResponse"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-  /stackpack/{stackName}/deprovision/{stackId}:
+  /stackpack/{stackPackName}/deprovision/{stackPackInstanceId}:
     post:
       tags:
         - stackpack
       parameters:
-        - in: path
-          name: stackName
-          required: true
-          schema:
-            type: string
-        - in: path
-          name: stackId
-          required: true
-          schema:
-            type: integer
-            format: int64
+        - $ref: "#/components/parameters/stackPackName"
+        - $ref: "#/components/parameters/stackPackInstanceId"
       summary: "Provision API"
       operationId: provisionUninstall
       description: "Provision details"
@@ -118,16 +109,12 @@ paths:
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 
-  /stackpack/{stackName}/upgrade:
+  /stackpack/{stackPackName}/upgrade:
     post:
       tags:
         - stackpack
       parameters:
-        - in: path
-          name: stackName
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/stackPackName"
         - in: query
           name: unlocked
           allowReserved: true
@@ -146,22 +133,13 @@ paths:
                 type: string
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-  /stackpack/{stackpackName}/confirm-manual-steps/{stackpackInstanceId}:
+  /stackpack/{stackPackName}/confirm-manual-steps/{stackPackInstanceId}:
     post:
       tags:
         - stackpack
       parameters:
-        - in: path
-          name: stackpackName
-          required: true
-          schema:
-            type: string
-        - in: path
-          name: stackpackInstanceId
-          required: true
-          schema:
-            type: integer
-            format: int64
+        - $ref: "#/components/parameters/stackPackName"
+        - $ref: "#/components/parameters/stackPackInstanceId"
       summary: "Confirm manual steps"
       operationId: confirmManualSteps
       description: "Confirm manual steps of the stackpack"
@@ -176,12 +154,19 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
   parameters:
-    stackName:
+    stackPackName:
       in: path
-      name: stackName
+      name: stackPackName
       required: true
       schema:
-        $ref: "#/components/schemas/stackName"
+        type: string
+    stackPackInstanceId:
+      in: path
+      name: stackPackInstanceId
+      required: true
+      schema:
+        type: integer
+        format: int64
 
   schemas:
     StackPackUpload:
@@ -190,6 +175,7 @@ components:
         stackPack:
           type: string
           format: binary
+
     StackPack:
       type: object
       required:
@@ -198,6 +184,8 @@ components:
         - version
         - categories
         - isNew
+        - faqs
+        - configurationUrls
         - releaseStatus
         - isCompatible
       properties:
@@ -224,15 +212,7 @@ components:
         faqs:
           type: array
           items:
-            type: object
-            required:
-              - question
-              - answer
-            properties:
-              question:
-                type: string
-              answer:
-                type: string
+            $ref: "#/components/schemas/FAQ"
         configurationUrls:
           type: array
           items:
@@ -240,15 +220,18 @@ components:
             items:
               type: string
         releaseStatus:
-          type: string
-          enum:
-            - AVAILABLE
-            - ENABLED
-            - COMING_SOON
-            - HIDDEN
-            - BROKEN
+          $ref: "#/components/schemas/ReleaseStatus"
         isCompatible:
           type: boolean
+
+    ReleaseStatus:
+      type: string
+      enum:
+        - AVAILABLE
+        - ENABLED
+        - COMING_SOON
+        - HIDDEN
+        - BROKEN
 
     StackPackStep:
       type: object
@@ -263,13 +246,106 @@ components:
             _type:
               type: string
 
-    StackpackList:
+    StackPackIntegration:
+      type: object
+      required:
+        - name
+        - displayName
+        - categories
+        - isNew
+        - faqs
+      properties:
+        name:
+          type: string
+        displayName:
+          type: string
+        logo:
+          type: string
+        brandIcon:
+          type: string
+        categories:
+          type: array
+          items:
+            type: string
+        isNew:
+          type: boolean
+        overviewUrl:
+          type: string
+        resourceUrl:
+          type: string
+        faqs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FAQ"
+
+    StackPackConfiguration:
+      type: object
+      required:
+        - status
+        - stackPackVersion
+        - config
+      properties:
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        status:
+          type: string
+        error:
+          $ref: "#/components/schemas/StackPackError"
+        stackPackVersion:
+          type: string
+        config:
+          type: object
+
+    StackPackError:
+      type: object
+      required:
+        - retryable
+        - error
+      properties:
+        retryable:
+          type: boolean
+        action:
+          type: string
+        error:
+          type: object
+
+    StackPackList:
       type: array
       items:
-        $ref: "#/components/schemas/Sstackpack"
+        $ref: "#/components/schemas/FullStackPack"
 
-    Sstackpack:
+    FAQ:
       type: object
+      required:
+        - question
+        - answer
+      properties:
+        question:
+          type: string
+        answer:
+          type: string
+
+    FullStackPack:
+      type: object
+      required:
+        - name
+        - displayName
+        - version
+        - categories
+        - isNew
+        - isMultiConfig
+        - faqs
+        - configurationUrls
+        - releaseStatus
+        - steps
+        - integrations
+        - configurations
+        - canUninstall
+        - isCompatible
       properties:
         name:
           type: string
@@ -277,40 +353,59 @@ components:
           type: string
         version:
           type: string
-        configurations:
+        logo:
+          type: string
+        categories:
           type: array
           items:
-            type: object
-            properties:
-              id:
-                type: integer
-                format: int64
-              status:
-                type: string
-              lastUpdateTimestamp:
-                type: integer
-                format: int64
-              stackPackVersion:
-                type: string
-            required:
-              - lastUpdateTimestamp
-        latestVersion:
-          type: object
-          properties:
-            version:
+            type: string
+        isNew:
+          type: boolean
+        isMultiConfig:
+          type: boolean
+        overviewUrl:
+          type: string
+        detailedOverviewUrl:
+          type: string
+        resourcesUrl:
+          type: string
+        faqs:
+          type: array
+          items:
+            $ref: "#/components/schemas/FAQ"
+        configurationUrls:
+          type: array
+          items:
+            type: array
+            items:
               type: string
-        nextVersion:
-          type: object
-          properties:
-            version:
-              type: string
+        releaseStatus:
+          $ref: "#/components/schemas/FAQ"
         steps:
           type: array
           items:
             $ref: "#/components/schemas/StackPackStep"
+        integrations:
+          type: array
+          items:
+            $ref: "#/components/schemas/StackPackIntegration"
+        releaseNotes:
+          type: string
+        upgradeInstructions:
+          type: string
+        configurations:
+          type: array
+          items:
+            $ref: "#/components/schemas/StackPackConfiguration"
+        nextVersion:
+          $ref: "#/components/schemas/FullStackPack"
+        latestVersion:
+          $ref: "#/components/schemas/FullStackPack"
+        canUninstall:
+          type: boolean
+        isCompatible:
+          type: boolean
 
-    stackName:
-      type: string
     ProvisionResponse:
       type: object
       properties:
