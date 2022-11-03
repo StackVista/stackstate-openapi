@@ -160,7 +160,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/MonitorOverview"
+            $ref: "#/components/schemas/MonitorOverviewList"
     monitorRunResult:
       description: "Full representation of the result of a monitor run"
       content:
@@ -235,13 +235,13 @@ components:
       required:
         - monitors
 
-    MonitorOverview:
+    MonitorOverviewList:
       type: object
       properties:
         monitors:
           type: array
           items:
-            $ref: "#/components/schemas/MonitorStatus"
+            $ref: "#/components/schemas/MonitorOverview"
       required:
         - monitors
 
@@ -344,6 +344,17 @@ components:
           type: object
       required:
         - result
+
+    MonitorOverview:
+      type: object
+      properties:
+        monitor:
+          $ref: "#/components/schemas/Monitor"
+        function:
+          $ref: "#/components/schemas/MonitorFunction"
+      required:
+        - monitor
+        - function
 
     MonitorStatus:
       type: object
