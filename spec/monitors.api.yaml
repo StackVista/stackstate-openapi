@@ -225,6 +225,14 @@ components:
         - DISABLED
       description: "If a monitor status is set to DISABLED it won't produce any health states but it can still be run manually to inspect it's output"
 
+    MonitorRuntimeStatusValue:
+      type: string
+      enum:
+        - ENABLED
+        - DISABLED
+        - ERROR
+        - WARNING
+
     MonitorList:
       type: object
       properties:
@@ -273,6 +281,8 @@ components:
             type: string
         status:
           $ref: "#/components/schemas/MonitorStatusValue"
+        runtimeStatus:
+          $ref: "#/components/schemas/MonitorRuntimeStatusValue"
         lastUpdateTimestamp:
           type: integer
           format: int64
@@ -285,6 +295,7 @@ components:
         - intervalSeconds
         - tags
         - status
+        - runtimeStatus
         - lastUpdateTimestamp
 
     MonitorFunction:
@@ -352,6 +363,8 @@ components:
           $ref: "#/components/schemas/Monitor"
         function:
           $ref: "#/components/schemas/MonitorFunction"
+        errors:
+          $ref: "#/components/schemas/MonitorErrors"
       required:
         - monitor
         - function
@@ -449,9 +462,12 @@ components:
           type: string
         count:
           type: integer
+        level:
+          $ref: "generic_error_handling.xapi.yaml#/components/schemas/MessageLevel"
       required:
         - error
         - count
+        - level
     MonitorRuntimeMetrics:
       type: object
       properties:
