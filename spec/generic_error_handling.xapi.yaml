@@ -71,6 +71,6 @@ components:
     MessageLevel:
       type: string
       enum:
-        - Warn
-        - Error
-        - Info
+        - WARN
+        - ERROR
+        - INFO
