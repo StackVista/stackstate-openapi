@@ -365,9 +365,12 @@ components:
           $ref: "#/components/schemas/MonitorFunction"
         errors:
           $ref: "#/components/schemas/MonitorErrors"
+        runtimeMetrics:
+          $ref: "#/components/schemas/MonitorRuntimeMetrics"
       required:
         - monitor
         - function
+        - runtimeMetrics
 
     MonitorStatus:
       type: object
@@ -380,8 +383,6 @@ components:
           $ref: "#/components/schemas/MonitorErrors"
         metrics:
           $ref: "#/components/schemas/MonitorMetrics"
-        monitorHealthStateStateCount:
-          type: integer
         topologyMatchResult:
           $ref: "health_sync_service_api.yaml#/components/schemas/TopologyMatchResult"
       required:
@@ -471,6 +472,12 @@ components:
     MonitorRuntimeMetrics:
       type: object
       properties:
+        healthStatesCount:
+          type: integer
+          description: "Representing the total count of the monitors results."
+        unmappedHealthStatesCount:
+          type: integer
+          description: "Representing the total count of the monitors results that are not mapped to topology/"
         unknownCount:
           type: integer
           description: "Representing the count of the monitors results that are UNKNOWN and are mapped to topology."
