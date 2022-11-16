@@ -68,3 +68,9 @@ components:
         - objectType
         - objectId
         - message
+    MessageLevel:
+      type: string
+      enum:
+        - WARN
+        - ERROR
+        - INFO

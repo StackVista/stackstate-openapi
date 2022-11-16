@@ -57,7 +57,6 @@ components:
         - $ref: "#/components/schemas/ArgumentComponentTypeRef"
         - $ref: "#/components/schemas/ArgumentBaselineMetricStreamRef"
         - $ref: "#/components/schemas/ArgumentRelationTypeRef"
-        - $ref: "#/components/schemas/ArgumentExtTopoRelation"
         - $ref: "#/components/schemas/ArgumentStsEventStreamVal"
         - $ref: "#/components/schemas/ArgumentMetricStreamId"
         - $ref: "#/components/schemas/ArgumentQueryViewRef"
@@ -67,7 +66,6 @@ components:
         - $ref: "#/components/schemas/ArgumentDoubleVal"
         - $ref: "#/components/schemas/ArgumentStateVal"
         - $ref: "#/components/schemas/ArgumentNodeIdVal"
-        - $ref: "#/components/schemas/ArgumentExtTopoComponent"
         - $ref: "#/components/schemas/ArgumentEventStreamRef"
         - $ref: "#/components/schemas/ArgumentPropagatedHealthStateVal"
         - $ref: "#/components/schemas/ArgumentSimpleTrainingPeriodicityVal"
@@ -189,29 +187,6 @@ components:
         - _type
         - parameter
         - stream
-    ArgumentExtTopoComponent:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - ArgumentExtTopoComponent
-        id:
-          type: integer
-          format: int64
-        lastUpdateTimestamp:
-          type: integer
-          format: int64
-        parameter:
-          type: integer
-          format: int64
-        extTopoElement:
-          type: integer
-          format: int64
-      required:
-        - _type
-        - parameter
-        - extTopoElement
     ArgumentNodeIdVal:
       type: object
       properties:
@@ -415,29 +390,6 @@ components:
         - _type
         - parameter
         - filter
-    ArgumentExtTopoRelation:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - ArgumentExtTopoRelation
-        id:
-          type: integer
-          format: int64
-        lastUpdateTimestamp:
-          type: integer
-          format: int64
-        parameter:
-          type: integer
-          format: int64
-        extTopoElement:
-          type: integer
-          format: int64
-      required:
-        - _type
-        - parameter
-        - extTopoElement
     ArgumentRelationTypeRef:
       type: object
       properties:
@@ -528,13 +480,6 @@ components:
         - _type
         - parameter
         - value
-    ArgumentExtTopologyElement:
-      type: object
-      oneOf:
-        - $ref: "#/components/schemas/ArgumentExtTopoRelation"
-        - $ref: "#/components/schemas/ArgumentExtTopoComponent"
-      required:
-        - _type
     ArgumentComponentTypeRef:
       type: object
       properties:

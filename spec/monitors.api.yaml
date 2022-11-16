@@ -225,6 +225,14 @@ components:
         - DISABLED
       description: "If a monitor status is set to DISABLED it won't produce any health states but it can still be run manually to inspect it's output"
 
+    MonitorRuntimeStatusValue:
+      type: string
+      enum:
+        - ENABLED
+        - DISABLED
+        - ERROR
+        - WARNING
+
     MonitorList:
       type: object
       properties:
@@ -273,6 +281,8 @@ components:
             type: string
         status:
           $ref: "#/components/schemas/MonitorStatusValue"
+        runtimeStatus:
+          $ref: "#/components/schemas/MonitorRuntimeStatusValue"
         lastUpdateTimestamp:
           type: integer
           format: int64
@@ -285,6 +295,7 @@ components:
         - intervalSeconds
         - tags
         - status
+        - runtimeStatus
         - lastUpdateTimestamp
 
     MonitorFunction:
@@ -352,9 +363,14 @@ components:
           $ref: "#/components/schemas/Monitor"
         function:
           $ref: "#/components/schemas/MonitorFunction"
+        errors:
+          $ref: "#/components/schemas/MonitorErrors"
+        runtimeMetrics:
+          $ref: "#/components/schemas/MonitorRuntimeMetrics"
       required:
         - monitor
         - function
+        - runtimeMetrics
 
     MonitorStatus:
       type: object
@@ -367,8 +383,6 @@ components:
           $ref: "#/components/schemas/MonitorErrors"
         metrics:
           $ref: "#/components/schemas/MonitorMetrics"
-        monitorHealthStateStateCount:
-          type: integer
         topologyMatchResult:
           $ref: "health_sync_service_api.yaml#/components/schemas/TopologyMatchResult"
       required:
@@ -449,24 +463,33 @@ components:
           type: string
         count:
           type: integer
+        level:
+          $ref: "generic_error_handling.xapi.yaml#/components/schemas/MessageLevel"
       required:
         - error
         - count
+        - level
     MonitorRuntimeMetrics:
       type: object
       properties:
+        healthStatesCount:
+          type: integer
+          description: "Representing the total count of the monitor results."
+        unmappedHealthStatesCount:
+          type: integer
+          description: "Representing the total count of the monitor results that are not mapped to topology."
         unknownCount:
           type: integer
-          description: "Representing the count of the monitors results that are UNKNOWN and are mapped to topology."
+          description: "Representing the count of the monitor results that are UNKNOWN and are mapped to topology."
         clearCount:
           type: integer
-          description: "Representing the count of the monitors results that are CLEAR and are mapped to topology."
+          description: "Representing the count of the monitor results that are CLEAR and are mapped to topology."
         deviatingCount:
           type: integer
-          description: "Representing the count of the monitors results that are DEVIATING and are mapped to topology."
+          description: "Representing the count of the monitor results that are DEVIATING and are mapped to topology."
         criticalCount:
           type: integer
-          description: "Representing the count of the monitors results that are CRITICAL and are mapped to topology."
+          description: "Representing the count of the monitor results that are CRITICAL and are mapped to topology."
         lastRunTimestamp:
           type: integer
           format: int64

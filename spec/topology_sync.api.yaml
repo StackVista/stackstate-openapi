@@ -114,17 +114,11 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/MetricBucketValue"
-    MessageLevel:
-      type: string
-      enum:
-        - Warn
-        - Error
-        - Info
     TopologyStreamError:
       type: object
       properties:
         level:
-          $ref: "#/components/schemas/MessageLevel"
+          $ref: "generic_error_handling.xapi.yaml#/components/schemas/MessageLevel"
         message:
           type: string
         externalId:
