@@ -474,22 +474,22 @@ components:
       properties:
         healthStatesCount:
           type: integer
-          description: "Representing the total count of the monitors results."
+          description: "Representing the total count of the monitor results."
         unmappedHealthStatesCount:
           type: integer
-          description: "Representing the total count of the monitors results that are not mapped to topology/"
+          description: "Representing the total count of the monitor results that are not mapped to topology."
         unknownCount:
           type: integer
-          description: "Representing the count of the monitors results that are UNKNOWN and are mapped to topology."
+          description: "Representing the count of the monitor results that are UNKNOWN and are mapped to topology."
         clearCount:
           type: integer
-          description: "Representing the count of the monitors results that are CLEAR and are mapped to topology."
+          description: "Representing the count of the monitor results that are CLEAR and are mapped to topology."
         deviatingCount:
           type: integer
-          description: "Representing the count of the monitors results that are DEVIATING and are mapped to topology."
+          description: "Representing the count of the monitor results that are DEVIATING and are mapped to topology."
         criticalCount:
           type: integer
-          description: "Representing the count of the monitors results that are CRITICAL and are mapped to topology."
+          description: "Representing the count of the monitor results that are CRITICAL and are mapped to topology."
         lastRunTimestamp:
           type: integer
           format: int64
