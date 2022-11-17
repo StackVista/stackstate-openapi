@@ -9,7 +9,7 @@ paths:
         tags:
           - export
         summary: "Export settings"
-        description: "Export StackState Templated JSON (STJ) setting nodes."
+        description: "Export setting nodes as StackState Templated YAML (STY)."
         operationId: exportSettings
         requestBody:
           required: true

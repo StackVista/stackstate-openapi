@@ -9,7 +9,7 @@ paths:
       tags:
         - import
       summary: "Import settings"
-      description: "Import StackState Templated JSON (STJ) setting nodes."
+      description: "Import setting nodes from STY or STJ definitions."
       operationId: importSettings
       requestBody:
         required: true
@@ -48,7 +48,7 @@ paths:
                 items:
                   type: object
         "400":
-          description: "Failure to parse the STJ."
+          description: "Failure to parse the definitions."
           content:
             application/json:
               schema:
