@@ -1,0 +1,101 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Kubernetes API
+  version: "1.0.0"
+
+paths:
+  /k8s/logs:
+    get:
+      tags:
+        - kubernetes
+      summary: "Get Kubernetes logs"
+      operationId: getKubernetesLogs
+      parameters:
+        - $ref: "#/components/parameters/from"
+        - $ref: "#/components/parameters/to"
+        - $ref: "#/components/parameters/limit"
+      responses:
+        "200":
+          $ref: "#/components/responses/GetLogsResult"
+        "400":
+          $ref: "#/components/responses/GetLogsBadRequest"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+components:
+  parameters:
+    from:
+      name: from
+      in: query
+      description: "Logs initial timestamp."
+      required: false
+      schema: { $ref: "#/components/schemas/Instant" }
+    from:
+      name: from
+      in: query
+      description: "Logs last timestamp."
+      required: false
+      schema: { $ref: "#/components/schemas/Instant" }
+    limit:
+      name: limit
+      in: query
+      required: false
+      description: "Maximum number of log lines in thx result."
+      schema: { $ref: "#/components/schemas/Limit" }
+  responses:
+    GetLogsResult:
+      description: Get events causing a problem successfull result
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/GetLogsResult" }
+    GetLogsBadRequest:
+      description: Can not find the requested logs because one more request params are invalid.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/GetLogsBadRequest" }
+  schemas:
+    Instant:
+      type: integer
+      format: instant
+    Limit:
+      type: integer
+      format: int32
+      minimum: 1
+    GetLogsResult:
+      type: object
+      properties:
+        logs:
+          type: array
+          items: "#/components/schemas/LogRecord"
+        required:
+          - logs
+    LogRecord:
+      type: object
+      properties:
+        timestamp:
+          type: integer
+          format: instant
+        message:
+          type: string
+        podName:
+          type: string
+        podUID:
+          type: string
+        containerName:
+          type: string
+        containerRestartCount:
+          type: integer
+          format: int32
+      required:
+        - timestamp
+        - message
+        - podName
+        - podUID
+        - containerName
+        - containerRestartCount
+    # TODO: Elaborate types of this response
+    GetLogsBadRequest:
+      type: object
+      properties:
+        message:
+          type: string
