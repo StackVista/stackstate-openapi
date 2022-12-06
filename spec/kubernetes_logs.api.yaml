@@ -1,14 +1,14 @@
 # OpenApi header is included in this file to support code highlighting in VSCode
 openapi: 3.0.3
 info:
-  title: Kubernetes API
+  title: Kubernetes Logs API
   version: "1.0.0"
 
 paths:
   /k8s/logs:
     get:
       tags:
-        - kubernetes
+        - kubernetes_logs
       summary: "Get Kubernetes logs"
       operationId: getKubernetesLogs
       parameters:
@@ -17,9 +17,9 @@ paths:
         - $ref: "#/components/parameters/limit"
       responses:
         "200":
-          $ref: "#/components/responses/GetLogsResult"
+          $ref: "#/components/responses/GetKubernetesLogsResult"
         "400":
-          $ref: "#/components/responses/GetLogsBadRequest"
+          $ref: "#/components/responses/GetKubernetesLogsBadRequest"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
@@ -30,8 +30,8 @@ components:
       description: "Logs initial timestamp."
       required: false
       schema: { $ref: "#/components/schemas/Instant" }
-    from:
-      name: from
+    to:
+      name: to
       in: query
       description: "Logs last timestamp."
       required: false
@@ -43,16 +43,16 @@ components:
       description: "Maximum number of log lines in thx result."
       schema: { $ref: "#/components/schemas/Limit" }
   responses:
-    GetLogsResult:
+    GetKubernetesLogsResult:
       description: Get events causing a problem successfull result
       content:
         application/json:
-          schema: { $ref: "#/components/schemas/GetLogsResult" }
-    GetLogsBadRequest:
+          schema: { $ref: "#/components/schemas/GetKubernetesLogsResult" }
+    GetKubernetesLogsBadRequest:
       description: Can not find the requested logs because one more request params are invalid.
       content:
         application/json:
-          schema: { $ref: "#/components/schemas/GetLogsBadRequest" }
+          schema: { $ref: "#/components/schemas/GetKubernetesLogsBadRequest" }
   schemas:
     Instant:
       type: integer
@@ -61,15 +61,16 @@ components:
       type: integer
       format: int32
       minimum: 1
-    GetLogsResult:
+    GetKubernetesLogsResult:
       type: object
       properties:
         logs:
           type: array
-          items: "#/components/schemas/LogRecord"
-        required:
-          - logs
-    LogRecord:
+          items:
+            $ref: "#/components/schemas/KubernetesLogRecord"
+      required:
+        - logs
+    KubernetesLogRecord:
       type: object
       properties:
         timestamp:
@@ -94,7 +95,7 @@ components:
         - containerName
         - containerRestartCount
     # TODO: Elaborate types of this response
-    GetLogsBadRequest:
+    GetKubernetesLogsBadRequest:
       type: object
       properties:
         message:
