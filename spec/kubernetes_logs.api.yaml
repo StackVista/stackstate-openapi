@@ -18,15 +18,49 @@ paths:
         - $ref: "#/components/parameters/page"
         - $ref: "#/components/parameters/query"
         - $ref: "#/components/parameters/podUID"
-        - $ref: "#/components/parameters/podName"
         - $ref: "#/components/parameters/containerName"
-        - $ref: "#/components/parameters/containerRestartCount"
-        - $ref: "#/components/parameters/withHistogram"
       responses:
         "200":
           $ref: "#/components/responses/GetKubernetesLogsResult"
         "400":
           $ref: "#/components/responses/GetKubernetesLogsBadRequest"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /k8s/logs/histogram:
+    get:
+      tags:
+        - kubernetes_logs_histogram
+      summary: "Get Kubernetes logs histogram"
+      operationId: getKubernetesLogsHistogram
+      parameters:
+        - $ref: "#/components/parameters/from"
+        - $ref: "#/components/parameters/to"
+        - $ref: "#/components/parameters/query"
+        - $ref: "#/components/parameters/podUID"
+        - $ref: "#/components/parameters/containerName"
+        - $ref: "#/components/parameters/histogramBucketsCount"
+      responses:
+        "200":
+          $ref: "#/components/responses/GetKubernetesLogsHistogramResult"
+        "400":
+          $ref: "#/components/responses/GetKubernetesLogsHistogramBadRequest"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /k8s/logs/autocomplete:
+    get:
+      tags:
+        - kubernetes_logs_autocomplete
+      summary: "Get Kubernetes logs autocomplete values"
+      operationId: getKubernetesLogsAutocomplete
+      parameters:
+        - $ref: "#/components/parameters/from"
+        - $ref: "#/components/parameters/to"
+        - $ref: "#/components/parameters/podUID"
+      responses:
+        "200":
+          $ref: "#/components/responses/GetKubernetesLogsAutocompleteResult"
+        "400":
+          $ref: "#/components/responses/GetKubernetesLogsAutocompleteBadRequest"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
@@ -81,13 +115,6 @@ components:
       schema:
         type: string
         format: uuid
-    podName:
-      name: podName
-      in: query
-      required: false
-      description: "Find only logs for the given pod name."
-      schema:
-        type: string
     containerName:
       name: containerName
       in: query
@@ -95,34 +122,45 @@ components:
       description: "Find only logs for the given container name."
       schema:
         type: string
-    containerRestartCount:
-      name: containerRestartCount
+    histogramBucketsCount:
+      name: bucketsCount
       in: query
-      required: false
-      description: "Find only logs for the given container restart."
+      required: true
+      description: "The number of histogram buckets."
       schema:
         type: integer
         format: int32
-        minimum: 0
-    withHistogram:
-      name: withHistogram
-      in: query
-      required: false
-      description: "Includes logs destribution time histogram in the response."
-      schema:
-        type: boolean
-        default: false
   responses:
     GetKubernetesLogsResult:
-      description: Get events causing a problem successfull result
+      description: Get logs successful result
       content:
         application/json:
           schema: { $ref: "#/components/schemas/GetKubernetesLogsResult" }
     GetKubernetesLogsBadRequest:
-      description: Can not find the requested logs because one more request params are invalid.
+      description: Can not find the requested logs because one or more request params are invalid.
       content:
         application/json:
           schema: { $ref: "#/components/schemas/GetKubernetesLogsBadRequest" }
+    GetKubernetesLogsHistogramResult:
+      description: Get logs histogram successful result
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/GetKubernetesLogsHistogramResult" }
+    GetKubernetesLogsHistogramBadRequest:
+      description: Can not get the logs histogram because one or more request params are invalid.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/GetKubernetesLogsHistogramBadRequest" }
+    GetKubernetesLogsAutocompleteResult:
+      description: Get logs autocomplete successful result
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/GetKubernetesLogsAutocompleteResult" }
+    GetKubernetesLogsAutocompleteBadRequest:
+      description: Can not get the logs autocomplete values because one or more request params are invalid.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/GetKubernetesLogsAutocompleteBadRequest" }
   schemas:
     Instant:
       type: integer
@@ -144,7 +182,6 @@ components:
           type: integer
           format: int32
           description: "The total amount of matching logs for the requested search criteria."
-        histogram: { $ref: "#/components/schemas/KubernetesLogHistogram" }
       required:
         - logs
         - pageSize
@@ -172,31 +209,15 @@ components:
         - podUID
         - containerName
         - containerRestartCount
-    KubernetesLogHistogram:
-      type: object
-      properties:
-        buckets:
-          type: array
-          items: { $ref: "#/components/schemas/KubernetesLogHistogramBucket" }
-    KubernetesLogHistogramBucket:
-      type: object
-      properties:
-        timestamp: { $ref: "#/components/schemas/Instant" }
-        count:
-          description: "Total logs record count in the bucket."
-          type: integer
-      required:
-        - timestamp
-        - count
     GetKubernetesLogsBadRequest:
       oneOf:
-        - $ref: "#/components/schemas/InvalidTimeRange"
-        - $ref: "#/components/schemas/InvalidPagination"
+        - $ref: "#/components/schemas/GetKubernetesLogsInvalidTimeRange"
+        - $ref: "#/components/schemas/GetKubernetesLogsInvalidPagination"
       discriminator:
         propertyName: _type
       required:
         - _type
-    InvalidTimeRange:
+    GetKubernetesLogsInvalidTimeRange:
       type: object
       properties:
         _type:
@@ -210,7 +231,7 @@ components:
       required:
         - _type
         - message
-    InvalidPagination:
+    GetKubernetesLogsInvalidPagination:
       type: object
       properties:
         _type:
@@ -228,3 +249,80 @@ components:
         - message
         - pageSize
         - page
+    GetKubernetesLogsHistogramResult:
+      type: object
+      properties:
+        buckets:
+          type: array
+          items: { $ref: "#/components/schemas/KubernetesLogHistogramBucket" }
+      required:
+        - buckets
+    KubernetesLogHistogramBucket:
+      type: object
+      properties:
+        timestamp: { $ref: "#/components/schemas/Instant" }
+        count:
+          description: "Total logs record count in the bucket."
+          type: integer
+        startTimeMs:
+          description: "The bucket initial timestamp."
+          type: integer
+          format: int32
+        endTimeMs:
+          description: "The bucket final timestamp."
+          type: integer
+          format: int32
+      required:
+        - count
+        - startTimeMs
+    GetKubernetesLogsHistogramBadRequest:
+      oneOf:
+        - $ref: "#/components/schemas/GetKubernetesLogsHistogramInvalidTimeRange"
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+    GetKubernetesLogsHistogramInvalidTimeRange:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - InvalidTimeRange
+        message:
+          type: string
+        from: { $ref: "#/components/schemas/Instant" }
+        to: { $ref: "#/components/schemas/Instant" }
+      required:
+        - _type
+        - message
+    GetKubernetesLogsAutocompleteResult:
+      type: object
+      properties:
+        containerNames:
+          type: array
+          items:
+            type: string
+      required:
+        - containerNames
+    GetKubernetesLogsAutocompleteBadRequest:
+      oneOf:
+        - $ref: "#/components/schemas/GetKubernetesLogsAutocompleteInvalidTimeRange"
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+    GetKubernetesLogsAutocompleteInvalidTimeRange:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - InvalidTimeRange
+        message:
+          type: string
+        from: { $ref: "#/components/schemas/Instant" }
+        to: { $ref: "#/components/schemas/Instant" }
+      required:
+        - _type
+        - message
