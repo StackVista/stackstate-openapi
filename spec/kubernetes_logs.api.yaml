@@ -213,6 +213,7 @@ components:
       oneOf:
         - $ref: "#/components/schemas/GetKubernetesLogsInvalidTimeRange"
         - $ref: "#/components/schemas/GetKubernetesLogsInvalidPagination"
+        - $ref: "#/components/schemas/GetKubernetesLogsInvalidQuery"
       discriminator:
         propertyName: _type
       required:
@@ -249,6 +250,21 @@ components:
         - message
         - pageSize
         - page
+    GetKubernetesLogsInvalidQuery:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - InvalidQuery
+        message:
+          type: string
+        query:
+          type: string
+      required:
+        - _type
+        - message
+        - query
     GetKubernetesLogsHistogramResult:
       type: object
       properties:
