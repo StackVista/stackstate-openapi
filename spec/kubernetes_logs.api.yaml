@@ -180,7 +180,7 @@ components:
           description: "The requested logs page."
         matchesTotal:
           type: integer
-          format: int32
+          format: int64
           description: "The total amount of matching logs for the requested search criteria."
       required:
         - logs
