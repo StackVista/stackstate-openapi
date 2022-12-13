@@ -69,13 +69,13 @@ components:
       name: from
       in: query
       description: "Logs initial timestamp."
-      required: false
+      required: true
       schema: { $ref: "#/components/schemas/Instant" }
     to:
       name: to
       in: query
       description: "Logs last timestamp."
-      required: false
+      required: true
       schema: { $ref: "#/components/schemas/Instant" }
     pageSize:
       name: pageSize
@@ -232,6 +232,8 @@ components:
       required:
         - _type
         - message
+        - from
+        - to
     GetKubernetesLogsInvalidPagination:
       type: object
       properties:
@@ -276,24 +278,26 @@ components:
     KubernetesLogHistogramBucket:
       type: object
       properties:
-        timestamp: { $ref: "#/components/schemas/Instant" }
         count:
           description: "Total logs record count in the bucket."
           type: integer
-        startTimeMs:
+          format: int64
+        startTime:
           description: "The bucket initial timestamp."
           type: integer
-          format: int32
-        endTimeMs:
+          format: instant
+        endTime:
           description: "The bucket final timestamp."
           type: integer
-          format: int32
+          format: instant
       required:
         - count
-        - startTimeMs
+        - startTime
+        - endTime
     GetKubernetesLogsHistogramBadRequest:
       oneOf:
         - $ref: "#/components/schemas/GetKubernetesLogsHistogramInvalidTimeRange"
+        - $ref: "#/components/schemas/GetKubernetesLogsHistogramInvalidQuery"
       discriminator:
         propertyName: _type
       required:
@@ -312,6 +316,23 @@ components:
       required:
         - _type
         - message
+        - from
+        - to
+    GetKubernetesLogsHistogramInvalidQuery:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - InvalidQuery
+        message:
+          type: string
+        query:
+          type: string
+      required:
+        - _type
+        - message
+        - query
     GetKubernetesLogsAutocompleteResult:
       type: object
       properties:
@@ -342,3 +363,5 @@ components:
       required:
         - _type
         - message
+        - from
+        - to
