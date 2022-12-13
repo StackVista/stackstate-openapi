@@ -29,7 +29,7 @@ paths:
   /k8s/logs/histogram:
     get:
       tags:
-        - kubernetes_logs_histogram
+        - kubernetes_logs
       summary: "Get Kubernetes logs histogram"
       operationId: getKubernetesLogsHistogram
       parameters:
@@ -49,7 +49,7 @@ paths:
   /k8s/logs/autocomplete:
     get:
       tags:
-        - kubernetes_logs_autocomplete
+        - kubernetes_logs
       summary: "Get Kubernetes logs autocomplete values"
       operationId: getKubernetesLogsAutocomplete
       parameters:
