@@ -18,7 +18,7 @@ paths:
         - $ref: "#/components/parameters/page"
         - $ref: "#/components/parameters/query"
         - $ref: "#/components/parameters/podUID"
-        - $ref: "#/components/parameters/containerName"
+        - $ref: "#/components/parameters/containerNames"
       responses:
         "200":
           $ref: "#/components/responses/GetKubernetesLogsResult"
@@ -37,7 +37,7 @@ paths:
         - $ref: "#/components/parameters/to"
         - $ref: "#/components/parameters/query"
         - $ref: "#/components/parameters/podUID"
-        - $ref: "#/components/parameters/containerName"
+        - $ref: "#/components/parameters/containerNames"
         - $ref: "#/components/parameters/histogramBucketsCount"
       responses:
         "200":
@@ -92,7 +92,7 @@ components:
       name: page
       in: query
       required: false
-      description: "Offset for which the log lines of pageSize must be returned."
+      description: "The page for which the log lines of pageSize must be returned."
       schema:
         type: integer
         format: int32
@@ -110,18 +110,20 @@ components:
     podUID:
       name: podUID
       in: query
-      required: false
+      required: true
       description: "Find only logs for the given pod UID."
       schema:
         type: string
         format: uuid
-    containerName:
-      name: containerName
+    containerNames:
+      name: containerNames
       in: query
       required: false
-      description: "Find only logs for the given container name."
+      description: "Find only logs for the given container names."
       schema:
-        type: string
+        type: array
+        items:
+          type: string
     histogramBucketsCount:
       name: bucketsCount
       in: query
@@ -171,7 +173,7 @@ components:
         logs:
           type: array
           items: { $ref: "#/components/schemas/KubernetesLogRecord" }
-          description: "List of log records ordered by timestamps in ascend order."
+          description: "List of log records ordered by timestamps in ascending order."
         pageSize:
           type: integer
           description: "Maximum number of the log lines in the result."
