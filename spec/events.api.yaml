@@ -100,8 +100,6 @@ paths:
         - name: eventTypes
           in: query
           required: false
-          style: pipeDelimited
-          explode: false
           schema:
             type: array
             items:
@@ -115,8 +113,6 @@ paths:
         - name: eventSources
           in: query
           required: false
-          style: pipeDelimited
-          explode: false
           schema:
             type: array
             items:
@@ -124,8 +120,6 @@ paths:
         - name: eventTags
           in: query
           required: false
-          style: pipeDelimited
-          explode: false
           schema:
             type: array
             items:
@@ -184,8 +178,6 @@ paths:
         - name: eventTypes
           in: query
           required: false
-          style: pipeDelimited
-          explode: false
           schema:
             type: array
             items:
@@ -199,8 +191,6 @@ paths:
         - name: eventSources
           in: query
           required: false
-          style: pipeDelimited
-          explode: false
           schema:
             type: array
             items:
@@ -208,8 +198,6 @@ paths:
         - name: eventTags
           in: query
           required: false
-          style: pipeDelimited
-          explode: false
           schema:
             type: array
             items:
@@ -267,8 +255,6 @@ paths:
         - name: eventTypes
           in: query
           required: false
-          style: pipeDelimited
-          explode: false
           schema:
             type: array
             items:
@@ -282,8 +268,6 @@ paths:
         - name: eventSources
           in: query
           required: false
-          style: pipeDelimited
-          explode: false
           schema:
             type: array
             items:
@@ -291,8 +275,6 @@ paths:
         - name: eventTags
           in: query
           required: false
-          style: pipeDelimited
-          explode: false
           schema:
             type: array
             items:
@@ -333,8 +315,6 @@ components:
       in: query
       name: eventCategories
       required: false
-      style: pipeDelimited
-      explode: false
       schema:
         type: array
         items:
