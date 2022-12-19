@@ -192,7 +192,9 @@ components:
     KubernetesLogRecord:
       type: object
       properties:
-        timestamp: { $ref: "#/components/schemas/Instant" }
+        timestamp:
+          type: string
+          format: date-time
         message:
           type: string
         podName:
