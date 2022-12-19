@@ -203,16 +203,12 @@ components:
           type: string
         containerName:
           type: string
-        containerRestartCount:
-          type: integer
-          format: int32
       required:
         - timestamp
         - message
         - podName
         - podUID
         - containerName
-        - containerRestartCount
     GetKubernetesLogsBadRequest:
       oneOf:
         - $ref: "#/components/schemas/GetKubernetesLogsInvalidTimeRange"
