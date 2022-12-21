@@ -52,6 +52,8 @@ components:
           $ref: "#/components/schemas/PromStep"
         timeout:
           $ref: "#/components/schemas/PromTimeout"
+        limit:
+          $ref: "#/components/schemas/PromLimit"
       required:
         - query
         - start

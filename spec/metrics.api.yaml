@@ -252,6 +252,7 @@ paths:
         - $ref: "#/components/parameters/end"
         - $ref: "#/components/parameters/step"
         - $ref: "#/components/parameters/timeout"
+        - $ref: "#/components/parameters/limitOptional"
       responses:
         "200":
           $ref: "#/components/responses/successEnvelope"
