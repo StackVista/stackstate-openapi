@@ -19,6 +19,7 @@ paths:
         - $ref: "#/components/parameters/query"
         - $ref: "#/components/parameters/podUID"
         - $ref: "#/components/parameters/containerNames"
+        - $ref: "#/components/parameters/direction"
       responses:
         "200":
           $ref: "#/components/responses/GetKubernetesLogsResult"
@@ -132,6 +133,12 @@ components:
       schema:
         type: integer
         format: int32
+    direction:
+      name: direction
+      in: query
+      description: "Fetch Oldest or Newest first."
+      schema:
+        $ref: "#/components/schemas/LogsDirection"
   responses:
     GetKubernetesLogsResult:
       description: Get logs successful result
@@ -167,6 +174,11 @@ components:
     Instant:
       type: integer
       format: instant
+    LogsDirection:
+      type: string
+      enum:
+        - NEWEST
+        - OLDEST
     GetKubernetesLogsResult:
       type: object
       properties:
