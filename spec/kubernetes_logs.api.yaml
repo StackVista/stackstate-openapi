@@ -179,6 +179,7 @@ components:
       enum:
         - NEWEST
         - OLDEST
+      default: NEWEST
     GetKubernetesLogsResult:
       type: object
       properties:
