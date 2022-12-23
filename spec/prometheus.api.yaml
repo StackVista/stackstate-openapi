@@ -28,6 +28,9 @@ components:
     PromLimit:
       type: integer
       format: int64
+    PromMaxNumberOfDataPoints:
+      type: integer
+      format: int64
     PromQueryRequest:
       type: object
       properties:
@@ -52,8 +55,8 @@ components:
           $ref: "#/components/schemas/PromStep"
         timeout:
           $ref: "#/components/schemas/PromTimeout"
-        limit:
-          $ref: "#/components/schemas/PromLimit"
+        maxNumberOfDataPoints:
+          $ref: "#/components/schemas/PromMaxNumberOfDataPoints"
       required:
         - query
         - start

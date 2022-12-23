@@ -252,7 +252,7 @@ paths:
         - $ref: "#/components/parameters/end"
         - $ref: "#/components/parameters/step"
         - $ref: "#/components/parameters/timeout"
-        - $ref: "#/components/parameters/limitOptional"
+        - $ref: "#/components/parameters/maxNumberOfDataPointsOptional"
       responses:
         "200":
           $ref: "#/components/responses/successEnvelope"
@@ -426,6 +426,14 @@ components:
       schema:
         $ref: "prometheus.api.yaml#/components/schemas/PromLimit"
       description: "Maximum number of metrics to return."
+      example: "2"
+    maxNumberOfDataPointsOptional:
+      in: query
+      name: maxNumberOfDataPoints
+      required: false
+      schema:
+        $ref: "prometheus.api.yaml#/components/schemas/PromMaxNumberOfDataPoints"
+      description: "Maximum number of data points to return."
       example: "2"
     metricOptional:
       in: query
