@@ -139,6 +139,8 @@ components:
           type: string
         identifier:
           type: string
+        assumedRole:
+          type: string
         starredViews:
           type: array
           items:
