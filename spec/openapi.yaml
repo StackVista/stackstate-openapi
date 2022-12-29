@@ -35,6 +35,8 @@ paths:
   /monitors/overview: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2Foverview" }
   /user/profile: { $ref: "user_profile.api.yaml#/paths/%2Fuser%2Fprofile" }
   /user/profile/tokens: { $ref: "user_profile.api.yaml#/paths/%2Fuser%2Fprofile%2Ftokens" }
+  /user/session/assumedRole: { $ref: "user_session.api.yaml#/paths/%2Fuser%2Fsession%2FassumedRole" }
+  /user/session/availableRoles: { $ref: "user_session.api.yaml#/paths/%2Fuser%2Fsession%2FavailableRoles" }
   /events: { $ref: "events.api.yaml#/paths/%2Fevents" }
   /events/{eventId}: { $ref: "events.api.yaml#/paths/%2Fevents%2F%7BeventId%7D" }
   /eventTypes: { $ref: "events.api.yaml#/paths/%2FeventTypes" }

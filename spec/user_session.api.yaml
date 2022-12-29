@@ -51,6 +51,10 @@ paths:
       responses:
         "200":
           description: "Assume role was a success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Role"
         "400":
           description: Save Assumed Role Error
           content:
