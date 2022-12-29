@@ -1,0 +1,89 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: User Session API
+  version: "1.0.0"
+paths:
+  /user/session/availableRoles:
+    get:
+      tags:
+        - userSession
+      summary: "Get a list of available roles for this session"
+      description: "Get a list of available roles for this session."
+      operationId: getUserSessionAvailableRoles
+      responses:
+        "200":
+          description: "List of available roles"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Roles"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /user/session/assumedRole:
+    get:
+      tags:
+        - userSession
+      summary: "Get the assumed a role for the current session"
+      description: "Get the assumed a role for the current session."
+      operationId: getUserSessionAssumedRole
+      responses:
+        "200":
+          description: "Get the assumed role"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Role"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    put:
+      tags:
+        - userSession
+      summary: "Assume a role for the current session"
+      description: "Assume a role for the current session."
+      operationId: saveUserSessionAssumedRole
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Role"
+      responses:
+        "200":
+          description: "Assume role was a success"
+        "400":
+          description: Save Assumed Role Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoleNotAvailableError"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+components:
+  schemas:
+    Roles:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            type: string
+      required:
+        - roles
+    Role:
+      type: object
+      properties:
+        role:
+          type: string
+    RoleNotAvailableError:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - RoleNotAvailableError
+        role:
+          type: string
+      required:
+        - role
+        - _type
