@@ -33,39 +33,6 @@ components:
             type: array
             items:
               $ref: "checks.api.yaml#/components/schemas/Check"
-  requestBodies:
-    dataStream:
-      description: "Single telemetry stream definition"
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/DataStream"
-    dataStreamCollection:
-      description: "Multiple telemetry stream definitions"
-      required: true
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: "#/components/schemas/DataStream"
-    elementCheck:
-      description: "Single Check"
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: "checks.api.yaml#/components/schemas/Check"
-    checkCollection:
-      description: "Multiple Checks"
-      required: true
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: "checks.api.yaml#/components/schemas/Check"
   schemas:
     StreamId:
       type: integer

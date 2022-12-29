@@ -22,23 +22,6 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-    post:
-      tags:
-        - component
-      summary: "Create the Stream on the component"
-      description: "Adds a DataStream/TelemetryStreamDefinition on the component"
-      operationId: createComponentStreams
-      parameters:
-        - $ref: "#/components/parameters/componentId"
-      requestBody:
-        $ref: "stack_element.api.yaml#/components/requestBodies/dataStream"
-      responses:
-        "201": 
-          $ref: "stack_element.api.yaml#/components/responses/telemetryStreamDefinition"
-        "404":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound"
-        "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /components/{componentId}/streams/latest:
     get:
       tags:
@@ -75,40 +58,6 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-    put:
-      tags:
-        - component
-      summary: "Update the stream on the component"
-      description: "Update a Specific stream from the component"
-      operationId: updateComponentStream
-      parameters:
-        - $ref: "#/components/parameters/componentId"
-        - $ref: "#/components/parameters/streamId"
-      requestBody:
-        $ref: "stack_element.api.yaml#/components/requestBodies/dataStream"
-      responses:
-        "200": 
-          $ref: "stack_element.api.yaml#/components/responses/telemetryStreamDefinition"
-        "404":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound"
-        "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-    delete:
-      tags:
-        - component
-      summary: "Delete the stream from the component"
-      description: "Delete a Specific stream from the component"
-      operationId: deleteComponentStream
-      parameters:
-        - $ref: "#/components/parameters/componentId"
-        - $ref: "#/components/parameters/streamId"
-      responses:
-        "204": 
-          description: "Return ok"
-        "404":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound"
-        "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /components/{componentId}/checks:
     get:
       tags:
@@ -122,23 +71,6 @@ paths:
       responses:
         "200": 
           $ref: "stack_element.api.yaml#/components/responses/elementCheckCollection"
-        "404":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
-        "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-    post:
-      tags:
-        - component
-      summary: "Create the Checks on the component"
-      description: "Adds a Check on the component"
-      operationId: "createComponentCheck"
-      parameters:
-        - $ref: "#/components/parameters/componentId"
-      requestBody:
-        $ref: "stack_element.api.yaml#/components/requestBodies/elementCheck"
-      responses:
-        "201": 
-          $ref: "stack_element.api.yaml#/components/responses/elementCheck"
         "404":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
         "500":
@@ -157,40 +89,6 @@ paths:
       responses:
         "200": 
           $ref: "stack_element.api.yaml#/components/responses/elementCheck"
-        "404":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
-        "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-    put:
-      tags:
-        - component
-      summary: "Update the check on the component"
-      description: "Update a Specific check from the component"
-      operationId: "updateComponentCheck"
-      parameters:
-        - $ref: "#/components/parameters/componentId"
-        - $ref: "#/components/parameters/checkId"
-      requestBody:
-        $ref: "stack_element.api.yaml#/components/requestBodies/elementCheck"
-      responses:
-        "200": 
-          $ref: "stack_element.api.yaml#/components/responses/elementCheck"
-        "404":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
-        "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-    delete:
-      tags:
-        - component
-      summary: "Delete the check from the component"
-      description: "Delete a Specific check from the component"
-      operationId: "deleteComponentCheck"
-      parameters:
-        - $ref: "#/components/parameters/componentId"
-        - $ref: "#/components/parameters/checkId"
-      responses:
-        "204": 
-          description: "Return ok"
         "404":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
         "500":

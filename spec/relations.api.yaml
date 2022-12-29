@@ -22,23 +22,6 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-    post:
-      tags:
-        - relation
-      summary: "Create the Stream on the relation"
-      description: "Adds a DataStream/TelemetryStreamDefinition on the relation"
-      operationId: createRelationStream
-      parameters:
-        - $ref: "#/components/parameters/relationId"
-      requestBody:
-        $ref: "stack_element.api.yaml#/components/requestBodies/dataStream"
-      responses:
-        "201": 
-          $ref: "stack_element.api.yaml#/components/responses/telemetryStreamDefinition"
-        "404":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
-        "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /relations/{relationId}/streams/{streamId}:
     get:
       tags:
@@ -55,40 +38,6 @@ paths:
           $ref: "stack_element.api.yaml#/components/responses/telemetryStreamDefinition"
         "404":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound"  
-        "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-    put:
-      tags:
-        - relation
-      summary: "Update the stream on the relation"
-      description: "Update a Specific stream from the relation"
-      operationId: "putRelationStream"
-      parameters:
-        - $ref: "#/components/parameters/relationId"
-        - $ref: "#/components/parameters/streamId"
-      requestBody:
-        $ref: "stack_element.api.yaml#/components/requestBodies/dataStream"
-      responses:
-        "200": 
-          $ref: "stack_element.api.yaml#/components/responses/telemetryStreamDefinition"
-        "404":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
-        "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-    delete:
-      tags:
-        - relation
-      summary: "Delete the stream from the relation"
-      description: "Delete a Specific stream from the relation"
-      operationId: "deleteRelationStream"
-      parameters:
-        - $ref: "#/components/parameters/relationId"
-        - $ref: "#/components/parameters/streamId"
-      responses:
-        "204": 
-          description: "Return ok"
-        "404":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /relations/{relationId}/checks:
@@ -108,23 +57,6 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-    post:
-      tags:
-        - relation
-      summary: "Create the Checks on the relation"
-      description: "Adds a Check on the relation"
-      operationId: "createRelationCheck"
-      parameters:
-        - $ref: "#/components/parameters/relationId"
-      requestBody:
-        $ref: "stack_element.api.yaml#/components/requestBodies/elementCheck"
-      responses:
-        "201": 
-          $ref: "stack_element.api.yaml#/components/responses/elementCheck"
-        "404":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
-        "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /relations/{relationId}/checks/{checkId}:
     get:
       tags:
@@ -139,40 +71,6 @@ paths:
       responses:
         "200": 
           $ref: "stack_element.api.yaml#/components/responses/elementCheck"
-        "404":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
-        "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-    put:
-      tags:
-        - relation
-      summary: "Update the check on the relation"
-      description: "Update a Specific check from the relation"
-      operationId: "putRelationCheck"
-      parameters:
-        - $ref: "#/components/parameters/relationId"
-        - $ref: "#/components/parameters/checkId"
-      requestBody:
-        $ref: "stack_element.api.yaml#/components/requestBodies/elementCheck"
-      responses:
-        "200": 
-          $ref: "stack_element.api.yaml#/components/responses/elementCheck"
-        "404":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
-        "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-    delete:
-      tags:
-        - relation
-      summary: "Delete the check from the relation"
-      description: "Delete a Specific check from the relation"
-      operationId: "deleteRelationCheck"
-      parameters:
-        - $ref: "#/components/parameters/relationId"
-        - $ref: "#/components/parameters/checkId"
-      responses:
-        "204": 
-          description: "Return ok"
         "404":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/stackElementNotFound" 
         "500":
