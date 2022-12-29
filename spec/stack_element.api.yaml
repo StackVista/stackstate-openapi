@@ -79,15 +79,12 @@ components:
         staleAfter:
           type: integer
           format: int64
-        syncCreated:
-          type: boolean
       required:
         - _type
         - dataSource
         - dataType
         - name
         - query
-        - syncCreated
     EventStream:
       type: object
       properties:
@@ -114,15 +111,12 @@ components:
           $ref: "telemetry.api.yaml#/components/schemas/StreamPriority"
         query:
           $ref: "telemetry.api.yaml#/components/schemas/EventTelemetryQuery"
-        syncCreated:
-          type: boolean
       required:
         - _type
         - dataSource
         - dataType
         - name
         - query
-        - syncCreated
     Scope:
       type: object
       discriminator:

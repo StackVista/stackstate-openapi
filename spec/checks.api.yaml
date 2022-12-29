@@ -57,14 +57,11 @@ components:
           type: string
         state:
           $ref: "#/components/schemas/CheckState"
-        syncCreated:
-          type: boolean
       required:
         - _type
         - arguments
         - function
         - name
-        - syncCreated
     CheckState:
       type: object
       discriminator:
