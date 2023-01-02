@@ -63,27 +63,6 @@ paths:
                 $ref: "#/components/schemas/RoleNotAvailableError"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-    delete:
-      tags:
-        - userSession
-      summary: "Unset the assumed role for the current session"
-      description: "Unset the assumed role for the current session."
-      operationId: deleteUserSessionAssumedRole
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Role"
-      responses:
-        "200":
-          description: "Assumed role deletion was a success"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Role"
-        "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
   schemas:
     Roles:
