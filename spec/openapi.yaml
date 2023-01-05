@@ -1,7 +1,15 @@
 openapi: 3.0.3
 info:
-  description: StackState's API specification
-  version: 0.0.1
+  description: |
+    This API documentation page describes the StackState server API. The StackState UI and CLI use the StackState server API to configure and query StackState. 
+    You can use the API for similar purposes.
+
+    Each request sent to the StackState server API must be authenticated using one of the available authentication methods. 
+    
+    *Note that the StackState receiver API, used to send topology, telemetry and traces to StackState, is not described on this page and requires a different authentication method.*
+
+    For more information on StackState, refer to the [StackState documentation](https://docs.stackstate.com).
+  version: 5.2.0
   title: StackState API
   license:
     name: "Apache 2.0"
@@ -13,9 +21,6 @@ info:
   x-logo:
     url: "https://raw.githubusercontent.com/StackVista/stackstate-docs/master/resources/logo/StackState-Color-padding.png"
     href: "#top"
-externalDocs:
-  description: Documentation
-  url: "https://docs.stackstate.com/"
 paths:
   /import: { $ref: "import.xapi.yaml#/paths/%2Fimport" }
   /export: { $ref: "export.xapi.yaml#/paths/%2Fexport" }
@@ -109,14 +114,25 @@ security:
 components:
   securitySchemes:
     ApiToken:
+      description: |
+        Authenticate with your personal API token in the `X-API-Key` HTTP header.
+        
+        To get your API token:
+         * Login to the StackState user-interface
+         * In the main-menu click on the `CLI` option
+         * Your API token is shown to you on this page.
       type: apiKey
       in: header
       name: X-API-Token
     ServiceToken:
+      description: |
+        For self-hosted installations only. Authenticate with a Kubernetes service token in the `X-API-Key` HTTP header. Also include the `X-API-ServiceBearer` header.
       type: apiKey
       in: header
       name: X-API-Key
     ServiceBearer:
+      description: |
+        Use in combination with a ServiceToken.
       type: apiKey
       in: header
       name: X-API-ServiceBearer
