@@ -62,6 +62,12 @@ paths:
         - stackpack
       parameters:
         - $ref: "#/components/parameters/stackPackName"
+        - in: query
+          name: unlocked
+          allowReserved: true
+          required: true
+          schema:
+            type: string
       summary: "Provision API"
       operationId: provisionDetails
       description: "Provision details"
