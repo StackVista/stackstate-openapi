@@ -1,0 +1,1297 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Snapshot API
+  version: "1.0.0"
+paths:
+  /snapshot:
+    post:
+      tags:
+        - snapshot
+      summary: "Run a STQL topology query"
+      description: |
+        Get all topology data related to an STQL query at a point in time. Grouping options are
+        available for visualization purposes.
+      operationId: getSnapshot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ViewSnapshotRequest"
+      parameters:
+        - name: timeoutSeconds
+          description: How long can the request run before it times out? Default is 15s.
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: |
+            The topology snapshot with all the components and different types of relations.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        "400":
+          description: "STQL query parsing failure."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryParsingFailure"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+components:
+  schemas:
+    ViewSnapshotRequest:
+      type: object
+      required:
+        - _type
+        - query
+        - queryVersion
+        - metadata
+      properties:
+        _type:
+          type: string
+          enum:
+            - ViewSnapshotRequest
+        query:
+          type: string
+          description: A valid STQL query.
+        queryVersion:
+          type: string
+          description: Set to 0.0.1 for default version.
+        metadata:
+          $ref: "#/components/schemas/QueryMetadata"
+        viewId:
+          type: integer
+          format: int64
+          description: |
+            The ID of the query view. If set the response will include the view health state.
+      additionalProperties: false
+    QueryMetadata:
+      type: object
+      required:
+        - _type
+        - groupingEnabled
+        - showIndirectRelations
+        - minGroupSize
+        - groupedByLayer
+        - groupedByDomain
+        - groupedByRelation
+        - showCause
+        - autoGrouping
+      properties:
+        _type:
+          type: string
+          enum:
+            - QueryMetadata
+        queryTime: 
+          type: integer
+          format: instant
+          description: |
+            Unix epoch time in milliseconds at which to get the snapshot of topology. Set to null
+            or leave out of the request to get the topology at the current time.
+        groupingEnabled:
+          type: boolean
+          description: |
+            Set to false together with `autoGrouping` to disable all grouping.
+        showIndirectRelations: 
+          type: boolean        
+        minGroupSize: 
+          type: integer
+          format: int64
+        groupedByLayer: 
+          type: boolean
+        groupedByDomain: 
+          type: boolean
+        groupedByRelation: 
+          type: boolean
+        showCause: 
+          type: string
+          enum:
+            - NONE
+            - CAUSE_ONLY
+            - FULL_CAUSE_TREE
+        viewHealthStateId:  
+          type: int
+          format: int64
+        autoGrouping: 
+          type: boolean
+      additionalProperties: false
+    QueryParsingFailure:
+      type: object
+      required:
+        - _type
+        - reason
+      properties:
+        _type:
+          type: string
+          enum:
+            - QueryParsingFailure
+        reason:
+          type: string
+      additionalProperties: false
+    QuerySnapshotResult:
+      type: object
+      required:
+        - _type
+        - viewSnapshotResponse
+      properties:
+        _type:
+          type: string
+          enum:
+            - QuerySnapshotResult
+        viewSnapshotResponse:
+          $ref: "#/components/schemas/ViewSnapshotResponse"
+        viewId:
+          type: int
+          format: int64
+        viewHealthState:
+          $ref: "#/components/schemas/ViewHealthState"
+      additionalProperties: false
+    ViewHealthState:
+      type: object
+      required:
+        - _type
+        - state
+      properties:
+        _type:
+          type: string
+          enum:
+            - ViewHealthState
+        id:
+          type: int
+          format: int64
+        lastUpdateTimestamp:
+          type: int
+          format: int64
+        state:
+          type: string
+          enum:
+            - UNKNOWN
+            - DEVIATING
+            - CRITICAL
+            - DISABLED
+            - ERROR_TOO_MANY_COMPONENTS
+            - ERROR_TIMEOUT
+            - ERROR_TOO_MANY_ACTIVE_QUERIES
+      additionalProperties: false
+    ViewSnapshotResponse:
+      type: object
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+      oneOf:
+        - $ref: "#/components/schemas/ViewSnapshotFetchTimeout"
+        - $ref: "#/components/schemas/ViewSnapshotTooManyActiveQueries"
+        - $ref: "#/components/schemas/ViewSnapshotTopologySizeOverflow"
+        - $ref: "#/components/schemas/ViewSnapshotDataUnavailable"
+        - $ref: "#/components/schemas/ViewSnapshot"
+      additionalProperties: false
+    ViewSnapshotFetchTimeout: 
+      type: object
+      required:
+        - _type
+        - usedTimeoutSeconds
+      properties:
+        _type:
+          type: string
+          enum:
+            - ViewSnapshotFetchTimeout
+        usedTimeoutSeconds:
+          type: int
+          format: int64
+      additionalProperties: false
+    ViewSnapshotTooManyActiveQueries:
+      type: object
+      required:
+        - _type
+      properties:
+        _type:
+          type: string
+          enum:
+            - ViewSnapshotTooManyActiveQueries
+      additionalProperties: false
+    ViewSnapshotTopologySizeOverflow:
+      type: object
+      required:
+        - _type
+        - maxSize
+      properties:
+        _type:
+          type: string
+          enum:
+            - ViewSnapshotTopologySizeOverflow
+        maxSize:
+          type: int
+      additionalProperties: false
+    ViewSnapshotDataUnavailable:
+      type: object
+      required:
+        - _type
+        - unavailableAtEpochMs
+        - availableSinceEpochMs
+      properties:
+        _type:
+          type: string
+          enum:
+            - ViewSnapshotDataUnavailable
+        unavailableAtEpochMs:
+          type: int
+          format: int64
+        availableSinceEpochMs:
+          type: int
+          format: int64
+      additionalProperties: false
+    ViewSnapshot:
+      properties:
+        _type:
+          enum:
+            - ViewSnapshot
+          type: string
+        components:
+          items:
+            $ref: '#/components/schemas/ViewComponent'
+          type: array
+        relations:
+          items:
+            $ref: '#/components/schemas/ViewRelation'
+          type: array
+        indirectRelations:
+          items:
+            $ref: '#/components/schemas/IndirectRelation'
+          type: array
+        groups:
+          items:
+            $ref: '#/components/schemas/TypeGroup'
+          type: array
+        groupRelations:
+          items:
+            $ref: '#/components/schemas/GroupRelation'
+          type: array
+        problems:
+          items:
+            $ref: '#/components/schemas/RootProblem'
+          type: array
+        problemLimitReached:
+          type: number
+        metadata:
+          $ref: '#/components/schemas/ViewSnapshotMetadata'
+      required:
+        - _type
+        - components
+        - relations
+        - indirectRelations
+        - groups
+        - groupRelations
+        - problems
+        - metadata
+      additionalProperties: false
+      type: object
+    ViewRelation:
+      properties:
+        _type:
+          enum:
+            - ViewRelation
+          type: string
+        visible:
+          type: boolean
+        id:
+          type: int
+          format: int64
+        lastUpdateTimestamp:
+          type: int
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        type:
+          type: int
+          format: int64
+        source:
+          type: int
+          format: int64
+        target:
+          type: int
+          format: int64
+        dependencyDirection:
+          $ref: '#/components/schemas/DependencyDirection'
+        synchronized:
+          type: boolean
+        failingChecks:
+          items:
+            $ref: '#/components/schemas/ViewCheck'
+          type: array
+        state:
+          $ref: '#/components/schemas/StackElementState'
+        identifiers:
+          items:
+            type: string
+          type: array
+      required:
+        - _type
+        - visible
+        - type
+        - source
+        - target
+        - dependencyDirection
+        - synchronized
+        - failingChecks
+        - state
+      additionalProperties: false
+      type: object
+    ViewRelationBase:
+      oneOf:
+        - $ref: '#/components/schemas/RestrictedViewRelation'
+        - $ref: '#/components/schemas/ViewRelation'
+    ViewSnapshotMetadata:
+      properties:
+        _type:
+          enum:
+            - ViewSnapshotMetadata
+          type: string
+        layers:
+          items:
+            $ref: '#/components/schemas/Layer'
+          type: array
+        domains:
+          items:
+            $ref: '#/components/schemas/Domain'
+          type: array
+        environments:
+          items:
+            $ref: '#/components/schemas/Environment'
+          type: array
+        groupedByLayers:
+          type: boolean
+        groupedByDomains:
+          type: boolean
+      required:
+        - _type
+        - layers
+        - domains
+        - environments
+        - groupedByLayers
+        - groupedByDomains
+      additionalProperties: false
+      type: object
+    ViewComponent:
+      properties:
+        _type:
+          enum:
+            - ViewComponent
+          type: string
+        visible:
+          type: boolean
+        id:
+          type: int
+          format: int64
+        lastUpdateTimestamp:
+          type: int
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        type:
+          type: int
+          format: int64
+        layer:
+          type: int
+          format: int64
+        domain:
+          type: int
+          format: int64
+        environments:
+          items:
+            type: number
+            format: int64
+          type: array
+        state:
+          $ref: '#/components/schemas/StackElementState'
+        runState:
+          $ref: '#/components/schemas/StackElementRunState'
+        outgoingRelations:
+          items:
+            type: number
+            format: int64
+          type: array
+        incomingRelations:
+          items:
+            type: number
+            format: int64
+          type: array
+        synchronized:
+          type: boolean
+        failingChecks:
+          items:
+            $ref: '#/components/schemas/ViewCheck'
+          type: array
+        iconbase64:
+          type: string
+        identifiers:
+          items:
+            type: string
+          type: array
+        tags:
+          items:
+            type: string
+          type: array
+        properties:
+          additionalProperties:
+            type: string
+          type: object
+      required:
+        - _type
+        - visible
+        - name
+        - type
+        - layer
+        - domain
+        - state
+        - runState
+        - synchronized
+        - failingChecks
+        - properties
+      additionalProperties: false
+      type: object
+    ProblemContributorDetails:
+      properties:
+        _type:
+          enum:
+            - ProblemContributorDetails
+          type: string
+        causeId:
+          type: int
+          format: int64
+        causeType:
+          description: |
+            The component type ID of the causing component.
+          type: int
+          format: int64
+        causeName:
+          type: string
+        healthState:
+          $ref: '#/components/schemas/HealthStateValue'
+        propagatedHealthState:
+          $ref: '#/components/schemas/PropagatedHealthStateValue'
+        failingCheckNames:
+          items:
+            type: string
+          type: array
+      required:
+        - _type
+        - causeId
+        - causeType
+        - causeName
+        - healthState
+        - propagatedHealthState
+        - failingCheckNames
+      additionalProperties: false
+      type: object
+    ViewCheck:
+      properties:
+        _type:
+          enum:
+            - ViewCheck
+          type: string
+        id:
+          type: int
+          format: int64
+        lastUpdateTimestamp:
+          type: int
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        state:
+          $ref: '#/components/schemas/ViewCheckState'
+      required:
+        - _type
+        - id
+        - lastUpdateTimestamp
+        - name
+        - state
+      additionalProperties: false
+      type: object
+    ViewCheckState:
+      properties:
+        _type:
+          enum:
+            - ViewCheckState
+          type: string
+        state:
+          $ref: '#/components/schemas/HealthStateValue'
+        lastUpdateTimestamp:
+          type: number
+      required:
+        - _type
+        - state
+        - lastUpdateTimestamp
+      additionalProperties: false
+      type: object
+    DependencyDirection:
+      type: string
+      enum:
+        - ONE_WAY
+        - NONE
+        - BOTH
+    ProblemContributor:
+      oneOf:
+        - $ref: '#/components/schemas/ComponentProblemContributor'
+        - $ref: '#/components/schemas/RelationProblemContributor'
+    ComponentProblemContributor:
+      properties:
+        _type:
+          enum:
+            - ComponentProblemContributor
+          type: string
+        id:
+          type: int
+          format: int64
+      required:
+        - _type
+        - id
+      additionalProperties: false
+      type: object
+    RelationProblemContributor:
+      properties:
+        _type:
+          enum:
+            - RelationProblemContributor
+          type: string
+        id:
+          type: int
+          format: int64
+      required:
+        - _type
+        - id
+      additionalProperties: false
+      type: object
+    StackElementState:
+      properties:
+        _type:
+          enum:
+            - StackElementState
+          type: string
+        id:
+          type: int
+          format: int64
+        lastUpdateTimestamp:
+          type: int
+          format: int64
+        healthState:
+          $ref: '#/components/schemas/HealthStateValue'
+        propagatedHealthState:
+          $ref: '#/components/schemas/PropagatedHealthStateValue'
+      required:
+        - _type
+        - id
+        - healthState
+        - propagatedHealthState
+      additionalProperties: false
+      type: object
+    RestrictedViewRelation:
+      properties:
+        _type:
+          enum:
+            - RestrictedViewRelation
+          type: string
+        visible:
+          type: boolean
+        id:
+          type: int
+          format: int64
+        lastUpdateTimestamp:
+          type: int
+          format: int64
+      required:
+        - _type
+        - visible
+      additionalProperties: false
+      type: object
+    IndirectRelation:
+      properties:
+        _type:
+          enum:
+            - IndirectRelation
+          type: string
+        id:
+          type: int
+          format: int64
+        source:
+          type: int
+          format: int64
+        target:
+          type: int
+          format: int64
+        dependencyDirection:
+          $ref: '#/components/schemas/DependencyDirection'
+        paths:
+          $ref: '#/components/schemas/TopologyPaths'
+      required:
+        - _type
+        - id
+        - source
+        - target
+        - dependencyDirection
+        - paths
+      additionalProperties: false
+      type: object
+    TopologyPaths:
+      oneOf:
+        - $ref: '#/components/schemas/SingleNonDeterministicTopologyPath'
+        - $ref: '#/components/schemas/TopologyPathExistsDeeperThan'
+    TopologyPathExistsDeeperThan:
+      properties:
+        _type:
+          enum:
+            - TopologyPathExistsDeeperThan
+          type: string
+        depth:
+          type: int
+          format: int64
+      required:
+        - _type
+        - depth
+      additionalProperties: false
+      type: object
+    SingleNonDeterministicTopologyPath:
+      properties:
+        _type:
+          enum:
+            - SingleNonDeterministicTopologyPath
+          type: string
+        path:
+          $ref: '#/components/schemas/TopologyPath'
+      required:
+        - _type
+        - path
+      additionalProperties: false
+      type: object
+    TopologyPath:
+      properties:
+        _type:
+          enum:
+            - TopologyPath
+          type: string
+        elements:
+          items:
+            $ref: '#/components/schemas/TopologyPathElement'
+          type: array
+        components:
+          items:
+            $ref: '#/components/schemas/ViewComponentBase'
+          type: array
+        relations:
+          items:
+            $ref: '#/components/schemas/ViewRelationBase'
+          type: array
+      required:
+        - _type
+        - elements
+        - components
+        - relations
+      additionalProperties: false
+      type: object
+    TopologyPathElement:
+      oneOf:
+        - $ref: '#/components/schemas/ComponentPathElement'
+        - $ref: '#/components/schemas/RelationPathElement'
+    ComponentPathElement:
+      properties:
+        _type:
+          enum:
+            - ComponentPathElement
+          type: string
+        id:
+          type: int
+          format: int64
+      required:
+        - _type
+        - id
+      additionalProperties: false
+      type: object
+    RelationPathElement:
+      properties:
+        _type:
+          enum:
+            - RelationPathElement
+          type: string
+        id:
+          type: int
+          format: int64
+      required:
+        - _type
+        - id
+      additionalProperties: false
+      type: object
+    ViewComponentBase:
+      oneOf:
+        - $ref: '#/components/schemas/RestrictedViewComponent'
+        - $ref: '#/components/schemas/ViewComponent'
+    RestrictedViewComponent:
+      properties:
+        _type:
+          enum:
+            - RestrictedViewComponent
+          type: string
+        visible:
+          type: boolean
+        id:
+          type: int
+          format: int64
+        lastUpdateTimestamp:
+          type: int
+          format: int64
+      required:
+        - _type
+        - visible
+      additionalProperties: false
+      type: object
+    TypeGroup:
+      properties:
+        _type:
+          enum:
+            - TypeGroup
+          type: string
+        id:
+          type: int
+          format: int64
+        classifier:
+          $ref: '#/components/schemas/TypeGroupClassifier'
+        layers:
+          items:
+            type: number
+            format: int64
+          type: array
+        domains:
+          items:
+            type: number
+            format: int64
+          type: array
+        environments:
+          items:
+            type: number
+            format: int64
+          type: array
+        components:
+          items:
+            type: number
+            format: int64
+          type: array
+      required:
+        - _type
+        - id
+        - classifier
+        - layers
+        - domains
+        - environments
+        - components
+      additionalProperties: false
+      type: object
+    TypeGroupClassifier:
+      properties:
+        _type:
+          enum:
+            - TypeGroupClassifier
+          type: string
+        componentType:
+          type: int
+          format: int64
+        health:
+          $ref: '#/components/schemas/HealthStateValue'
+        propagatedHealth:
+          $ref: '#/components/schemas/PropagatedHealthStateValue'
+        layer:
+          type: int
+          format: int64
+        domain:
+          type: int
+          format: int64
+        incomingRelations:
+          items:
+            type: number
+            format: int64
+          type: array
+        outgoingRelations:
+          items:
+            type: number
+            format: int64
+          type: array
+        hasRelations:
+          type: boolean
+      required:
+        - _type
+        - componentType
+        - health
+        - propagatedHealth
+        - incomingRelations
+        - outgoingRelations
+        - hasRelations
+      additionalProperties: false
+      type: object
+    Layer:
+      properties:
+        _type:
+          enum:
+            - Layer
+          type: string
+        name:
+          type: string
+        identifier:
+          type: string
+        ownedBy:
+          type: string
+        optionalName:
+          type: string
+        description:
+          type: string
+        id:
+          type: int
+          format: int64
+        lastUpdateTimestamp:
+          type: int
+          format: int64
+        order:
+          type: number
+      required:
+        - _type
+        - name
+        - order
+      additionalProperties: false
+      type: object
+    Domain:
+      properties:
+        _type:
+          enum:
+            - Domain
+          type: string
+        name:
+          type: string
+        identifier:
+          type: string
+        ownedBy:
+          type: string
+        optionalName:
+          type: string
+        description:
+          type: string
+        id:
+          type: int
+          format: int64
+        lastUpdateTimestamp:
+          type: int
+          format: int64
+        order:
+          type: number
+      required:
+        - _type
+        - name
+        - order
+      additionalProperties: false
+      type: object
+    Environment:
+      properties:
+        _type:
+          enum:
+            - Environment
+          type: string
+        name:
+          type: string
+        identifier:
+          type: string
+        ownedBy:
+          type: string
+        optionalName:
+          type: string
+        description:
+          type: string
+        id:
+          type: int
+          format: int64
+        lastUpdateTimestamp:
+          type: int
+          format: int64
+      required:
+        - _type
+        - name
+      additionalProperties: false
+      type: object
+    StackElementRunState:
+      properties:
+        _type:
+          enum:
+            - StackElementRunState
+          type: string
+        id:
+          type: int
+          format: int64
+        runState:
+          $ref: '#/components/schemas/RunStateValue'
+      required:
+        - _type
+        - id
+        - runState
+      additionalProperties: false
+      type: object
+    RunStateValue:
+      type: string
+      enum:
+        - UNKNOWN
+        - STARTING
+        - RUNNING
+        - STOPPING
+        - STOPPED
+        - DEPLOYED
+        - DEPLOYING
+    GroupRelation:
+      properties:
+        _type:
+          enum:
+            - GroupRelation
+          type: string
+        id:
+          type: int
+          format: int64
+        source:
+          type: int
+          format: int64
+          description: |
+            Component ID of the source component.
+        target:
+          type: int
+          format: int64
+          description: |
+            Component ID of the target component.
+        dependencyDirection:
+          $ref: '#/components/schemas/DependencyDirection'
+        isSourceGroup:
+          type: boolean
+          description: |
+            Is the source a group (TypeGroup) or a component?
+        isTargetGroup:
+          type: boolean
+          description: |
+            Is the target a group (TypeGroup) or a component?
+        isSurjective:
+          type: boolean
+          description: |
+            True if every element of a component group is reached by this grouping of relations,
+            i.e. surjective with respect to the group.
+
+            Take for example this small topology of three components: A, B and C.
+
+            ```
+            [A, B]
+              ⇱ ↑
+                 C
+            ````
+
+            The two relations from C to A and B will become a GroupRelation since [A, B] forms a single
+            group. The relation is surjective, because the relations touch every element in the group.
+            Had there been another component in the group [A, B] then without extra relations the group
+            relation would not have been surjective.
+
+            Surjectiveness is independent of the direction of the arrows and on whether the relations
+            are direct or indirect.
+
+            If both the source and the target are groups then this boolean actually indicaties whether
+            it is surjective for both groups.
+        allSameDirection:
+          type: boolean
+          description: |
+            True if all relations that were grouped had the same direction with respect to the group(s).
+        directRelations:
+          items:
+            type: number
+            format: int64
+          type: array
+          description:  |
+            All the IDs of te grouped direct relations.
+        indirectRelations:
+          items:
+            type: number
+            format: int64
+          type: array
+          description:  |
+            All the IDs of te grouped indirect relations.
+      required:
+        - _type
+        - id
+        - source
+        - target
+        - dependencyDirection
+        - isSourceGroup
+        - isTargetGroup
+        - isSurjective
+        - allSameDirection
+        - directRelations
+        - indirectRelations
+      additionalProperties: false
+      type: object
+    RootProblem:
+      oneOf:
+        - $ref: '#/components/schemas/AccessibleRootProblem'
+        - $ref: '#/components/schemas/RestrictedRootProblem'
+    AccessibleRootProblem:
+      oneOf:
+        - $ref: '#/components/schemas/RootComponentProblem'
+        - $ref: '#/components/schemas/RootRelationProblem'
+    RootComponentProblem:
+      properties:
+        _type:
+          enum:
+            - RootComponentProblem
+          type: string
+        failingCheckNames:
+          items:
+            type: string
+          type: array
+        partOfProblemAt:
+          type: int
+          format: int64
+        problemId:
+          type: int
+          format: int64
+        contributingProblems:
+          items:
+            $ref: '#/components/schemas/ContributingProblem'
+          type: array
+        lastUpdateTimestamp:
+          type: int
+          format: int64
+        nodeId:
+          type: int
+          format: int64
+        healthState:
+          $ref: '#/components/schemas/HealthStateValue'
+        propagatedHealthState:
+          $ref: '#/components/schemas/PropagatedHealthStateValue'
+        componentName:
+          type: string
+        componentType:
+          type: int
+          format: int64
+      required:
+        - _type
+        - failingCheckNames
+        - problemId
+        - contributingProblems
+        - lastUpdateTimestamp
+        - nodeId
+        - healthState
+        - propagatedHealthState
+        - componentName
+        - componentType
+      additionalProperties: false
+      type: object
+    ContributingProblem:
+      oneOf:
+        - $ref: '#/components/schemas/AccessibleContributingProblem'
+        - $ref: '#/components/schemas/RestrictedContributingProblem'
+    AccessibleContributingProblem:
+      oneOf:
+        - $ref: '#/components/schemas/ContributingComponentProblem'
+        - $ref: '#/components/schemas/ContributingRelationProblem'
+    ContributingComponentProblem:
+      properties:
+        _type:
+          enum:
+            - ContributingComponentProblem
+          type: string
+        failingCheck:
+          $ref: '#/components/schemas/ViewCheck'
+        nodeId:
+          type: int
+          format: int64
+        healthState:
+          $ref: '#/components/schemas/HealthStateValue'
+        propagatedHealthState:
+          $ref: '#/components/schemas/PropagatedHealthStateValue'
+        componentName:
+          type: string
+        componentType:
+          type: int
+          format: int64
+        partOfProblemAt:
+          type: int
+          format: int64
+      required:
+        - _type
+        - failingCheck
+        - nodeId
+        - healthState
+        - propagatedHealthState
+        - componentName
+        - componentType
+      additionalProperties: false
+      type: object
+    ContributingRelationProblem:
+      properties:
+        _type:
+          enum:
+            - ContributingRelationProblem
+          type: string
+        failingCheck:
+          $ref: '#/components/schemas/ViewCheck'
+        nodeId:
+          type: int
+          format: int64
+        healthState:
+          $ref: '#/components/schemas/HealthStateValue'
+        propagatedHealthState:
+          $ref: '#/components/schemas/PropagatedHealthStateValue'
+        relationName:
+          type: string
+        relationType:
+          type: int
+          format: int64
+        dependencyDirection:
+          $ref: '#/components/schemas/DependencyDirection'
+        partOfProblemAt:
+          type: int
+          format: int64
+      required:
+        - _type
+        - failingCheck
+        - nodeId
+        - healthState
+        - propagatedHealthState
+        - relationType
+        - dependencyDirection
+      additionalProperties: false
+      type: object
+    RestrictedContributingProblem:
+      properties:
+        _type:
+          enum:
+            - RestrictedContributingProblem
+          type: string
+        nodeId:
+          type: int
+          format: int64
+        healthState:
+          $ref: '#/components/schemas/HealthStateValue'
+        propagatedHealthState:
+          $ref: '#/components/schemas/PropagatedHealthStateValue'
+      required:
+        - _type
+        - nodeId
+        - healthState
+        - propagatedHealthState
+      additionalProperties: false
+      type: object
+    RootRelationProblem:
+      properties:
+        _type:
+          enum:
+            - RootRelationProblem
+          type: string
+        failingCheckNames:
+          items:
+            type: string
+          type: array
+        partOfProblemAt:
+          type: int
+          format: int64
+        problemId:
+          type: int
+          format: int64
+        contributingProblems:
+          items:
+            $ref: '#/components/schemas/ContributingProblem'
+          type: array
+        lastUpdateTimestamp:
+          type: int
+          format: int64
+        nodeId:
+          type: int
+          format: int64
+        healthState:
+          $ref: '#/components/schemas/HealthStateValue'
+        propagatedHealthState:
+          $ref: '#/components/schemas/PropagatedHealthStateValue'
+        relationName:
+          type: string
+        relationType:
+          type: int
+          format: int64
+        dependencyDirection:
+          $ref: '#/components/schemas/DependencyDirection'
+      required:
+        - _type
+        - failingCheckNames
+        - problemId
+        - contributingProblems
+        - lastUpdateTimestamp
+        - nodeId
+        - healthState
+        - propagatedHealthState
+        - relationType
+        - dependencyDirection
+      additionalProperties: false
+      type: object
+    RestrictedRootProblem:
+      properties:
+        _type:
+          enum:
+            - RestrictedRootProblem
+          type: string
+        problemId:
+          type: int
+          format: int64
+        contributingProblems:
+          items:
+            $ref: '#/components/schemas/ContributingProblem'
+          type: array
+        lastUpdateTimestamp:
+          type: int
+          format: int64
+        nodeId:
+          type: int
+          format: int64
+        healthState:
+          $ref: '#/components/schemas/HealthStateValue'
+        propagatedHealthState:
+          $ref: '#/components/schemas/PropagatedHealthStateValue'
+        partOfProblemAt:
+          type: int
+          format: int64
+      required:
+        - _type
+        - problemId
+        - contributingProblems
+        - lastUpdateTimestamp
+        - nodeId
+        - healthState
+        - propagatedHealthState
+      additionalProperties: false
+      type: object
+    HealthStateValue:
+      type: string
+      enum:
+        - UNINITIALIZED
+        - UNKNOWN
+        - CLEAR
+        - DISABLED
+        - DEVIATING
+        - FLAPPING
+        - CRITICAL
+    PropagatedHealthStateValue:
+      type: string
+      enum:
+        - UNKNOWN
+        - PROPAGATION_ERROR
+        - DEVIATING
+        - FLAPPING
+        - CRITICAL
+        
