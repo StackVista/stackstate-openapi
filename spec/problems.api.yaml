@@ -39,7 +39,7 @@ components:
     topologyTime:
       name: topologyTime
       in: query
-      description: "A timestamp at which resources will be queried. If not given the resources are quired for current time."
+      description: "A timestamp at which resources will be queried. If not given the resources are queried for current time."
       required: false
       schema: { $ref: "#/components/schemas/Instant" }
     limit:
@@ -50,7 +50,7 @@ components:
       schema: { $ref: "#/components/schemas/Limit" }
   responses:
     GetCausingEventsResult:
-      description: Get events causing a problem successfull result
+      description: Get events causing a problem successful result
       content:
         application/json:
           schema: { $ref: "#/components/schemas/GetCausingEventsResult" }

@@ -1,0 +1,135 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Monitor Check Status API
+  version: "1.0.0"
+paths:
+  /monitor/checkStatus/{checkStateId}:
+    get:
+      tags:
+        - monitorCheckStatus
+      summary: "Get a monitor check status"
+      description: "Get a monitor check status by check state id"
+      operationId: getMonitorCheckStatus
+      parameters:
+        - $ref: "#/components/parameters/checkStateId"
+        - $ref: "#/components/parameters/topologyTime"
+      responses:
+        "200":
+          $ref: "#/components/responses/monitorCheckStatus"
+        "404":
+          $ref: "#/components/responses/monitorCheckStatusNotFoundError"
+        "500":
+          $ref: "#/components/responses/monitorCheckStatusApiError"
+
+components:
+  parameters:
+    checkStateId:
+      in: path
+      name: checkStateId
+      required: true
+      schema:
+        $ref: "#/components/schemas/CheckStateIdId"
+      description: "The checkStateId of a monitor check status"
+    topologyTime:
+      name: topologyTime
+      in: query
+      description: "A timestamp at which resources will be queried. If not given the resources are queried at current time."
+      required: false
+      schema:
+        type: integer
+        format: instant
+  responses:
+    monitorCheckStatus:
+      description: "Monitor check status"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorCheckStatus"
+    monitorCheckStatusNotFoundError:
+      description: "monitor check status was not found in the database"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorCheckStatusNotFoundError"
+    monitorCheckStatusApiError:
+      description: "container for all error response"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorCheckStatusApiError"
+  schemas:
+    CheckStateIdId:
+      type: string
+
+    MonitorCheckStatus:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        checkStateId:
+          $ref: "#/components/schemas/CheckStateIdId"
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        name:
+          type: string
+        topologyElementIdentifier:
+          type: string
+        health:
+          $ref: "checks.api.yaml#/components/schemas/HealthStateValue"
+        triggeredTimestamp:
+          type: integer
+          format: int64
+        data:
+          $ref: "#/components/schemas/MonitorCheckStatusData"
+        message:
+          type: string
+
+      required:
+        - id
+        - checkStateId
+        - lastUpdateTimestamp
+        - name
+        - topologyElementIdentifier
+        - health
+        - triggeredTimestamp
+
+    MonitorCheckStatusData:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/MonitorCheckStatusDisplayTimeSeries"
+    MonitorCheckStatusDisplayTimeSeries:
+      type: object
+      properties:
+        _type:
+          type: string
+        name:
+          type: string
+        query:
+          $ref: "telemetry.api.yaml#/components/schemas/MetricQuery"
+      required:
+        - _type
+        - name
+        - query
+    MonitorCheckStatusApiError:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    MonitorCheckStatusNotFoundError:
+      type: object
+      properties:
+        checkStateId:
+          $ref: "#/components/schemas/CheckStateIdId"
+        _type:
+          type: string
+          enum:
+            - MonitorNotFoundError
+      required:
+        - checkStateId
+        - _type
