@@ -70,6 +70,8 @@ components:
           type: string
         name:
           type: string
+        description:
+          type: string
         health:
           $ref: "checks.api.yaml#/components/schemas/HealthStateValue"
         triggeredTimestamp:
