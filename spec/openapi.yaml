@@ -38,7 +38,7 @@ paths:
   /monitors/{monitorIdOrUrn}/run: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D%2Frun" }
   /monitors/{monitorIdOrUrn}/status: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D%2Fstatus" }
   /monitors/overview: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2Foverview" }
-  /monitor/checkStatus/{checkStateId}: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7BcheckStateId%7D" }
+  /monitor/checkStatus/{id}: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7Bid%7D" }
   /user/profile: { $ref: "user_profile.api.yaml#/paths/%2Fuser%2Fprofile" }
   /user/profile/tokens: { $ref: "user_profile.api.yaml#/paths/%2Fuser%2Fprofile%2Ftokens" }
   /user/session/assumedRole: { $ref: "user_session.api.yaml#/paths/%2Fuser%2Fsession%2FassumedRole" }

@@ -4,7 +4,7 @@ info:
   title: Monitor Check Status API
   version: "1.0.0"
 paths:
-  /monitor/checkStatus/{checkStateId}:
+  /monitor/checkStatus/{id}:
     get:
       tags:
         - monitorCheckStatus
@@ -12,7 +12,7 @@ paths:
       description: "Get a monitor check status by check state id"
       operationId: getMonitorCheckStatus
       parameters:
-        - $ref: "#/components/parameters/checkStateId"
+        - $ref: "#/components/parameters/id"
         - $ref: "#/components/parameters/topologyTime"
       responses:
         "200":
@@ -24,13 +24,14 @@ paths:
 
 components:
   parameters:
-    checkStateId:
+    id:
       in: path
-      name: checkStateId
+      name: id
       required: true
       schema:
-        $ref: "#/components/schemas/CheckStateIdId"
-      description: "The checkStateId of a monitor check status"
+        type: integer
+        format: int64
+      description: "The id of a monitor check status"
     topologyTime:
       name: topologyTime
       in: query
@@ -59,9 +60,6 @@ components:
           schema:
             $ref: "#/components/schemas/MonitorCheckStatusApiError"
   schemas:
-    CheckStateIdId:
-      type: string
-
     MonitorCheckStatus:
       type: object
       properties:
@@ -69,39 +67,39 @@ components:
           type: integer
           format: int64
         checkStateId:
-          $ref: "#/components/schemas/CheckStateIdId"
-        lastUpdateTimestamp:
-          type: integer
-          format: int64
-        name:
           type: string
-        topologyElementIdentifier:
+        name:
           type: string
         health:
           $ref: "checks.api.yaml#/components/schemas/HealthStateValue"
         triggeredTimestamp:
           type: integer
+          format: instant
+        metrics:
+          type: array
+          items:
+              $ref: "#/components/schemas/MonitorCheckStatusMetric"
+        monitorId:
+          type: integer
           format: int64
-        data:
-          $ref: "#/components/schemas/MonitorCheckStatusData"
         message:
           type: string
+        troubleshootingSteps:
+          type: string
+        topologyTime:
+          type: integer
+          format: instant
 
       required:
         - id
         - checkStateId
-        - lastUpdateTimestamp
         - name
-        - topologyElementIdentifier
         - health
         - triggeredTimestamp
-
-    MonitorCheckStatusData:
-      discriminator:
-        propertyName: _type
-      oneOf:
-        - $ref: "#/components/schemas/MonitorCheckStatusDisplayTimeSeries"
-    MonitorCheckStatusDisplayTimeSeries:
+        - metrics
+        - monitorId
+        - topologyTime
+    MonitorCheckStatusMetric:
       type: object
       properties:
         _type:
@@ -109,10 +107,27 @@ components:
         name:
           type: string
         query:
-          $ref: "telemetry.api.yaml#/components/schemas/MetricQuery"
+          $ref: "#/components/schemas/PromqlMetricQuery"
+        unit:
+          type: string
       required:
         - _type
         - name
+        - query
+    PromqlMetricQuery:
+      type: object
+      properties:
+        query:
+          $ref: "prometheus.api.yaml#/components/schemas/PromQuery"
+        description:
+          type: string
+        start:
+          $ref: "prometheus.api.yaml#/components/schemas/PromTime"
+        end:
+          $ref: "prometheus.api.yaml#/components/schemas/PromTime"
+        step:
+          $ref: "prometheus.api.yaml#/components/schemas/PromStep"
+      required:
         - query
     MonitorCheckStatusApiError:
       type: object
@@ -124,12 +139,13 @@ components:
     MonitorCheckStatusNotFoundError:
       type: object
       properties:
-        checkStateId:
-          $ref: "#/components/schemas/CheckStateIdId"
+        id:
+          type: integer
+          format: int64
         _type:
           type: string
           enum:
             - MonitorNotFoundError
       required:
-        - checkStateId
+        - id
         - _type
