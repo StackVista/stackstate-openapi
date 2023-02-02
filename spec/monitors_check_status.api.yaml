@@ -126,10 +126,12 @@ components:
           $ref: "prometheus.api.yaml#/components/schemas/PromQuery"
         description:
           type: string
-        start:
-          $ref: "prometheus.api.yaml#/components/schemas/PromTime"
-        end:
-          $ref: "prometheus.api.yaml#/components/schemas/PromTime"
+        startTime:
+          type: integer
+          format: instant
+        endTime:
+          type: integer
+          format: instant
         step:
           $ref: "prometheus.api.yaml#/components/schemas/PromStep"
       required:
