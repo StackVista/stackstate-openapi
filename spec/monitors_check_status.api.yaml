@@ -17,6 +17,8 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/monitorCheckStatus"
+        "400":
+          $ref: "#/components/responses/monitorCheckStatusApiError"
         "404":
           $ref: "#/components/responses/monitorCheckStatusNotFoundError"
         "500":
