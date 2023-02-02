@@ -84,6 +84,8 @@ components:
         monitorId:
           type: integer
           format: int64
+        monitorName:
+          type: string
         message:
           type: string
         troubleshootingSteps:
@@ -100,6 +102,7 @@ components:
         - triggeredTimestamp
         - metrics
         - monitorId
+        - monitorName
         - topologyTime
     MonitorCheckStatusMetric:
       type: object
