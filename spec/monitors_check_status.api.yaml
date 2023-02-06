@@ -23,6 +23,25 @@ paths:
           $ref: "#/components/responses/monitorCheckStatusNotFoundError"
         "500":
           $ref: "#/components/responses/monitorCheckStatusApiError"
+  /monitor/checkStatus/{id}/relatedFailures:
+    get:
+      tags:
+        - monitorCheckStatusRelatedFailures
+      summary: "Get a monitor check related failures"
+      description: "Get a monitor check status related failures by the check state id"
+      operationId: getMonitorCheckStatusRelatedFailures
+      parameters:
+        - $ref: "#/components/parameters/id"
+        - $ref: "#/components/parameters/topologyTime"
+      responses:
+        "200":
+          $ref: "#/components/responses/monitorCheckStatusRelatedFailures"
+        "400":
+          $ref: "#/components/responses/monitorCheckStatusApiError"
+        "404":
+          $ref: "#/components/responses/monitorCheckStatusNotFoundError"
+        "500":
+          $ref: "#/components/responses/monitorCheckStatusApiError"
 
 components:
   parameters:
@@ -49,6 +68,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MonitorCheckStatus"
+    monitorCheckStatusRelatedFailures:
+      description: "Monitor check status related failures"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorCheckStatusRelatedFailures"
     monitorCheckStatusNotFoundError:
       description: "monitor check status was not found in the database"
       content:
@@ -95,7 +120,6 @@ components:
         topologyTime:
           type: integer
           format: instant
-
       required:
         - id
         - checkStateId
@@ -138,6 +162,77 @@ components:
           $ref: "prometheus.api.yaml#/components/schemas/PromStep"
       required:
         - query
+    MonitorCheckStatusRelatedFailures:
+      properties:
+        checkStatusId:
+          type: integer
+          format: int64
+        topologyTime:
+          type: integer
+          format: instant
+        checkStatuses:
+          type: array
+          items:
+              $ref: "#/components/schemas/MonitorCheckStatusRelatedFailuresCheckStatus"
+      required:
+        - checkStatusId
+        - topologyTime
+        - checkStatuses
+    MonitorCheckStatusRelatedFailuresCheckStatus:
+      properties:
+        id:
+          type: integer
+          format: int64
+        healthState:
+          type: string
+          enum:
+            - DEVIATING
+            - CRITICAL
+        name:
+          type: string
+        component:
+          $ref: "#/components/schemas/MonitorCheckStatusRelatedFailuresComponent"
+        topology:
+          $ref: "#/components/schemas/MonitorCheckStatusRelatedFailuresTopology"
+        triggeredTimestamp:
+          type: integer
+          format: instant
+      required:
+        - id
+        - healthState
+        - name
+        - component
+        - topology
+        - triggeredTimestamp
+    MonitorCheckStatusRelatedFailuresComponent:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        namespace:
+          type: string
+        cluster:
+          type: string
+      required:
+        - name
+        - type
+        - namespace
+        - cluster
+    MonitorCheckStatusRelatedFailuresTopology:
+      properties:
+        distance:
+          type: integer
+        relation:
+          type: string
+          enum:
+            - SELF
+            - DEPENDENCY
+            - IMPACTED
+            - RELATED
+      required:
+        - distance
+        - relation
     MonitorCheckStatusApiError:
       type: object
       properties:
