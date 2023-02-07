@@ -26,7 +26,7 @@ paths:
   /monitor/checkStatus/{id}/relatedFailures:
     get:
       tags:
-        - monitorCheckStatusRelatedFailures
+        - monitorCheckStatus
       summary: "Get a monitor check related failures"
       description: "Get a monitor check status related failures by the check state id"
       operationId: getMonitorCheckStatusRelatedFailures
@@ -218,8 +218,6 @@ components:
         - id
         - name
         - type
-        - namespace
-        - cluster
     MonitorCheckStatusRelatedFailuresTopology:
       properties:
         distance:
