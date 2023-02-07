@@ -183,11 +183,8 @@ components:
         id:
           type: integer
           format: int64
-        healthState:
-          type: string
-          enum:
-            - DEVIATING
-            - CRITICAL
+        health:
+          $ref: "checks.api.yaml#/components/schemas/HealthStateValue"
         name:
           type: string
         component:
@@ -199,7 +196,7 @@ components:
           format: instant
       required:
         - id
-        - healthState
+        - health
         - name
         - component
         - topology
