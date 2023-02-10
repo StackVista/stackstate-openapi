@@ -132,6 +132,7 @@ components:
         - monitorId
         - monitorName
         - topologyTime
+        - component
     MonitorCheckStatusMetric:
       type: object
       properties:
