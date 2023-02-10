@@ -108,6 +108,8 @@ components:
           type: array
           items:
               $ref: "#/components/schemas/MonitorCheckStatusMetric"
+        component:
+          $ref: "#/components/schemas/MonitorCheckStatusComponent"
         monitorId:
           type: integer
           format: int64
@@ -188,7 +190,7 @@ components:
         name:
           type: string
         component:
-          $ref: "#/components/schemas/MonitorCheckStatusRelatedFailuresComponent"
+          $ref: "#/components/schemas/MonitorCheckStatusComponent"
         topology:
           $ref: "#/components/schemas/MonitorCheckStatusRelatedFailuresTopology"
         triggeredTimestamp:
@@ -201,7 +203,7 @@ components:
         - component
         - topology
         - triggeredTimestamp
-    MonitorCheckStatusRelatedFailuresComponent:
+    MonitorCheckStatusComponent:
       properties:
         id:
           type: integer
@@ -209,6 +211,8 @@ components:
         name:
           type: string
         type:
+          type: string
+        iconbase64:
           type: string
         namespace:
           type: string
