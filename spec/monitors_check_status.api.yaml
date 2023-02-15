@@ -209,6 +209,8 @@ components:
         id:
           type: integer
           format: int64
+        identifier:
+          type: string
         name:
           type: string
         type:
@@ -221,6 +223,7 @@ components:
           type: string
       required:
         - id
+        - identifier
         - name
         - type
     MonitorCheckStatusRelatedFailuresTopology:
