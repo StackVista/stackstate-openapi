@@ -153,6 +153,8 @@ components:
       properties:
         query:
           $ref: "prometheus.api.yaml#/components/schemas/PromQuery"
+        alias:
+          type: string
         description:
           type: string
         startTime:
