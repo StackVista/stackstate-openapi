@@ -231,10 +231,10 @@ components:
       properties:
         startIndex:
           type: integer
-          description: "Index of character in the string to start the highlight (0-based)"
+          description: "Index of character in the message to start the highlight (0-based)"
         endIndex:
           type: integer
-          description: "Index of character in the string to end the highlight (0-based)"
+          description: "Index of character in the message to end the highlight (0-based)"
       required:
         - startIndex
         - endIndex
