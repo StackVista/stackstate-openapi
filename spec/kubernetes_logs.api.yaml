@@ -222,6 +222,7 @@ components:
       required:
         - timestamp
         - message
+        - highlights
         - podName
         - podUID
         - containerName
