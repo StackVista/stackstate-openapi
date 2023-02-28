@@ -210,6 +210,9 @@ components:
           format: date-time
         message:
           type: string
+        highlights:
+          type: array
+          items: { $ref: "#/components/schemas/KubernetesLogHighlight" }
         podName:
           type: string
         podUID:
@@ -222,6 +225,18 @@ components:
         - podName
         - podUID
         - containerName
+    KubernetesLogHighlight:
+      type: object
+      properties:
+        startIndex:
+          type: integer
+          description: "Index of character in the string to start the highlight (0-based)"
+        endIndex:
+          type: integer
+          description: "Index of character in the string to end the highlight (0-based)"
+      required:
+        - startIndex
+        - endIndex
     GetKubernetesLogsBadRequest:
       oneOf:
         - $ref: "#/components/schemas/GetKubernetesLogsInvalidTimeRange"
