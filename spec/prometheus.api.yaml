@@ -31,6 +31,11 @@ components:
     PromMaxNumberOfDataPoints:
       type: integer
       format: int64
+    PromExtraLabel:
+      type: array
+#      collectionFormat: multi
+      items:
+        type: string
     PromQueryRequest:
       type: object
       properties:
@@ -40,6 +45,8 @@ components:
           $ref: "#/components/schemas/PromTime"
         timeout:
           $ref: "#/components/schemas/PromTimeout"
+        extra_label:
+          $ref: "#/components/schemas/PromExtraLabel"
       required:
         - query
     PromQueryRangeRequest:
@@ -57,6 +64,8 @@ components:
           $ref: "#/components/schemas/PromTimeout"
         maxNumberOfDataPoints:
           $ref: "#/components/schemas/PromMaxNumberOfDataPoints"
+        extra_label:
+          $ref: "#/components/schemas/PromExtraLabel"
       required:
         - query
         - start

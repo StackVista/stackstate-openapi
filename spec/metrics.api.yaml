@@ -206,6 +206,7 @@ paths:
         - $ref: "#/components/parameters/query"
         - $ref: "#/components/parameters/time"
         - $ref: "#/components/parameters/timeout"
+        - $ref: "#/components/parameters/extraLabelOptional"
       responses:
         "200":
           $ref: "#/components/responses/successEnvelope"
@@ -228,6 +229,10 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: "prometheus.api.yaml#/components/schemas/PromQueryRequest"
+            encoding:
+              extra_label:
+                style: form
+                explode: true
       responses:
         "200":
           $ref: "#/components/responses/successEnvelope"
@@ -253,6 +258,7 @@ paths:
         - $ref: "#/components/parameters/step"
         - $ref: "#/components/parameters/timeout"
         - $ref: "#/components/parameters/maxNumberOfDataPointsOptional"
+        - $ref: "#/components/parameters/extraLabelOptional"
       responses:
         "200":
           $ref: "#/components/responses/successEnvelope"
@@ -275,6 +281,10 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: "prometheus.api.yaml#/components/schemas/PromQueryRangeRequest"
+            encoding:
+              extra_label:
+                style: form
+                explode: true
       responses:
         "200":
           $ref: "#/components/responses/successEnvelope"
@@ -443,6 +453,15 @@ components:
         $ref: "prometheus.api.yaml#/components/schemas/PromMetric"
       description: "A metric name to filter metadata for. All metric metadata is retrieved if left empty."
       example: "http_requests_total"
+    extraLabelOptional:
+      in: query
+      name: extra_label
+      required: false
+      explode: true
+      schema:
+        $ref: "prometheus.api.yaml#/components/schemas/PromExtraLabel"
+      description: "Enforce additional label filters for queries"
+      example: "service=carts"
   responses:
     ### Instant/Range Query
     successEnvelope:
