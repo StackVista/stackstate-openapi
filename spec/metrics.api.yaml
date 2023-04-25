@@ -206,7 +206,7 @@ paths:
         - $ref: "#/components/parameters/query"
         - $ref: "#/components/parameters/time"
         - $ref: "#/components/parameters/timeout"
-        - $ref: "#/components/parameters/extraLabelOptional"
+        - $ref: "#/components/parameters/postFilterOptional"
       responses:
         "200":
           $ref: "#/components/responses/successEnvelope"
@@ -230,7 +230,7 @@ paths:
             schema:
               $ref: "prometheus.api.yaml#/components/schemas/PromQueryRequest"
             encoding:
-              extra_label:
+              post_filter:
                 style: form
                 explode: true
       responses:
@@ -258,7 +258,7 @@ paths:
         - $ref: "#/components/parameters/step"
         - $ref: "#/components/parameters/timeout"
         - $ref: "#/components/parameters/maxNumberOfDataPointsOptional"
-        - $ref: "#/components/parameters/extraLabelOptional"
+        - $ref: "#/components/parameters/postFilterOptional"
       responses:
         "200":
           $ref: "#/components/responses/successEnvelope"
@@ -282,7 +282,7 @@ paths:
             schema:
               $ref: "prometheus.api.yaml#/components/schemas/PromQueryRangeRequest"
             encoding:
-              extra_label:
+              post_filter:
                 style: form
                 explode: true
       responses:
@@ -453,13 +453,13 @@ components:
         $ref: "prometheus.api.yaml#/components/schemas/PromMetric"
       description: "A metric name to filter metadata for. All metric metadata is retrieved if left empty."
       example: "http_requests_total"
-    extraLabelOptional:
+    postFilterOptional:
       in: query
-      name: extra_label
+      name: post_filter
       required: false
       explode: true
       schema:
-        $ref: "prometheus.api.yaml#/components/schemas/PromExtraLabel"
+        $ref: "prometheus.api.yaml#/components/schemas/PromPostFilter"
       description: "Enforce additional label filters for queries"
       example: "service=carts"
   responses:
