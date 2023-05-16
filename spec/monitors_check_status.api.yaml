@@ -142,8 +142,6 @@ components:
           type: string
         query:
           $ref: "#/components/schemas/PromqlMetricQuery"
-        unit:
-          type: string
       required:
         - _type
         - name
@@ -165,6 +163,10 @@ components:
           format: instant
         step:
           $ref: "prometheus.api.yaml#/components/schemas/PromStep"
+        unit:
+          type: string
+        identifierFormat:
+          type: string
       required:
         - query
     MonitorCheckStatusRelatedFailures:
