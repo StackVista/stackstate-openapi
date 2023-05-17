@@ -165,7 +165,7 @@ components:
           $ref: "prometheus.api.yaml#/components/schemas/PromStep"
         unit:
           type: string
-        identifierFormat:
+        componentIdentifierTemplate:
           type: string
       required:
         - query
