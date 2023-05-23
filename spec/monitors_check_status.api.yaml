@@ -42,6 +42,24 @@ paths:
           $ref: "#/components/responses/monitorCheckStatusNotFoundError"
         "500":
           $ref: "#/components/responses/monitorCheckStatusApiError"
+  /monitor/checkStatus/{id}/healthHistory:
+    get:
+      tags:
+        - monitorCheckStatus
+      summary: "Get a monitor check health hisotry"
+      description: "Get a monitor check status health history for a defined period of time by the check state id"
+      operationId: getMonitorCheckStatusHealthHistory
+      parameters:
+        - $ref: "#/components/parameters/id"
+        - $ref: "#/components/parameters/startTime"
+        - $ref: "#/components/parameters/endTime"
+      responses:
+        "200":
+          $ref: "#/components/responses/monitorCheckStatusHealthHistory"
+        "400":
+          $ref: "#/components/responses/monitorCheckStatusApiError"
+        "500":
+          $ref: "#/components/responses/monitorCheckStatusApiError"
 
 components:
   parameters:
@@ -61,6 +79,22 @@ components:
       schema:
         type: integer
         format: instant
+    startTime:
+      name: startTime
+      in: query
+      description: "The start time of a time range to query resources."
+      required: true
+      schema:
+        type: integer
+        format: instant
+    endTime:
+      name: endTime
+      in: query
+      description: "The end time of a time range to query resources. If not given the endTime is set to current time."
+      required: false
+      schema:
+        type: integer
+        format: instant        
   responses:
     monitorCheckStatus:
       description: "Monitor check status"
@@ -74,6 +108,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MonitorCheckStatusRelatedFailures"
+    monitorCheckStatusHealthHistory:
+      description: "Monitor check status health history"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorCheckStatusHealthHistory"
     monitorCheckStatusNotFoundError:
       description: "monitor check status was not found in the database"
       content:
@@ -244,6 +284,37 @@ components:
       required:
         - distance
         - relation
+    MonitorCheckStatusHealthHistory:
+      properties:
+        checkStatusId:
+          type: integer
+          format: int64
+        startTime:
+          type: integer
+          format: instant      
+        endTime:
+          type: integer
+          format: instant
+        healthStateChanges:
+          type: array
+          items:
+            $ref: "#/components/schemas/MonitorCheckStatusHealthChange"
+          description: "List of health state changes ordered from most recent to oldest."
+      required:
+        - checkStatusId
+        - startTime
+        - endTime
+        - healthStateChanges
+    MonitorCheckStatusHealthChange:
+      properties:
+        timestamp:
+          type: integer
+          format: int64
+        newHealth:
+          $ref: "checks.api.yaml#/components/schemas/HealthStateValue"
+      required:
+        - timestamp
+        - newHealth
     MonitorCheckStatusApiError:
       type: object
       properties:
