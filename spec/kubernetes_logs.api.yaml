@@ -20,6 +20,7 @@ paths:
         - $ref: "#/components/parameters/podUID"
         - $ref: "#/components/parameters/containerNames"
         - $ref: "#/components/parameters/direction"
+        - $ref: "#/components/parameters/levels"
       responses:
         "200":
           $ref: "#/components/responses/GetKubernetesLogsResult"
@@ -40,6 +41,7 @@ paths:
         - $ref: "#/components/parameters/podUID"
         - $ref: "#/components/parameters/containerNames"
         - $ref: "#/components/parameters/histogramBucketsCount"
+        - $ref: "#/components/parameters/levels"
       responses:
         "200":
           $ref: "#/components/responses/GetKubernetesLogsHistogramResult"
@@ -139,6 +141,14 @@ components:
       description: "Fetch Oldest or Newest first."
       schema:
         $ref: "#/components/schemas/LogsDirection"
+    levels:
+      name: levels
+      in: query
+      description: "Search a specific log level DEBUG, INFO, WARN, ERROR."
+      schema:
+        type: array
+        items:
+          $ref: "#/components/schemas/LogLevel"
   responses:
     GetKubernetesLogsResult:
       description: Get logs successful result
@@ -180,6 +190,26 @@ components:
         - NEWEST
         - OLDEST
       default: NEWEST
+    LogLevel:
+      type: string
+      enum:
+        - ALERT
+        - TRACE
+        - DEBUG
+        - NOTICE
+        - INFO
+        - WARN
+        - WARNING
+        - ERR
+        - ERROR
+        - CRIT
+        - CRITICAL
+        - FATAL
+        - SEVERE
+        - EMERG
+        - EMERGENCY
+        - UNKNOWN
+      default: UNKNOWN
     GetKubernetesLogsResult:
       type: object
       properties:
@@ -219,6 +249,8 @@ components:
           type: string
         containerName:
           type: string
+        level:
+          $ref: "#/components/schemas/LogLevel"
       required:
         - timestamp
         - message
@@ -226,6 +258,7 @@ components:
         - podName
         - podUID
         - containerName
+        - level
     KubernetesLogHighlight:
       type: object
       properties:
@@ -319,10 +352,26 @@ components:
           description: "The bucket final timestamp."
           type: integer
           format: instant
+        logLevelBuckets:
+          type: array
+          items: { $ref: "#/components/schemas/KubernetesLogLevelHistogramBucket"}
       required:
         - count
         - startTime
         - endTime
+        - logLevelBuckets
+    KubernetesLogLevelHistogramBucket:
+      type: object
+      properties:
+        count:
+          description: "Total logs record count for a particular log level in the bucket."
+          type: integer
+          format: int64
+        level:
+          $ref: "#/components/schemas/LogLevel"
+      required:
+        - count
+        - level
     GetKubernetesLogsHistogramBadRequest:
       oneOf:
         - $ref: "#/components/schemas/GetKubernetesLogsHistogramInvalidTimeRange"
@@ -369,8 +418,13 @@ components:
           type: array
           items:
             type: string
+        levels:
+          type: array
+          items:
+            $ref: "#/components/schemas/LogLevel"
       required:
         - containerNames
+        - levels
     GetKubernetesLogsAutocompleteBadRequest:
       oneOf:
         - $ref: "#/components/schemas/GetKubernetesLogsAutocompleteInvalidTimeRange"
