@@ -180,30 +180,26 @@ components:
           type: string
         name:
           type: string
-        query:
-          $ref: "#/components/schemas/PromqlMetricQuery"
+        description:
+          type: string
+        unit:
+          type: string
+        step:
+          $ref: "prometheus.api.yaml#/components/schemas/PromStep"
+        queries:
+          type: array
+          items:
+            $ref: "#/components/schemas/MonitorCheckStatusQuery"
       required:
         - _type
         - name
-        - query
-    PromqlMetricQuery:
+        - queries
+    MonitorCheckStatusQuery:
       type: object
       properties:
         query:
-          $ref: "prometheus.api.yaml#/components/schemas/PromQuery"
+          type: string
         alias:
-          type: string
-        description:
-          type: string
-        startTime:
-          type: integer
-          format: instant
-        endTime:
-          type: integer
-          format: instant
-        step:
-          $ref: "prometheus.api.yaml#/components/schemas/PromStep"
-        unit:
           type: string
         componentIdentifierTemplate:
           type: string
