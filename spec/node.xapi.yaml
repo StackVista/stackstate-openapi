@@ -70,6 +70,46 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /node/{nodeType}/{nodeIdOrUrn}/clone:
+    post:
+      tags:
+        - node
+      parameters:
+        - $ref: "#/components/parameters/nodeType"
+        - $ref: "#/components/parameters/nodeIdOrUrn"
+      requestBody:
+        $ref: "#/components/requestBodies/nodeClone"
+      summary: "Clone a node with a new name"
+      description: "Clone a node with a new name"
+      operationId: clone
+      responses:
+        "200":
+          description: "Cloned Node"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Node"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /node/{nodeType}/{nodeId}/islocked:
+    get:
+      tags:
+        - node
+      parameters:
+        - $ref: "#/components/parameters/nodeType"
+        - $ref: "#/components/parameters/nodeId"
+      summary: "Retrieve if a node is locked"
+      description: "Retrieve if a node is locked"
+      operationId: lock
+      responses:
+        "200":
+          description: "Node lock status"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LockedResponse"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /node/{nodeType}/{nodeId}/unlock:
     post:
       tags:
@@ -92,6 +132,13 @@ paths:
 
 components:
   parameters:
+    nodeIdOrUrn:
+      in: path
+      name: nodeIdOrUrn
+      required: true
+      schema:
+        type: string
+        pattern: ^urn:.+|[0-9]+$
     nodeType:
       in: path
       name: nodeType
@@ -157,3 +204,49 @@ components:
         - typeName
         - id
         - lastUpdateTimestamp
+    LockedResponse:
+      type: object
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/NodeLocked"
+        - $ref: "#/components/schemas/NodeUnlocked"
+      required:
+        - _type
+    NodeLocked:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - NodeLocked
+        owner:
+          type: string
+      required:
+        - _type
+        - owner
+    NodeUnlocked:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - NodeUnlocked
+      required:
+        - _type
+    NodeName:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+
+  requestBodies:
+    nodeClone:
+      description: "New name for the node"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NodeName"

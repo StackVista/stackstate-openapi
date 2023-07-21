@@ -27,6 +27,8 @@ paths:
   /node: { $ref: "node.xapi.yaml#/paths/%2Fnode" }
   /node/{nodeType}: { $ref: "node.xapi.yaml#/paths/%2Fnode%2F%7BnodeType%7D" }
   /node/{nodeType}/{nodeId}: { $ref: "node.xapi.yaml#/paths/%2Fnode%2F%7BnodeType%7D%2F%7BnodeId%7D" }
+  /node/{nodeType}/{nodeIdOrUrn}/clone: { $ref: "node.xapi.yaml#/paths/%2Fnode%2F%7BnodeType%7D%2F%7BnodeIdOrUrn%7D%2Fclone" }
+  /node/{nodeType}/{nodeId}/islocked: { $ref: "node.xapi.yaml#/paths/%2Fnode%2F%7BnodeType%7D%2F%7BnodeId%7D%2Fislocked" }
   /node/{nodeType}/{nodeId}/unlock: { $ref: "node.xapi.yaml#/paths/%2Fnode%2F%7BnodeType%7D%2F%7BnodeId%7D%2Funlock" }
   /stackpack: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack" }
   /stackpack/{stackPackName}/provision: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack%2F%7BstackPackName%7D%2Fprovision" }
