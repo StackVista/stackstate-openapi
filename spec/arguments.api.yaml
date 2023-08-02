@@ -42,6 +42,18 @@ components:
         - FLAPPING
         - CRITICAL
       type: string
+    FailingHealthStateValue:
+      enum:
+        - DEVIATING
+        - CRITICAL
+      type: string
+    ComparatorWithoutEquality:
+      enum:
+        - GTE
+        - GT
+        - LT
+        - LTE
+      type: string
     WindowingMethod:
       enum:
         - SLIDING
@@ -116,6 +128,96 @@ components:
         value:
           type: integer
           format: int64
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentTimeWindowVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentTimeWindowVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          type: integer
+          format: int64
+          minimum: 0
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentFailingHealthStateVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentFailingHealthStateVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          $ref: "#/components/schemas/FailingHealthStateValue"
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentComparatorWithoutEqualityVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentComparatorWithoutEqualityVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          $ref: "#/components/schemas/ComparatorWithoutEquality"
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentPromQLMetricVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentPromQLMetricVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          $ref: "#/components/schemas/PromQLMetric"
       required:
         - _type
         - parameter
@@ -580,3 +682,24 @@ components:
         - _type
         - fundamentalPeriod
         - trainingWindowPeriods
+    PromQLMetric:
+      type: object
+      discriminator:
+        propertyName: _type
+      properties:
+        _type:
+          type: string
+          enum:
+            - PromQLMetric
+        id:
+          type: integer
+          format: int64
+        query:
+          type: string
+        unit:
+          type: string
+        aliasTemplate:
+          type: string
+      required:
+        - _type
+        - query
