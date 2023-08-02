@@ -85,6 +85,10 @@ components:
         - $ref: "#/components/schemas/ArgumentStringVal"
         - $ref: "#/components/schemas/ArgumentMetricStreamRef"
         - $ref: "#/components/schemas/ArgumentScriptMetricQueryVal"
+        - $ref: "#/components/schemas/ArgumentTimeWindowVal"
+        - $ref: "#/components/schemas/ArgumentComparatorWithoutEqualityVal"
+        - $ref: "#/components/schemas/ArgumentFailingHealthStateVal"
+        - $ref: "#/components/schemas/ArgumentPromQLMetricVal"
       required:
         - _type
     ArgumentStringVal:
