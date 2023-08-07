@@ -707,3 +707,5 @@ components:
       required:
         - _type
         - query
+        - unit
+        - aliasTemplate
