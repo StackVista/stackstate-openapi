@@ -152,7 +152,7 @@ components:
         parameter:
           type: integer
           format: int64
-        value:
+        valueMs:
           type: integer
           format: int64
           minimum: 0
