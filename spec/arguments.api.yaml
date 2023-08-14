@@ -135,7 +135,7 @@ components:
       required:
         - _type
         - parameter
-        - value
+        - valueMs
     ArgumentTimeWindowVal:
       type: object
       properties:
