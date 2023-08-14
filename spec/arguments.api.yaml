@@ -135,7 +135,7 @@ components:
       required:
         - _type
         - parameter
-        - valueMs
+        - value
     ArgumentTimeWindowVal:
       type: object
       properties:
@@ -159,7 +159,7 @@ components:
       required:
         - _type
         - parameter
-        - value
+        - valueMs
     ArgumentFailingHealthStateVal:
       type: object
       properties:
