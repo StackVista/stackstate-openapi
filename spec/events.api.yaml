@@ -370,6 +370,7 @@ components:
       type: string
       enum:
         - Changes
+        - Deployments
         - Alerts
         - Anomalies
         - Activities
