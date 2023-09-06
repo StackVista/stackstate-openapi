@@ -94,6 +94,27 @@ paths:
         "500":
           $ref: "#/components/responses/monitorApiError"
 
+  /monitors/{monitorIdOrUrn}/preview:
+    post:
+      tags:
+        - monitor
+      parameters:
+        - $ref: "#/components/parameters/monitorIdOrUrn"
+      summary: "Preview a monitor"
+      description: "Performs a run of a monitor allowing to test it with new arguments and delivers a summary of the health states produced"
+      operationId: previewMonitor
+      requestBody:
+        $ref: "#/components/requestBodies/monitorPreview"
+      responses:
+        "200":
+          $ref: "#/components/responses/monitorPreviewResult"
+        "400":
+          $ref: "#/components/responses/invalidMonitorIdentifierError"
+        "404":
+          $ref: "#/components/responses/monitorNotFoundError"
+        "500":
+          $ref: "#/components/responses/monitorApiError"
+
   /monitors/{monitorIdOrUrn}/status:
     get:
       tags:
@@ -167,6 +188,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MonitorRunResult"
+    monitorPreviewResult:
+      description: "Summary representation of the result of a monitor run"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorPreviewResult"
     monitorStatus:
       description: "Full representation of a monitor with status"
       content:
@@ -205,6 +232,13 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MonitorPatch"
+    monitorPreview:
+      description: "Monitor overrides in order to run a preview"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorPreview"
 
   schemas:
     MonitorIdOrUrn:
@@ -339,6 +373,14 @@ components:
         status:
           $ref: "#/components/schemas/MonitorStatusValue"
 
+    MonitorPreview:
+      type: object
+      properties:
+        arguments:
+          type: array
+          items:
+            $ref: "arguments.api.yaml#/components/schemas/Argument"
+
     MonitorValidationError:
       discriminator:
         propertyName: _type
@@ -355,6 +397,36 @@ components:
           type: object
       required:
         - result
+
+    MonitorPreviewResult:
+      type: object
+      properties:
+        healthStatesCount:
+          type: integer
+          description: "Representing the total count of the monitor results."
+        unknownCount:
+          type: integer
+          description: "Representing the count of the monitor results that are UNKNOWN in the result."
+        clearCount:
+          type: integer
+          description: "Representing the count of the monitor results that are CLEAR in the result."
+        deviatingCount:
+          type: integer
+          description: "Representing the count of the monitor results that are DEVIATING in the result."
+        criticalCount:
+          type: integer
+          description: "Representing the count of the monitor results that are CRITICAL in the result."
+        errors:
+          type: array
+          items:
+            type: string
+      required:
+        - healthStatesCount
+        - unknownCount
+        - clearCount
+        - deviatingCount
+        - criticalCount
+        - errors
 
     MonitorOverview:
       type: object

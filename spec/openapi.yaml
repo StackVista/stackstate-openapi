@@ -37,6 +37,7 @@ paths:
   /stackpack/{stackPackName}/confirm-manual-steps/{stackPackInstanceId}: {$ref: "stackpack.xapi.yaml#/paths/%2Fstackpack%2F%7BstackPackName%7D%2Fconfirm-manual-steps%2F%7BstackPackInstanceId%7D"}
   /monitors: { $ref: "monitors.api.yaml#/paths/%2Fmonitors" }
   /monitors/{monitorIdOrUrn}: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D" }
+  /monitors/{monitorIdOrUrn}/preview: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D%2Fpreview" }
   /monitors/{monitorIdOrUrn}/run: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D%2Frun" }
   /monitors/{monitorIdOrUrn}/status: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D%2Fstatus" }
   /monitors/overview: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2Foverview" }
