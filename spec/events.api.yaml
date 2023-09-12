@@ -295,6 +295,26 @@ paths:
                 $ref: "#/components/schemas/RequestError"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /eventsHistogram:
+    post:
+      tags:
+        - event
+      summary: "Get events histogram"
+      description: "Gets you a histogram of events that exist for topology and time selections."
+      operationId: getEventsHistogram
+      requestBody:
+        $ref: "#/components/requestBodies/EventsHistogramBody"
+      responses:
+        "200":
+          $ref: "#/components/responses/eventsHistogram"
+        "400":
+          description: Get Events Topology Overflow Error Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RequestError"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
   requestBodies:
     EventListBody:
@@ -303,6 +323,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/EventListRequest"
+    EventsHistogramBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EventsHistogramRequest"
   parameters:
     eventId:
       in: path
@@ -345,6 +371,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/EventNotFoundError"
+    eventsHistogram:
+      description: Events Histogram
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EventsHistogram"
   schemas:
     SourceLink:
       type: object
@@ -614,6 +646,34 @@ components:
         - full-cause-tree
     EventId:
       type: string
+    EventsHistogram:
+      type: object
+      properties:
+        buckets:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventBucket"
+      required:
+        - buckets
+    EventBucket:
+      type: object
+      properties:
+        count:
+          description: "Total logs record count in the bucket."
+          type: integer
+          format: int64
+        startTime:
+          description: "The bucket initial timestamp."
+          type: integer
+          format: instant
+        endTime:
+          description: "The bucket final timestamp."
+          type: integer
+          format: instant
+      required:
+        - count
+        - startTime
+        - endTime
     EventListRequest:
       type: object
       properties:
@@ -655,3 +715,32 @@ components:
         - endTimestampMs
         - topologyQuery
         - limit
+    EventsHistogramRequest:
+      type: object
+      properties:
+        playHeadTimestampMs:
+          type: integer
+          format: instant
+        startTimestampMs:
+          type: integer
+          format: instant
+        endTimestampMs:
+          type: integer
+          format: instant
+        topologyQuery:
+          type: string
+        eventTypes:
+          type: array
+          items:
+            type: string
+        eventCategories:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventCategory"
+        histogramBucketCount:
+          type: integer
+      required:
+        - startTimestampMs
+        - endTimestampMs
+        - topologyQuery
+        - histogramBucketCount
