@@ -308,7 +308,7 @@ paths:
         "200":
           $ref: "#/components/responses/eventsHistogram"
         "400":
-          description: Get Events Topology Overflow Error Validation Error
+          description: Get Events Histogram Topology Overflow Error or Validation Error
           content:
             application/json:
               schema:
