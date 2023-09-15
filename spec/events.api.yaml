@@ -670,10 +670,26 @@ components:
           description: "The bucket final timestamp."
           type: integer
           format: instant
+        categoryBuckets:
+          type: array
+          items: { $ref: "#/components/schemas/EventCategoryBucket"}
       required:
         - count
         - startTime
         - endTime
+        - categoryBuckets
+    EventCategoryBucket:
+      type: object
+      properties:
+        count:
+          description: "Total events count for a particular category in the bucket."
+          type: integer
+          format: int64
+        category:
+          $ref: "#/components/schemas/EventCategory"
+      required:
+        - count
+        - category
     EventListRequest:
       type: object
       properties:
