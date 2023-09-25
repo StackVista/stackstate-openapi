@@ -134,6 +134,27 @@ paths:
         "500":
           $ref: "#/components/responses/monitorApiError"
 
+  /monitors/{monitorIdOrUrn}/publish:
+    post:
+      tags:
+        - monitor
+      summary: "Post monitor health states"
+      description: "Publish health states for monitor"
+      operationId: publishHealthStates
+      parameters:
+        - $ref: "#/components/parameters/monitorIdOrUrn"
+      requestBody:
+        $ref: "#/components/requestBodies/monitorSnapshot"
+      responses:
+        "200":
+          description: "The health states were published successfully"
+        "400":
+          $ref: "#/components/responses/invalidMonitorIdentifierError"
+        "404":
+          $ref: "#/components/responses/monitorNotFoundError"
+        "500":
+          $ref: "#/components/responses/monitorApiError"
+
   /monitors/overview:
     get:
       tags:
@@ -239,6 +260,13 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MonitorPreview"
+    monitorSnapshot:
+      description: "Monitor snapshot of health states"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorSnapshot"
 
   schemas:
     MonitorIdOrUrn:
@@ -584,3 +612,74 @@ components:
           $ref: "#/components/schemas/MonitorRuntimeMetrics"
       required:
         - runtimeMetrics
+
+    MonitorSnapshot:
+      type: object
+      properties:
+        firstBatch:
+          type: boolean
+          default: true
+        lastBatch:
+          type: boolean
+          default: true
+        checkStates:
+          type: array
+          items:
+            $ref: "#/components/schemas/MonitorHealthState"
+      required:
+        - checkStates
+
+    MonitorHealthState:
+      type: object
+      properties:
+        id:
+          type: string
+        state:
+          $ref: "checks.api.yaml#/components/schemas/HealthStateValue"
+        topologyIdentifier:
+          type: string
+        displayTimeSeries:
+          type: array
+          items:
+            $ref: "#/components/schemas/MonitorDisplayTimeSeries"
+        remediationHintTemplateData:
+          type: object
+        message:
+          type: string
+        reason:
+          type: string
+      required:
+        - id
+        - state
+        - topologyIdentifier
+        - displayTimeSeries
+
+    MonitorDisplayTimeSeries:
+      type: object
+      properties:
+        name:
+          type: string
+        queries:
+          type: array
+          items:
+            $ref: "#/components/schemas/MonitorDisplayQuery"
+        description:
+          type: string
+        unit:
+          type: string
+      required:
+        - name
+        - queries
+
+    MonitorDisplayQuery:
+      type: object
+      properties:
+        query:
+          type: string
+        alias:
+          type: string
+        componentIdentifierTemplate:
+          type: string
+      required:
+        - query
+
