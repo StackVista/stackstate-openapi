@@ -622,12 +622,12 @@ components:
         lastBatch:
           type: boolean
           default: true
-        checkStates:
+        healthStates:
           type: array
           items:
             $ref: "#/components/schemas/MonitorHealthState"
       required:
-        - checkStates
+        - healthStates
 
     MonitorHealthState:
       type: object
@@ -652,7 +652,6 @@ components:
         - id
         - state
         - topologyIdentifier
-        - displayTimeSeries
 
     MonitorDisplayTimeSeries:
       type: object
