@@ -20,7 +20,7 @@ paths:
         - $ref: "#/components/parameters/podUID"
         - $ref: "#/components/parameters/containerNames"
         - $ref: "#/components/parameters/direction"
-        - $ref: "#/components/parameters/levels"
+        - $ref: "#/components/parameters/severity"
       responses:
         "200":
           $ref: "#/components/responses/GetKubernetesLogsResult"
@@ -41,7 +41,7 @@ paths:
         - $ref: "#/components/parameters/podUID"
         - $ref: "#/components/parameters/containerNames"
         - $ref: "#/components/parameters/histogramBucketsCount"
-        - $ref: "#/components/parameters/levels"
+        - $ref: "#/components/parameters/severity"
       responses:
         "200":
           $ref: "#/components/responses/GetKubernetesLogsHistogramResult"
@@ -141,14 +141,14 @@ components:
       description: "Fetch Oldest or Newest first."
       schema:
         $ref: "#/components/schemas/LogsDirection"
-    levels:
-      name: levels
+    severity:
+      name: severity
       in: query
-      description: "Search a specific log level DEBUG, INFO, WARN, ERROR."
+      description: "Search a specific log severity WARN, ERROR, OTHER."
       schema:
         type: array
         items:
-          $ref: "#/components/schemas/LogLevel"
+          $ref: "#/components/schemas/LogSeverity"
   responses:
     GetKubernetesLogsResult:
       description: Get logs successful result
@@ -190,6 +190,13 @@ components:
         - NEWEST
         - OLDEST
       default: NEWEST
+    LogSeverity:
+      type: string
+      enum:
+        - WARNING
+        - ERROR
+        - OTHER
+      default: OTHER
     LogLevel:
       type: string
       enum:
@@ -249,6 +256,8 @@ components:
           type: string
         containerName:
           type: string
+        severity:
+          $ref: "#/components/schemas/LogSeverity"
         level:
           $ref: "#/components/schemas/LogLevel"
       required:
@@ -258,6 +267,7 @@ components:
         - podName
         - podUID
         - containerName
+        - severity
         - level
     KubernetesLogHighlight:
       type: object
@@ -352,26 +362,26 @@ components:
           description: "The bucket final timestamp."
           type: integer
           format: instant
-        logLevelBuckets:
+        logSeverityBuckets:
           type: array
-          items: { $ref: "#/components/schemas/KubernetesLogLevelHistogramBucket"}
+          items: { $ref: "#/components/schemas/KubernetesLogSeverityHistogramBucket" }
       required:
         - count
         - startTime
         - endTime
-        - logLevelBuckets
-    KubernetesLogLevelHistogramBucket:
+        - logSeverityBuckets
+    KubernetesLogSeverityHistogramBucket:
       type: object
       properties:
         count:
-          description: "Total logs record count for a particular log level in the bucket."
+          description: "Total logs record count for a particular log severity in the bucket."
           type: integer
           format: int64
-        level:
-          $ref: "#/components/schemas/LogLevel"
+        severity:
+          $ref: "#/components/schemas/LogSeverity"
       required:
         - count
-        - level
+        - severity
     GetKubernetesLogsHistogramBadRequest:
       oneOf:
         - $ref: "#/components/schemas/GetKubernetesLogsHistogramInvalidTimeRange"
@@ -421,7 +431,7 @@ components:
         levels:
           type: array
           items:
-            $ref: "#/components/schemas/LogLevel"
+            $ref: "#/components/schemas/LogSeverity"
       required:
         - containerNames
         - levels
