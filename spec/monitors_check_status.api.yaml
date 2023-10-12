@@ -140,7 +140,7 @@ components:
         reason:
           type: string
         health:
-          $ref: "checks.api.yaml#/components/schemas/HealthStateValue"
+          $ref: "common.api.yaml#/components/schemas/HealthStateValue"
         triggeredTimestamp:
           type: integer
           format: instant
@@ -227,7 +227,7 @@ components:
           type: integer
           format: int64
         health:
-          $ref: "checks.api.yaml#/components/schemas/HealthStateValue"
+          $ref: "common.api.yaml#/components/schemas/HealthStateValue"
         name:
           type: string
         component:
@@ -307,7 +307,7 @@ components:
           type: integer
           format: int64
         newHealth:
-          $ref: "checks.api.yaml#/components/schemas/HealthStateValue"
+          $ref: "common.api.yaml#/components/schemas/HealthStateValue"
       required:
         - timestamp
         - newHealth

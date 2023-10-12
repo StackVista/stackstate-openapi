@@ -93,15 +93,6 @@ paths:
   /security/subjects/{subject}: { $ref: "subject.xapi.yaml#/paths/%2Fsecurity%2Fsubjects%2F%7Bsubject%7D" }
   /subscription: { $ref: "subscription.xapi.yaml#/paths/%2Fsubscription" }
   /anomalies/export: { $ref: "anomalies.api.yaml#/paths/%2Fanomalies%2Fexport" }
-  /components/{componentId}/streams: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentId%7D%2Fstreams" }
-  /components/{componentId}/streams/{streamId}: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentId%7D%2Fstreams%2F%7BstreamId%7D" }
-  /components/{componentId}/streams/latest: { $ref: 'components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentId%7D%2Fstreams%2Flatest' }
-  /components/{componentId}/checks: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentId%7D%2Fchecks" }
-  /components/{componentId}/checks/{checkId}: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentId%7D%2Fchecks%2F%7BcheckId%7D" }
-  /relations/{relationId}/streams: { $ref: "relations.api.yaml#/paths/%2Frelations%2F%7BrelationId%7D%2Fstreams" }
-  /relations/{relationId}/streams/{streamId}: { $ref: "relations.api.yaml#/paths/%2Frelations%2F%7BrelationId%7D%2Fstreams%2F%7BstreamId%7D" }
-  /relations/{relationId}/checks: { $ref: "relations.api.yaml#/paths/%2Frelations%2F%7BrelationId%7D%2Fchecks" }
-  /relations/{relationId}/checks/{checkId}: { $ref: "relations.api.yaml#/paths/%2Frelations%2F%7BrelationId%7D%2Fchecks%2F%7BcheckId%7D" }
   /problems/{problemId}/causing-events: { $ref: "problems.api.yaml#/paths/%2Fproblems%2F%7BproblemId%7D%2Fcausing-events" }
   /metrics/query: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Fquery" }
   /metrics/query_range: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Fquery%5Frange" }
@@ -115,6 +106,8 @@ paths:
   /k8s/logs: { $ref: "kubernetes_logs.api.yaml#/paths/%2Fk8s%2Flogs" }
   /k8s/logs/histogram: { $ref: "kubernetes_logs.api.yaml#/paths/%2Fk8s%2Flogs%2Fhistogram" }
   /k8s/logs/autocomplete: { $ref: "kubernetes_logs.api.yaml#/paths/%2Fk8s%2Flogs%2Fautocomplete" }
+  # Dummy path to make sure that some types are included, which otherwise would be excluded
+  /dummy/dummy: { $ref: "common.api.yaml#/paths/%2Fdummy%2Fdummy" }
 security:
   - ApiToken: []
   - ServiceToken: []

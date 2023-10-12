@@ -333,7 +333,7 @@ components:
           type: integer
           format: int64
         value:
-          $ref: "checks.api.yaml#/components/schemas/HealthStateValue"
+          $ref: "common.api.yaml#/components/schemas/HealthStateValue"
       required:
         - _type
         - parameter

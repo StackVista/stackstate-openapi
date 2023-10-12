@@ -635,7 +635,7 @@ components:
         id:
           type: string
         state:
-          $ref: "checks.api.yaml#/components/schemas/HealthStateValue"
+          $ref: "common.api.yaml#/components/schemas/HealthStateValue"
         topologyIdentifier:
           type: string
         displayTimeSeries:
