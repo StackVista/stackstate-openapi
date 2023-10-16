@@ -151,8 +151,12 @@ components:
         component:
           $ref: "#/components/schemas/MonitorCheckStatusComponent"
         monitorId:
-          type: integer
-          format: int64
+          type: object
+          discriminator:
+            propertyName: _type
+          oneOf:
+            - $ref: "#/components/schemas/MonitorDefId"
+            - $ref: "#/components/schemas/ExternalMonitorDefId"
         monitorName:
           type: string
         monitorDescription:
@@ -173,6 +177,30 @@ components:
         - monitorName
         - topologyTime
         - component
+    ExternalMonitorDefId:
+      type: object
+      properties:
+        _type:
+          enum:
+            - ExternalMonitorDefId
+        id:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - id
+    MonitorDefId:
+      type: object
+      properties:
+        _type:
+          enum:
+            - MonitorDefId
+        id:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - id
     MonitorCheckStatusMetric:
       type: object
       properties:
