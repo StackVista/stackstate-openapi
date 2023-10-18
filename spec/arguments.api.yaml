@@ -5,13 +5,6 @@ info:
 
 components:
   schemas:
-    AnomalyDirection:
-      enum:
-        - RISE
-        - DROP
-        - RUNNING
-        - ANY
-      type: string
     StsEventStreamFilter:
       enum:
         - STATE_CHANGES_OR_CREATED_DELETED
@@ -23,16 +16,6 @@ components:
         - VIEW_HEALTH_STATE_CHANGES
         - ANOMALY_EVENT
         - PROBLEM_EVENT
-      type: string
-    RunStateValue:
-      enum:
-        - UNKNOWN
-        - STARTING
-        - RUNNING
-        - STOPPING
-        - STOPPED
-        - DEPLOYED
-        - DEPLOYING
       type: string
     PropagatedHealthStateValue:
       enum:
@@ -54,36 +37,24 @@ components:
         - LT
         - LTE
       type: string
-    WindowingMethod:
-      enum:
-        - SLIDING
-        - BATCHING
-      type: string
     Argument:
       type: object
       discriminator:
         propertyName: _type
       oneOf:
-        - $ref: "#/components/schemas/ArgumentAnomalyDirectionVal"
         - $ref: "#/components/schemas/ArgumentBooleanVal"
         - $ref: "#/components/schemas/ArgumentComponentTypeRef"
-        - $ref: "#/components/schemas/ArgumentBaselineMetricStreamRef"
         - $ref: "#/components/schemas/ArgumentRelationTypeRef"
         - $ref: "#/components/schemas/ArgumentStsEventStreamVal"
-        - $ref: "#/components/schemas/ArgumentMetricStreamId"
         - $ref: "#/components/schemas/ArgumentQueryViewRef"
-        - $ref: "#/components/schemas/ArgumentRunStateVal"
         - $ref: "#/components/schemas/ArgumentLongVal"
         - $ref: "#/components/schemas/ArgumentStructTypeVal"
         - $ref: "#/components/schemas/ArgumentDoubleVal"
         - $ref: "#/components/schemas/ArgumentStateVal"
         - $ref: "#/components/schemas/ArgumentNodeIdVal"
-        - $ref: "#/components/schemas/ArgumentEventStreamRef"
         - $ref: "#/components/schemas/ArgumentPropagatedHealthStateVal"
-        - $ref: "#/components/schemas/ArgumentSimpleTrainingPeriodicityVal"
         - $ref: "#/components/schemas/ArgumentDurationVal"
         - $ref: "#/components/schemas/ArgumentStringVal"
-        - $ref: "#/components/schemas/ArgumentMetricStreamRef"
         - $ref: "#/components/schemas/ArgumentScriptMetricQueryVal"
         - $ref: "#/components/schemas/ArgumentTimeWindowVal"
         - $ref: "#/components/schemas/ArgumentComparatorWithoutEqualityVal"
@@ -226,28 +197,6 @@ components:
         - _type
         - parameter
         - value
-    ArgumentSimpleTrainingPeriodicityVal:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - ArgumentSimpleTrainingPeriodicityVal
-        id:
-          type: integer
-          format: int64
-        lastUpdateTimestamp:
-          type: integer
-          format: int64
-        parameter:
-          type: integer
-          format: int64
-        value:
-          $ref: "#/components/schemas/SimpleTrainingPeriodicity"
-      required:
-        - _type
-        - parameter
-        - value
     ArgumentPropagatedHealthStateVal:
       type: object
       properties:
@@ -270,29 +219,6 @@ components:
         - _type
         - parameter
         - value
-    ArgumentEventStreamRef:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - ArgumentEventStreamRef
-        id:
-          type: integer
-          format: int64
-        lastUpdateTimestamp:
-          type: integer
-          format: int64
-        parameter:
-          type: integer
-          format: int64
-        stream:
-          type: integer
-          format: int64
-      required:
-        - _type
-        - parameter
-        - stream
     ArgumentNodeIdVal:
       type: object
       properties:
@@ -406,28 +332,6 @@ components:
         - _type
         - parameter
         - value
-    ArgumentRunStateVal:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - ArgumentRunStateVal
-        id:
-          type: integer
-          format: int64
-        lastUpdateTimestamp:
-          type: integer
-          format: int64
-        parameter:
-          type: integer
-          format: int64
-        value:
-          $ref: "#/components/schemas/RunStateValue"
-      required:
-        - _type
-        - parameter
-        - value
     ArgumentQueryViewRef:
       type: object
       properties:
@@ -451,29 +355,6 @@ components:
         - _type
         - parameter
         - queryView
-    ArgumentMetricStreamId:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - ArgumentMetricStreamId
-        id:
-          type: integer
-          format: int64
-        lastUpdateTimestamp:
-          type: integer
-          format: int64
-        parameter:
-          type: integer
-          format: int64
-        stream:
-          type: integer
-          format: int64
-      required:
-        - _type
-        - parameter
-        - stream
     ArgumentStsEventStreamVal:
       type: object
       properties:
@@ -519,29 +400,6 @@ components:
         - _type
         - parameter
         - relationType
-    ArgumentBaselineMetricStreamRef:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - ArgumentBaselineMetricStreamRef
-        id:
-          type: integer
-          format: int64
-        lastUpdateTimestamp:
-          type: integer
-          format: int64
-        parameter:
-          type: integer
-          format: int64
-        stream:
-          type: integer
-          format: int64
-      required:
-        - _type
-        - parameter
-        - stream
     ArgumentBooleanVal:
       type: object
       properties:
@@ -560,28 +418,6 @@ components:
           format: int64
         value:
           type: boolean
-      required:
-        - _type
-        - parameter
-        - value
-    ArgumentAnomalyDirectionVal:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - ArgumentAnomalyDirectionVal
-        id:
-          type: integer
-          format: int64
-        lastUpdateTimestamp:
-          type: integer
-          format: int64
-        parameter:
-          type: integer
-          format: int64
-        value:
-          $ref: "#/components/schemas/AnomalyDirection"
       required:
         - _type
         - parameter
@@ -609,36 +445,6 @@ components:
         - _type
         - parameter
         - componentType
-    ArgumentMetricStreamRef:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - ArgumentMetricStreamRef
-        id:
-          type: integer
-          format: int64
-        lastUpdateTimestamp:
-          type: integer
-          format: int64
-        parameter:
-          type: integer
-          format: int64
-        maxWindow:
-          type: integer
-          format: int64
-        stream:
-          type: integer
-          format: int64
-        downsamplingMethod:
-          $ref: "telemetry.api.yaml#/components/schemas/DownsamplingMethod"
-        windowingMethod:
-          $ref: "#/components/schemas/WindowingMethod"
-      required:
-        - _type
-        - parameter
-        - stream
     ArgumentScriptMetricQueryVal:
       type: object
       properties:
@@ -661,31 +467,6 @@ components:
         - _type
         - parameter
         - script
-    SimpleTrainingPeriodicity:
-      type: object
-      discriminator:
-        propertyName: _type
-      properties:
-        _type:
-          type: string
-          enum:
-            - SimpleTrainingPeriodicity
-        id:
-          type: integer
-          format: int64
-        fundamentalPeriod:
-          type: integer
-          format: int64
-        lastUpdateTimestamp:
-          type: integer
-          format: int64
-        trainingWindowPeriods:
-          type: integer
-          format: int64
-      required:
-        - _type
-        - fundamentalPeriod
-        - trainingWindowPeriods
     PromQLMetric:
       type: object
       discriminator:

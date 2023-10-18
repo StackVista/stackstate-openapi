@@ -92,7 +92,6 @@ paths:
   /security/subjects: { $ref: "subject.xapi.yaml#/paths/%2Fsecurity%2Fsubjects" }
   /security/subjects/{subject}: { $ref: "subject.xapi.yaml#/paths/%2Fsecurity%2Fsubjects%2F%7Bsubject%7D" }
   /subscription: { $ref: "subscription.xapi.yaml#/paths/%2Fsubscription" }
-  /anomalies/export: { $ref: "anomalies.api.yaml#/paths/%2Fanomalies%2Fexport" }
   /problems/{problemId}/causing-events: { $ref: "problems.api.yaml#/paths/%2Fproblems%2F%7BproblemId%7D%2Fcausing-events" }
   /metrics/query: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Fquery" }
   /metrics/query_range: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Fquery%5Frange" }
