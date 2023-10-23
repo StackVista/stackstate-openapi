@@ -45,6 +45,8 @@ paths:
   /monitor/checkStatus/{id}: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7Bid%7D" }
   /monitor/checkStatus/{id}/relatedFailures: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7Bid%7D%2FrelatedFailures" }
   /monitor/checkStatus/{id}/healthHistory: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7Bid%7D%2FhealthHistory" }
+  /notifications/channels/slack/oauth-callback: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2Foauth-callback" }
+  /notifications/channels/slack/oauth-redirect: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2Foauth-redirect" }
   /user/profile: { $ref: "user_profile.api.yaml#/paths/%2Fuser%2Fprofile" }
   /user/profile/tokens: { $ref: "user_profile.api.yaml#/paths/%2Fuser%2Fprofile%2Ftokens" }
   /user/session/assumedRole: { $ref: "user_session.api.yaml#/paths/%2Fuser%2Fsession%2FassumedRole" }
