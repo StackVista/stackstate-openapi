@@ -4,9 +4,10 @@ info:
   title: Notification Channels API
   version: "1.0.0"
 paths:
-  /notifications/channels/slack/oauth-redirect:
+  /notifications/{notificationId}/channels/slack/{channelId}/oauth-redirect:
     get:
       parameters:
+        - $ref: "#/components/parameters/notificationId"
         - $ref: "#/components/parameters/channelId"
       tags:
         - notification_channels
@@ -16,9 +17,11 @@ paths:
       responses:
         "303":
           description: "Redirects to Slack to start an OAuth2 flow that will return to the slack channel configuration afterwards. In case of an error redirects back to the Slack channel configuration with an `error` and a `channelId` parameter."
-  /notifications/channels/slack/oauth-callback:
+  /notifications/{notificationId}/channels/slack/{channelId}/oauth-callback:
     get:
       parameters:
+        - $ref: "#/components/parameters/notificationId"
+        - $ref: "#/components/parameters/channelId"
         - $ref: "#/components/parameters/code"
         - $ref: "#/components/parameters/state"
       tags:
@@ -32,12 +35,17 @@ paths:
 components:
   parameters:
     channelId:
-      in: query
+      in: path
       name: channelId
       required: true
-      schema:
-        type: string
+      schema: { $ref: "#/components/schemas/channelId" }
       description: "Channel identifier"
+    notificationId:
+      in: path
+      name: notificationId
+      required: true
+      schema: { $ref: "#/components/schemas/notificationId" }
+      description: "Notification identifier"
     code:
       in: query
       name: code
@@ -52,4 +60,10 @@ components:
       schema:
         type: string
       description: "State parameter that was passed to Slack, should have the same value as the one passed to Slack."
-      
+  schemas:
+    notificationId:
+      type: integer
+      format: int64
+    channelId:
+      type: integer
+      format: int64
