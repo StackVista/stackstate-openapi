@@ -15,7 +15,7 @@ paths:
       description: "Redirects to Slack to start an OAuth2 flow."
       operationId: slackOauthRedirect
       responses:
-        "303":
+        "302":
           description: "Redirects to Slack to start an OAuth2 flow that will return to the slack channel configuration afterwards. In case of an error redirects back to the Slack channel configuration with an `error` and a `channelId` parameter."
   /notifications/{notificationId}/channels/slack/{channelId}/oauth-callback:
     get:
@@ -30,7 +30,7 @@ paths:
       description: "The OAuth callback for Slack, which is used to obtain the access token for the Slack channel."
       operationId: slackOAuthCallback
       responses:
-        "303":
+        "302":
           description: "Redirects back to the Slack channel configuration, in case of an error it includes an `error` query parameter. If known also a `channelId` parameter will be included."
 components:
   parameters:
