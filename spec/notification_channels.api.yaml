@@ -4,10 +4,10 @@ info:
   title: Notification Channels API
   version: "1.0.0"
 paths:
-  /notifications/{notificationId}/channels/slack/{channelId}/oauth-redirect:
+  /notifications/{notificationConfigurationId}/channels/slack/{channelId}/oauth-redirect:
     get:
       parameters:
-        - $ref: "#/components/parameters/notificationId"
+        - $ref: "#/components/parameters/notificationConfigurationId"
         - $ref: "#/components/parameters/channelId"
       tags:
         - notification_channels
@@ -17,10 +17,10 @@ paths:
       responses:
         "302":
           description: "Redirects to Slack to start an OAuth2 flow that will return to the slack channel configuration afterwards. In case of an error redirects back to the Slack channel configuration with an `error` and a `channelId` parameter."
-  /notifications/{notificationId}/channels/slack/{channelId}/oauth-callback:
+  /notifications/{notificationConfigurationId}/channels/slack/{channelId}/oauth-callback:
     get:
       parameters:
-        - $ref: "#/components/parameters/notificationId"
+        - $ref: "#/components/parameters/notificationConfigurationId"
         - $ref: "#/components/parameters/channelId"
         - $ref: "#/components/parameters/code"
         - $ref: "#/components/parameters/state"
@@ -32,6 +32,60 @@ paths:
       responses:
         "302":
           description: "Redirects back to the Slack channel configuration, in case of an error it includes an `error` query parameter. If known also a `channelId` parameter will be included."
+  /notifications/{notificationConfigurationId}/channels/slack/{channelId}/listSlackChannels:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/notificationConfigurationId"
+        - $ref: "#/components/parameters/channelId"
+      tags:
+        - notification_channels
+      summary: "List all public Slack channels"
+      description: "List all public Slack channels, used for selecting a channel for the notifications"
+      operationId: listSlackChannels
+      responses:
+        "200":
+          $ref: "#/components/responses/slackChannels"
+        "400":
+          $ref: "#/components/responses/slackNotificationChannelError"
+        "500":
+          $ref: "#/components/responses/slackNotificationChannelError"
+
+  /notifications/{notificationConfigurationId}/channels/slack/{channelId}/joinSlackChannel:
+    post:
+      parameters:
+        - $ref: "#/components/parameters/notificationConfigurationId"
+        - $ref: "#/components/parameters/channelId"
+      requestBody:
+        $ref: "#/components/requestBodies/joinSlackChannel"
+      tags:
+        - notification_channels
+      summary: "Join the specified Slack channel to send notifications"
+      description: "Join the specified Slack channel and configure this notifiation channel to post notifications to the specified slack channel."
+      operationId: joinSlackChannel
+      responses:
+        "200": 
+          description: "Successfully joined Slack channel."
+        "400":
+          $ref: "#/components/responses/slackNotificationChannelError"
+        "500":
+          $ref: "#/components/responses/slackNotificationChannelError"
+  /notifications/{notificationConfigurationId}/channels/slack/{channelId}/sendTestMessage:
+    post:
+      parameters:
+        - $ref: "#/components/parameters/notificationConfigurationId"
+        - $ref: "#/components/parameters/channelId"
+      tags:
+        - notification_channels
+      summary: "Join the specified Slack channel to send notifications"
+      description: "Join the specified Slack channel and configure this notifiation channel to post notifications to the specified slack channel."
+      operationId: sendTestMessage
+      responses:
+        "200": 
+          description: "Successfully sent test message to Slack channel."
+        "400":
+          $ref: "#/components/responses/slackNotificationChannelError"
+        "500":
+          $ref: "#/components/responses/slackNotificationChannelError"
 components:
   parameters:
     channelId:
@@ -40,11 +94,11 @@ components:
       required: true
       schema: { $ref: "#/components/schemas/channelId" }
       description: "Channel identifier"
-    notificationId:
+    notificationConfigurationId:
       in: path
-      name: notificationId
+      name: notificationConfigurationId
       required: true
-      schema: { $ref: "#/components/schemas/notificationId" }
+      schema: { $ref: "#/components/schemas/notificationConfigurationId" }
       description: "Notification identifier"
     code:
       in: query
@@ -60,10 +114,70 @@ components:
       schema:
         type: string
       description: "State parameter that was passed to Slack, should have the same value as the one passed to Slack."
+  requestBodies:
+    joinSlackChannel:
+      description: "Provide a Slack channel id to join the specified Slack channel"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SlackChannelId"
+  responses:
+    slackChannels:
+      description: "List of all available Slack channels to which StackState can send messages."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SlackChannels"
+    slackNotificationChannelError:
+      description: "Request cannot be executed becasue SlackNotificationChannel configuration is incomplete."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SlackNotificationChannelError"
   schemas:
-    notificationId:
+    notificationConfigurationId:
       type: integer
       format: int64
     channelId:
       type: integer
       format: int64
+    SlackChannels:
+      type: array
+      items: 
+        $ref: "#/components/schemas/SlackChannel"
+    SlackChannel:
+      type: object
+      properties:
+        name: 
+          type: string
+        id:
+          type: string
+      required:
+       - name
+       - id
+    SlackChannelId:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+       - id
+    SlackNotificationChannelError:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        message:
+          type: string
+        notificationConfigurationId:
+          type: integer
+          format: int64
+        channelId: 
+          type: integer
+          format: int64
+      required:
+        - statusCode
+        - message
+        - notificationConfigurationId
+        - channelId

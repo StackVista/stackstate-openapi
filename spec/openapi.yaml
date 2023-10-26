@@ -45,8 +45,11 @@ paths:
   /monitor/checkStatus/{id}: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7Bid%7D" }
   /monitor/checkStatus/{id}/relatedFailures: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7Bid%7D%2FrelatedFailures" }
   /monitor/checkStatus/{id}/healthHistory: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7Bid%7D%2FhealthHistory" }
-  /notifications/{notificationId}/channels/slack/{channelId}/oauth-callback: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2F%7BnotificationId%7D%2Fchannels%2Fslack%2F%7BchannelId%7D%2Foauth-callback" }
-  /notifications/{notificationId}/channels/slack/{channelId}/oauth-redirect: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2F%7BnotificationId%7D%2Fchannels%2Fslack%2F%7BchannelId%7D%2Foauth-redirect" }
+  /notifications/{notificationConfigurationId}/channels/slack/{channelId}/oauth-callback: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2F%7BnotificationConfigurationId%7D%2Fchannels%2Fslack%2F%7BchannelId%7D%2Foauth-callback" }
+  /notifications/{notificationConfigurationId}/channels/slack/{channelId}/oauth-redirect: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2F%7BnotificationConfigurationId%7D%2Fchannels%2Fslack%2F%7BchannelId%7D%2Foauth-redirect" }
+  /notifications/{notificationConfigurationId}/channels/slack/{channelId}/listSlackChannels: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2F%7BnotificationConfigurationId%7D%2Fchannels%2Fslack%2F%7BchannelId%7D%2FlistSlackChannels" }
+  /notifications/{notificationConfigurationId}/channels/slack/{channelId}/joinSlackChannel: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2F%7BnotificationConfigurationId%7D%2Fchannels%2Fslack%2F%7BchannelId%7D%2FjoinSlackChannel" }
+  /notifications/{notificationConfigurationId}/channels/slack/{channelId}/sendTestMessage: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2F%7BnotificationConfigurationId%7D%2Fchannels%2Fslack%2F%7BchannelId%7D%2FsendTestMessage" }
   /user/profile: { $ref: "user_profile.api.yaml#/paths/%2Fuser%2Fprofile" }
   /user/profile/tokens: { $ref: "user_profile.api.yaml#/paths/%2Fuser%2Fprofile%2Ftokens" }
   /user/session/assumedRole: { $ref: "user_session.api.yaml#/paths/%2Fuser%2Fsession%2FassumedRole" }
