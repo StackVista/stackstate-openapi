@@ -341,6 +341,10 @@ components:
           type: array
           items:
             type: string
+        canEdit:
+          type: boolean
+        canClone:
+          type: boolean
         status:
           $ref: "#/components/schemas/MonitorStatusValue"
         runtimeStatus:
