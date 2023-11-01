@@ -7,7 +7,7 @@ paths:
   /notifications/channels/slack/oauth-redirect:
     get:
       parameters:
-        - $ref: "#/components/parameters/redirect_path"
+        - $ref: "#/components/parameters/redirectPath"
       tags:
         - notification_channels
       summary: "Starts Slack OAuth2 flow"
@@ -108,9 +108,9 @@ components:
       schema:
         type: string
       description: "State parameter that was passed to Slack, should have the same value as the one passed to Slack."
-    redirect_path:
+    redirectPath:
       in: query
-      name: redirect_path
+      name: redirectPath
       required: true
       schema:
         type: string
