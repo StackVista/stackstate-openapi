@@ -7,7 +7,7 @@ paths:
   /notifications/channels/slack/oauth-redirect:
     get:
       parameters:
-        - $ref: "#/components/parameters/state"
+        - $ref: "#/components/parameters/redirect_path"
       tags:
         - notification_channels
       summary: "Starts Slack OAuth2 flow"
@@ -43,6 +43,8 @@ paths:
           $ref: "#/components/responses/slackChannels"
         "400":
           $ref: "#/components/responses/slackNotificationChannelError"
+        "404":
+          $ref: "#/components/responses/slackNotificationChannelNotFound"
         "500":
           $ref: "#/components/responses/slackNotificationChannelError"
 
@@ -62,6 +64,8 @@ paths:
           description: "Successfully joined Slack channel."
         "400":
           $ref: "#/components/responses/slackNotificationChannelError"
+        "404":
+          $ref: "#/components/responses/slackNotificationChannelNotFound"
         "500":
           $ref: "#/components/responses/slackNotificationChannelError"
   /notifications/channels/slack/{channelId}/sendTestMessage:
@@ -78,6 +82,8 @@ paths:
           description: "Successfully sent test message to Slack channel."
         "400":
           $ref: "#/components/responses/slackNotificationChannelError"
+        "404":
+          $ref: "#/components/responses/slackNotificationChannelNotFound"
         "500":
           $ref: "#/components/responses/slackNotificationChannelError"
 components:
@@ -102,6 +108,13 @@ components:
       schema:
         type: string
       description: "State parameter that was passed to Slack, should have the same value as the one passed to Slack."
+    redirect_path:
+      in: query
+      name: redirect_path
+      required: true
+      schema:
+        type: string
+      description: "After completing the oauth flow the user will be redirected back to this path, in the UI, on StackState, to continue further setup of the Slack notification channel."
   requestBodies:
     joinSlackChannel:
       description: "Provide a Slack channel id to join the specified Slack channel"
@@ -123,6 +136,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/SlackNotificationChannelError"
+    slackNotificationChannelNotFound:
+      description: "Slack notification channel was not found in the database"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SlackNotificationChannelNotFound"
   schemas:
     notificationConfigurationId:
       type: integer
@@ -154,14 +173,30 @@ components:
     SlackNotificationChannelError:
       type: object
       properties:
-        statusCode:
-          type: integer
         message:
           type: string
         channelId: 
-          type: integer
-          format: int64
+          type: string
+        _type:
+          type: string
+          enum:
+            - SlackNotificationChannelError
       required:
-        - statusCode
         - message
         - channelId
+        - _type
+    SlackNotificationChannelNotFound:
+      type: object
+      properties:
+        message:
+          type: string
+        channelId: 
+          type: string
+        _type:
+          type: string
+          enum:
+            - SlackNotificationChannelNotFound
+      required:
+        - message
+        - channelId
+        - _type
