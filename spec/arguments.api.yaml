@@ -55,7 +55,6 @@ components:
         - $ref: "#/components/schemas/ArgumentPropagatedHealthStateVal"
         - $ref: "#/components/schemas/ArgumentDurationVal"
         - $ref: "#/components/schemas/ArgumentStringVal"
-        - $ref: "#/components/schemas/ArgumentScriptMetricQueryVal"
         - $ref: "#/components/schemas/ArgumentTimeWindowVal"
         - $ref: "#/components/schemas/ArgumentComparatorWithoutEqualityVal"
         - $ref: "#/components/schemas/ArgumentFailingHealthStateVal"
