@@ -445,28 +445,6 @@ components:
         - _type
         - parameter
         - componentType
-    ArgumentScriptMetricQueryVal:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - ArgumentScriptMetricQueryVal
-        id:
-          type: integer
-          format: int64
-        lastUpdateTimestamp:
-          type: integer
-          format: int64
-        parameter:
-          type: integer
-          format: int64
-        script:
-          type: string
-      required:
-        - _type
-        - parameter
-        - script
     PromQLMetric:
       type: object
       discriminator:
