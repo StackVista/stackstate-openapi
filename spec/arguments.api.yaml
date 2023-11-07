@@ -37,6 +37,10 @@ components:
         - LT
         - LTE
       type: string
+    GroupByTopologyComponent:
+      enum:
+        - K8S_CLUSTER
+      type: string
     Argument:
       type: object
       discriminator:
@@ -59,6 +63,7 @@ components:
         - $ref: "#/components/schemas/ArgumentComparatorWithoutEqualityVal"
         - $ref: "#/components/schemas/ArgumentFailingHealthStateVal"
         - $ref: "#/components/schemas/ArgumentPromQLMetricVal"
+        - $ref: "#/components/schemas/ArgumentGroupByTopologyComponentVal"
       required:
         - _type
     ArgumentStringVal:
@@ -170,6 +175,28 @@ components:
           format: int64
         value:
           $ref: "#/components/schemas/ComparatorWithoutEquality"
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentGroupByTopologyComponentVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentGroupByTopologyComponentVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          $ref: "#/components/schemas/GroupByTopologyComponent"
       required:
         - _type
         - parameter
