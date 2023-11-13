@@ -126,17 +126,11 @@ paths:
         - $ref: "#/components/parameters/channelId"
       tags:
         - notification_channels
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              nullable: true
       summary: "Test the Slack Notification channel"
       description: "Test the Slack Notification channel by sending a test message to the configured Slack channel."
       operationId: test
       responses:
-        "200": 
+        "204": 
           description: "Successfully sent test message to Slack channel."
         "400":
           $ref: "#/components/responses/slackNotificationChannelError"

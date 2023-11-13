@@ -6,8 +6,8 @@
 #
 # The URL that you get redirected to will include the id for the created channel: `?channelId=85019403380238`
 
-@slack_channel_id = 85019403380238
-@notification_configuration_id = 101727068817025
+@slack_channel_id = 273980725327401
+@notification_configuration_id = 120631240747903
 
 ### Get channel {{slack_channel_id}}
 GET {{host}}/api/notifications/channels/slack/{{slack_channel_id}}
@@ -29,6 +29,11 @@ Content-Type: application/json
 {
   "id": "C061HG00REW"
 }
+
+### Send test message
+POST {{host}}/api/notifications/channels/slack/{{slack_channel_id}}/test
+X-API-Token: {{apiToken}}
+# Content-Type: application/json
 
 ### Assign channel to notification configuration {{notification_configuration_id}}
 POST {{host}}/api/notifications/channels/slack/{{slack_channel_id}}/assignNotification
