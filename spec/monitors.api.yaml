@@ -115,6 +115,27 @@ paths:
         "500":
           $ref: "#/components/responses/monitorApiError"
 
+  /monitors/{monitorFunctionIdOrUrn}/test:
+    post:
+      tags:
+        - monitor
+      parameters:
+        - $ref: "#/components/parameters/monitorFunctionIdOrUrn"
+      summary: "Test a monitor"
+      description: "Performs a run of a monitor function to test arguments and delivers a summary of the health states produced"
+      operationId: testMonitorFunction
+      requestBody:
+        $ref: "#/components/requestBodies/monitorFunctionTest"
+      responses:
+        "200":
+          $ref: "#/components/responses/monitorPreviewResult"
+        "400":
+          $ref: "#/components/responses/invalidMonitorIdentifierError"
+        "404":
+          $ref: "#/components/responses/monitorNotFoundError"
+        "500":
+          $ref: "#/components/responses/monitorApiError"
+
   /monitors/{monitorIdOrUrn}/status:
     get:
       tags:
@@ -177,6 +198,14 @@ components:
       schema:
         $ref: "#/components/schemas/MonitorIdOrUrn"
       description: "The id or identifier (urn) of a monitor"
+
+    monitorFunctionIdOrUrn:
+      in: path
+      name: monitorFunctionIdOrUrn
+      required: true
+      schema:
+        $ref: "#/components/schemas/MonitorFunctionIdOrUrn"
+      description: "The id or identifier (urn) of a monitor function"
 
     dryRun:
       in: query
@@ -260,6 +289,13 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MonitorPreview"
+    monitorFunctionTest:
+      description: "Monitor function arguments to test"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorFunctionTest"
     monitorSnapshot:
       description: "Monitor snapshot of health states"
       required: true
@@ -270,6 +306,10 @@ components:
 
   schemas:
     MonitorIdOrUrn:
+      type: string
+      pattern: ^urn:.+|[0-9]+$
+
+    MonitorFunctionIdOrUrn:
       type: string
       pattern: ^urn:.+|[0-9]+$
 
@@ -419,6 +459,16 @@ components:
           type: array
           items:
             $ref: "arguments.api.yaml#/components/schemas/Argument"
+
+    MonitorFunctionTest:
+      type: object
+      properties:
+        arguments:
+          type: array
+          items:
+            $ref: "arguments.api.yaml#/components/schemas/Argument"
+      required:
+        - arguments
 
     MonitorValidationError:
       discriminator:
