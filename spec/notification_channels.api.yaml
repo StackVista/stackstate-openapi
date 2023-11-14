@@ -31,7 +31,7 @@ paths:
       description: "Delete the slack notification channel by id"
       operationId: deleteNotificationChannel
       responses:
-        "200":
+        "204":
           description: "Slack notification channel is deleted."
         "400":
           $ref: "#/components/responses/slackNotificationChannelError"
