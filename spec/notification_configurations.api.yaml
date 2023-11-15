@@ -1,0 +1,263 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Notification Configurations 
+  version: "1.0.0"
+paths:
+  /notifications/configurations:
+    get:
+      tags:
+        - notification_configurations
+      summary: "Get all notification configurations"
+      description: "Get all notification configurations"
+      operationId: getNotificationConfigurations
+      responses:
+        "200":
+          $ref: "#/components/responses/notificationConfigurations"
+        "400":
+          $ref: "#/components/responses/notificationConfigurationError"
+        "500":
+          $ref: "#/components/responses/notificationConfigurationError"
+    post:
+      tags:
+        - notification_configurations
+      requestBody:
+        $ref: "#/components/requestBodies/notificationConfigurationWrite"
+      summary: "Create a new notification configuration"
+      description: "Create a new notification configuration"
+      operationId: createNotificationConfiguration
+      responses:
+        "200":
+          $ref: "#/components/responses/notificationConfiguration"
+        "400":
+          $ref: "#/components/responses/notificationConfigurationError"
+        "500":
+          $ref: "#/components/responses/notificationConfigurationError"
+  /notifications/configurations/{notificationConfigurationId}:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/notificationConfigurationId"
+      tags:
+        - notification_configurations
+      summary: "Get the notification configuration"
+      description: "Get the notification configuration"
+      operationId: getNotificationConfiguration
+      responses:
+        "200":
+          $ref: "#/components/responses/notificationConfiguration"
+        "400":
+          $ref: "#/components/responses/notificationConfigurationError"
+        "404":
+          $ref: "#/components/responses/notificationConfigurationNotFound"
+        "500":
+          $ref: "#/components/responses/notificationConfigurationError"
+    put:
+      parameters:
+        - $ref: "#/components/parameters/notificationConfigurationId"
+      requestBody:
+        $ref: "#/components/requestBodies/notificationConfigurationWrite"
+      tags:
+        - notification_configurations
+      summary: "Update the notification configuration"
+      description: "Update the notification configuration"
+      operationId: updateNotificationConfiguration
+      responses:
+        "200":
+          $ref: "#/components/responses/notificationConfiguration"
+        "400":
+          $ref: "#/components/responses/notificationConfigurationError"
+        "404":
+          $ref: "#/components/responses/notificationConfigurationNotFound"
+        "500":
+          $ref: "#/components/responses/notificationConfigurationError"    
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/notificationConfigurationId"
+      tags:
+        - notification_configurations
+      summary: "Delete the notification configuration"
+      description: "Delete the notification configuration"
+      operationId: deleteNotificationConfiguration
+      responses:
+        "204":
+          description: "Notification configuration is deleted."
+        "400":
+          $ref: "#/components/responses/notificationConfigurationError"
+        "404":
+          $ref: "#/components/responses/notificationConfigurationNotFound"
+        "500":
+          $ref: "#/components/responses/notificationConfigurationError"  
+  /notifications/configurations/{notificationConfigurationId}/channels:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/notificationConfigurationId"
+      tags:
+        - notification_configurations
+      summary: "Get the channels for the notification configuration"
+      description: "Get the channels for the notification configuration"
+      operationId: getNotificationConfigurationChannels
+      responses:
+        "200":
+          $ref: "#/components/responses/notificationConfigurationChannels"
+        "400":
+          $ref: "#/components/responses/notificationConfigurationError"
+        "404":
+          $ref: "#/components/responses/notificationConfigurationNotFound"
+        "500":
+          $ref: "#/components/responses/notificationConfigurationError"
+components:
+  parameters:
+    notificationConfigurationId:
+      in: path
+      name: notificationConfigurationId
+      required: true
+      schema: { $ref: "#/components/schemas/notificationConfigurationId" }
+      description: "Notification identifier"
+  requestBodies:
+    notificationConfigurationWrite:
+      description: "Create or update a notification configuration"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NotificationConfigurationWriteSchema"
+  responses:
+    notificationConfigurations:
+      description: "Array of notification configurations"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NotificationConfigurations"
+    notificationConfiguration:
+      description: "Notification configuration"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NotificationConfigurationReadSchema"
+    notificationConfigurationChannels:
+      description: "Notification configuration channels"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NotificationConfigurationChannels"
+    notificationConfigurationError:
+      description: "Error while executing the request."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NotificationConfigurationError"
+    notificationConfigurationNotFound:
+      description: "Notification was not found in the database"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NotificationConfigurationNotFound"
+  schemas:
+    notificationConfigurationId:
+      type: integer
+      format: int64
+    NotificationConfigurationError:
+      type: object
+      properties:
+        message:
+          type: string
+        _type:
+          type: string
+          enum:
+            - NotificationConfigurationError
+      required:
+        - message
+        - _type
+    NotificationConfigurationNotFound:
+      type: object
+      properties:
+        message:
+          type: string
+        notificationConfigurationId: 
+          type: string
+        _type:
+          type: string
+          enum:
+            - NotificationConfigurationNotFound
+      required:
+        - message
+        - notificationConfigurationId
+        - _type
+    NotificationConfigurationWriteSchema:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        notifyHealthStates:
+          type: array
+          items: 
+            $ref: "#/components/schemas/NotifyHealthStateValue"
+        monitors: 
+          type: array
+          items: 
+            $ref: "common.api.yaml#/components/schemas/MonitorReferenceId"
+        monitorTags:
+          type: array
+          items:
+            type: string
+        componentTypes:
+          type: array
+          items:
+            type: integer
+            format: int64
+        componentTags:
+          type: array
+          items:
+            type: string
+        status:
+          $ref: "#/components/schemas/NotificationConfigurationStatusValue"
+        notificationChannels:
+          type: array
+          items:
+            $ref: "notification_channels.api.yaml#/components/schemas/ChannelId"
+      required:
+        - name
+        - notifyHealthStates
+        - monitors
+        - monitorTags
+        - componentTypes
+        - componentTags
+        - status
+        - notificationChannels
+    NotificationConfigurationReadSchema:
+      allOf:
+        - $ref: "#/components/schemas/NotificationConfigurationWriteSchema"
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+            lastUpdateTimestamp:
+              type: integer
+              format: int64
+          required:
+            - id
+            - lastUpdateTimestamp
+    NotificationConfigurations:
+      type: array
+      items: 
+        $ref: "#/components/schemas/NotificationConfigurationReadSchema"
+    NotifyHealthStateValue:
+      enum:
+        - CLEAR
+        - UNKNOWN
+        - DEVIATING
+        - CRITICAL
+      type: string
+    NotificationConfigurationStatusValue:
+      type: string
+      enum:
+        - ENABLED
+        - DISABLED
+    NotificationConfigurationChannels:
+      type: array
+      items:
+        $ref: "notification_channels.api.yaml#/components/schemas/NotificationChannel"
+      

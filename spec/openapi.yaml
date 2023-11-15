@@ -48,12 +48,13 @@ paths:
   /monitor/checkStatus/{id}/healthHistory: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7Bid%7D%2FhealthHistory" }
   /notifications/channels/slack/oauth-redirect: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2Foauth-redirect" }
   /notifications/channels/slack/oauth-callback: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2Foauth-callback" }
-  /notifications/{notificationId}/channels: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2F%7BnotificationId%7D%2Fchannels" }
   /notifications/channels/slack/{channelId}: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2F%7BchannelId%7D" }
   /notifications/channels/slack/{channelId}/listSlackChannels: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2F%7BchannelId%7D%2FlistSlackChannels" }
   /notifications/channels/slack/{channelId}/joinSlackChannel: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2F%7BchannelId%7D%2FjoinSlackChannel" }
-  /notifications/channels/slack/{channelId}/assignNotification: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2F%7BchannelId%7D%2FassignNotification" }
   /notifications/channels/slack/{channelId}/test: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2F%7BchannelId%7D%2Ftest" }
+  /notifications/configurations: { $ref: "notification_configurations.api.yaml#/paths/%2Fnotifications%2Fconfigurations" }
+  /notifications/configurations/{notificationConfigurationId}: { $ref: "notification_configurations.api.yaml#/paths/%2Fnotifications%2Fconfigurations%2F%7BnotificationConfigurationId%7D" }
+  /notifications/configurations/{notificationConfigurationId}/channels: { $ref: "notification_configurations.api.yaml#/paths/%2Fnotifications%2Fconfigurations%2F%7BnotificationConfigurationId%7D%2Fchannels" }
   /user/profile: { $ref: "user_profile.api.yaml#/paths/%2Fuser%2Fprofile" }
   /user/profile/tokens: { $ref: "user_profile.api.yaml#/paths/%2Fuser%2Fprofile%2Ftokens" }
   /user/session/assumedRole: { $ref: "user_session.api.yaml#/paths/%2Fuser%2Fsession%2FassumedRole" }

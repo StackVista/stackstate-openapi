@@ -9,35 +9,20 @@
 @slack_channel_id = 273419503745686
 @notification_configuration_id = 244109798388708
 
-### Get channel {{slack_channel_id}}
-GET {{host}}/api/notifications/channels/slack/{{slack_channel_id}}
+### Get notification configuration {{notification_configuration_id}}
+GET {{host}}/api/notifications/configurations/{{notification_configuration_id}}
 X-API-Token: {{apiToken}}
 
 
-#### List slack channels
-GET {{host}}/api/notifications/channels/slack/{{slack_channel_id}}/listSlackChannels
-X-API-Token: {{apiToken}}
-Content-Type: application/json
-
-
-
-### Join slack channel
-POST {{host}}/api/notifications/channels/slack/{{slack_channel_id}}/joinSlackChannel
+#### List notification configurations
+GET {{host}}/api/notifications/configurations
 X-API-Token: {{apiToken}}
 Content-Type: application/json
-
-{
-  "id": "C061HG00REW"
-}
-
-### Send test message
-POST {{host}}/api/notifications/channels/{{slack_channel_id}}/test
-X-API-Token: {{apiToken}}
 
 ### List channels for notification configuration
-GET {{host}}/api/notifications/{{notification_configuration_id}}/channels
+GET {{host}}/api/notifications/configurations/{{notification_configuration_id}}/channels
 X-API-Token: {{apiToken}}
 
-### Delete slack channel
-DELETE {{host}}/api/notifications/channels/slack/{{slack_channel_id}}
+### Delete notifiation configuration channel
+DELETE {{host}}/api/notifications/configurations/{{notification_configuration_id}}
 X-API-Token: {{apiToken}}
