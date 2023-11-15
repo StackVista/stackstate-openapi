@@ -132,7 +132,7 @@ paths:
         "400":
           $ref: "#/components/responses/invalidMonitorIdentifierError"
         "404":
-          $ref: "#/components/responses/monitorNotFoundError"
+          $ref: "#/components/responses/monitorFunctionNotFoundError"
         "500":
           $ref: "#/components/responses/monitorApiError"
 
@@ -262,6 +262,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MonitorNotFoundError"
+    monitorFunctionNotFoundError:
+      description: "monitor function was not found in the database"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorFunctionNotFoundError"
     monitorValidationError:
       description: "monitor request has errors"
       content:
@@ -612,6 +618,25 @@ components:
           required:
             - statusCode
             - message
+
+    MonitorFunctionNotFoundError:
+      type: object
+      properties:
+        monitorFunctionId:
+          type: string
+        monitorFunctionIdType:
+          type: string
+          enum:
+            - id
+            - urn
+        _type:
+          type: string
+          enum:
+            - MonitorFunctionNotFoundError
+      required:
+        - _type
+        - monitorFunctionId
+        - monitorFunctionIdType
 
     MonitorErrors:
       type: array
