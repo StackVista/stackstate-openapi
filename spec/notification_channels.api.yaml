@@ -55,8 +55,9 @@ paths:
   /notifications/channels/slack/oauth-callback:
     get:
       parameters:
-        - $ref: "#/components/parameters/code"
-        - $ref: "#/components/parameters/state"
+        - $ref: "#/components/parameters/oauthCode"
+        - $ref: "#/components/parameters/oauthState"
+        - $ref: "#/components/parameters/oauthError"
       tags:
         - notification_channels
       summary: "The OAuth callback for Slack"
@@ -135,20 +136,27 @@ components:
       required: true
       schema: { $ref: "#/components/schemas/NotificationId" }
       description: "Notification configuration identifier"
-    code:
+    oauthCode:
       in: query
       name: code
-      required: true
+      required: false
       schema:
         type: string
-      description: "OAuth code from Slack"
-    state:
+      description: "OAuth code from Slack. Either the code is present for the success case or the error parameter is present for the error case."
+    oauthState:
       in: query
       name: state
       required: true
       schema:
         type: string
       description: "State parameter that was passed to Slack, should have the same value as the one passed to Slack."
+    oauthError:
+      in: query
+      name: error
+      required: false
+      schema:
+        type: string
+      description: "Error parameter. Either the code is present for the success case or the error parameter is present for the error case."
     redirectPath:
       in: query
       name: redirectPath
