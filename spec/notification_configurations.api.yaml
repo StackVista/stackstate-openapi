@@ -237,6 +237,9 @@ components:
             lastUpdateTimestamp:
               type: integer
               format: int64
+            lastSentTimestamp:
+              type: integer
+              format: instant
           required:
             - id
             - lastUpdateTimestamp
