@@ -250,7 +250,6 @@ components:
     NotifyHealthStateValue:
       enum:
         - CLEAR
-        - UNKNOWN
         - DEVIATING
         - CRITICAL
       type: string
