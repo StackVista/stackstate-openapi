@@ -6,13 +6,61 @@
 #
 # The URL that you get redirected to will include the id for the created channel: `?channelId=85019403380238`
 
-@slack_channel_id = 273419503745686
-@notification_configuration_id = 244109798388708
+@slack_channel_id = 58910485835892
+@monitor_id = 279720415580809
+@notification_configuration_id = 241618672082003
+
+### Create notification configuration
+POST {{host}}/api/notifications/configurations
+X-API-Token: {{apiToken}}
+Content-Type: application/json
+
+{
+  "name": "Demo 2",
+  "notifyHealthStates": [
+    "DEVIATING",
+    "CRITICAL"
+  ],
+  "monitors": [
+    {
+      "_type": "MonitorDefId",
+      "id": {{monitor_id}}
+    }
+  ],
+  "monitorTags": [],
+  "componentTypes": [],
+  "componentTags": [],
+  "status": "ENABLED",
+  "notificationChannels": [{{slack_channel_id}}]
+}
 
 ### Get notification configuration {{notification_configuration_id}}
 GET {{host}}/api/notifications/configurations/{{notification_configuration_id}}
 X-API-Token: {{apiToken}}
 
+### Update notification configuration
+PUT {{host}}/api/notifications/configurations/{{notification_configuration_id}}
+X-API-Token: {{apiToken}}
+Content-Type: application/json
+
+{
+  "name": "Demo 3",
+  "notifyHealthStates": [
+    "DEVIATING",
+    "CRITICAL"
+  ],
+  "monitors": [
+    {
+      "_type": "MonitorDefId",
+      "id": {{monitor_id}}
+    }
+  ],
+  "monitorTags": [],
+  "componentTypes": [],
+  "componentTags": [],
+  "status": "ENABLED",
+  "notificationChannels": []
+}
 
 #### List notification configurations
 GET {{host}}/api/notifications/configurations

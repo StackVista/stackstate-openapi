@@ -2,12 +2,11 @@
 # To initialy create a channel open a url like this in the browser. 
 # It implements an OAuth flow that requires user interaction, thus cannot be done via a simple rest call
 # {{host}}/api/notifications/channels/slack/oauth-redirect?redirectPath=/%23/notifications/new
-# Example: https://master.preprod.stackstate.io/api/notifications/channels/slack/oauth-redirect?redirectPath=/%23/notifications/new
+# Example: https://stac-20399-notification-openapi.preprod.stackstate.io/api/notifications/channels/slack/oauth-redirect?redirectPath=/%23/notifications/new
 #
 # The URL that you get redirected to will include the id for the created channel: `?channelId=85019403380238`
 
-@slack_channel_id = 273419503745686
-@notification_configuration_id = 244109798388708
+@slack_channel_id = 58910485835892
 
 ### Get channel {{slack_channel_id}}
 GET {{host}}/api/notifications/channels/slack/{{slack_channel_id}}
@@ -32,10 +31,6 @@ Content-Type: application/json
 
 ### Send test message
 POST {{host}}/api/notifications/channels/{{slack_channel_id}}/test
-X-API-Token: {{apiToken}}
-
-### List channels for notification configuration
-GET {{host}}/api/notifications/{{notification_configuration_id}}/channels
 X-API-Token: {{apiToken}}
 
 ### Delete slack channel
