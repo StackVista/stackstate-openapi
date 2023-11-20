@@ -191,9 +191,7 @@ components:
         description:
           type: string
         notifyHealthStates:
-          type: array
-          items: 
-            $ref: "#/components/schemas/NotifyOnOptions"
+          $ref: "#/components/schemas/NotifyOnOptions"
         monitors: 
           type: array
           items: 
