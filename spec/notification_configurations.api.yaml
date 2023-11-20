@@ -193,7 +193,7 @@ components:
         notifyHealthStates:
           type: array
           items: 
-            $ref: "#/components/schemas/NotifyHealthStateValue"
+            $ref: "#/components/schemas/NotifyOnOptions"
         monitors: 
           type: array
           items: 
@@ -247,11 +247,10 @@ components:
       type: array
       items: 
         $ref: "#/components/schemas/NotificationConfigurationReadSchema"
-    NotifyHealthStateValue:
+    NotifyOnOptions:
       enum:
-        - CLEAR
-        - DEVIATING
         - CRITICAL
+        - DEVIATING_AND_CRITICAL
       type: string
     NotificationConfigurationStatusValue:
       type: string
