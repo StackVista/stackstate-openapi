@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  description: StackState's Admin API specification
+  description: StackState's Webhook API specification
   version: 0.0.1
   title: StackState Webhook API
   license:
