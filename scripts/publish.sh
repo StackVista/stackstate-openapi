@@ -12,6 +12,7 @@ VERSION=$1
 MAJOR_MINOR=$(echo "$VERSION" | cut -d '.' -f 1-2)
 MAIN_OUTPUT_FILE="openapi-$VERSION.html"
 ADMIN_OUTPUT_FILE="openapi-admin-$VERSION.html"
+WEBHOOK_OUTPUT_FILE="openapi-webhook-$VERSION.html"
 
 checkForVariable() {
   if [[ -z ${!1+set} ]]; then
@@ -26,6 +27,7 @@ checkForVariable() {
 
 redoc-cli bundle spec/openapi.yaml -o "dist/$MAIN_OUTPUT_FILE"
 redoc-cli bundle spec/openapi_admin.yaml -o "dist/$ADMIN_OUTPUT_FILE"
+redoc-cli bundle spec/openapi_webhook.yaml -o "dist/$WEBHOOK_OUTPUT_FILE"
 
 MAIN_DEST="s3://cli-dl.stackstate.com/stackstate-openapi/$MAJOR_MINOR/$MAIN_OUTPUT_FILE"
 echo "Uploading docs version $VERSION to $MAIN_DEST"
@@ -36,3 +38,8 @@ ADMIN_DEST="s3://cli-dl.stackstate.com/stackstate-openapi/$MAJOR_MINOR/$ADMIN_OU
 echo "Uploading docs version $VERSION to $ADMIN_DEST"
 aws s3 cp "dist/$ADMIN_OUTPUT_FILE" "$ADMIN_DEST"
 echo "Admin API docs now available on: https://dl.stackstate.com/stackstate-openapi/$MAJOR_MINOR/$ADMIN_OUTPUT_FILE"
+
+WEBHOOK_DEST="s3://cli-dl.stackstate.com/stackstate-openapi/$MAJOR_MINOR/$WEBHOOK_OUTPUT_FILE"
+echo "Uploading docs version $VERSION to $WEBHOOK_DEST"
+aws s3 cp "dist/$WEBHOOK_OUTPUT_FILE" "$WEBHOOK_DEST"
+echo "Admin API docs now available on: https://dl.stackstate.com/stackstate-openapi/$MAJOR_MINOR/$WEBHOOK_OUTPUT_FILE"

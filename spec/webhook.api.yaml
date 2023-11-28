@@ -1,0 +1,136 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: StackState Webhook API
+  version: "1.0.0"
+paths:
+  /webhook:
+    post:
+      tags:
+        - webhook
+      summary: "Handle StackState event"
+      description: "Handle StackState Component health-state event"
+      operationId: handleEvent
+      requestBody:
+        description: "The event to handle."
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Event"
+      responses:
+        "200":
+          description: "Event handled."
+        "400":
+          description: "Event or token was invalid."
+        "500":
+          description: "Internal error handling event."
+
+components:
+  schemas:
+    Event:
+      type: object
+      properties:
+        notification_id:
+          type: integer
+          format: int64
+        event:
+          oneOf:
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - open
+                state:
+                  type: string
+                  enum:
+                    - DEVIATING
+                    - CRITICAL
+                title:
+                  type: string
+                triggeredTimeMs:
+                  type: integer
+                  format: int64
+                reason:
+                  type: string
+              required:
+                - type
+                - state
+                - title
+                - triggeredTimeMs
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - closed
+                reason:
+                  type: string
+                  enum:
+                    - ConfigRemoved
+                    - ConfigChanged
+                    - ComponentRemoved
+                    - HealthStateResolved
+                    - ChannelRemoved
+              required:
+                - type
+                - reason
+        monitor:
+          type: object
+          properties:
+            name:
+              type: string
+            identifier:
+              type: string
+            link:
+              type: string
+            tags:
+              type: object
+              additionalProperties:
+                type: string
+          required:
+            - name
+            - tags
+        component:
+          type: object
+          properties:
+            identifier:
+              type: string
+            link:
+              type: string
+            name:
+              type: string
+            type:
+              type: string
+            tags:
+              type: object
+              additionalProperties:
+                type: string
+          required:
+            - identifier
+            - link
+            - name
+            - type
+            - tags
+        notification_configuration:
+          type: object
+          properties:
+            name:
+              type: string
+            identifier:
+              type: string
+            link:
+              type: string
+            tags:
+              type: object
+              additionalProperties:
+                type: string
+          required:
+            - name
+            - identifier
+            - link
+            - tags
+      required:
+        - notification_id
+        - event

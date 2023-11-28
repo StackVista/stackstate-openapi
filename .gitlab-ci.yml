@@ -15,6 +15,7 @@ openapi-validate:
   script:
     - nix develop -c openapi-generator-cli validate -i spec/openapi.yaml
     - nix develop -c openapi-generator-cli validate -i spec/openapi_admin.yaml
+    - nix develop -c openapi-generator-cli validate -i spec/openapi_webhook.yaml
 
 openapi-lint:
   extends: .nix-base
@@ -24,6 +25,7 @@ openapi-lint:
   script:
     - nix develop -c npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec/openapi.yaml
     - nix develop -c npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec/openapi_admin.yaml
+    - nix develop -c npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec/openapi_webhook.yaml
 
 publish-docs:
   extends: .nix-base
