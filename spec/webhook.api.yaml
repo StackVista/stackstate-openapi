@@ -17,7 +17,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Event"
+              $ref: "#/components/schemas/Envelope"
       responses:
         "200":
           description: "Event handled."
@@ -28,109 +28,129 @@ paths:
 
 components:
   schemas:
-    Event:
+    Envelope:
       type: object
       properties:
         notification_id:
           type: integer
           format: int64
         event:
-          oneOf:
-            - type: object
-              properties:
-                type:
-                  type: string
-                  enum:
-                    - open
-                state:
-                  type: string
-                  enum:
-                    - DEVIATING
-                    - CRITICAL
-                title:
-                  type: string
-                triggeredTimeMs:
-                  type: integer
-                  format: int64
-                reason:
-                  type: string
-              required:
-                - type
-                - state
-                - title
-                - triggeredTimeMs
-            - type: object
-              properties:
-                type:
-                  type: string
-                  enum:
-                    - closed
-                reason:
-                  type: string
-                  enum:
-                    - ConfigRemoved
-                    - ConfigChanged
-                    - ComponentRemoved
-                    - HealthStateResolved
-                    - ChannelRemoved
-              required:
-                - type
-                - reason
+          $ref: "#/components/schemas/Event"
         monitor:
-          type: object
-          properties:
-            name:
-              type: string
-            identifier:
-              type: string
-            link:
-              type: string
-            tags:
-              type: object
-              additionalProperties:
-                type: string
-          required:
-            - name
-            - tags
+          $ref: "#/components/schemas/Monitor"
         component:
-          type: object
-          properties:
-            identifier:
-              type: string
-            link:
-              type: string
-            name:
-              type: string
-            type:
-              type: string
-            tags:
-              type: object
-              additionalProperties:
-                type: string
-          required:
-            - identifier
-            - link
-            - name
-            - type
-            - tags
+          $ref: "#/components/schemas/Component"
         notification_configuration:
-          type: object
-          properties:
-            name:
-              type: string
-            identifier:
-              type: string
-            link:
-              type: string
-            tags:
-              type: object
-              additionalProperties:
-                type: string
-          required:
-            - name
-            - identifier
-            - link
-            - tags
+          $ref: "#/components/schemas/NotificationConfiguration"
       required:
         - notification_id
         - event
+        - component
+        - monitor
+        - notification_configuration
+    Event:
+      type: object
+      discriminator:
+        propertyName: type
+      oneOf:
+        - $ref: "#/components/schemas/OpenEvent"
+        - $ref: "#/components/schemas/CloseEvent"
+      required:
+        - type
+    OpenEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - open
+        state:
+          type: string
+          enum:
+            - DEVIATING
+            - CRITICAL
+        title:
+          type: string
+        triggeredTimeMs:
+          type: integer
+          format: int64
+        reason:
+          type: string
+      required:
+        - type
+        - state
+        - title
+        - triggeredTimeMs
+    CloseEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - closed
+        reason:
+          type: string
+          enum:
+            - ConfigRemoved
+            - ConfigChanged
+            - ComponentRemoved
+            - HealthStateResolved
+            - ChannelRemoved
+      required:
+        - type
+        - reason
+    Monitor:
+      type: object
+      properties:
+        name:
+          type: string
+        identifier:
+          type: string
+        link:
+          type: string
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+      required:
+        - name
+        - tags
+    Component:
+      type: object
+      properties:
+        identifier:
+          type: string
+        link:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+      required:
+        - identifier
+        - link
+        - name
+        - type
+        - tags
+    NotificationConfiguration:
+      type: object
+      properties:
+        name:
+          type: string
+        identifier:
+          type: string
+        link:
+          type: string
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+      required:
+        - name
+        - identifier
+        - link
+        - tags
