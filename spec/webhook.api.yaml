@@ -52,6 +52,9 @@ components:
       type: object
       discriminator:
         propertyName: type
+        mapping:
+          open: "#/components/schemas/OpenEvent"
+          closed: "#/components/schemas/CloseEvent"
       oneOf:
         - $ref: "#/components/schemas/OpenEvent"
         - $ref: "#/components/schemas/CloseEvent"
