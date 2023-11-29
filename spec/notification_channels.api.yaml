@@ -185,6 +185,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/SlackChannels"
+    webhookNotificationChannel:
+      description: "Webhook notification channel"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/WebhookNotificationChannel"
     notificationChannelError:
       description: "Error while executing the request."
       content:
@@ -266,6 +272,7 @@ components:
     NotificationChannel:
       oneOf:
         - $ref: "#/components/schemas/SlackNotificationChannel"
+        - $ref: "#/components/schemas/WebhookNotificationChannel"
       discriminator:
         propertyName: _type
     BaseNotificationChannel:
@@ -297,3 +304,23 @@ components:
           required:
             - _type
             - slackWorkspace
+    WebhookNotificationChannel:
+      allOf:
+        - $ref: "#/components/schemas/BaseNotificationChannel"
+        - type: object
+          properties:
+            _type:
+              type: string
+              enum:
+                - WebhookNotificationChannel
+            url:
+              type: string
+            token:
+              type: string
+            sslEnabled:
+              type: boolean
+          required:
+            - _type
+            - url
+            - token
+            - sslEnabled
