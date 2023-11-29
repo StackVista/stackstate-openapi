@@ -39,9 +39,6 @@ paths:
                   customer: example_com
               notificationConfiguration:
                 name: example_com_webhook
-                tags:
-                  customer: example_com
-                  priority: HIGH
       responses:
         "200":
           description: "Event handled."
@@ -175,10 +172,5 @@ components:
           type: string
         link:
           type: string
-        tags:
-          type: object
-          additionalProperties:
-            type: string
       required:
         - name
-        - tags
