@@ -102,7 +102,7 @@ components:
         close:
           notificationId: 12345678
           event:
-            type: closed
+            type: close
             reason: HealthStateResolved
           monitor:
             name: HTTP - response time
@@ -127,7 +127,7 @@ components:
         propertyName: type
         mapping:
           open: "#/components/schemas/OpenEvent"
-          closed: "#/components/schemas/CloseEvent"
+          close: "#/components/schemas/CloseEvent"
       oneOf:
         - $ref: "#/components/schemas/OpenEvent"
         - $ref: "#/components/schemas/CloseEvent"
@@ -163,7 +163,7 @@ components:
         type:
           type: string
           enum:
-            - closed
+            - close
         reason:
           type: string
           enum:
