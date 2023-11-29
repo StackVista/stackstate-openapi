@@ -23,6 +23,8 @@ paths:
           description: "Event handled."
         "400":
           description: "Event or token was invalid."
+        "404":
+          description: "Invalid token."
         "500":
           description: "Internal error handling event."
 
@@ -154,6 +156,4 @@ components:
             type: string
       required:
         - name
-        - identifier
-        - link
         - tags
