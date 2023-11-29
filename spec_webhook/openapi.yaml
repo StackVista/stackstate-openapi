@@ -17,7 +17,7 @@ externalDocs:
   description: Documentation
   url: "https://docs.stackstate.com/"
 paths:
-  /webhook: { $ref: "webhook.api.yaml#/paths/%2Fwebhook"}
+  /: { $ref: "webhook.api.yaml#/paths/%2Fwebhook"}
 security:
   - Token: []
 components:
