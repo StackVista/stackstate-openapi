@@ -123,6 +123,7 @@ components:
             - ConfigRemoved
             - ConfigChanged
             - ComponentRemoved
+            - ComponentChanged
             - HealthStateResolved
             - ChannelRemoved
       required:
