@@ -19,7 +19,7 @@ paths:
             schema:
               $ref: "#/components/schemas/Envelope"
             example:
-              notificationId: 12345679
+              notificationId: 3e9992c3-f5a9-4c85-a0fb-f8730868cb66
               event:
                 type: open
                 state: CRITICAL
@@ -55,8 +55,8 @@ components:
       type: object
       properties:
         notificationId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         event:
           $ref: "#/components/schemas/Event"
         monitor:
