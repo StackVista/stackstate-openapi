@@ -27,7 +27,7 @@ checkForVariable() {
 
 redoc-cli bundle spec/openapi.yaml -o "dist/$MAIN_OUTPUT_FILE"
 redoc-cli bundle spec/openapi_admin.yaml -o "dist/$ADMIN_OUTPUT_FILE"
-redoc-cli bundle spec/openapi_webhook.yaml -o "dist/$WEBHOOK_OUTPUT_FILE"
+redoc-cli bundle spec_webhook/openapi.yaml -o "dist/$WEBHOOK_OUTPUT_FILE"
 
 MAIN_DEST="s3://cli-dl.stackstate.com/stackstate-openapi/$MAJOR_MINOR/$MAIN_OUTPUT_FILE"
 echo "Uploading docs version $VERSION to $MAIN_DEST"

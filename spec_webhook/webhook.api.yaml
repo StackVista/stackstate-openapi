@@ -33,7 +33,7 @@ components:
     Envelope:
       type: object
       properties:
-        notification_id:
+        notificationId:
           type: integer
           format: int64
         event:
@@ -42,14 +42,14 @@ components:
           $ref: "#/components/schemas/Monitor"
         component:
           $ref: "#/components/schemas/Component"
-        notification_configuration:
+        notificationConfiguration:
           $ref: "#/components/schemas/NotificationConfiguration"
       required:
-        - notification_id
+        - notificationId
         - event
         - component
         - monitor
-        - notification_configuration
+        - notificationConfiguration
     Event:
       type: object
       discriminator:
