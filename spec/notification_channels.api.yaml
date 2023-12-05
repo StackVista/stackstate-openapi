@@ -317,10 +317,10 @@ components:
               type: string
             token:
               type: string
-            sslEnabled:
+            verifySsl:
               type: boolean
           required:
             - _type
             - url
             - token
-            - sslEnabled
+            - verifySsl
