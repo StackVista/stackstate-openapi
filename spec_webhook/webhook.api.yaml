@@ -65,12 +65,17 @@ components:
           $ref: "#/components/schemas/Component"
         notificationConfiguration:
           $ref: "#/components/schemas/NotificationConfiguration"
+        tags:
+          type: object
+          additionalProperties:
+            type: string
       required:
         - notificationId
         - event
         - component
         - monitor
         - notificationConfiguration
+        - tags
     Event:
       type: object
       discriminator:
