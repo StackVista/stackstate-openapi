@@ -12,7 +12,7 @@ paths:
         - notification_channels
       summary: "Get the Slack Notification channel by id"
       description: "Get the slack notification channel by id"
-      operationId: getNotificationChannel
+      operationId: getSlackNotificationChannel
       responses:
         "200":
           $ref: "#/components/responses/slackNotificationChannel"
@@ -29,7 +29,7 @@ paths:
         - notification_channels
       summary: "Delete the Slack Notification channel by id"
       description: "Delete the slack notification channel by id"
-      operationId: deleteNotificationChannel
+      operationId: deleteSlackNotificationChannel
       responses:
         "204":
           description: "Slack notification channel is deleted."
@@ -96,7 +96,7 @@ paths:
       description: "Join the specified Slack channel and configure this notifiation channel to post notifications to the specified slack channel."
       operationId: joinSlackChannel
       responses:
-        "200": 
+        "200":
           $ref: "#/components/responses/slackNotificationChannel"
         "400":
           $ref: "#/components/responses/notificationChannelError"
@@ -112,9 +112,62 @@ paths:
         - notification_channels
       summary: "Test the Notification channel"
       description: "Test the Notification channel by sending a test message to the notification channel."
-      operationId: test
+      operationId: testSlackChannel
       responses:
-        "204": 
+        "204":
+          description: "Successfully tested channel."
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "404":
+          $ref: "#/components/responses/notificationChannelNotFound"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+  /notifications/channels/webhook/{channelId}:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+      tags:
+        - notification_channels
+      summary: "Get the Webhook Notification channel by id"
+      description: "Get the webhook notification channel by id"
+      operationId: getWebhookNotificationChannel
+      responses:
+        "200":
+          $ref: "#/components/responses/webhookNotificationChannel"
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "404":
+          $ref: "#/components/responses/notificationChannelNotFound"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+      tags:
+        - notification_channels
+      summary: "Delete the Webhook Notification channel by id"
+      description: "Delete the webhook notification channel by id"
+      operationId: deleteWebhookNotificationChannel
+      responses:
+        "204":
+          description: "Webhook notification channel is deleted."
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "404":
+          $ref: "#/components/responses/notificationChannelNotFound"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+  /notifications/channels/webhook/{channelId}/test:
+    post:
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+      tags:
+        - notification_channels
+      summary: "Test the Webhook notification channel"
+      description: "Test the webhook notification channel by sending a test message to the notification channel."
+      operationId: testWebhookChannel
+      responses:
+        "204":
           description: "Successfully tested channel."
         "400":
           $ref: "#/components/responses/notificationChannelError"
@@ -212,12 +265,12 @@ components:
       format: int64
     SlackChannels:
       type: array
-      items: 
+      items:
         $ref: "#/components/schemas/SlackChannel"
     SlackChannel:
       type: object
       properties:
-        name: 
+        name:
           type: string
         id:
           type: string
@@ -259,7 +312,7 @@ components:
       properties:
         message:
           type: string
-        channelId: 
+        channelId:
           type: string
         _type:
           type: string
@@ -293,11 +346,11 @@ components:
           properties:
             _type:
               type: string
-              enum: 
+              enum:
                 - SlackNotificationChannel
             slackWorkspace:
               type: string
-            slackChannel: 
+            slackChannel:
               type: string
             slackChannelId:
               type: string
@@ -319,8 +372,13 @@ components:
               type: string
             verifySsl:
               type: boolean
+            tags:
+              type: object
+              additionalProperties:
+                type: string
           required:
             - _type
             - url
             - token
             - verifySsl
+            - tags
