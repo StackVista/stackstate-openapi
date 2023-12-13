@@ -52,6 +52,7 @@ paths:
   /notifications/channels/slack/{channelId}/listSlackChannels: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2F%7BchannelId%7D%2FlistSlackChannels" }
   /notifications/channels/slack/{channelId}/joinSlackChannel: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2F%7BchannelId%7D%2FjoinSlackChannel" }
   /notifications/channels/slack/{channelId}/test: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2F%7BchannelId%7D%2Ftest" }
+  /notifications/channels/webhook: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fwebhook" }
   /notifications/channels/webhook/{channelId}: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fwebhook%2F%7BchannelId%7D" }
   /notifications/channels/webhook/{channelId}/test: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fwebhook%2F%7BchannelId%7D%2Ftest" }
   /notifications/configurations: { $ref: "notification_configurations.api.yaml#/paths/%2Fnotifications%2Fconfigurations" }

@@ -122,6 +122,22 @@ paths:
           $ref: "#/components/responses/notificationChannelNotFound"
         "500":
           $ref: "#/components/responses/notificationChannelError"
+  /notifications/channels/webhook:
+    post:
+      requestBody:
+        $ref: "#/components/requestBodies/webhookChannelWrite"
+      tags:
+        - notification_channels
+      summary: "Create a Webhook Notification channel"
+      description: "Create a Webhook Notification channel"
+      operationId: createWebhookNotificationChannel
+      responses:
+        "200":
+          $ref: "#/components/responses/webhookNotificationChannel"
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
   /notifications/channels/webhook/{channelId}:
     get:
       parameters:
@@ -131,6 +147,25 @@ paths:
       summary: "Get the Webhook Notification channel by id"
       description: "Get the webhook notification channel by id"
       operationId: getWebhookNotificationChannel
+      responses:
+        "200":
+          $ref: "#/components/responses/webhookNotificationChannel"
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "404":
+          $ref: "#/components/responses/notificationChannelNotFound"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+    put:
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+      requestBody:
+        $ref: "#/components/requestBodies/webhookChannelWrite"
+      tags:
+        - notification_channels
+      summary: "Update the Webhook Notification channel by id"
+      description: "Update the webhook notification channel by id"
+      operationId: updateWebhookNotificationChannel
       responses:
         "200":
           $ref: "#/components/responses/webhookNotificationChannel"
@@ -225,6 +260,13 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/SlackChannelId"
+    webhookChannelWrite:
+      description: "Create or update a webhook channel"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/WebhookChannelWriteSchema"
   responses:
     slackNotificationChannel:
       description: "Slack notification channel"
@@ -357,28 +399,33 @@ components:
           required:
             - _type
             - slackWorkspace
+    WebhookChannelWriteSchema:
+      type: object
+      properties:
+        url:
+          type: string
+        token:
+          type: string
+        verifySsl:
+          type: boolean
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+      required:
+        - url
+        - token
+        - verifySsl
+        - tags
     WebhookNotificationChannel:
       allOf:
         - $ref: "#/components/schemas/BaseNotificationChannel"
+        - $ref: "#/components/schemas/WebhookChannelWriteSchema"
         - type: object
           properties:
             _type:
               type: string
               enum:
                 - WebhookNotificationChannel
-            url:
-              type: string
-            token:
-              type: string
-            verifySsl:
-              type: boolean
-            tags:
-              type: object
-              additionalProperties:
-                type: string
           required:
             - _type
-            - url
-            - token
-            - verifySsl
-            - tags
