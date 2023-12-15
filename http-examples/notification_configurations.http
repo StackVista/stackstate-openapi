@@ -8,7 +8,7 @@
 
 @slack_channel_id = 58910485835892
 @monitor_id = 279720415580809
-@notification_configuration_id = 241618672082003
+@notification_configuration_id = 10060570738804
 
 ### Create notification configuration
 POST {{host}}/api/notifications/configurations

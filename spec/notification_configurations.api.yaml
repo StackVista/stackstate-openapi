@@ -235,9 +235,13 @@ components:
             lastUpdateTimestamp:
               type: integer
               format: int64
+            runtimeStatus:
+              $ref: "#/components/schemas/NotificationConfigurationRuntimeStatusValue"
           required:
             - id
             - lastUpdateTimestamp
+            - status
+            - runtimeStatus
     NotificationConfigurations:
       type: array
       items: 
@@ -252,6 +256,12 @@ components:
       enum:
         - ENABLED
         - DISABLED
+    NotificationConfigurationRuntimeStatusValue:
+      type: string
+      enum:
+      - ERROR
+      - WARNING
+      - OK
     NotificationConfigurationChannels:
       type: array
       items:

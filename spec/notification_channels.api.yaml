@@ -379,8 +379,11 @@ components:
         notificationConfigurationId:
           type: integer
           format: int64
+        status:
+          $ref: "#/components/schemas/NotificationChannelStatus"
       required:
         - id
+        - status
     SlackNotificationChannel:
       allOf:
         - $ref: "#/components/schemas/BaseNotificationChannel"
@@ -429,3 +432,26 @@ components:
                 - WebhookNotificationChannel
           required:
             - _type
+    NotificationChannelStatus:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:  
+            $ref: "#/components/schemas/NotificationChannelStatusError"
+      required:
+        - errors
+    NotificationChannelStatusError:
+      type: object
+      properties:
+        category:
+          type: string
+        count:
+          type: integer
+        message:
+          type: string
+      required:
+        - category
+        - count
+        - message
+    
