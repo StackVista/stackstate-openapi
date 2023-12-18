@@ -450,8 +450,12 @@ components:
           type: integer
         message:
           type: string
+        firstSeenMs:
+          type: integer
+          format: instant
       required:
         - category
         - count
         - message
+        - firstSeenMs
     
