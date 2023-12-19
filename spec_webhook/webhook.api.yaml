@@ -65,7 +65,7 @@ components:
           $ref: "#/components/schemas/Component"
         notificationConfiguration:
           $ref: "#/components/schemas/NotificationConfiguration"
-        tags:
+        metadata:
           type: object
           additionalProperties:
             type: string
@@ -75,7 +75,7 @@ components:
         - component
         - monitor
         - notificationConfiguration
-        - tags
+        - metadata
     Event:
       type: object
       discriminator:
@@ -141,8 +141,8 @@ components:
         link:
           type: string
         tags:
-          type: object
-          additionalProperties:
+          type: array
+          items:
             type: string
       required:
         - name
@@ -159,8 +159,8 @@ components:
         type:
           type: string
         tags:
-          type: object
-          additionalProperties:
+          type: array
+          items:
             type: string
       required:
         - identifier
