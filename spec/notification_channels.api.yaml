@@ -411,7 +411,7 @@ components:
           type: string
         verifySsl:
           type: boolean
-        tags:
+        metadata:
           type: object
           additionalProperties:
             type: string
@@ -419,7 +419,7 @@ components:
         - url
         - token
         - verifySsl
-        - tags
+        - metadata
     WebhookNotificationChannel:
       allOf:
         - $ref: "#/components/schemas/BaseNotificationChannel"
