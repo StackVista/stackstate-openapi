@@ -53,6 +53,7 @@ paths:
         - $ref: "#/components/parameters/id"
         - $ref: "#/components/parameters/startTime"
         - $ref: "#/components/parameters/endTime"
+        - $ref: "#/components/parameters/topologyTime"
       responses:
         "200":
           $ref: "#/components/responses/monitorCheckStatusHealthHistory"
