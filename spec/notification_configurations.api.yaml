@@ -214,7 +214,7 @@ components:
         notificationChannels:
           type: array
           items:
-            $ref: "notification_channels.api.yaml#/components/schemas/ChannelId"
+            $ref: "#/components/schemas/ChannelReferenceId"
       required:
         - name
         - notifyHealthStates
@@ -256,4 +256,34 @@ components:
       type: array
       items:
         $ref: "notification_channels.api.yaml#/components/schemas/NotificationChannel"
-      
+    ChannelReferenceId:
+      type: object
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/SlackChannelRefId"
+        - $ref: "#/components/schemas/WebhookChannelRefId"
+    SlackChannelRefId:
+      type: object
+      properties:
+        _type:
+          enum:
+            - SlackChannelRefId
+        id:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - id
+    WebhookChannelRefId:
+      type: object
+      properties:
+        _type:
+          enum:
+            - WebhookChannelRefId
+        id:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - id      
