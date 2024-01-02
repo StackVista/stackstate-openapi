@@ -59,6 +59,7 @@ components:
         - $ref: "#/components/schemas/ArgumentComparatorWithoutEqualityVal"
         - $ref: "#/components/schemas/ArgumentFailingHealthStateVal"
         - $ref: "#/components/schemas/ArgumentPromQLMetricVal"
+        - $ref: "#/components/schemas/ArgumentTopologyQueryVal"
       required:
         - _type
     ArgumentStringVal:
@@ -192,6 +193,28 @@ components:
           format: int64
         value:
           $ref: "#/components/schemas/PromQLMetric"
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentTopologyQueryVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentTopologyQueryVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          type: string
       required:
         - _type
         - parameter
