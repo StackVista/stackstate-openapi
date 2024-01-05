@@ -136,6 +136,23 @@ paths:
         "500":
           $ref: "#/components/responses/monitorApiError"
 
+  /monitors/identifierLookup:
+    post:
+      tags:
+        - monitor
+      summary: "Multiple component identifier lookup"
+      description: "Find identifier templates using a component type and a metrics query"
+      operationId: lookupIdentifier
+      requestBody:
+        $ref: "#/components/requestBodies/monitorIdentifierLookup"
+      responses:
+        "200":
+          $ref: "#/components/responses/monitorIdentifierSuggestions"
+        "400":
+          $ref: "#/components/responses/monitorApiError"
+        "500":
+          $ref: "#/components/responses/monitorApiError"
+
   /monitors/{monitorIdOrUrn}/status:
     get:
       tags:
@@ -280,6 +297,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MonitorApiError"
+    monitorIdentifierSuggestions:
+      description: "Identifier suggestions for multiple component identifier lookup"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorIdentifierSuggestions"
   requestBodies:
     monitorPatch:
       description: "Monitor base properties"
@@ -309,6 +332,13 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MonitorSnapshot"
+    monitorIdentifierLookup:
+      description: "Component type and metric query for identifier lookup"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorIdentifierLookup"
 
   schemas:
     MonitorIdOrUrn:
@@ -768,3 +798,49 @@ components:
       required:
         - query
 
+    MonitorIdentifierLookup:
+      type: object
+      properties:
+        metricQuery:
+          type: string
+        componentType:
+          type: integer
+          format: int64
+        topN:
+          type: integer
+          format: int32
+      required:
+        - metricQuery
+        - componentType
+    MonitorIdentifierSuggestions:
+      type: object
+      properties:
+        suggestions:
+          type: array
+          items:
+            $ref: "#/components/schemas/MonitorIdentifierSuggestion"
+      required:
+        - suggestions
+    MonitorIdentifierSuggestion:
+      type: object
+      properties:
+        identifierTemplate:
+          type: string
+        score:
+          type: number
+          format: float
+        identifiersInspected:
+          type: integer
+          format: int64
+        timeseriesInspected:
+          type: integer
+          format: int64
+        totalMatches:
+          type: integer
+          format: int64
+      required:
+        - identifierTemplate
+        - score
+        - identifiersInspected
+        - timeseriesInspected
+        - totalMatches
