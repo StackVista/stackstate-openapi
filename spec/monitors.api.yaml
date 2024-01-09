@@ -809,12 +809,18 @@ components:
         topN:
           type: integer
           format: int32
-        minIdentifiers:
-          type: integer
-          format: int32
-        minTimeSeries:
-          type: integer
-          format: int32
+        overrides:
+          type: object
+          properties:
+            identifiers:
+              type: integer
+              format: int32
+            timeSeries:
+              type: integer
+              format: int32
+          required:
+            - identifiers
+            - timeSeries
       required:
         - metricQuery
         - componentType
@@ -825,8 +831,16 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/MonitorIdentifierSuggestion"
+        identifiersInspected:
+          type: integer
+          format: int64
+        timeseriesInspected:
+          type: integer
+          format: int64
       required:
         - suggestions
+        - identifiersInspected
+        - timeseriesInspected
     MonitorIdentifierSuggestion:
       type: object
       properties:
@@ -835,18 +849,10 @@ components:
         score:
           type: number
           format: float
-        identifiersInspected:
-          type: integer
-          format: int64
-        timeseriesInspected:
-          type: integer
-          format: int64
         totalMatches:
           type: integer
           format: int64
       required:
         - identifierTemplate
         - score
-        - identifiersInspected
-        - timeseriesInspected
         - totalMatches
