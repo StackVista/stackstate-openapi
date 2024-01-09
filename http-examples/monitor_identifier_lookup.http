@@ -1,0 +1,63 @@
+
+
+### Lookup for pod
+POST {{host}}/api/monitors/identifierLookup
+X-API-Token: {{apiToken}}
+Content-Type: application/json
+
+{
+  "componentType": 5220580216738,
+  "metricQuery": "max_over_time(kubernetes_containers_restarts[${__interval}])"
+}
+
+
+### Lookup for pod http metric
+POST {{host}}/api/monitors/identifierLookup
+X-API-Token: {{apiToken}}
+Content-Type: application/json
+
+{
+  "componentType": 5220580216738,
+  "metricQuery": "pod_http_requests_count"
+}
+
+### Lookup for service http metric
+POST {{host}}/api/monitors/identifierLookup
+X-API-Token: {{apiToken}}
+Content-Type: application/json
+
+{
+  "componentType": 167565837194221,
+  "metricQuery": "pod_http_requests_count"
+}
+
+### Lookup for service http metric with some logical aggregation
+POST {{host}}/api/monitors/identifierLookup
+X-API-Token: {{apiToken}}
+Content-Type: application/json
+
+{
+  "componentType": 167565837194221,
+  "metricQuery": "sum(pod_http_requests_count) by (local_pod_label_component, cluster_name, local_pod_label_app_kubernetes_io_instance)"
+}
+
+
+### Lookup for stackstate pod metric (only 18 metrics), but still 600+ pods
+POST {{host}}/api/monitors/identifierLookup
+X-API-Token: {{apiToken}}
+Content-Type: application/json
+
+{
+  "componentType": 5220580216738,
+  "metricQuery": "stackstate_stackstate_receiver_element_create_passed_count"
+}
+
+### Lookup for stackstate pod metric (only 9 metrics), but still 600+ pods
+POST {{host}}/api/monitors/identifierLookup
+X-API-Token: {{apiToken}}
+Content-Type: application/json
+
+{
+  "componentType": 5220580216738,
+  "metricQuery": "sum(stackstate_stackstate_receiver_element_create_passed_count) by (pod_name, cluster_name, namespace)"
+}

@@ -809,6 +809,12 @@ components:
         topN:
           type: integer
           format: int32
+        minIdentifiers:
+          type: integer
+          format: int32
+        minTimeSeries:
+          type: integer
+          format: int32
       required:
         - metricQuery
         - componentType
