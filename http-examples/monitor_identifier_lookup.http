@@ -15,7 +15,7 @@ Content-Type: application/json
 }
 
 ### Lookup for pod auto
-POST {{host}}/api/monitors/identifierLookup5
+POST {{host}}/api/monitors/identifierLookup
 X-API-Token: {{apiToken}}
 Content-Type: application/json
 
@@ -95,6 +95,15 @@ Content-Type: application/json
   }
 }
 
+### Lookup for service
+POST {{host}}/api/monitors/identifierLookup
+X-API-Token: {{apiToken}}
+Content-Type: application/json
+
+{
+  "componentType": 167565837194221,
+  "metricQuery": "kubernetes_state_endpoint_address_available + kubernetes_state_endpoint_address_not_ready"
+}
 
 ### Lookup for stackstate pod metric (only 18 metrics), but still 600+ pods
 POST {{host}}/api/monitors/identifierLookup
