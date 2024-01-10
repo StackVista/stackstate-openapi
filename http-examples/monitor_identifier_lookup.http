@@ -8,8 +8,10 @@ Content-Type: application/json
 {
   "componentType": 5220580216738,
   "metricQuery": "max_over_time(kubernetes_state_container_restarts[${__interval}])",
-  "minIdentifiers": 60,
-  "minTimeSeries": 60
+  "overrides": {
+    "components": 60,
+    "timeSeries": 60
+  }
 }
 
 ### Lookup for pod auto
@@ -30,8 +32,10 @@ Content-Type: application/json
 {
   "componentType": 117353961809006,
   "metricQuery": "max_over_time(kubernetes_state_container_restarts[10m])",
-  "minIdentifiers": 800,
-  "minTimeSeries": 800
+  "overrides": {
+    "components": 60,
+    "timeSeries": 60
+  }
 }
 
 ### Lookup for pod, limiting time series loaded 
@@ -42,8 +46,10 @@ Content-Type: application/json
 {
   "componentType": 5220580216738,
   "metricQuery": "sum(max_over_time(kubernetes_state_container_restarts[${__interval}])) by (cluster_name, pod_name, namespace, image_tag, pod_phase, image_id, daemonset, display_container_name, container, priority_class, interval, image_name, short_image, kube_ownerref_kind, cluster_name, pod_name, container_id, sts_host, kube_ownerref_name, deployment, replicaset, statefulset, kube_app_managed_by, kube_app_version, kube_app_instance, kube_app_name, persistentvolumeclaim, kube_app_component, kube_app_part_of,git_commit_sha, cronjob)",
-    "minIdentifiers": 400,
-  "minTimeSeries": 400
+  "overrides": {
+    "components": 400,
+    "timeSeries": 400
+  }
 }
 
 
@@ -55,8 +61,10 @@ Content-Type: application/json
 {
   "componentType": 5220580216738,
   "metricQuery": "pod_http_requests_count",
-  "minIdentifiers": 1000,
-  "minTimeSeries": 50
+  "overrides": {
+    "components": 60,
+    "timeSeries": 60
+  }
 }
 
 ### Lookup for service http metric
@@ -67,8 +75,10 @@ Content-Type: application/json
 {
   "componentType": 167565837194221,
   "metricQuery": "pod_http_requests_count",
-  "minIdentifiers": 50,
-  "minTimeSeries": 1000
+  "overrides": {
+    "components": 60,
+    "timeSeries": 60
+  }
 }
 
 ### Lookup for service http metric with some logical aggregation
@@ -79,8 +89,10 @@ Content-Type: application/json
 {
   "componentType": 167565837194221,
   "metricQuery": "sum(pod_http_requests_count) by (local_pod_label_component, cluster_name, local_pod_label_app_kubernetes_io_instance)",
-  "minIdentifiers": 1000,
-  "minTimeSeries": 1000
+  "overrides": {
+    "components": 1000,
+    "timeSeries": 1000
+  }
 }
 
 

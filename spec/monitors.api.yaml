@@ -812,14 +812,14 @@ components:
         overrides:
           type: object
           properties:
-            identifiers:
+            components:
               type: integer
               format: int32
             timeSeries:
               type: integer
               format: int32
           required:
-            - identifiers
+            - components
             - timeSeries
       required:
         - metricQuery
@@ -831,7 +831,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/MonitorIdentifierSuggestion"
-        identifiersInspected:
+        componentsInspected:
           type: integer
           format: int64
         timeseriesInspected:
@@ -839,7 +839,7 @@ components:
           format: int64
       required:
         - suggestions
-        - identifiersInspected
+        - componentsInspected
         - timeseriesInspected
     MonitorIdentifierSuggestion:
       type: object
