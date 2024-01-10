@@ -33,10 +33,10 @@ paths:
           $ref: "#/components/responses/notificationConfigurationError"
         "500":
           $ref: "#/components/responses/notificationConfigurationError"
-  /notifications/configurations/{notificationConfigurationId}:
+  /notifications/configurations/{notificationConfigurationIdOrUrn}:
     get:
       parameters:
-        - $ref: "#/components/parameters/notificationConfigurationId"
+        - $ref: "#/components/parameters/notificationConfigurationIdOrUrn"
       tags:
         - notification_configurations
       summary: "Get the notification configuration"
@@ -53,7 +53,7 @@ paths:
           $ref: "#/components/responses/notificationConfigurationError"
     put:
       parameters:
-        - $ref: "#/components/parameters/notificationConfigurationId"
+        - $ref: "#/components/parameters/notificationConfigurationIdOrUrn"
       requestBody:
         $ref: "#/components/requestBodies/notificationConfigurationWrite"
       tags:
@@ -72,7 +72,7 @@ paths:
           $ref: "#/components/responses/notificationConfigurationError"    
     delete:
       parameters:
-        - $ref: "#/components/parameters/notificationConfigurationId"
+        - $ref: "#/components/parameters/notificationConfigurationIdOrUrn"
       tags:
         - notification_configurations
       summary: "Delete the notification configuration"
@@ -87,10 +87,10 @@ paths:
           $ref: "#/components/responses/notificationConfigurationNotFound"
         "500":
           $ref: "#/components/responses/notificationConfigurationError"  
-  /notifications/configurations/{notificationConfigurationId}/channels:
+  /notifications/configurations/{notificationConfigurationIdOrUrn}/channels:
     get:
       parameters:
-        - $ref: "#/components/parameters/notificationConfigurationId"
+        - $ref: "#/components/parameters/notificationConfigurationIdOrUrn"
       tags:
         - notification_configurations
       summary: "Get the channels for the notification configuration"
@@ -107,11 +107,11 @@ paths:
           $ref: "#/components/responses/notificationConfigurationError"
 components:
   parameters:
-    notificationConfigurationId:
+    notificationConfigurationIdOrUrn:
       in: path
-      name: notificationConfigurationId
+      name: notificationConfigurationIdOrUrn
       required: true
-      schema: { $ref: "#/components/schemas/notificationConfigurationId" }
+      schema: { $ref: "#/components/schemas/NotificationConfigurationIdOrUrn" }
       description: "Notification identifier"
   requestBodies:
     notificationConfigurationWrite:
@@ -153,9 +153,10 @@ components:
           schema:
             $ref: "#/components/schemas/NotificationConfigurationNotFound"
   schemas:
-    notificationConfigurationId:
-      type: integer
-      format: int64
+    NotificationConfigurationIdOrUrn:
+      type: string
+      pattern: ^urn:.+|[0-9]+$
+
     NotificationConfigurationError:
       type: object
       properties:
@@ -188,6 +189,8 @@ components:
       properties:
         name:
           type: string
+        identifier:
+          $ref: "#/components/schemas/NotificationConfigurationUrn"
         description:
           type: string
         notifyHealthStates:
@@ -240,7 +243,6 @@ components:
           required:
             - id
             - lastUpdateTimestamp
-            - status
             - runtimeStatus
     NotificationConfigurations:
       type: array
@@ -296,4 +298,8 @@ components:
           format: int64
       required:
         - _type
-        - id      
+        - id
+
+
+    NotificationConfigurationUrn:
+      type: string

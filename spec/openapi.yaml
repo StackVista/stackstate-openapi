@@ -57,8 +57,8 @@ paths:
   /notifications/channels/webhook/{channelId}: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fwebhook%2F%7BchannelId%7D" }
   /notifications/channels/webhook/{channelId}/test: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fwebhook%2F%7BchannelId%7D%2Ftest" }
   /notifications/configurations: { $ref: "notification_configurations.api.yaml#/paths/%2Fnotifications%2Fconfigurations" }
-  /notifications/configurations/{notificationConfigurationId}: { $ref: "notification_configurations.api.yaml#/paths/%2Fnotifications%2Fconfigurations%2F%7BnotificationConfigurationId%7D" }
-  /notifications/configurations/{notificationConfigurationId}/channels: { $ref: "notification_configurations.api.yaml#/paths/%2Fnotifications%2Fconfigurations%2F%7BnotificationConfigurationId%7D%2Fchannels" }
+  /notifications/configurations/{notificationConfigurationIdOrUrn}: { $ref: "notification_configurations.api.yaml#/paths/%2Fnotifications%2Fconfigurations%2F%7BnotificationConfigurationIdOrUrn%7D" }
+  /notifications/configurations/{notificationConfigurationIdOrUrn}/channels: { $ref: "notification_configurations.api.yaml#/paths/%2Fnotifications%2Fconfigurations%2F%7BnotificationConfigurationIdOrUrn%7D%2Fchannels" }
   /user/profile: { $ref: "user_profile.api.yaml#/paths/%2Fuser%2Fprofile" }
   /user/profile/tokens: { $ref: "user_profile.api.yaml#/paths/%2Fuser%2Fprofile%2Ftokens" }
   /user/session/assumedRole: { $ref: "user_session.api.yaml#/paths/%2Fuser%2Fsession%2FassumedRole" }
