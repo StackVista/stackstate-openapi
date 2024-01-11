@@ -46,7 +46,7 @@ paths:
         "200":
           $ref: "#/components/responses/notificationConfiguration"
         "400":
-          $ref: "#/components/responses/notificationConfigurationError"
+          $ref: "#/components/responses/notificationConfigurationByIdErrors"
         "404":
           $ref: "#/components/responses/notificationConfigurationNotFound"
         "500":
@@ -65,7 +65,7 @@ paths:
         "200":
           $ref: "#/components/responses/notificationConfiguration"
         "400":
-          $ref: "#/components/responses/notificationConfigurationError"
+          $ref: "#/components/responses/notificationConfigurationByIdErrors"
         "404":
           $ref: "#/components/responses/notificationConfigurationNotFound"
         "500":
@@ -82,7 +82,7 @@ paths:
         "204":
           description: "Notification configuration is deleted."
         "400":
-          $ref: "#/components/responses/notificationConfigurationError"
+          $ref: "#/components/responses/notificationConfigurationByIdErrors"
         "404":
           $ref: "#/components/responses/notificationConfigurationNotFound"
         "500":
@@ -100,7 +100,7 @@ paths:
         "200":
           $ref: "#/components/responses/notificationConfigurationChannels"
         "400":
-          $ref: "#/components/responses/notificationConfigurationError"
+          $ref: "#/components/responses/notificationConfigurationByIdErrors"
         "404":
           $ref: "#/components/responses/notificationConfigurationNotFound"
         "500":
@@ -146,6 +146,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/NotificationConfigurationError"
+    notificationConfigurationByIdErrors:
+      description: "Error while executing the request."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NotificationConfigurationByIdErrors"
     notificationConfigurationNotFound:
       description: "Notification was not found in the database"
       content:
@@ -156,7 +162,14 @@ components:
     NotificationConfigurationIdOrUrn:
       type: string
       pattern: ^urn:.+|[0-9]+$
-
+    NotificationConfigurationByIdErrors:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/NotificationConfigurationError"
+        - $ref: "#/components/schemas/InvalidNotificationConfigurationIdentifier"
+      required:
+        - _type
     NotificationConfigurationError:
       type: object
       properties:
@@ -174,7 +187,7 @@ components:
       properties:
         message:
           type: string
-        notificationConfigurationId: 
+        notificationConfigurationIdOrUrn: 
           type: string
         _type:
           type: string
@@ -182,7 +195,19 @@ components:
             - NotificationConfigurationNotFound
       required:
         - message
-        - notificationConfigurationId
+        - notificationConfigurationIdOrUrn
+        - _type
+    InvalidNotificationConfigurationIdentifier:
+      type: object
+      properties:
+        notificationConfigurationIdOrUrn: 
+          type: string
+        _type:
+          type: string
+          enum:
+            - InvalidNotificationConfigurationIdentifier
+      required:
+        - notificationConfigurationIdOrUrn
         - _type
     NotificationConfigurationWriteSchema:
       type: object
