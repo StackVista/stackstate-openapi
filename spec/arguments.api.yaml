@@ -5,18 +5,6 @@ info:
 
 components:
   schemas:
-    StsEventStreamFilter:
-      enum:
-        - STATE_CHANGES_OR_CREATED_DELETED
-        - STATE_CHANGES_OR_CREATED_UPDATED_DELETED
-        - LIFE_CYCLE_EVENTS
-        - STATE_CHANGES
-        - HEALTH_STATE_CHANGES
-        - PROPAGATED_HEALTH_STATE_CHANGES
-        - VIEW_HEALTH_STATE_CHANGES
-        - ANOMALY_EVENT
-        - PROBLEM_EVENT
-      type: string
     PropagatedHealthStateValue:
       enum:
         - UNKNOWN
@@ -45,7 +33,6 @@ components:
         - $ref: "#/components/schemas/ArgumentBooleanVal"
         - $ref: "#/components/schemas/ArgumentComponentTypeRef"
         - $ref: "#/components/schemas/ArgumentRelationTypeRef"
-        - $ref: "#/components/schemas/ArgumentStsEventStreamVal"
         - $ref: "#/components/schemas/ArgumentQueryViewRef"
         - $ref: "#/components/schemas/ArgumentLongVal"
         - $ref: "#/components/schemas/ArgumentStructTypeVal"
@@ -377,28 +364,6 @@ components:
         - _type
         - parameter
         - queryView
-    ArgumentStsEventStreamVal:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - ArgumentStsEventStreamVal
-        id:
-          type: integer
-          format: int64
-        lastUpdateTimestamp:
-          type: integer
-          format: int64
-        parameter:
-          type: integer
-          format: int64
-        filter:
-          $ref: "#/components/schemas/StsEventStreamFilter"
-      required:
-        - _type
-        - parameter
-        - filter
     ArgumentRelationTypeRef:
       type: object
       properties:
