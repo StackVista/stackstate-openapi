@@ -300,6 +300,7 @@ components:
       oneOf:
         - $ref: "#/components/schemas/SlackChannelRefId"
         - $ref: "#/components/schemas/WebhookChannelRefId"
+        - $ref: "#/components/schemas/OpsgenieChannelRefId"
     SlackChannelRefId:
       type: object
       properties:
@@ -324,7 +325,18 @@ components:
       required:
         - _type
         - id
-
+    OpsgenieChannelRefId:
+      type: object
+      properties:
+        _type:
+          enum:
+            - OpsgenieChannelRefId
+        id:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - id
 
     NotificationConfigurationUrn:
       type: string

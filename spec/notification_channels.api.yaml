@@ -122,6 +122,7 @@ paths:
           $ref: "#/components/responses/notificationChannelNotFound"
         "500":
           $ref: "#/components/responses/notificationChannelError"
+
   /notifications/channels/webhook:
     post:
       requestBody:
@@ -210,6 +211,96 @@ paths:
           $ref: "#/components/responses/notificationChannelNotFound"
         "500":
           $ref: "#/components/responses/notificationChannelError"
+
+  /notifications/channels/opsgenie:
+    post:
+      requestBody:
+        $ref: "#/components/requestBodies/opsgenieChannelWrite"
+      tags:
+        - notification_channels
+      summary: "Create a Opsgenie Notification channel"
+      description: "Create a Opsgenie Notification channel"
+      operationId: createOpsgenieNotificationChannel
+      responses:
+        "200":
+          $ref: "#/components/responses/opsgenieNotificationChannel"
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+  /notifications/channels/opsgenie/{channelId}:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+      tags:
+        - notification_channels
+      summary: "Get the Opsgenie Notification channel by id"
+      description: "Get the opsgenie notification channel by id"
+      operationId: getOpsgenieNotificationChannel
+      responses:
+        "200":
+          $ref: "#/components/responses/opsgenieNotificationChannel"
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "404":
+          $ref: "#/components/responses/notificationChannelNotFound"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+    put:
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+      requestBody:
+        $ref: "#/components/requestBodies/opsgenieChannelWrite"
+      tags:
+        - notification_channels
+      summary: "Update the Opsgenie Notification channel by id"
+      description: "Update the opsgenie notification channel by id"
+      operationId: updateOpsgenieNotificationChannel
+      responses:
+        "200":
+          $ref: "#/components/responses/opsgenieNotificationChannel"
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "404":
+          $ref: "#/components/responses/notificationChannelNotFound"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+      tags:
+        - notification_channels
+      summary: "Delete the Opsgenie Notification channel by id"
+      description: "Delete the opsgenie notification channel by id"
+      operationId: deleteOpsgenieNotificationChannel
+      responses:
+        "204":
+          description: "Opsgenie notification channel is deleted."
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "404":
+          $ref: "#/components/responses/notificationChannelNotFound"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+  /notifications/channels/opsgenie/{channelId}/test:
+    post:
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+      tags:
+        - notification_channels
+      summary: "Test the Opsgenie notification channel"
+      description: "Test the opsgenie notification channel by sending a test message to the notification channel."
+      operationId: testOpsgenieChannel
+      responses:
+        "204":
+          description: "Successfully tested channel."
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "404":
+          $ref: "#/components/responses/notificationChannelNotFound"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+
 components:
   parameters:
     channelId:
@@ -267,6 +358,13 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/WebhookChannelWriteSchema"
+    opsgenieChannelWrite:
+      description: "Create or update a opsgenie channel"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OpsgenieChannelWriteSchema"
   responses:
     slackNotificationChannel:
       description: "Slack notification channel"
@@ -286,6 +384,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/WebhookNotificationChannel"
+    opsgenieNotificationChannel:
+      description: "Opsgenie notification channel"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OpsgenieNotificationChannel"
     notificationChannelError:
       description: "Error while executing the request."
       content:
@@ -368,6 +472,7 @@ components:
       oneOf:
         - $ref: "#/components/schemas/SlackNotificationChannel"
         - $ref: "#/components/schemas/WebhookNotificationChannel"
+        - $ref: "#/components/schemas/OpsgenieNotificationChannel"
       discriminator:
         propertyName: _type
     BaseNotificationChannel:
@@ -430,6 +535,59 @@ components:
               type: string
               enum:
                 - WebhookNotificationChannel
+          required:
+            - _type
+    OpsgenieChannelWriteSchema:
+      type: object
+      properties:
+        region:
+          type: string
+          enum:
+            - EU
+            - US
+        genieKey:
+          type: string
+        responders:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpsgenieResponder"
+        priority:
+          type: string
+          enum:
+            - P1
+            - P2
+            - P3
+            - P4
+            - P5
+      required:
+        - region
+        - genieKey
+        - responders
+        - priority
+    OpsgenieResponder:
+      type: object
+      properties:
+        responderType:
+          type: string
+          enum:
+            - TEAM
+            - USER
+            - SCHEDULE
+        responder:
+          type: string
+      required:
+        - responderType
+        - responder
+    OpsgenieNotificationChannel:
+      allOf:
+        - $ref: "#/components/schemas/BaseNotificationChannel"
+        - $ref: "#/components/schemas/OpsgenieChannelWriteSchema"
+        - type: object
+          properties:
+            _type:
+              type: string
+              enum:
+                - OpsgenieNotificationChannel
           required:
             - _type
     NotificationChannelStatus:
