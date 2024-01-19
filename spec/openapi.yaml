@@ -57,6 +57,7 @@ paths:
   /notifications/channels/webhook/{channelId}: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fwebhook%2F%7BchannelId%7D" }
   /notifications/channels/webhook/{channelId}/test: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fwebhook%2F%7BchannelId%7D%2Ftest" }
   /notifications/channels/opsgenie: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fopsgenie" }
+  /notifications/channels/opsgenie/responders: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fopsgenie%2Fresponders" }
   /notifications/channels/opsgenie/{channelId}: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fopsgenie%2F%7BchannelId%7D" }
   /notifications/channels/opsgenie/{channelId}/test: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fopsgenie%2F%7BchannelId%7D%2Ftest" }
   /notifications/configurations: { $ref: "notification_configurations.api.yaml#/paths/%2Fnotifications%2Fconfigurations" }

@@ -228,6 +228,23 @@ paths:
           $ref: "#/components/responses/notificationChannelError"
         "500":
           $ref: "#/components/responses/notificationChannelError"
+  /notifications/channels/opsgenie/responders:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/genieKey"
+        - $ref: "#/components/parameters/region"
+      tags:
+        - notification_channels
+      summary: "List Opsgenie responders"
+      description: "List Opsgenie responders"
+      operationId: listOpsgenieResponders
+      responses:
+        "200":
+          $ref: "#/components/responses/opsgenieResponders"
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
   /notifications/channels/opsgenie/{channelId}:
     get:
       parameters:
@@ -343,6 +360,23 @@ components:
       schema:
         type: string
       description: "After completing the oauth flow the user will be redirected back to this path, in the UI, on StackState, to continue further setup of the Slack notification channel."
+    region:
+      in: query
+      name: region
+      required: true
+      schema:
+        type: string
+        enum:
+          - EU
+          - US
+      description: "OpsGenie region"
+    genieKey:
+      in: query
+      name: genieKey
+      required: true
+      schema:
+        type: string
+      description: "OpsGenie API key"
   requestBodies:
     joinSlackChannel:
       description: "Provide a Slack channel id to join the specified Slack channel"
@@ -402,6 +436,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/NotificationChannelNotFound"
+    opsgenieResponders:
+      description: "Opsgenie responders"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OpsgenieResponders"
   schemas:
     NotificationId:
       type: integer
@@ -573,6 +613,7 @@ components:
             - TEAM
             - USER
             - SCHEDULE
+            - ESCALATION
         responder:
           type: string
       required:
@@ -616,4 +657,7 @@ components:
         - count
         - message
         - firstSeenMs
-    
+    OpsgenieResponders:
+      type: array
+      items:
+        $ref: "#/components/schemas/OpsgenieResponder"
