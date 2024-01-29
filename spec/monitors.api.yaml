@@ -541,6 +541,8 @@ components:
         criticalCount:
           type: integer
           description: "Representing the count of the monitor results that are CRITICAL in the result."
+        componentCounts:
+          $ref: "#/components/schemas/MonitorPreviewComponentCount"
         errors:
           type: array
           items:
@@ -552,7 +554,18 @@ components:
         - deviatingCount
         - criticalCount
         - errors
-
+    MonitorPreviewComponentCount:
+      type: object
+      properties:
+        uniqueIdentifiers:
+          type: integer
+          description: "The number of unique identifiers for the total health state count. Only available when there non-empty identifiers."
+        matchingComponents:
+          type: integer
+          description: "The number of components for the identifiers: matchingComponents <= uniqueIdentifiers. Only available when there non-empty identifiers."
+      required:
+        - uniqueIdentifiers
+        - matchingComponents
     MonitorOverview:
       type: object
       properties:
