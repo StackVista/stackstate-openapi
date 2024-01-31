@@ -92,6 +92,11 @@ paths:
           in: query
           schema:
             $ref: "#/components/schemas/RootCauseMode"
+        - name: connectedComponents
+          in: query
+          required: false
+          schema:
+            type: boolean
         - name: playHeadTimestampMs
           in: query
           schema:
@@ -170,6 +175,11 @@ paths:
           in: query
           schema:
             $ref: "#/components/schemas/RootCauseMode"
+        - name: connectedComponents
+          in: query
+          required: false
+          schema:
+            type: boolean
         - name: playHeadTimestampMs
           in: query
           schema:
@@ -247,6 +257,11 @@ paths:
           in: query
           schema:
             $ref: "#/components/schemas/RootCauseMode"
+        - name: connectedComponents
+          in: query
+          required: false
+          schema:
+            type: boolean
         - name: playHeadTimestampMs
           in: query
           schema:
@@ -708,6 +723,8 @@ components:
           format: instant
         rootCauseMode:
           $ref: "#/components/schemas/RootCauseMode"
+        connectedComponents:
+          type: boolean
         eventTypes:
           type: array
           items:
