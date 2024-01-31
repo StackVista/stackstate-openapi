@@ -770,6 +770,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/EventCategory"
+        rootCauseMode:
+          $ref: "#/components/schemas/RootCauseMode"
+        connectedComponents:
+          type: boolean
         histogramBucketCount:
           type: integer
       required:
