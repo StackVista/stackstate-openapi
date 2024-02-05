@@ -123,6 +123,7 @@ paths:
   /k8s/logs: { $ref: "kubernetes_logs.api.yaml#/paths/%2Fk8s%2Flogs" }
   /k8s/logs/histogram: { $ref: "kubernetes_logs.api.yaml#/paths/%2Fk8s%2Flogs%2Fhistogram" }
   /k8s/logs/autocomplete: { $ref: "kubernetes_logs.api.yaml#/paths/%2Fk8s%2Flogs%2Fautocomplete" }
+  /traces/spans: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fspans"}
   # Dummy path to make sure that some types are included, which otherwise would be excluded
   /dummy/dummy: { $ref: "common.api.yaml#/paths/%2Fdummy%2Fdummy" }
 security:

@@ -73,13 +73,13 @@ components:
       in: query
       description: "Logs initial timestamp."
       required: true
-      schema: { $ref: "#/components/schemas/Instant" }
+      schema: { $ref: "common.api.yaml#/components/schemas/Instant" }
     to:
       name: to
       in: query
       description: "Logs last timestamp."
       required: true
-      schema: { $ref: "#/components/schemas/Instant" }
+      schema: { $ref: "common.api.yaml#/components/schemas/Instant" }
     pageSize:
       name: pageSize
       in: query
@@ -181,9 +181,6 @@ components:
         application/json:
           schema: { $ref: "#/components/schemas/GetKubernetesLogsAutocompleteBadRequest" }
   schemas:
-    Instant:
-      type: integer
-      format: instant
     LogsDirection:
       type: string
       enum:
@@ -299,8 +296,8 @@ components:
             - InvalidTimeRange
         message:
           type: string
-        from: { $ref: "#/components/schemas/Instant" }
-        to: { $ref: "#/components/schemas/Instant" }
+        from: { $ref: "common.api.yaml#/components/schemas/Instant" }
+        to: { $ref: "common.api.yaml#/components/schemas/Instant" }
       required:
         - _type
         - message
@@ -399,8 +396,8 @@ components:
             - InvalidTimeRange
         message:
           type: string
-        from: { $ref: "#/components/schemas/Instant" }
-        to: { $ref: "#/components/schemas/Instant" }
+        from: { $ref: "common.api.yaml#/components/schemas/Instant" }
+        to: { $ref: "common.api.yaml#/components/schemas/Instant" }
       required:
         - _type
         - message
@@ -451,8 +448,8 @@ components:
             - InvalidTimeRange
         message:
           type: string
-        from: { $ref: "#/components/schemas/Instant" }
-        to: { $ref: "#/components/schemas/Instant" }
+        from: { $ref: "common.api.yaml#/components/schemas/Instant" }
+        to: { $ref: "common.api.yaml#/components/schemas/Instant" }
       required:
         - _type
         - message

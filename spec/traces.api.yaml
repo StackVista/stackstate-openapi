@@ -1,0 +1,423 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Traces API
+  version: "1.0.0"
+paths:
+  /traces/spans:
+    get:
+      tags: 
+        - traces
+      parameters:
+        - $ref: "#/components/parameters/startTime"
+        - $ref: "#/components/parameters/endTime"
+        - $ref: "#/components/parameters/service"
+        - $ref: "#/components/parameters/span"
+        - $ref: "#/components/parameters/attributes"
+        - $ref: "#/components/parameters/spanKind"
+        - $ref: "#/components/parameters/latencyFrom"
+        - $ref: "#/components/parameters/latencyTo"
+        - $ref: "#/components/parameters/statusCode"
+        - $ref: "#/components/parameters/traceId"
+        - $ref: "#/components/parameters/spanId"
+        - $ref: "#/components/parameters/scope"
+        - $ref: "#/components/parameters/scopeVersion"
+        - $ref: "#/components/parameters/pageSize"
+        - $ref: "#/components/parameters/page"
+      summary: Query for spans
+      description: Query for spans using filters, get all spans for a trace by trace id
+      operationId: querySpans
+      responses:
+        "200":
+          $ref: "#/components/responses/spans"
+        "400":
+          $ref: "#/components/responses/traceApiBadRequest"
+        "500":
+          $ref: "#/components/responses/traceApiError"
+components:
+  parameters:
+    startTime:
+      in: query
+      name: start
+      required: true
+      schema:
+        $ref: "common.api.yaml#/components/schemas/Instant"
+      description: "Filter spans by start time >= value"
+      example: 1707117737
+    endTime:
+      in: query
+      name: end
+      required: true
+      schema:
+        $ref: "common.api.yaml#/components/schemas/Instant"
+      description: "Filter spans by start time < value"
+      example: 1707121359
+    service:
+      in: query
+      name: service
+      required: false
+      schema:
+        type: array
+        items: 
+          type: string
+      description: "Filter spans by service name"
+      example: "orderService"
+    span:
+      in: query
+      name: span
+      required: false
+      schema:
+        type: array
+        items: 
+          type: string
+      description: "Filter spans by name"
+      example: ["GET /orders"]
+    attributes:
+      in: query
+      name: attributes
+      required: false
+      style: deepObject
+      explode: true
+      schema:
+        type: object
+        additionalProperties: 
+          type: array
+          items:
+            type: string
+      description: "Filter spans by 1 or more attributes"
+    spanKind:
+      in: query
+      name: spanKind
+      required: false
+      schema:
+        type: array
+        items: 
+          $ref: "#/components/schemas/SpanKind"
+      description: "Filter span by kind"
+      example: ["Client"]
+    latencyFrom:
+      in: query
+      name: latencyFrom
+      required: false
+      schema:
+        $ref: "#/components/schemas/LatencyFilter"
+      description: "Filter spans by latency >= value, in milliseconds"
+      example: "2s"
+    latencyTo:
+      in: query
+      name: latencyTo
+      required: false
+      schema:
+        $ref: "#/components/schemas/LatencyFilter"
+      description: "Filter spans by latency < value, in milliseconds"
+      example: "5s"
+    statusCode:
+      in: query
+      name: statusCode
+      required: false
+      schema:
+        type: array
+        items: 
+          $ref: "#/components/schemas/StatusCode"
+      description: "Filter spans by the StatusCode"
+      example: ["Error"]
+    traceId:
+      in: query
+      name: traceId
+      required: false
+      schema:
+        type: array
+        items: 
+          type: string
+      description: "Filter spans by trace id, use only this filter to get a complete trace"
+      example: ["6942f450030e8c5f7411a23c26185aa2"]
+    spanId:
+      in: query
+      name: spanId
+      required: false
+      schema:
+        type: array
+        items: 
+          type: string
+      description: "Filter spans by span id, use only this filter to get a single span"
+      example: ["1a607e3a97735e71"]
+    scope:
+      in: query
+      name: scope
+      required: false
+      schema:
+        type: array
+        items: 
+          type: string
+      description: "Filter spans by scope"
+    scopeVersion:  
+      in: query
+      name: scopeVersion
+      required: false
+      schema:
+        type: array
+        items: 
+          type: string
+      description: "Filter spans by scope version"
+    page:
+      in: query
+      name: page
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        default: 0
+      description: "Get the specified page (with pageSize # of spans), defaults to page 0"
+      example: 4
+    pageSize:
+      in: query
+      name: pageSize
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 200
+        default: 20
+      description: "Number of spans in 1 page"
+      example: 30
+  requestBodies: {}
+  responses:
+    spans:
+      description: Spans
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Spans" }
+    traceApiBadRequest:
+      description: Bad request response
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/TraceApiBadRequest" }
+    traceApiError:
+      description: Server error response
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/TraceApiError" }
+  schemas:
+    LatencyFilter:
+      type: string
+      description: "Similar to a PromQL duration, a number followed by ms,s,m,h,d,w,y. For example 200ms"
+    SpanKind:
+      type: string
+      enum:
+        - Unspecified
+        - Client
+        - Server
+        - Internal
+        - Consumer
+        - Producer
+    StatusCode:
+      type: string
+      enum:
+        - Unset
+        - Error
+        - Ok
+    Spans:
+      type: object
+      properties:
+        spans:
+          type: array
+          items: 
+            $ref: "#/components/schemas/Span"
+          description: "List of spans"
+        pageSize:
+          type: integer
+          description: "Maximum number of the spans in the result."
+        page:
+          type: integer
+          description: "The requested page."
+        matchesTotal:
+          type: integer
+          format: int64
+          description: "The total amount of matching spans."
+      required:
+        - spans
+        - pageSize
+        - page
+        - matchesTotal
+    Span:
+      type: object
+      properties:
+        startTime: 
+          description: Start time of the span
+          $ref: "common.api.yaml#/components/schemas/Instant"
+        endTime:
+          description: End time of the span        
+          $ref: "common.api.yaml#/components/schemas/Instant"
+        duration:
+          description: Duration of the span
+          type: integer
+          format: int64
+        traceId:
+          description: The unique identifier for the trace, all spans of the same trace share the same trace_id
+          type: string
+        spanId:
+          description: The unique identifier of the span within the trace
+          type: string
+        parentSpanId:
+          description: The id of the parent span of this span. Empty if this is the root span
+          type: string
+        traceState:
+          description: "Can contain vendor specific trace identification information https://www.w3.org/TR/trace-context/#tracestate-header"
+          type: string
+        spanName:
+          description: A description of the span's operation. For example, the name can be a qualified method name or a file name and a line number where the operation is called
+          type: string
+        serviceName:
+          description: Logical name of the service for the span 
+          type: string
+        spanKind:
+          description: The type of span. Distinguishes between spans generated in a particular context.
+          $ref: "#/components/schemas/SpanKind"
+        resourceAttributes:
+          description: Attributes (key/value pairs) describing the resource for the span.
+          $ref: "#/components/schemas/Attributes"
+        spanAttributes:
+          description: Attributes (key/value pairs) describing the span.
+          $ref: "#/components/schemas/Attributes"
+        statusCode:
+          description: The status of the operation for the span
+          $ref: "#/components/schemas/StatusCode"
+        statusMessage:
+          description: Human readable message for the status
+          type: string
+        scopeName:
+          description: "The name of the instrumentation scope for the span https://opentelemetry.io/docs/specs/otel/glossary/#instrumentation-scope"
+          type: string
+        scopeVersion:
+          description: "The version for the instrumentation scope for the span https://opentelemetry.io/docs/specs/otel/glossary/#instrumentation-scope"
+          type: string
+        events:
+          description: Time-stamped annotations on the span providing extra application context
+          type: array
+          items:
+            $ref: "#/components/schemas/SpanEvent"
+        links:
+          description: Links to related spans in the same or in other traces
+          type: array
+          items:
+            $ref: "#/components/schemas/SpanLink"
+      required:
+        - startTime
+        - endTime
+        - duration
+        - traceId
+        - spanId
+        - spanName
+        - serviceName
+        - spanKind
+        - resourceAttributes
+        - spanAttributes
+        - statusCode
+        - events
+        - links
+    Attributes:
+      description: Set of key/value pairs providing extra contextual information. Keys are unique.
+      type: object
+      additionalProperties:
+        type: string
+    SpanEvent:
+      description: Event is a time-stamped annotation of the span, consisting of user-supplied text description and key-value pairs.
+      type: object
+      properties:
+        timestamp:
+          $ref: "common.api.yaml#/components/schemas/Instant"
+        name:
+          type: string
+        attributes:
+          $ref: "#/components/schemas/Attributes"
+      required:
+        - timestamp
+        - name
+        - attributes
+    SpanLink:
+      description: | 
+        A pointer from the current span to another span in the same trace or in a different trace. 
+        For example, this can be used in batching operations, where a single batch handler processes 
+        multiple requests from different traces or when the handler receives a request from a different project.
+      type: object
+      properties:
+        traceId:
+          type: string
+        spanId:
+          type: string
+        traceState:
+          type: string
+        attributes:
+          $ref: "#/components/schemas/Attributes"
+      required:
+        - traceId
+        - spanId
+        - attributes
+    TraceApiBadRequest:
+      oneOf:
+        - $ref: "#/components/schemas/TraceApiInvalidTimeRange"
+        - $ref: "#/components/schemas/TraceApiInvalidPagination"
+        - $ref: "#/components/schemas/TraceApiInvalidFilter"
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+    TraceApiInvalidTimeRange:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - InvalidTimeRange
+        message:
+          type: string
+        from: { $ref: "common.api.yaml#/components/schemas/Instant" }
+        to: { $ref: "common.api.yaml#/components/schemas/Instant" }
+      required:
+        - _type
+        - message
+        - from
+        - to
+    TraceApiInvalidPagination:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - InvalidPagination
+        message:
+          type: string
+        pageSize:
+          type: integer
+        page:
+          type: integer
+      required:
+        - _type
+        - message
+        - pageSize
+        - page
+    TraceApiInvalidFilter:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - InvalidFilter
+        message:
+          type: string
+        filter:
+          type: string
+      required:
+        - _type
+        - message
+        - filter
+    TraceApiError:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+     
