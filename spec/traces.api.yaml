@@ -5,25 +5,16 @@ info:
   version: "1.0.0"
 paths:
   /traces/spans:
-    get:
+    post:
       tags: 
         - traces
       parameters:
         - $ref: "#/components/parameters/startTime"
         - $ref: "#/components/parameters/endTime"
-        - $ref: "#/components/parameters/service"
-        - $ref: "#/components/parameters/span"
-        - $ref: "#/components/parameters/attributes"
-        - $ref: "#/components/parameters/spanKind"
-        - $ref: "#/components/parameters/latencyFrom"
-        - $ref: "#/components/parameters/latencyTo"
-        - $ref: "#/components/parameters/statusCode"
-        - $ref: "#/components/parameters/traceId"
-        - $ref: "#/components/parameters/spanId"
-        - $ref: "#/components/parameters/scope"
-        - $ref: "#/components/parameters/scopeVersion"
         - $ref: "#/components/parameters/pageSize"
         - $ref: "#/components/parameters/page"
+      requestBody:
+        $ref: "#/components/requestBodies/spanQuery"
       summary: Query for spans
       description: Query for spans using filters, get all spans for a trace by trace id. Filters that accept an array of values match if any of the values match (think of a SQL IN expression).
       operationId: querySpans
@@ -34,6 +25,7 @@ paths:
           $ref: "#/components/responses/traceApiSpansBadRequest"
         "500":
           $ref: "#/components/responses/traceApiError"
+
   /traces/suggestions/attributes/names/{attributeNamePart}:
     get:  
       tags: 
@@ -127,113 +119,6 @@ components:
         $ref: "common.api.yaml#/components/schemas/Instant"
       description: "Filter spans by start time < value"
       example: 1707121359
-    service:
-      in: query
-      name: service
-      required: false
-      schema:
-        type: array
-        items: 
-          type: string
-      description: "Filter spans by service name"
-      example: "orderService"
-    span:
-      in: query
-      name: span
-      required: false
-      schema:
-        type: array
-        items: 
-          type: string
-      description: "Filter spans by name"
-      example: ["GET /orders"]
-    attributes:
-      in: query
-      name: attributes
-      required: false
-      style: deepObject
-      explode: true
-      schema:
-        type: object
-        additionalProperties: 
-          type: array
-          items:
-            type: string
-      description: "Filter spans by 1 or more attributes"
-    spanKind:
-      in: query
-      name: spanKind
-      required: false
-      schema:
-        type: array
-        items: 
-          $ref: "#/components/schemas/SpanKind"
-      description: "Filter span by kind"
-      example: ["Client"]
-    latencyFrom:
-      in: query
-      name: latencyFrom
-      required: false
-      schema:
-        $ref: "#/components/schemas/LatencyFilter"
-      description: "Filter spans by latency >= value, in milliseconds"
-      example: "2s"
-    latencyTo:
-      in: query
-      name: latencyTo
-      required: false
-      schema:
-        $ref: "#/components/schemas/LatencyFilter"
-      description: "Filter spans by latency < value, in milliseconds"
-      example: "5s"
-    statusCode:
-      in: query
-      name: statusCode
-      required: false
-      schema:
-        type: array
-        items: 
-          $ref: "#/components/schemas/StatusCode"
-      description: "Filter spans by the StatusCode"
-      example: ["Error"]
-    traceId:
-      in: query
-      name: traceId
-      required: false
-      schema:
-        type: array
-        items: 
-          type: string
-      description: "Filter spans by trace id, use only this filter to get a complete trace"
-      example: ["6942f450030e8c5f7411a23c26185aa2"]
-    spanId:
-      in: query
-      name: spanId
-      required: false
-      schema:
-        type: array
-        items: 
-          type: string
-      description: "Filter spans by span id, use only this filter to get a single span"
-      example: ["1a607e3a97735e71"]
-    scope:
-      in: query
-      name: scope
-      required: false
-      schema:
-        type: array
-        items: 
-          type: string
-      description: "Filter spans by scope"
-    scopeVersion:  
-      in: query
-      name: scopeVersion
-      required: false
-      schema:
-        type: array
-        items: 
-          type: string
-      description: "Filter spans by scope version"
     page:
       in: query
       name: page
@@ -257,7 +142,12 @@ components:
         default: 20
       description: "Number of spans in 1 page"
       example: 30
-  requestBodies: {}
+  requestBodies:
+    spanQuery:
+      description: Query for spans
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/SpanQuery" }
   responses:
     spans:
       description: Spans
@@ -303,6 +193,70 @@ components:
         - Unset
         - Error
         - Ok
+    SpanQuery:
+      type: object
+      properties:
+        service:
+          type: array
+          items: 
+            type: string
+          description: "Filter spans by service name"
+          example: "orderService"
+        span:
+          type: array
+          items: 
+            type: string
+          description: "Filter spans by name"
+          example: ["GET /orders"]
+        attributes:
+          type: object
+          additionalProperties: 
+            type: array
+            items:
+              type: string
+          description: "Filter spans by 1 or more attributes"
+        spanKind:
+          type: array
+          items: 
+            $ref: "#/components/schemas/SpanKind"
+          description: "Filter span by kind"
+          example: ["Client"]
+        latencyFrom:
+          $ref: "#/components/schemas/LatencyFilter"
+          description: "Filter spans by latency >= value, in milliseconds"
+          example: "2s"
+        latencyTo:
+          $ref: "#/components/schemas/LatencyFilter"
+          description: "Filter spans by latency < value, in milliseconds"
+          example: "5s"
+        statusCode:
+          type: array
+          items: 
+            $ref: "#/components/schemas/StatusCode"
+          description: "Filter spans by the StatusCode"
+          example: ["Error"]
+        traceId:
+          type: array
+          items: 
+            type: string
+          description: "Filter spans by trace id, use only this filter to get a complete trace"
+          example: ["6942f450030e8c5f7411a23c26185aa2"]
+        spanId:
+          type: array
+          items: 
+            type: string
+          description: "Filter spans by span id, use only this filter to get a single span"
+          example: ["1a607e3a97735e71"]
+        scope:
+          type: array
+          items: 
+            type: string
+          description: "Filter spans by scope"
+        scopeVersion:  
+          type: array
+          items: 
+            type: string
+          description: "Filter spans by scope version"
     Spans:
       type: object
       properties:
