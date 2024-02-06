@@ -274,7 +274,7 @@ components:
         matchesTotal:
           type: integer
           format: int64
-          description: "The total amount of matching spans."
+          description: "The total number of matching spans."
       required:
         - spans
         - pageSize
@@ -296,8 +296,8 @@ components:
         endTime:
           description: End time of the span        
           $ref: "common.api.yaml#/components/schemas/Instant"
-        duration:
-          description: Duration of the span
+        durationMillis:
+          description: Duration of the span in milliseconds
           type: integer
           format: int64
         traceId:
