@@ -26,13 +26,13 @@ paths:
         "500":
           $ref: "#/components/responses/traceApiError"
 
-  /traces/suggestions/attributes/names/{attributeNamePart}:
+  /traces/suggestions/attributes:
     get:  
       tags: 
         - traces
       parameters:
         - name: attributeNamePart
-          in: path
+          in: query
           required: false
           schema:
             type: string
@@ -47,7 +47,7 @@ paths:
           $ref: "#/components/responses/traceApiSuggestionsBadRequest"
         "500":
           $ref: "#/components/responses/traceApiError"
-  /traces/suggestions/attributes/values/{attributeName}/{attributeValuePart}:
+  /traces/suggestions/attributes/{attributeName}/values:
     get:  
       tags: 
         - traces
@@ -59,7 +59,7 @@ paths:
             type: string
           description: Get suggestions for this attribute 
         - name: attributeValuePart
-          in: path
+          in: query
           required: true
           schema:
             type: string
@@ -74,7 +74,7 @@ paths:
           $ref: "#/components/responses/traceApiSuggestionsBadRequest"
         "500":
           $ref: "#/components/responses/traceApiError"
-  /traces/suggestions/properties/values/{property}/{propertyValuePart}:
+  /traces/suggestions/properties/{property}/values:
     get:  
       tags:
         - traces
@@ -86,7 +86,7 @@ paths:
           schema:
             type: string
         - name: propertyValuePart
-          in: path
+          in: query
           required: true
           description: Get suggestions for this property based on this partial value
           schema:
@@ -145,6 +145,7 @@ components:
   requestBodies:
     spanQuery:
       description: Query for spans
+      required: true
       content:
         application/json:
           schema: { $ref: "#/components/schemas/SpanQuery" }
@@ -287,6 +288,8 @@ components:
           type: array
           items: 
             type: string
+      required:
+        - suggestions
     Span:
       type: object
       properties:
@@ -352,7 +355,7 @@ components:
       required:
         - startTime
         - endTime
-        - duration
+        - durationMillis
         - traceId
         - spanId
         - spanName
