@@ -31,7 +31,82 @@ paths:
         "200":
           $ref: "#/components/responses/spans"
         "400":
-          $ref: "#/components/responses/traceApiBadRequest"
+          $ref: "#/components/responses/traceApiSpansBadRequest"
+        "500":
+          $ref: "#/components/responses/traceApiError"
+  /traces/suggestions/attributes/names/{attributeNamePart}:
+    get:  
+      tags: 
+        - traces
+      parameters:
+        - name: attributeNamePart
+          in: path
+          required: false
+          schema:
+            type: string
+          description: Get suggestions based of this partial name
+      summary: Suggestions for attribute names
+      description: Suggestions for attribute names, both resource and span attributes. Attributes match when their name contains the provided part, at most 100 suggestions will be returned. Make the part longer to get more accurate suggestions.
+      operationId: suggestionsAttributeName
+      responses:
+        "200":
+          $ref: "#/components/responses/suggestions"
+        "400":
+          $ref: "#/components/responses/traceApiSuggestionsBadRequest"
+        "500":
+          $ref: "#/components/responses/traceApiError"
+  /traces/suggestions/attributes/values/{attributeName}/{attributeValuePart}:
+    get:  
+      tags: 
+        - traces
+      parameters:
+        - name: attributeName
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Get suggestions for this attribute 
+        - name: attributeValuePart
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Get suggestions based on this partial value
+      summary: Suggestions for attribute values
+      description: Suggestions for attribute values, both resource and span attributes. Attribute values match when the value contains the provided part, at most 100 suggestions will be returned. Make the part longer to get more accurate suggestions.
+      operationId: suggestionsAttributeValue
+      responses:
+        "200":
+          $ref: "#/components/responses/suggestions"
+        "400":
+          $ref: "#/components/responses/traceApiSuggestionsBadRequest"
+        "500":
+          $ref: "#/components/responses/traceApiError"
+  /traces/suggestions/properties/values/{property}/{propertyValuePart}:
+    get:  
+      tags:
+        - traces
+      parameters:
+        - name: property
+          in: path
+          required: true
+          description: Get suggestions for this property
+          schema:
+            type: string
+        - name: propertyValuePart
+          in: path
+          required: true
+          description: Get suggestions for this property based on this partial value
+          schema:
+            type: string            
+      summary: Suggestions for span properties
+      description: Suggestions for values of of the span properties that can be filtered on except resource and span attributes. Values match when they contain the provided part, at most 100 suggestions will be returned. Make the part longer to get more accurate suggestions.
+      operationId: suggestionsPropertyValues
+      responses:
+        "200":
+          $ref: "#/components/responses/suggestions"
+        "400":
+          $ref: "#/components/responses/traceApiSuggestionsBadRequest"
         "500":
           $ref: "#/components/responses/traceApiError"
 components:
@@ -189,16 +264,26 @@ components:
       content:
         application/json:
           schema: { $ref: "#/components/schemas/Spans" }
-    traceApiBadRequest:
-      description: Bad request response
+    suggestions:
+      description: Suggestions for property values, attributes names and attribute values
       content:
         application/json:
-          schema: { $ref: "#/components/schemas/TraceApiBadRequest" }
+          schema: { $ref: "#/components/schemas/Suggestions" }
+    traceApiSpansBadRequest:
+      description: Bad spans request response
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/TraceApiSpansBadRequest" }
     traceApiError:
       description: Server error response
       content:
         application/json:
           schema: { $ref: "#/components/schemas/TraceApiError" }
+    traceApiSuggestionsBadRequest:
+      description: Bad suggetions request response
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/TraceApiSuggestionsBadRequest" }
   schemas:
     LatencyFilter:
       type: string
@@ -241,6 +326,13 @@ components:
         - pageSize
         - page
         - matchesTotal
+    Suggestions:
+      type: object
+      properties:
+        suggestions:
+          type: array
+          items: 
+            type: string
     Span:
       type: object
       properties:
@@ -355,11 +447,18 @@ components:
         - traceId
         - spanId
         - attributes
-    TraceApiBadRequest:
+    TraceApiSpansBadRequest:
       oneOf:
         - $ref: "#/components/schemas/TraceApiInvalidTimeRange"
         - $ref: "#/components/schemas/TraceApiInvalidPagination"
         - $ref: "#/components/schemas/TraceApiInvalidFilter"
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+    TraceApiSuggestionsBadRequest:
+      oneOf:
+        - $ref: "#/components/schemas/TraceApiInvalidProperty"
       discriminator:
         propertyName: _type
       required:
@@ -413,6 +512,21 @@ components:
         - _type
         - message
         - filter
+    TraceApiInvalidProperty:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - InvalidProperty
+        message:
+          type: string
+        property:
+          type: string
+      required:
+        - _type
+        - message
+        - property
     TraceApiError:
       type: object
       properties:
