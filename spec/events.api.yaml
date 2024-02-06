@@ -88,15 +88,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: rootCauseMode
-          in: query
-          schema:
-            $ref: "#/components/schemas/RootCauseMode"
-        - name: connectedComponents
-          in: query
-          required: false
-          schema:
-            type: boolean
         - name: playHeadTimestampMs
           in: query
           schema:
@@ -171,15 +162,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: rootCauseMode
-          in: query
-          schema:
-            $ref: "#/components/schemas/RootCauseMode"
-        - name: connectedComponents
-          in: query
-          required: false
-          schema:
-            type: boolean
         - name: playHeadTimestampMs
           in: query
           schema:
@@ -253,15 +235,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: rootCauseMode
-          in: query
-          schema:
-            $ref: "#/components/schemas/RootCauseMode"
-        - name: connectedComponents
-          in: query
-          required: false
-          schema:
-            type: boolean
         - name: playHeadTimestampMs
           in: query
           schema:
@@ -653,12 +626,6 @@ components:
         - one-way
         - none
         - both
-    RootCauseMode:
-      type: string
-      enum:
-        - no-cause
-        - cause-only
-        - full-cause-tree
     EventId:
       type: string
     EventsHistogram:
@@ -721,10 +688,6 @@ components:
         playHeadTimestampMs:
           type: integer
           format: instant
-        rootCauseMode:
-          $ref: "#/components/schemas/RootCauseMode"
-        connectedComponents:
-          type: boolean
         eventTypes:
           type: array
           items:
@@ -770,10 +733,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/EventCategory"
-        rootCauseMode:
-          $ref: "#/components/schemas/RootCauseMode"
-        connectedComponents:
-          type: boolean
         histogramBucketCount:
           type: integer
       required:
