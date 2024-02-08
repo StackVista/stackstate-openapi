@@ -14,7 +14,7 @@ paths:
         - $ref: "#/components/parameters/pageSize"
         - $ref: "#/components/parameters/page"
       requestBody:
-        $ref: "#/components/requestBodies/spanQuery"
+        $ref: "#/components/requestBodies/spanFilter"
       summary: Query for spans
       description: Query for spans using filters, get all spans for a trace by trace id. Filters that accept an array of values match if any of the values match (think of a SQL IN expression).
       operationId: querySpans
@@ -23,6 +23,23 @@ paths:
           $ref: "#/components/responses/spans"
         "400":
           $ref: "#/components/responses/traceApiSpansBadRequest"
+        "500":
+          $ref: "#/components/responses/traceApiError"
+
+  /traces/{traceId}:
+    get:
+      tags: 
+        - traces
+      parameters:
+        - $ref: "#/components/parameters/traceId"
+      summary: Fetch a trace
+      description: Get a full trace by id only
+      operationId: getTrace
+      responses:
+        "200":
+          $ref: "#/components/responses/trace"
+        "404":
+          $ref: "#/components/responses/traceApiTraceNotFound"
         "500":
           $ref: "#/components/responses/traceApiError"
 
@@ -142,19 +159,31 @@ components:
         default: 20
       description: "Number of spans in 1 page"
       example: 30
+    traceId:
+      in: path
+      name: traceId
+      required: true
+      schema:
+        type: string
+      description: "The id of the trace"
   requestBodies:
-    spanQuery:
+    spanFilter:
       description: Query for spans
       required: true
       content:
         application/json:
-          schema: { $ref: "#/components/schemas/SpanQuery" }
+          schema: { $ref: "#/components/schemas/SpanFilter" }
   responses:
     spans:
       description: Spans
       content:
         application/json:
           schema: { $ref: "#/components/schemas/Spans" }
+    trace:
+      description: A trace with all its spans
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Trace" }
     suggestions:
       description: Suggestions for property values, attributes names and attribute values
       content:
@@ -175,10 +204,12 @@ components:
       content:
         application/json:
           schema: { $ref: "#/components/schemas/TraceApiSuggestionsBadRequest" }
+    traceApiTraceNotFound:
+      description: Trace not found
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/TraceApiTraceNotFound" }
   schemas:
-    LatencyFilter:
-      type: string
-      description: "Similar to a PromQL duration, a number followed by ms,s,m,h,d,w,y. For example 200ms"
     SpanKind:
       type: string
       enum:
@@ -194,7 +225,7 @@ components:
         - Unset
         - Error
         - Ok
-    SpanQuery:
+    SpanFilter:
       type: object
       properties:
         service:
@@ -222,12 +253,14 @@ components:
             $ref: "#/components/schemas/SpanKind"
           description: "Filter span by kind"
           example: ["Client"]
-        latencyFrom:
-          $ref: "#/components/schemas/LatencyFilter"
+        latencyFromMillis:
+          type: integer
+          format: int32
           description: "Filter spans by latency >= value, in milliseconds"
           example: "2s"
-        latencyTo:
-          $ref: "#/components/schemas/LatencyFilter"
+        latencyToMillis:
+          type: integer
+          format: int32
           description: "Filter spans by latency < value, in milliseconds"
           example: "5s"
         statusCode:
@@ -290,6 +323,20 @@ components:
             type: string
       required:
         - suggestions
+    Trace:
+      type: object
+      properties:
+        traceId:
+          type: string
+          description: The id of the trace
+        spans:
+          type: array
+          description: All spans for the trace
+          items:
+            $ref: "#/components/schemas/Span"
+      required:
+        - traceId
+        - spans 
     Span:
       type: object
       properties:
@@ -491,4 +538,11 @@ components:
           type: string
       required:
         - message
+    TraceApiTraceNotFound:
+      type: object
+      properties:
+        traceId:
+          type: string
+      required:
+        - traceId
      

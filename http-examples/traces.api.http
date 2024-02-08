@@ -1,5 +1,5 @@
 ### Query spans
-POST {{host}}/api/traces/spans?start=1707371613000&end=1707375213000&pageSize=20&page=0
+POST {{host}}/api/traces/spans?start=1707394182490&end=1707397782490&pageSize=20&page=1
 X-API-Token: {{apiToken}}
 Content-Type: application/json
 
