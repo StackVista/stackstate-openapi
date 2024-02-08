@@ -166,20 +166,7 @@ components:
       required: false
       description: Sort by 1 or more properties, in the order as provided. Specify separated by commas
       schema:
-        type: array
-        items:
-          type: string
-          enum: 
-            - Timestamp
-            - Latency
-            - ServiceName
-            - SpanName
-            - SpanKind
-            - StatusCode
-            - TraceId
-            - SpanId
-            - Scope
-            - ScopeVersion
+        $ref: "#/components/schemas/TracesSortBy"
     traceId:
       in: path
       name: traceId
@@ -246,6 +233,23 @@ components:
         - Unset
         - Error
         - Ok
+    TracesSortBy:
+      type: array
+      items:
+        $ref: "#/components/schemas/TracesSortOption"
+    TracesSortOption:
+      type: string
+      enum: 
+        - Timestamp
+        - Latency
+        - ServiceName
+        - SpanName
+        - SpanKind
+        - StatusCode
+        - TraceId
+        - SpanId
+        - Scope
+        - ScopeVersion
     SpanFilter:
       type: object
       properties:
