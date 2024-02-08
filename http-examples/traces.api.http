@@ -1,6 +1,19 @@
 ### Query spans
-POST {{host}}/api/traces/spans?start=1707394182490&end=1707397782490&pageSize=20&page=1
+POST {{host}}/api/traces/spans?start=1707408327950&end=1707411927950&pageSize=20&page=0&sortBy=Timestamp-desc,SpanName-asc
 X-API-Token: {{apiToken}}
 Content-Type: application/json
 
-{}
+{
+  "spanKind": ["Server", "Consumer"],
+  "attributes": {
+    "k8s.cluster.name": ["gke-demo-dev"],
+    "k8s.namespace.name": ["otel-demo"],
+    "k8s.pod.name": ["otel-demo-productcatalogservice-5c67778b45-lxb9f"]
+  }
+}
+
+
+### Get trace by id
+GET {{host}}/api/traces/d17617d3d5a075beedd8f0fe52f75fc3
+X-API-Token: {{apiToken}}
+Content-Type: application/json
