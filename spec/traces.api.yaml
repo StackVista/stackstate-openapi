@@ -163,6 +163,7 @@ components:
     sortBy:
       in: query
       name: sortBy
+      explode: false
       required: false
       description: Sort by 1 or more properties, in the order as provided. Specify separated by commas
       schema:
@@ -240,16 +241,26 @@ components:
     TracesSortOption:
       type: string
       enum: 
-        - Timestamp
-        - Latency
-        - ServiceName
-        - SpanName
-        - SpanKind
-        - StatusCode
-        - TraceId
-        - SpanId
-        - Scope
-        - ScopeVersion
+        - Timestamp-asc
+        - Latency-asc
+        - ServiceName-asc
+        - SpanName-asc
+        - SpanKind-asc
+        - StatusCode-asc
+        - TraceId-asc
+        - SpanId-asc
+        - Scope-asc
+        - ScopeVersion-asc
+        - Timestamp-desc
+        - Latency-desc
+        - ServiceName-desc
+        - SpanName-desc
+        - SpanKind-desc
+        - StatusCode-desc
+        - TraceId-desc
+        - SpanId-desc
+        - Scope-desc
+        - ScopeVersion-desc
     SpanFilter:
       type: object
       properties:
