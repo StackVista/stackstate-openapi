@@ -13,6 +13,7 @@ paths:
         - $ref: "#/components/parameters/endTime"
         - $ref: "#/components/parameters/pageSize"
         - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/sortBy"
       requestBody:
         $ref: "#/components/requestBodies/spanFilter"
       summary: Query for spans
@@ -159,6 +160,26 @@ components:
         default: 20
       description: "Number of spans in 1 page"
       example: 30
+    sortBy:
+      in: query
+      name: sortBy
+      required: false
+      description: Sort by 1 or more properties, in the order as provided. Specify separated by commas
+      schema:
+        type: array
+        items:
+          type: string
+          enum: 
+            - Timestamp
+            - Latency
+            - ServiceName
+            - SpanName
+            - SpanKind
+            - StatusCode
+            - TraceId
+            - SpanId
+            - Scope
+            - ScopeVersion
     traceId:
       in: path
       name: traceId
