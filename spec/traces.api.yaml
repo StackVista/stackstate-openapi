@@ -249,7 +249,7 @@ components:
         - StatusCode-asc
         - TraceId-asc
         - SpanId-asc
-        - Scope-asc
+        - ScopeName-asc
         - ScopeVersion-asc
         - Timestamp-desc
         - Latency-desc
@@ -259,7 +259,7 @@ components:
         - StatusCode-desc
         - TraceId-desc
         - SpanId-desc
-        - Scope-desc
+        - ScopeName-desc
         - ScopeVersion-desc
     SpanFilter:
       type: object
