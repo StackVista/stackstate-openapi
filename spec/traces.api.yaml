@@ -241,7 +241,7 @@ components:
     TracesSortOption:
       type: string
       enum: 
-        - Timestamp-asc
+        - StartTime-asc
         - Latency-asc
         - ServiceName-asc
         - SpanName-asc
@@ -251,7 +251,7 @@ components:
         - SpanId-asc
         - ScopeName-asc
         - ScopeVersion-asc
-        - Timestamp-desc
+        - StartTime-desc
         - Latency-desc
         - ServiceName-desc
         - SpanName-desc
