@@ -264,13 +264,13 @@ components:
     SpanFilter:
       type: object
       properties:
-        service:
+        serviceName:
           type: array
           items: 
             type: string
           description: "Filter spans by service name"
           example: "orderService"
-        span:
+        spanName:
           type: array
           items: 
             type: string
@@ -317,7 +317,7 @@ components:
             type: string
           description: "Filter spans by span id, use only this filter to get a single span"
           example: ["1a607e3a97735e71"]
-        scope:
+        scopeName:
           type: array
           items: 
             type: string
@@ -382,8 +382,8 @@ components:
         endTime:
           description: End time of the span        
           $ref: "common.api.yaml#/components/schemas/Instant"
-        durationMillis:
-          description: Duration of the span in milliseconds
+        latencyMillis:
+          description: Latency of the span in milliseconds
           type: integer
           format: int64
         traceId:
@@ -438,7 +438,7 @@ components:
       required:
         - startTime
         - endTime
-        - durationMillis
+        - latencyMillis
         - traceId
         - spanId
         - spanName
