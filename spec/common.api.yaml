@@ -102,3 +102,6 @@ components:
       required:
         - _type
         - id
+    Instant:
+      type: integer
+      format: instant

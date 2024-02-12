@@ -200,12 +200,12 @@ components:
         parameter:
           type: integer
           format: int64
-        value:
+        query:
           type: string
       required:
         - _type
         - parameter
-        - value
+        - query
     ArgumentPropagatedHealthStateVal:
       type: object
       properties:

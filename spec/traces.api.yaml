@@ -1,0 +1,494 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Traces API
+  version: "1.0.0"
+paths:
+  /traces/spans:
+    post:
+      tags: 
+        - traces
+      parameters:
+        - $ref: "#/components/parameters/startTime"
+        - $ref: "#/components/parameters/endTime"
+        - $ref: "#/components/parameters/pageSize"
+        - $ref: "#/components/parameters/page"
+      requestBody:
+        $ref: "#/components/requestBodies/spanQuery"
+      summary: Query for spans
+      description: Query for spans using filters, get all spans for a trace by trace id. Filters that accept an array of values match if any of the values match (think of a SQL IN expression).
+      operationId: querySpans
+      responses:
+        "200":
+          $ref: "#/components/responses/spans"
+        "400":
+          $ref: "#/components/responses/traceApiSpansBadRequest"
+        "500":
+          $ref: "#/components/responses/traceApiError"
+
+  /traces/suggestions/attributes:
+    get:  
+      tags: 
+        - traces
+      parameters:
+        - name: attributeNamePart
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Get suggestions based of this partial name
+      summary: Suggestions for attribute names
+      description: Suggestions for attribute names, both resource and span attributes. Attributes match when their name contains the provided part, at most 100 suggestions will be returned. Make the part longer to get more accurate suggestions.
+      operationId: suggestionsAttributeName
+      responses:
+        "200":
+          $ref: "#/components/responses/suggestions"
+        "400":
+          $ref: "#/components/responses/traceApiSuggestionsBadRequest"
+        "500":
+          $ref: "#/components/responses/traceApiError"
+  /traces/suggestions/attributes/{attributeName}/values:
+    get:  
+      tags: 
+        - traces
+      parameters:
+        - name: attributeName
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Get suggestions for this attribute 
+        - name: attributeValuePart
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Get suggestions based on this partial value
+      summary: Suggestions for attribute values
+      description: Suggestions for attribute values, both resource and span attributes. Attribute values match when the value contains the provided part, at most 100 suggestions will be returned. Make the part longer to get more accurate suggestions.
+      operationId: suggestionsAttributeValue
+      responses:
+        "200":
+          $ref: "#/components/responses/suggestions"
+        "400":
+          $ref: "#/components/responses/traceApiSuggestionsBadRequest"
+        "500":
+          $ref: "#/components/responses/traceApiError"
+  /traces/suggestions/properties/{property}/values:
+    get:  
+      tags:
+        - traces
+      parameters:
+        - name: property
+          in: path
+          required: true
+          description: Get suggestions for this property
+          schema:
+            type: string
+        - name: propertyValuePart
+          in: query
+          required: true
+          description: Get suggestions for this property based on this partial value
+          schema:
+            type: string            
+      summary: Suggestions for span properties
+      description: Suggestions for values of of the span properties that can be filtered on except resource and span attributes. Values match when they contain the provided part, at most 100 suggestions will be returned. Make the part longer to get more accurate suggestions.
+      operationId: suggestionsPropertyValues
+      responses:
+        "200":
+          $ref: "#/components/responses/suggestions"
+        "400":
+          $ref: "#/components/responses/traceApiSuggestionsBadRequest"
+        "500":
+          $ref: "#/components/responses/traceApiError"
+components:
+  parameters:
+    startTime:
+      in: query
+      name: start
+      required: true
+      schema:
+        $ref: "common.api.yaml#/components/schemas/Instant"
+      description: "Filter spans by start time >= value"
+      example: 1707117737
+    endTime:
+      in: query
+      name: end
+      required: true
+      schema:
+        $ref: "common.api.yaml#/components/schemas/Instant"
+      description: "Filter spans by start time < value"
+      example: 1707121359
+    page:
+      in: query
+      name: page
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        default: 0
+      description: "Get the specified page (with pageSize # of spans), defaults to page 0"
+      example: 4
+    pageSize:
+      in: query
+      name: pageSize
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 200
+        default: 20
+      description: "Number of spans in 1 page"
+      example: 30
+  requestBodies:
+    spanQuery:
+      description: Query for spans
+      required: true
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/SpanQuery" }
+  responses:
+    spans:
+      description: Spans
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Spans" }
+    suggestions:
+      description: Suggestions for property values, attributes names and attribute values
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Suggestions" }
+    traceApiSpansBadRequest:
+      description: Bad spans request response
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/TraceApiSpansBadRequest" }
+    traceApiError:
+      description: Server error response
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/TraceApiError" }
+    traceApiSuggestionsBadRequest:
+      description: Bad suggetions request response
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/TraceApiSuggestionsBadRequest" }
+  schemas:
+    LatencyFilter:
+      type: string
+      description: "Similar to a PromQL duration, a number followed by ms,s,m,h,d,w,y. For example 200ms"
+    SpanKind:
+      type: string
+      enum:
+        - Unspecified
+        - Client
+        - Server
+        - Internal
+        - Consumer
+        - Producer
+    StatusCode:
+      type: string
+      enum:
+        - Unset
+        - Error
+        - Ok
+    SpanQuery:
+      type: object
+      properties:
+        service:
+          type: array
+          items: 
+            type: string
+          description: "Filter spans by service name"
+          example: "orderService"
+        span:
+          type: array
+          items: 
+            type: string
+          description: "Filter spans by name"
+          example: ["GET /orders"]
+        attributes:
+          type: object
+          additionalProperties: 
+            type: array
+            items:
+              type: string
+          description: "Filter spans by 1 or more attributes"
+        spanKind:
+          type: array
+          items: 
+            $ref: "#/components/schemas/SpanKind"
+          description: "Filter span by kind"
+          example: ["Client"]
+        latencyFrom:
+          $ref: "#/components/schemas/LatencyFilter"
+          description: "Filter spans by latency >= value, in milliseconds"
+          example: "2s"
+        latencyTo:
+          $ref: "#/components/schemas/LatencyFilter"
+          description: "Filter spans by latency < value, in milliseconds"
+          example: "5s"
+        statusCode:
+          type: array
+          items: 
+            $ref: "#/components/schemas/StatusCode"
+          description: "Filter spans by the StatusCode"
+          example: ["Error"]
+        traceId:
+          type: array
+          items: 
+            type: string
+          description: "Filter spans by trace id, use only this filter to get a complete trace"
+          example: ["6942f450030e8c5f7411a23c26185aa2"]
+        spanId:
+          type: array
+          items: 
+            type: string
+          description: "Filter spans by span id, use only this filter to get a single span"
+          example: ["1a607e3a97735e71"]
+        scope:
+          type: array
+          items: 
+            type: string
+          description: "Filter spans by scope"
+        scopeVersion:  
+          type: array
+          items: 
+            type: string
+          description: "Filter spans by scope version"
+    Spans:
+      type: object
+      properties:
+        spans:
+          type: array
+          items: 
+            $ref: "#/components/schemas/Span"
+          description: "List of spans"
+        pageSize:
+          type: integer
+          description: "Maximum number of the spans in the result."
+        page:
+          type: integer
+          description: "The requested page."
+        matchesTotal:
+          type: integer
+          format: int64
+          description: "The total number of matching spans."
+      required:
+        - spans
+        - pageSize
+        - page
+        - matchesTotal
+    Suggestions:
+      type: object
+      properties:
+        suggestions:
+          type: array
+          items: 
+            type: string
+      required:
+        - suggestions
+    Span:
+      type: object
+      properties:
+        startTime: 
+          description: Start time of the span
+          $ref: "common.api.yaml#/components/schemas/Instant"
+        endTime:
+          description: End time of the span        
+          $ref: "common.api.yaml#/components/schemas/Instant"
+        durationMillis:
+          description: Duration of the span in milliseconds
+          type: integer
+          format: int64
+        traceId:
+          description: The unique identifier for the trace, all spans of the same trace share the same trace_id
+          type: string
+        spanId:
+          description: The unique identifier of the span within the trace
+          type: string
+        parentSpanId:
+          description: The id of the parent span of this span. Empty if this is the root span
+          type: string
+        traceState:
+          description: "Can contain vendor specific trace identification information https://www.w3.org/TR/trace-context/#tracestate-header"
+          type: string
+        spanName:
+          description: A description of the span's operation. For example, the name can be a qualified method name or a file name and a line number where the operation is called
+          type: string
+        serviceName:
+          description: Logical name of the service for the span 
+          type: string
+        spanKind:
+          description: The type of span. Distinguishes between spans generated in a particular context.
+          $ref: "#/components/schemas/SpanKind"
+        resourceAttributes:
+          description: Attributes (key/value pairs) describing the resource for the span.
+          $ref: "#/components/schemas/Attributes"
+        spanAttributes:
+          description: Attributes (key/value pairs) describing the span.
+          $ref: "#/components/schemas/Attributes"
+        statusCode:
+          description: The status of the operation for the span
+          $ref: "#/components/schemas/StatusCode"
+        statusMessage:
+          description: Human readable message for the status
+          type: string
+        scopeName:
+          description: "The name of the instrumentation scope for the span https://opentelemetry.io/docs/specs/otel/glossary/#instrumentation-scope"
+          type: string
+        scopeVersion:
+          description: "The version for the instrumentation scope for the span https://opentelemetry.io/docs/specs/otel/glossary/#instrumentation-scope"
+          type: string
+        events:
+          description: Time-stamped annotations on the span providing extra application context
+          type: array
+          items:
+            $ref: "#/components/schemas/SpanEvent"
+        links:
+          description: Links to related spans in the same or in other traces
+          type: array
+          items:
+            $ref: "#/components/schemas/SpanLink"
+      required:
+        - startTime
+        - endTime
+        - durationMillis
+        - traceId
+        - spanId
+        - spanName
+        - serviceName
+        - spanKind
+        - resourceAttributes
+        - spanAttributes
+        - statusCode
+        - events
+        - links
+    Attributes:
+      description: Set of key/value pairs providing extra contextual information. Keys are unique.
+      type: object
+      additionalProperties:
+        type: string
+    SpanEvent:
+      description: Event is a time-stamped annotation of the span, consisting of user-supplied text description and key-value pairs.
+      type: object
+      properties:
+        timestamp:
+          $ref: "common.api.yaml#/components/schemas/Instant"
+        name:
+          type: string
+        attributes:
+          $ref: "#/components/schemas/Attributes"
+      required:
+        - timestamp
+        - name
+        - attributes
+    SpanLink:
+      description: | 
+        A pointer from the current span to another span in the same trace or in a different trace. 
+        For example, this can be used in batching operations, where a single batch handler processes 
+        multiple requests from different traces or when the handler receives a request from a different project.
+      type: object
+      properties:
+        traceId:
+          type: string
+        spanId:
+          type: string
+        traceState:
+          type: string
+        attributes:
+          $ref: "#/components/schemas/Attributes"
+      required:
+        - traceId
+        - spanId
+        - attributes
+    TraceApiSpansBadRequest:
+      oneOf:
+        - $ref: "#/components/schemas/TraceApiInvalidTimeRange"
+        - $ref: "#/components/schemas/TraceApiInvalidPagination"
+        - $ref: "#/components/schemas/TraceApiInvalidFilter"
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+    TraceApiSuggestionsBadRequest:
+      oneOf:
+        - $ref: "#/components/schemas/TraceApiInvalidProperty"
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+    TraceApiInvalidTimeRange:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - InvalidTimeRange
+        message:
+          type: string
+        from: { $ref: "common.api.yaml#/components/schemas/Instant" }
+        to: { $ref: "common.api.yaml#/components/schemas/Instant" }
+      required:
+        - _type
+        - message
+        - from
+        - to
+    TraceApiInvalidPagination:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - InvalidPagination
+        message:
+          type: string
+        pageSize:
+          type: integer
+        page:
+          type: integer
+      required:
+        - _type
+        - message
+        - pageSize
+        - page
+    TraceApiInvalidFilter:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - InvalidFilter
+        message:
+          type: string
+        filter:
+          type: string
+      required:
+        - _type
+        - message
+        - filter
+    TraceApiInvalidProperty:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - InvalidProperty
+        message:
+          type: string
+        property:
+          type: string
+      required:
+        - _type
+        - message
+        - property
+    TraceApiError:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+     
