@@ -295,12 +295,12 @@ components:
           example: ["Client"]
         latencyFromMillis:
           type: integer
-          format: int32
+          format: int64
           description: "Filter spans by latency >= value, in milliseconds"
           example: "2s"
         latencyToMillis:
           type: integer
-          format: int32
+          format: int64
           description: "Filter spans by latency < value, in milliseconds"
           example: "5s"
         statusCode:
@@ -500,7 +500,7 @@ components:
       oneOf:
         - $ref: "#/components/schemas/TraceApiInvalidTimeRange"
         - $ref: "#/components/schemas/TraceApiInvalidPagination"
-        - $ref: "#/components/schemas/TraceApiInvalidFilter"
+        - $ref: "#/components/schemas/TraceApiInvalidLatencyFilter"
       discriminator:
         propertyName: _type
       required:
@@ -539,14 +539,11 @@ components:
           type: string
         pageSize:
           type: integer
-        page:
-          type: integer
       required:
         - _type
         - message
         - pageSize
-        - page
-    TraceApiInvalidFilter:
+    TraceApiInvalidLatencyFilter:
       type: object
       properties:
         _type:
@@ -555,12 +552,17 @@ components:
             - InvalidFilter
         message:
           type: string
-        filter:
-          type: string
+        from:
+          type: integer
+          format: int64
+        to:
+          type: integer
+          format: int64
       required:
         - _type
         - message
-        - filter
+        - from
+        - to
     TraceApiInvalidProperty:
       type: object
       properties:
