@@ -13,9 +13,8 @@ paths:
         - $ref: "#/components/parameters/endTime"
         - $ref: "#/components/parameters/pageSize"
         - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/sortBy"
       requestBody:
-        $ref: "#/components/requestBodies/spanFilter"
+        $ref: "#/components/requestBodies/spanQuery"
       summary: Query for spans
       description: Query for spans using filters, get all spans for a trace by trace id. Filters that accept an array of values match if any of the values match (think of a SQL IN expression).
       operationId: querySpans
@@ -160,14 +159,6 @@ components:
         default: 20
       description: "Number of spans in 1 page"
       example: 30
-    sortBy:
-      in: query
-      name: sortBy
-      explode: false
-      required: false
-      description: Sort by 1 or more properties, in the order as provided. Specify separated by commas
-      schema:
-        $ref: "#/components/schemas/TracesSortBy"
     traceId:
       in: path
       name: traceId
@@ -176,12 +167,12 @@ components:
         type: string
       description: "The id of the trace"
   requestBodies:
-    spanFilter:
+    spanQuery:
       description: Query for spans
       required: true
       content:
         application/json:
-          schema: { $ref: "#/components/schemas/SpanFilter" }
+          schema: { $ref: "#/components/schemas/SpanQuery" }
   responses:
     spans:
       description: Spans
@@ -234,33 +225,46 @@ components:
         - Unset
         - Error
         - Ok
-    TracesSortBy:
-      type: array
-      items:
-        $ref: "#/components/schemas/TracesSortOption"
-    TracesSortOption:
-      type: string
-      enum: 
-        - StartTime-asc
-        - Latency-asc
-        - ServiceName-asc
-        - SpanName-asc
-        - SpanKind-asc
-        - StatusCode-asc
-        - TraceId-asc
-        - SpanId-asc
-        - ScopeName-asc
-        - ScopeVersion-asc
-        - StartTime-desc
-        - Latency-desc
-        - ServiceName-desc
-        - SpanName-desc
-        - SpanKind-desc
-        - StatusCode-desc
-        - TraceId-desc
-        - SpanId-desc
-        - ScopeName-desc
-        - ScopeVersion-desc
+    SpanQuery:
+      type: object
+      properties:
+        filter:
+          $ref: "#/components/schemas/SpanFilter"
+        sortBy:
+          $ref: "#/components/schemas/SpanSorting"
+    SpanSorting:
+      type: object
+      properties:
+        startTime: 
+          $ref: "#/components/schemas/SortDirection"
+          description: "Sort by start time"
+        serviceName:
+          $ref: "#/components/schemas/SortDirection"
+          description: "Sort by service name"
+        spanName:
+          $ref: "#/components/schemas/SortDirection"
+          description: "Sort by span name"
+        spanKind:
+          $ref: "#/components/schemas/SortDirection"
+          description: "Sort by span by kind"
+        latency:
+          $ref: "#/components/schemas/SortDirection"
+          description: "Sort by latency"
+        statusCode:
+          $ref: "#/components/schemas/SortDirection"
+          description: "Sort by the StatusCode"
+        traceId:
+          $ref: "#/components/schemas/SortDirection"
+          description: "Sort spans by trace id"
+        spanId:
+          $ref: "#/components/schemas/SortDirection"
+          description: "Sort traces by span id"
+        scopeName:
+          $ref: "#/components/schemas/SortDirection"
+          description: "Sort spans by scope name"
+        scopeVersion:  
+          $ref: "#/components/schemas/SortDirection"
+          description: "Sort spans by scope version"
     SpanFilter:
       type: object
       properties:
@@ -327,6 +331,11 @@ components:
           items: 
             type: string
           description: "Filter spans by scope version"
+    SortDirection:
+      type: string
+      enum:
+        - Ascending
+        - Descending
     Spans:
       type: object
       properties:
