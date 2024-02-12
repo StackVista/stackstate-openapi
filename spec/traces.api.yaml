@@ -518,7 +518,7 @@ components:
         _type:
           type: string
           enum:
-            - InvalidTimeRange
+            - TraceApiInvalidTimeRange
         message:
           type: string
         from: { $ref: "common.api.yaml#/components/schemas/Instant" }
@@ -534,7 +534,7 @@ components:
         _type:
           type: string
           enum:
-            - InvalidPagination
+            - TraceApiInvalidPagination
         message:
           type: string
         pageSize:
@@ -549,7 +549,7 @@ components:
         _type:
           type: string
           enum:
-            - InvalidFilter
+            - TraceApiInvalidLatencyFilter
         message:
           type: string
         from:
