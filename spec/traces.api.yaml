@@ -231,40 +231,32 @@ components:
         filter:
           $ref: "#/components/schemas/SpanFilter"
         sortBy:
-          $ref: "#/components/schemas/SpanSorting"
-    SpanSorting:
+          type: array
+          items:
+            $ref: "#/components/schemas/SpanSortOption"
+    SpanSortOption:
       type: object
       properties:
-        startTime: 
-          $ref: "#/components/schemas/SortDirection"
-          description: "Sort by start time"
-        serviceName:
-          $ref: "#/components/schemas/SortDirection"
-          description: "Sort by service name"
-        spanName:
-          $ref: "#/components/schemas/SortDirection"
-          description: "Sort by span name"
-        spanKind:
-          $ref: "#/components/schemas/SortDirection"
-          description: "Sort by span by kind"
-        latency:
-          $ref: "#/components/schemas/SortDirection"
-          description: "Sort by latency"
-        statusCode:
-          $ref: "#/components/schemas/SortDirection"
-          description: "Sort by the StatusCode"
-        traceId:
-          $ref: "#/components/schemas/SortDirection"
-          description: "Sort spans by trace id"
-        spanId:
-          $ref: "#/components/schemas/SortDirection"
-          description: "Sort traces by span id"
-        scopeName:
-          $ref: "#/components/schemas/SortDirection"
-          description: "Sort spans by scope name"
-        scopeVersion:  
-          $ref: "#/components/schemas/SortDirection"
-          description: "Sort spans by scope version"
+        field: 
+          $ref: "#/components/schemas/SpanSortField"
+        direction:
+          $ref: "#/components/schemas/SpanSortDirection"
+      required:
+        - field
+        - direction
+    SpanSortField:
+      type: string
+      enum:
+        - StartTime
+        - ServiceName
+        - SpanName
+        - SpanKind
+        - Latency
+        - StatusCode
+        - TraceId
+        - SpanId
+        - ScopeName
+        - ScopeVersion
     SpanFilter:
       type: object
       properties:
@@ -331,7 +323,7 @@ components:
           items: 
             type: string
           description: "Filter spans by scope version"
-    SortDirection:
+    SpanSortDirection:
       type: string
       enum:
         - Ascending
