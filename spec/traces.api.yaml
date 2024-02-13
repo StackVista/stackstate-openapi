@@ -251,7 +251,7 @@ components:
         - ServiceName
         - SpanName
         - SpanKind
-        - Latency
+        - Duration
         - StatusCode
         - TraceId
         - SpanId
@@ -285,16 +285,16 @@ components:
             $ref: "#/components/schemas/SpanKind"
           description: "Filter span by kind"
           example: ["Client"]
-        latencyFromMillis:
+        durationFromNanos:
           type: integer
           format: int64
-          description: "Filter spans by latency >= value, in milliseconds"
-          example: "2s"
-        latencyToMillis:
+          description: "Filter spans by duration >= value, in nanoseconds"
+          example: "500000"
+        durationToNanos:
           type: integer
           format: int64
-          description: "Filter spans by latency < value, in milliseconds"
-          example: "5s"
+          description: "Filter spans by duration < value, in nanoseconds"
+          example: "5000000"
         statusCode:
           type: array
           items: 
@@ -383,8 +383,8 @@ components:
         endTime:
           description: End time of the span        
           $ref: "common.api.yaml#/components/schemas/Instant"
-        latencyMillis:
-          description: Latency of the span in milliseconds
+        durationNanos:
+          description: Duration of the span in nanoseconds
           type: integer
           format: int64
         traceId:
@@ -439,7 +439,7 @@ components:
       required:
         - startTime
         - endTime
-        - latencyMillis
+        - durationNanos
         - traceId
         - spanId
         - spanName
@@ -492,7 +492,7 @@ components:
       oneOf:
         - $ref: "#/components/schemas/TraceApiInvalidTimeRange"
         - $ref: "#/components/schemas/TraceApiInvalidPagination"
-        - $ref: "#/components/schemas/TraceApiInvalidLatencyFilter"
+        - $ref: "#/components/schemas/TraceApiInvalidDurationFilter"
       discriminator:
         propertyName: _type
       required:
@@ -535,13 +535,13 @@ components:
         - _type
         - message
         - pageSize
-    TraceApiInvalidLatencyFilter:
+    TraceApiInvalidDurationFilter:
       type: object
       properties:
         _type:
           type: string
           enum:
-            - TraceApiInvalidLatencyFilter
+            - TraceApiInvalidDurationFilter
         message:
           type: string
         from:
