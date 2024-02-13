@@ -251,7 +251,7 @@ components:
         - ServiceName
         - SpanName
         - SpanKind
-        - Duration
+        - DurationNanos
         - StatusCode
         - TraceId
         - SpanId
