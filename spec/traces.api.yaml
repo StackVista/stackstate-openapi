@@ -225,6 +225,12 @@ components:
         - Unset
         - Error
         - Ok
+    SpanParentType:
+      type: string
+      enum:
+        - External
+        - Internal
+        - Root
     SpanQuery:
       type: object
       properties:
@@ -251,6 +257,7 @@ components:
         - ServiceName
         - SpanName
         - SpanKind
+        - SpanParentType
         - DurationNanos
         - StatusCode
         - TraceId
@@ -285,6 +292,12 @@ components:
             $ref: "#/components/schemas/SpanKind"
           description: "Filter span by kind"
           example: ["Client"]
+        spanParentType:
+          type: array
+          items:
+            $ref: "#/components/schemas/SpanParentType"
+          description: "Filter span by parent type"
+          example: ["External"]
         durationFromNanos:
           type: integer
           format: int64
@@ -408,6 +421,9 @@ components:
         spanKind:
           description: The type of span. Distinguishes between spans generated in a particular context.
           $ref: "#/components/schemas/SpanKind"
+        spanParentType:
+          description: The type of relation of the parent with respect to the span.
+          $ref: "#/components/schemas/SpanParentType"
         resourceAttributes:
           description: Attributes (key/value pairs) describing the resource for the span.
           $ref: "#/components/schemas/Attributes"
@@ -445,6 +461,7 @@ components:
         - spanName
         - serviceName
         - spanKind
+        - spanParentType
         - resourceAttributes
         - spanAttributes
         - statusCode
