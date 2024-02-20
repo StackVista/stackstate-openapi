@@ -33,6 +33,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/startTime"
         - $ref: "#/components/parameters/endTime"
+        - $ref: "#/components/parameters/bucketsCount"
       requestBody:
         $ref: "#/components/requestBodies/spanFilter"
       summary: Query duration distribution
@@ -156,6 +157,14 @@ components:
         $ref: "common.api.yaml#/components/schemas/Instant"
       description: "Filter spans by start time < value"
       example: 1707121359
+    bucketsCount:
+      name: bucketsCount
+      in: query
+      required: true
+      description: "The number of histogram buckets."
+      schema:
+        type: integer
+        format: int32
     page:
       in: query
       name: page
@@ -418,9 +427,11 @@ components:
           description: "Number of traces with unset status and a duration between (lowerNanos, upperNanos]."
         lowerNanos:
           type: integer
+          format: int64
           description: "Lower limit on trace duration"
         upperNanos:
           type: integer
+          format: int64
           description: "Upper limit on trace duration"
       required:
         - okCount
