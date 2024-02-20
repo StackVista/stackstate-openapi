@@ -412,8 +412,12 @@ components:
           items: 
             $ref: "#/components/schemas/DurationBucket"
           description: "List of duration buckets"
+        quantiles:
+          description: "Quantiles for duration"
+          $ref: "#/components/schemas/DurationQuantiles"
       required:
         - buckets
+        - quantiles
     DurationBucket:
       type: object
       properties:
@@ -438,6 +442,26 @@ components:
         - okCount
         - errorCount
         - unsetCount
+    DurationQuantiles:
+      type: object
+      properties:
+        q50:
+          type: number
+          format: double
+        q90:
+          type: number
+          format: double
+        q95:
+          type: number
+          format: double
+        q99:
+          type: number
+          format: double
+      required:
+        - q50
+        - q90
+        - q95
+        - q99
     Suggestions:
       type: object
       properties:
