@@ -26,6 +26,26 @@ paths:
         "500":
           $ref: "#/components/responses/traceApiError"
 
+  /traces/duration:
+    post:
+      tags: 
+        - traces
+      parameters:
+        - $ref: "#/components/parameters/startTime"
+        - $ref: "#/components/parameters/endTime"
+      requestBody:
+        $ref: "#/components/requestBodies/spanFilter"
+      summary: Query duration distribution
+      description: Query for durations using filters.  Filters that accept an array of values match if any of the values match (think of a SQL IN expression).
+      operationId: queryDuration
+      responses:
+        "200":
+          $ref: "#/components/responses/durations"
+        "400":
+          $ref: "#/components/responses/traceApiSpansBadRequest"
+        "500":
+          $ref: "#/components/responses/traceApiError"
+
   /traces/{traceId}:
     get:
       tags: 
@@ -173,12 +193,22 @@ components:
       content:
         application/json:
           schema: { $ref: "#/components/schemas/SpanQuery" }
+    spanFilter:
+      description: Filter for spans
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/SpanFilter" }
   responses:
     spans:
       description: Spans
       content:
         application/json:
           schema: { $ref: "#/components/schemas/Spans" }
+    durations:
+      description: Durations
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Durations" }
     trace:
       description: A trace with all its spans
       content:
@@ -364,6 +394,38 @@ components:
         - pageSize
         - page
         - matchesTotal
+    Durations:
+      type: object
+      properties:
+        buckets:
+          type: array
+          items: 
+            $ref: "#/components/schemas/DurationBucket"
+          description: "List of duration buckets"
+      required:
+        - buckets
+    DurationBucket:
+      type: object
+      properties:
+        okCount:
+          type: integer
+          description: "Number of successful traces with a duration between (lowerNanos, upperNanos]."
+        errorCount:
+          type: integer
+          description: "Number of erroneous traces with a duration between (lowerNanos, upperNanos]."
+        unsetCount:
+          type: integer
+          description: "Number of traces with unset status and a duration between (lowerNanos, upperNanos]."
+        lowerNanos:
+          type: integer
+          description: "Lower limit on trace duration"
+        upperNanos:
+          type: integer
+          description: "Upper limit on trace duration"
+      required:
+        - okCount
+        - errorCount
+        - unsetCount
     Suggestions:
       type: object
       properties:
