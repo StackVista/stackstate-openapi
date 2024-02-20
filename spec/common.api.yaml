@@ -117,6 +117,8 @@ components:
           description: Offset in nanoseconds (relative to the timestamp). Especially useful when comparing start and/or end times of spans, for example when rendering a trace chart.
           type: integer
           format: int32
+          minimum: 0
+          maximum: 999999
       required:
         - timestamp
         - offsetNanos
