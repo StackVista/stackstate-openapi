@@ -392,10 +392,10 @@ components:
       properties:
         startTime: 
           description: Start time of the span
-          $ref: "common.api.yaml#/components/schemas/Instant"
+          $ref: "common.api.yaml#/components/schemas/InstantNanoPrecision"
         endTime:
           description: End time of the span        
-          $ref: "common.api.yaml#/components/schemas/Instant"
+          $ref: "common.api.yaml#/components/schemas/InstantNanoPrecision"
         durationNanos:
           description: Duration of the span in nanoseconds
           type: integer
@@ -477,7 +477,7 @@ components:
       type: object
       properties:
         timestamp:
-          $ref: "common.api.yaml#/components/schemas/Instant"
+          $ref: "common.api.yaml#/components/schemas/InstantNanoPrecision"
         name:
           type: string
         attributes:
