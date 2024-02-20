@@ -204,6 +204,7 @@ components:
           schema: { $ref: "#/components/schemas/SpanQuery" }
     spanFilter:
       description: Filter for spans
+      required: true
       content:
         application/json:
           schema: { $ref: "#/components/schemas/SpanFilter" }
