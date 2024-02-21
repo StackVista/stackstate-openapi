@@ -12,10 +12,10 @@ Content-Type: application/json
       "k8s.pod.name": ["otel-demo-productcatalogservice-5c67778b45-lxb9f"]
     }
   },
-  "sortBy": {
-    "serviceName": "Ascending",
-    "startTime": "Descending"
-  }
+  "sortBy": [ 
+    { "field": "ServiceName", "direction": "Ascending"},
+    {"field": "StartTime", "direction": "Descending"}
+  ]
 }
 
 
@@ -30,7 +30,17 @@ X-API-Token: {{apiToken}}
 Content-Type: application/json
 
 {
-  "sortBy": {
-    "startTime": "Descending"
-  }
+  "sortBy": [ 
+    {"field": "StartTime", "direction": "Descending"}
+  ]
+}
+
+### Get histogram
+
+POST {{host}}/api/traces/duration?start=1708499796000&end=1708510596000&bucketsCount=10
+X-API-Token: {{apiToken}}
+Content-Type: application/json
+
+{
+
 }

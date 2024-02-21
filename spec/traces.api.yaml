@@ -64,7 +64,7 @@ paths:
         "500":
           $ref: "#/components/responses/traceApiError"
 
-  /traces/suggestions/attributes:
+  /traces/fields/attributes:
     get:  
       tags: 
         - traces
@@ -85,7 +85,7 @@ paths:
           $ref: "#/components/responses/traceApiSuggestionsBadRequest"
         "500":
           $ref: "#/components/responses/traceApiError"
-  /traces/suggestions/attributes/{attributeName}/values:
+  /traces/fields/attributes/{attributeName}/values:
     get:  
       tags: 
         - traces
@@ -98,7 +98,7 @@ paths:
           description: Get suggestions for this attribute 
         - name: attributeValuePart
           in: query
-          required: true
+          required: false
           schema:
             type: string
           description: Get suggestions based on this partial value
@@ -112,26 +112,21 @@ paths:
           $ref: "#/components/responses/traceApiSuggestionsBadRequest"
         "500":
           $ref: "#/components/responses/traceApiError"
-  /traces/suggestions/properties/{property}/values:
+  /traces/fields/{field}/values:
     get:  
       tags:
         - traces
       parameters:
-        - name: property
-          in: path
-          required: true
-          description: Get suggestions for this property
-          schema:
-            type: string
-        - name: propertyValuePart
+        - $ref: "#/components/parameters/fieldName"
+        - name: fieldValuePart
           in: query
-          required: true
-          description: Get suggestions for this property based on this partial value
+          required: false
+          description: Get suggestions for this field based on this partial value
           schema:
             type: string            
-      summary: Suggestions for span properties
-      description: Suggestions for values of of the span properties that can be filtered on except resource and span attributes. Values match when they contain the provided part, at most 100 suggestions will be returned. Make the part longer to get more accurate suggestions.
-      operationId: suggestionsPropertyValues
+      summary: Suggestions for span fields
+      description: Suggestions for values of of the span fields that can be filtered on except resource and span attributes. Values match when they contain the provided part, at most 100 suggestions will be returned. Make the part longer to get more accurate suggestions.
+      operationId: suggestionsFieldValues
       responses:
         "200":
           $ref: "#/components/responses/suggestions"
@@ -195,6 +190,13 @@ components:
       schema:
         type: string
       description: "The id of the trace"
+    fieldName:
+      name: field
+      in: path
+      required: true
+      description: Get suggestions for this field
+      schema:
+        $ref: "#/components/schemas/SpanSuggestionField"
   requestBodies:
     spanQuery:
       description: Query for spans
@@ -302,6 +304,13 @@ components:
         - StatusCode
         - TraceId
         - SpanId
+        - ScopeName
+        - ScopeVersion
+    SpanSuggestionField:
+      type: string
+      enum:
+        - ServiceName
+        - SpanName
         - ScopeName
         - ScopeVersion
     SpanFilter:
