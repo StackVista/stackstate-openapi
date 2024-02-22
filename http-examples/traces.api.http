@@ -42,5 +42,20 @@ X-API-Token: {{apiToken}}
 Content-Type: application/json
 
 {
-
+  "spanKind": ["Server", "Consumer"],
+  "attributes": {
+    "k8s.cluster.name": ["gke-demo-dev"],
+    "k8s.namespace.name": ["otel-demo"],
+    "k8s.pod.name": ["otel-demo-productcatalogservice-5c67778b45-lxb9f"]
+  }
 }
+
+### Get attribute value suggestions
+GET {{host}}/api/traces/fields/attributes/k8s.pod.name/values?contains=feature
+X-API-Token: {{apiToken}}
+Content-Type: application/json
+
+### Get attribute name suggestions
+GET {{host}}/api/traces/fields/attributes?contains=k8s
+X-API-Token: {{apiToken}}
+Content-Type: application/json

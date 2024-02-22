@@ -69,7 +69,7 @@ paths:
       tags: 
         - traces
       parameters:
-        - name: attributeNamePart
+        - name: contains
           in: query
           required: false
           schema:
@@ -96,7 +96,7 @@ paths:
           schema:
             type: string
           description: Get suggestions for this attribute 
-        - name: attributeValuePart
+        - name: contains
           in: query
           required: false
           schema:
@@ -118,7 +118,7 @@ paths:
         - traces
       parameters:
         - $ref: "#/components/parameters/fieldName"
-        - name: fieldValuePart
+        - name: contains
           in: query
           required: false
           description: Get suggestions for this field based on this partial value
