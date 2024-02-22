@@ -81,8 +81,6 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/suggestions"
-        "400":
-          $ref: "#/components/responses/traceApiSuggestionsBadRequest"
         "500":
           $ref: "#/components/responses/traceApiError"
   /traces/fields/attributes/{attributeName}/values:
@@ -108,8 +106,6 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/suggestions"
-        "400":
-          $ref: "#/components/responses/traceApiSuggestionsBadRequest"
         "500":
           $ref: "#/components/responses/traceApiError"
   /traces/fields/{field}/values:
@@ -130,8 +126,6 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/suggestions"
-        "400":
-          $ref: "#/components/responses/traceApiSuggestionsBadRequest"
         "500":
           $ref: "#/components/responses/traceApiError"
 components:
@@ -241,11 +235,6 @@ components:
       content:
         application/json:
           schema: { $ref: "#/components/schemas/TraceApiError" }
-    traceApiSuggestionsBadRequest:
-      description: Bad suggetions request response
-      content:
-        application/json:
-          schema: { $ref: "#/components/schemas/TraceApiSuggestionsBadRequest" }
     traceApiTraceNotFound:
       description: Trace not found
       content:
@@ -621,13 +610,6 @@ components:
         propertyName: _type
       required:
         - _type
-    TraceApiSuggestionsBadRequest:
-      oneOf:
-        - $ref: "#/components/schemas/TraceApiInvalidProperty"
-      discriminator:
-        propertyName: _type
-      required:
-        - _type
     TraceApiInvalidTimeRange:
       type: object
       properties:
@@ -679,21 +661,6 @@ components:
         - message
         - from
         - to
-    TraceApiInvalidProperty:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - InvalidProperty
-        message:
-          type: string
-        property:
-          type: string
-      required:
-        - _type
-        - message
-        - property
     TraceApiError:
       type: object
       properties:
