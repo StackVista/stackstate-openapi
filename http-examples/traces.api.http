@@ -37,25 +37,38 @@ Content-Type: application/json
 
 ### Get histogram
 
-POST {{host}}/api/traces/duration?start=1708499796000&end=1708510596000&bucketsCount=10
+POST {{host}}/api/traces/duration/histogram?start=1708499796000&end=1708599789000&bucketsCount=50
 X-API-Token: {{apiToken}}
 Content-Type: application/json
 
 {
   "spanKind": ["Server", "Consumer"],
   "attributes": {
-    "k8s.cluster.name": ["gke-demo-dev"],
+    "k8s.cluster.name": ["gke-demo-dev.gcp.stackstate.io"],
     "k8s.namespace.name": ["otel-demo"],
     "k8s.pod.name": ["otel-demo-productcatalogservice-5c67778b45-lxb9f"]
   }
 }
 
+
+### Get all attribute values (limited to 100)
+GET {{host}}/api/traces/fields/attributes/k8s.cluster.name/values
+X-API-Token: {{apiToken}}
+Content-Type: application/json
+
+
 ### Get attribute value suggestions
-GET {{host}}/api/traces/fields/attributes/k8s.pod.name/values?contains=feature
+GET {{host}}/api/traces/fields/attributes/k8s.pod.name/values?contains=product
 X-API-Token: {{apiToken}}
 Content-Type: application/json
 
 ### Get attribute name suggestions
 GET {{host}}/api/traces/fields/attributes?contains=k8s
+X-API-Token: {{apiToken}}
+Content-Type: application/json
+
+
+### Get field value suggestions
+GET {{host}}/api/traces/fields/SpanName/values
 X-API-Token: {{apiToken}}
 Content-Type: application/json
