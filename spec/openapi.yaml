@@ -124,11 +124,11 @@ paths:
   /k8s/logs/histogram: { $ref: "kubernetes_logs.api.yaml#/paths/%2Fk8s%2Flogs%2Fhistogram" }
   /k8s/logs/autocomplete: { $ref: "kubernetes_logs.api.yaml#/paths/%2Fk8s%2Flogs%2Fautocomplete" }
   /traces/spans: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fspans"}
-  /traces/duration/histogram: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fduration%2Fhistogram"}
+  /traces/spans/duration/histogram: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fspans%2Fduration%2Fhistogram"}
   /traces/{traceId}: { $ref: "traces.api.yaml#/paths/%2Ftraces%2F%7BtraceId%7D"}
-  /traces/fields/attributes: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Ffields%2Fattributes" }
-  /traces/fields/attributes/{attributeName}/values: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Ffields%2Fattributes%2F%7BattributeName%7D%2Fvalues" }
-  /traces/fields/{field}/values: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Ffields%2F%7Bfield%7D%2Fvalues" }
+  /traces/spans/fields/attributes: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fspans%2Ffields%2Fattributes" }
+  /traces/spans/fields/attributes/{attributeName}/values: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fspans%2Ffields%2Fattributes%2F%7BattributeName%7D%2Fvalues" }
+  /traces/spans/fields/{field}/values: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fspans%2Ffields%2F%7Bfield%7D%2Fvalues" }
   # Dummy path to make sure that some types are included, which otherwise would be excluded
   /dummy/dummy: { $ref: "common.api.yaml#/paths/%2Fdummy%2Fdummy" }
 security:

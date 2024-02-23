@@ -26,7 +26,7 @@ paths:
         "500":
           $ref: "#/components/responses/traceApiError"
 
-  /traces/duration/histogram:
+  /traces/spans/duration/histogram:
     post:
       tags: 
         - traces
@@ -64,7 +64,7 @@ paths:
         "500":
           $ref: "#/components/responses/traceApiError"
 
-  /traces/fields/attributes:
+  /traces/spans/fields/attributes:
     get:  
       tags: 
         - traces
@@ -83,7 +83,7 @@ paths:
           $ref: "#/components/responses/suggestions"
         "500":
           $ref: "#/components/responses/traceApiError"
-  /traces/fields/attributes/{attributeName}/values:
+  /traces/spans/fields/attributes/{attributeName}/values:
     get:  
       tags: 
         - traces
@@ -108,7 +108,7 @@ paths:
           $ref: "#/components/responses/suggestions"
         "500":
           $ref: "#/components/responses/traceApiError"
-  /traces/fields/{field}/values:
+  /traces/spans/fields/{field}/values:
     get:  
       tags:
         - traces
