@@ -64,6 +64,24 @@ paths:
         "500":
           $ref: "#/components/responses/traceApiError"
 
+  /traces/{traceId}/spans/{spanId}:
+    get:
+      tags: 
+        - traces
+      parameters:
+        - $ref: "#/components/parameters/traceId"
+        - $ref: "#/components/parameters/spanId"
+      summary: Get a span
+      description: Get a single span for a trace
+      operationId: getSpan
+      responses:
+        "200":
+          $ref: "#/components/responses/span"
+        "404":
+          $ref: "#/components/responses/traceApiSpanNotFound"
+        "500":
+          $ref: "#/components/responses/traceApiError"
+
   /traces/spans/fields/attributes:
     get:  
       tags: 
@@ -184,6 +202,13 @@ components:
       schema:
         type: string
       description: "The id of the trace"
+    spanId:
+      in: path
+      name: spanId
+      required: true
+      schema:
+        type: string
+      description: "The id of the span"
     fieldName:
       name: field
       in: path
@@ -205,6 +230,11 @@ components:
         application/json:
           schema: { $ref: "#/components/schemas/SpanFilter" }
   responses:
+    span:
+      description: Span
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Span" }
     spans:
       description: Spans
       content:
@@ -240,6 +270,11 @@ components:
       content:
         application/json:
           schema: { $ref: "#/components/schemas/TraceApiTraceNotFound" }
+    traceApiSpanNotFound:
+      description: Span not found
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/TraceApiSpanNotFound" }
   schemas:
     SpanKind:
       type: string
@@ -675,4 +710,15 @@ components:
           type: string
       required:
         - traceId
+    TraceApiSpanNotFound:
+      type: object
+      properties:
+        traceId:
+          type: string
+        spanId:
+          type: string
+      required:
+        - traceId
+        - spanId
+     
      
