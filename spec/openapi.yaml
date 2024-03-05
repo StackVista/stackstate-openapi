@@ -105,8 +105,8 @@ paths:
   /server/info: { $ref: "server_info.api.yaml#/paths/%2Fserver%2Finfo" }
   /security/tokens: { $ref: "service_token.api.yaml#/paths/%2Fsecurity%2Ftokens" }
   /security/tokens/{serviceTokenId}: { $ref: "service_token.api.yaml#/paths/%2Fsecurity%2Ftokens%2F%7BserviceTokenId%7D" }
-  /security/data/api_key: { $ref: "data_api_key.api.yaml#/paths/%2Fsecurity%2Fdata%2Fapi%5Fkey" }
-  /security/data/api_key/{dataApiKeyId}: { $ref: "data_api_key.api.yaml#/paths/%2Fsecurity%2Fdata%2Fapi%5Fkey%2F%7BdataApiKeyId%7D" }
+  /security/ingestion/api_keys: { $ref: "ingestion_api_key.api.yaml#/paths/%2Fsecurity%2Fingestion%2Fapi%5Fkeys" }
+  /security/ingestion/api_keys/{ingestionApiKeyId}: { $ref: "ingestion_api_key.api.yaml#/paths/%2Fsecurity%2Fingestion%2Fapi%5Fkeys%2F%7BingestionApiKeyId%7D" }
   /security/permissions/list: { $ref: "permissions.xapi.yaml#/paths/%2Fsecurity%2Fpermissions%2Flist" }
   /security/permissions/{subject}: { $ref: "permissions.xapi.yaml#/paths/%2Fsecurity%2Fpermissions%2F%7Bsubject%7D" }
   /security/subjects: { $ref: "subject.xapi.yaml#/paths/%2Fsecurity%2Fsubjects" }
