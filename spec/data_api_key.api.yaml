@@ -1,0 +1,150 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Data Api API
+  version: "1.0.0"
+paths:
+  /security/data/api_key:
+    get:
+      tags:
+        - dataApiKey
+      summary: "Get data api keys"
+      description: "Get data api keys."
+      operationId: getDataApiKeys
+      responses:
+        "200":
+          $ref: "#/components/responses/apiKeys"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    post:
+      tags:
+        - dataApiKey
+      summary: "Create new data api key"
+      description: "Create new service token."
+      operationId: createNewDataApiKey
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewDataApiKeyRequest"
+      responses:
+        "200":
+          description: The newly created data api key
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataApiKeyCreatedResponse"
+        "400":
+          description: Create data api key error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataApiKeyCreateError"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /security/data/api_key/{dataApiKeyId}:
+    delete:
+      tags:
+        - dataApiKey
+      summary: "Delete data api key"
+      description: "Delete data api key."
+      operationId: deleteDataApiKey
+      parameters:
+        - $ref: "#/components/parameters/dataApiKeyId"
+      responses:
+        "204":
+          description: "Return ok (but no content)"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+components:
+  parameters:
+    dataApiKeyId:
+      in: path
+      name: dataApiKeyId
+      required: true
+      schema:
+        $ref: "#/components/schemas/DataApiKeyId"
+      description: "The identifier of a data api key"
+
+  responses:
+    apiKeys:
+      description: Data Api Keys
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/DataApiKey"
+  schemas:
+    DataApiKeyId:
+      type: integer
+      format: int64
+    DataApiKeyInvalidExpiryError:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - DataApiKeyInvalidExpiryError
+        message:
+          type: string
+      required:
+        - _type
+        - message
+    DataApiKeyCreateError:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/DataApiKeyInvalidExpiryError"
+      required:
+        - _type
+    DataApiKey:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+          readOnly: true
+        name:
+          type: string
+        description:
+          type: string
+        expiration:
+          type: integer
+          format: int64
+        apiKey:
+          type: string
+      required:
+        - name
+        - apiKey
+    NewDataApiKeyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        expiryDate:
+          type: integer
+          format: int64
+      required:
+        - name
+    DataApiKeyCreatedResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          readOnly: true
+        apiKey:
+          type: string
+          readOnly: true
+        expiration:
+          type: integer
+          format: int64
+          readOnly: true
+      required:
+        - apiKey
+        - name
