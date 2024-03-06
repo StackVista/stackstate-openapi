@@ -683,6 +683,8 @@ components:
           format: instant
         topologyQuery:
           type: string
+        includeConnectedComponents:
+          type: boolean
         limit:
           type: integer
         playHeadTimestampMs:
@@ -725,6 +727,8 @@ components:
           format: instant
         topologyQuery:
           type: string
+        includeConnectedComponents:
+          type: boolean
         eventTypes:
           type: array
           items:
