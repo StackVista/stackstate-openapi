@@ -88,6 +88,11 @@ paths:
           required: true
           schema:
             type: string
+        - name: includeConnectedComponents
+          in: query
+          schema:
+            type: boolean
+          required: false
         - name: playHeadTimestampMs
           in: query
           schema:
@@ -162,6 +167,11 @@ paths:
           required: true
           schema:
             type: string
+        - name: includeConnectedComponents
+          in: query
+          schema:
+            type: boolean
+          required: false
         - name: playHeadTimestampMs
           in: query
           schema:
@@ -235,6 +245,11 @@ paths:
           required: true
           schema:
             type: string
+        - name: includeConnectedComponents
+          in: query
+          schema:
+            type: boolean
+          required: false
         - name: playHeadTimestampMs
           in: query
           schema:
