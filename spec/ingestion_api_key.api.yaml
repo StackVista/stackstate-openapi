@@ -1,0 +1,167 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Management of Ingestion Api keys
+  description: Ingestion is a process to insert/send data to StackState, these data can arrive from different sources (agent, otel and so on). Keys are used to control who can ingest data to StackState. 
+  version: "1.0.0"
+paths:
+  /security/ingestion/api_keys:
+    get:
+      tags:
+        - ingestionApiKey
+      summary: "List Ingestion Api Keys"
+      description: "Returns only metadata without token itself"
+      operationId: getIngestionApiKeys
+      responses:
+        "200":
+          description: All Ingestion Api Keys
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/IngestionApiKey"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    post:
+      tags:
+        - ingestionApiKey
+      summary: "Generate a new Ingestion Api Key"
+      description: "Generates token and then returns it in the response, the token can't be obtained any more after that"
+      operationId: generateIngestionApiKey
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenerateIngestionApiKeyRequest"
+      responses:
+        "200":
+          description: The newly generated Ingestion Api Key
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneratedIngestionApiKeyResponse"
+        "400":
+          description: Invalid arguments
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IngestionApiKeyCreateError"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /security/ingestion/api_keys/{ingestionApiKeyId}:
+    delete:
+      tags:
+        - ingestionApiKey
+      summary: "Delete Ingestion Api Key"
+      description: "Deleted token can't be used by sources, so all ingestion pipelines for that key will fail"
+      operationId: deleteIngestionApiKey
+      parameters:
+        - $ref: "#/components/parameters/ingestionApiKeyId"
+      responses:
+        "204":
+          description: "The key has been deleted"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+components:
+  parameters:
+    ingestionApiKeyId:
+      in: path
+      name: ingestionApiKeyId
+      required: true
+      schema:
+        $ref: "#/components/schemas/IngestionApiKeyId"
+      description: "The identifier of a key"
+
+  schemas:
+    IngestionApiKeyId:
+      type: integer
+      format: int64
+
+    IngestionApiKey:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+          readOnly: true
+        name:
+          type: string
+        description:
+          type: string
+        expiration:
+          type: integer
+          format: int64
+      required:
+        - id
+        - lastUpdateTimestamp
+        - name
+
+    GenerateIngestionApiKeyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        expiration:
+          type: integer
+          format: int64
+      required:
+        - name
+
+    GeneratedIngestionApiKeyResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+          readOnly: true
+        name:
+          type: string
+        description:
+          type: string
+        expiration:
+          type: integer
+          format: int64
+        apiKey:
+          type: string
+      required:
+        - id
+        - lastUpdateTimestamp
+        - name
+        - apiKey
+
+    ########
+    # Errors
+    ########
+    IngestionApiKeyInvalidExpiryError:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - IngestionApiKeyInvalidExpiryError
+        message:
+          type: string
+      required:
+        - _type
+        - message
+    IngestionApiKeyCreateError:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/IngestionApiKeyInvalidExpiryError"
+      required:
+        - _type
+
+
