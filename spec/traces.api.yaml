@@ -146,6 +146,22 @@ paths:
           $ref: "#/components/responses/suggestions"
         "500":
           $ref: "#/components/responses/traceApiError"
+
+  /traces/components:
+    post:
+      tags:
+        - traces
+      requestBody:
+        $ref: "#/components/requestBodies/componentQuery"
+      summary: Fetch components based on resource attributes
+      description: Based on the resource attributes on a span, retrieve components that have a TraceBinding for it.
+      operationId: spanComponents
+      responses:
+        "200":
+          $ref: "#/components/responses/components"
+        "500":
+          $ref: "#/components/responses/traceApiError"
+
 components:
   parameters:
     startTime:
@@ -229,6 +245,12 @@ components:
       content:
         application/json:
           schema: { $ref: "#/components/schemas/SpanFilter" }
+    componentQuery:
+      description: Span properties to find matching components
+      required: true
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ComponentQuery" }
   responses:
     span:
       description: Span
@@ -255,6 +277,11 @@ components:
       content:
         application/json:
           schema: { $ref: "#/components/schemas/Suggestions" }
+    components:
+      description: Components
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/SpanComponents" }
     traceApiSpansBadRequest:
       description: Bad spans request response
       content:
@@ -414,6 +441,20 @@ components:
       enum:
         - Ascending
         - Descending
+    ComponentQuery:
+      type: object
+      properties:
+        resourceAttributes:
+          description: Attributes (key/value pairs) describing the resource for the span.
+          $ref: "#/components/schemas/Attributes"
+        spanAttributes:
+          description: Attributes (key/value pairs) describing the span.
+          $ref: "#/components/schemas/Attributes"
+        instant:
+          $ref: "common.api.yaml#/components/schemas/Instant"
+      required:
+        - resourceAttributes
+        - spanAttributes
     Spans:
       type: object
       properties:
@@ -504,6 +545,32 @@ components:
             type: string
       required:
         - suggestions
+    SpanComponents:
+      type: object
+      properties:
+        components:
+          type: array
+          items: 
+            $ref: "#/components/schemas/SpanComponent"
+      required:
+        - components
+    SpanComponent:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        identifier:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+      required:
+        - id
+        - identifier
+        - name
+        - type
     Trace:
       type: object
       properties:
