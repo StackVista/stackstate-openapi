@@ -47,6 +47,7 @@ components:
         - $ref: "#/components/schemas/ArgumentFailingHealthStateVal"
         - $ref: "#/components/schemas/ArgumentPromQLMetricVal"
         - $ref: "#/components/schemas/ArgumentTopologyQueryVal"
+        - $ref: "#/components/schemas/ArgumentTopologyPromQLMetricVal"
       required:
         - _type
     ArgumentStringVal:
@@ -180,6 +181,28 @@ components:
           format: int64
         value:
           $ref: "#/components/schemas/PromQLMetric"
+      required:
+        - _type
+        - parameter
+        - value
+    ArgumentTopologyPromQLMetricVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentTopologyPromQLMetricVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        value:
+          $ref: "#/components/schemas/TopologyPromQLMetric"
       required:
         - _type
         - parameter
@@ -455,3 +478,20 @@ components:
         - query
         - unit
         - aliasTemplate
+    TopologyPromQLMetric:
+      type: object
+      discriminator:
+        propertyName: _type
+      properties:
+        _type:
+          type: string
+          enum:
+            - TopologyPromQLMetric
+        topologyQuery:
+          type: string
+        metric:
+          $ref: "#/components/schemas/PromQLMetric"
+      required:
+        - _type
+        - topologyQuery
+        - metric
