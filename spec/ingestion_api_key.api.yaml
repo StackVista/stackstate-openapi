@@ -64,6 +64,36 @@ paths:
           description: "The key has been deleted"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /security/ingestion/api_keys/{ingestionApiKey}/validate:
+    post:
+      tags:
+        - ingestionApiKey
+      summary: "Generate a new Ingestion Api Key"
+      description: "Generates token and then returns it in the response, the token can't be obtained any more after that"
+      operationId: generateIngestionApiKey
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenerateIngestionApiKeyRequest"
+      responses:
+        "204":
+          description: The newly generated Ingestion Api Key
+        "400":
+          description: Ingestion Api Key Expired
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IngestionApiKeyValidateError"
+        "404":
+          description: Ingestion Api Key Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IngestionApiKeyNotFound"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
   parameters:
     ingestionApiKeyId:
@@ -163,5 +193,32 @@ components:
         - $ref: "#/components/schemas/IngestionApiKeyInvalidExpiryError"
       required:
         - _type
+    IngestionApiKeyNotFound:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - IngestionApiKeyNotFound
+      required:
+        - _type
+    IngestionApiKeyExpired:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - IngestionApiKeyExpired
+        message:
+          type: string
+      required:
+        - _type
+        - message
+    IngestionApiKeyValidateError:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/IngestionApiKeyExpired"
+
 
 
