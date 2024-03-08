@@ -487,11 +487,20 @@ components:
           type: string
           enum:
             - TopologyPromQLMetric
+        id:
+          type: integer
+          format: int64
+        promQLQuery:
+          type: string
+        unit:
+          type: string
+        aliasTemplate:
+          type: string
         topologyQuery:
           type: string
-        metric:
-          $ref: "#/components/schemas/PromQLMetric"
       required:
         - _type
         - topologyQuery
-        - metric
+        - promQLQuery
+        - unit
+        - aliasTemplate
