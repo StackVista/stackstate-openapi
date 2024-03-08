@@ -447,14 +447,10 @@ components:
         resourceAttributes:
           description: Attributes (key/value pairs) describing the resource for the span.
           $ref: "#/components/schemas/Attributes"
-        spanAttributes:
-          description: Attributes (key/value pairs) describing the span.
-          $ref: "#/components/schemas/Attributes"
         instant:
           $ref: "common.api.yaml#/components/schemas/Instant"
       required:
         - resourceAttributes
-        - spanAttributes
     Spans:
       type: object
       properties:
