@@ -67,7 +67,7 @@ paths:
   /security/ingestion/authorize:
     post:
       tags:
-        - ingestionApiKey
+        - authorizeIngestionApiKey
       summary: "Check authorization for an Ingestion Api Key"
       description: "Checks if an ingestion api key is valid"
       operationId: authorizeIngestionApiKey
