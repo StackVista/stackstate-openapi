@@ -562,11 +562,14 @@ components:
           type: string
         type:
           type: string
+        healthState:
+          $ref: "common.api.yaml#/components/schemas/HealthStateValue"
       required:
         - id
         - identifier
         - name
         - type
+        - healthState
     Trace:
       type: object
       properties:
