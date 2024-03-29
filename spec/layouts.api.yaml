@@ -1,0 +1,113 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Layout API
+  version: "1.0.0"
+paths:
+  /layouts:
+    get:
+      tags:
+        - layout
+      summary: "List layout hints"
+      description: "List all available layout hints in the system"
+      operationId: getAllLayouts
+      responses:
+        "200":
+          $ref: "#/components/responses/layouts"
+        "500":
+          $ref: "#/components/responses/layoutApiError"
+
+components:
+  responses:
+    layouts:
+      description: "List of all available layout hints"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/LayoutList"
+    layoutApiError:
+      description: "container for all error response"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/LayoutApiError"
+  schemas:
+    LayoutList:
+      type: object
+      properties:
+        layouts:
+          type: array
+          items:
+            $ref: "#/components/schemas/LayoutHint"
+      required:
+        - layouts
+
+    LayoutHint:
+      oneOf:
+        - $ref: "#/components/schemas/MetricPerspectiveTab"
+        - $ref: "#/components/schemas/MetricPerspectiveSection"
+        - $ref: "#/components/schemas/ComponentHighlightMetricSection"
+      discriminator:
+        propertyName: _type
+
+    BaseLayoutHint:
+      type: object
+      properties:
+        name:
+          type: string
+        weight:
+          type: number
+          format: float
+      required:
+        - name
+        - weight
+
+    MetricPerspectiveTab:
+      allOf:
+        - $ref: "#/components/schemas/BaseLayoutHint"
+        - type: object
+          properties:
+            _type:
+              type: string
+              enum:
+                - MetricPerspectiveTab
+          required:
+            - _type
+
+    MetricPerspectiveSection:
+      allOf:
+        - $ref: "#/components/schemas/BaseLayoutHint"
+        - type: object
+          properties:
+            _type:
+              type: string
+              enum:
+                - MetricPerspectiveSection
+            tab:
+              type: string
+          required:
+            - _type
+            - tab
+
+    ComponentHighlightMetricSection:
+      allOf:
+        - $ref: "#/components/schemas/BaseLayoutHint"
+        - type: object
+          properties:
+            _type:
+              type: string
+              enum:
+                - ComponentHighlightMetricSection
+          required:
+            - _type
+
+    LayoutApiError:
+      type: object
+      properties:
+        statusCode:
+          type: string
+        message:
+          type: string
+      required:
+        - statusCode
+        - message
