@@ -457,7 +457,7 @@ components:
         spans:
           type: array
           items: 
-            $ref: "#/components/schemas/Span"
+            $ref: "#/components/schemas/SpanSummary"
           description: "List of spans"
         pageSize:
           type: integer
@@ -664,6 +664,46 @@ components:
         - statusCode
         - events
         - links
+    SpanSummary:
+      type: object
+      properties:
+        startTime: 
+          description: Start time of the span
+          $ref: "common.api.yaml#/components/schemas/InstantNanoPrecision"
+        endTime:
+          description: End time of the span        
+          $ref: "common.api.yaml#/components/schemas/InstantNanoPrecision"
+        durationNanos:
+          description: Duration of the span in nanoseconds
+          type: integer
+          format: int64
+        traceId:
+          description: The unique identifier for the trace, all spans of the same trace share the same trace_id
+          type: string
+        spanId:
+          description: The unique identifier of the span within the trace
+          type: string
+        parentSpanId:
+          description: The id of the parent span of this span. Empty if this is the root span
+          type: string
+        spanName:
+          description: A description of the span's operation. For example, the name can be a qualified method name or a file name and a line number where the operation is called
+          type: string
+        serviceName:
+          description: Logical name of the service for the span 
+          type: string
+        statusCode:
+          description: The status of the operation for the span
+          $ref: "#/components/schemas/StatusCode"
+      required:
+        - startTime
+        - endTime
+        - durationNanos
+        - traceId
+        - spanId
+        - spanName
+        - serviceName
+        - statusCode
     Attributes:
       description: Set of key/value pairs providing extra contextual information. Keys are unique.
       type: object
