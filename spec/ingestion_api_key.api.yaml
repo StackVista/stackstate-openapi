@@ -71,6 +71,14 @@ paths:
       summary: "Check authorization for an Ingestion Api Key"
       description: "Checks if an ingestion api key is valid"
       operationId: authorizeIngestionApiKey
+      parameters:
+        - name: with-receiver-key
+          in: query
+          required: false
+          description: By default, the endpoint uses only Ingestion API Keys, true value - to verify also Receiver API Key
+          schema:
+            type: boolean
+            default: false
       requestBody:
         required: true
         content:
