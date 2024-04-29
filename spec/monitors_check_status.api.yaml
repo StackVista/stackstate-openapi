@@ -46,7 +46,7 @@ paths:
     get:
       tags:
         - monitorCheckStatus
-      summary: "Get a monitor check health hisotry"
+      summary: "Get a monitor check health history"
       description: "Get a monitor check status health history for a defined period of time by the check state id"
       operationId: getMonitorCheckStatusHealthHistory
       parameters:

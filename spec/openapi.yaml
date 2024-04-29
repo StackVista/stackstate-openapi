@@ -135,6 +135,7 @@ paths:
   /traces/spans/fields/{field}/values: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fspans%2Ffields%2F%7Bfield%7D%2Fvalues" }
   /traces/components: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fcomponents" }
   /layouts: { $ref: "layouts.api.yaml#/paths/%2Flayouts" }
+  /components/{componentIdOrUrn}/healthHistory: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrUrn%7D%2FhealthHistory" }
   # Dummy path to make sure that some types are included, which otherwise would be excluded
   /dummy/dummy: { $ref: "common.api.yaml#/paths/%2Fdummy%2Fdummy" }
 security:

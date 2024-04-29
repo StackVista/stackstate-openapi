@@ -10,6 +10,7 @@ stages:
 openapi-validate:
   extends: .nix-base
   stage: check
+
   rules:
     - when: always
   script:
