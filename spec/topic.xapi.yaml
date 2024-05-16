@@ -64,6 +64,7 @@ components:
       name: offset
       schema:
         type: integer
+        format: int64
     partition:
       in: query
       name: partition
@@ -92,6 +93,7 @@ components:
           type: integer
         offset:
           type: integer
+          format: int64
         message:
           type: object
       required:
