@@ -40,6 +40,7 @@ paths:
   /monitors/{monitorIdOrUrn}/preview: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D%2Fpreview" }
   /monitors/{monitorIdOrUrn}/run: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D%2Frun" }
   /monitors/{monitorIdOrUrn}/status: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D%2Fstatus" }
+  /monitors/{monitorIdOrUrn}/checkStates: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D%2FcheckStates" }
   /monitors/{monitorIdOrUrn}/publish: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D%2Fpublish" }
   /monitors/{monitorFunctionIdOrUrn}/test: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorFunctionIdOrUrn%7D%2Ftest" }
   /monitors/identifierLookup: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2FidentifierLookup" }

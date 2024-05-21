@@ -113,6 +113,29 @@ components:
         - matchedCheckStates
         - unmatchedCheckStates
         - multipleMatchesCheckStates
+    HealthSyncCheckState:
+      type: object
+      properties:
+        checkStateId:
+          type: string
+        healthState:
+          $ref: common.api.yaml#/components/schemas/HealthStateValue
+        componentName:
+          type: string
+        componentIdentifier:
+          type: string
+        componentType:
+          type: string
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+      required:
+        - checkStateId
+        - healthState
+        - componentName
+        - componentIdentifier
+        - componentType
+        - lastUpdateTimestamp
     HealthStreamError:
       type: object
       properties:

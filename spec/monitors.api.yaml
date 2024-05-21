@@ -172,6 +172,25 @@ paths:
         "500":
           $ref: "#/components/responses/monitorApiError"
 
+  /monitors/{monitorIdOrUrn}/checkStates:
+    get:
+      tags:
+        - monitor
+      summary: "Get the check states for a monitor"
+      description: "Returns the checkstates that a monitor generated"
+      operationId: getMonitorCheckStates
+      parameters:
+        - $ref: "#/components/parameters/monitorIdOrUrn"
+      responses:
+        "200":
+          $ref: "#/components/responses/monitorCheckStates"
+        "400":
+          $ref: "#/components/responses/invalidMonitorIdentifierError"
+        "404":
+          $ref: "#/components/responses/monitorNotFoundError"
+        "500":
+          $ref: "#/components/responses/monitorApiError"
+
   /monitors/{monitorIdOrUrn}/publish:
     post:
       tags:
@@ -267,6 +286,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/MonitorStatus"
+    monitorCheckStates:
+      description: "Check states of a monitor"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MonitorCheckStates"
     invalidMonitorIdentifierError:
       description: "Invalid monitor id or identifier"
       content:
@@ -599,6 +624,11 @@ components:
         - monitor
         - function
         - metrics
+
+    MonitorCheckStates:
+      type: array
+      items:
+        $ref: "health_sync_service_api.yaml#/components/schemas/HealthSyncCheckState"
 
     BaseMonitorError:
       type: object
