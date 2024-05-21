@@ -181,6 +181,7 @@ paths:
       operationId: getMonitorCheckStates
       parameters:
         - $ref: "#/components/parameters/monitorIdOrUrn"
+        - $ref: "#/components/parameters/healthState"
       responses:
         "200":
           $ref: "#/components/responses/monitorCheckStates"
@@ -249,6 +250,13 @@ components:
       schema:
         type: boolean
       description: "If set, the topology state will not be modified"
+
+    healthState:
+      in: query
+      name: healthState
+      schema:
+        $ref: "common.api.yaml#/components/schemas/HealthStateValue"
+      description: "Health state of check states"
   responses:
     monitors:
       description: "List of all available monitors"
