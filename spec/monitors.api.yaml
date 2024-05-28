@@ -115,6 +115,28 @@ paths:
         "500":
           $ref: "#/components/responses/monitorApiError"
 
+  /monitors/{monitorIdOrUrn}/preview/checkStates:
+    post:
+      tags:
+        - monitor
+      parameters:
+        - $ref: "#/components/parameters/monitorIdOrUrn"
+        - $ref: "#/components/parameters/healthState"
+      summary: "Preview a monitor"
+      description: "Performs a run of a monitor allowing to test it with new arguments and returns the health states produced"
+      operationId: previewMonitorCheckStates
+      requestBody:
+        $ref: "#/components/requestBodies/monitorPreview"
+      responses:
+        "200":
+          $ref: "#/components/responses/monitorCheckStates"
+        "400":
+          $ref: "#/components/responses/invalidMonitorIdentifierError"
+        "404":
+          $ref: "#/components/responses/monitorNotFoundError"
+        "500":
+          $ref: "#/components/responses/monitorApiError"
+
   /monitors/{monitorFunctionIdOrUrn}/test:
     post:
       tags:
@@ -129,6 +151,28 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/monitorPreviewResult"
+        "400":
+          $ref: "#/components/responses/invalidMonitorIdentifierError"
+        "404":
+          $ref: "#/components/responses/monitorFunctionNotFoundError"
+        "500":
+          $ref: "#/components/responses/monitorApiError"
+
+  /monitors/{monitorFunctionIdOrUrn}/test/checkStates:
+    post:
+      tags:
+        - monitor
+      parameters:
+        - $ref: "#/components/parameters/monitorFunctionIdOrUrn"
+        - $ref: "#/components/parameters/healthState"
+      summary: "Test a monitor"
+      description: "Performs a run of a monitor function to test arguments and returns the health states produced"
+      operationId: testMonitorFunctionCheckStates
+      requestBody:
+        $ref: "#/components/requestBodies/monitorFunctionTest"
+      responses:
+        "200":
+          $ref: "#/components/responses/monitorCheckStates"
         "400":
           $ref: "#/components/responses/invalidMonitorIdentifierError"
         "404":
@@ -634,9 +678,14 @@ components:
         - metrics
 
     MonitorCheckStates:
-      type: array
-      items:
-        $ref: "health_sync_service_api.yaml#/components/schemas/HealthSyncCheckState"
+      type: object
+      properties:
+        states:
+          type: array
+          items:
+            $ref: "health_sync_service_api.yaml#/components/schemas/ViewCheckState"
+      required:
+        - states
 
     BaseMonitorError:
       type: object

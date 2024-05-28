@@ -38,11 +38,13 @@ paths:
   /monitors: { $ref: "monitors.api.yaml#/paths/%2Fmonitors" }
   /monitors/{monitorIdOrUrn}: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D" }
   /monitors/{monitorIdOrUrn}/preview: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D%2Fpreview" }
+  /monitors/{monitorIdOrUrn}/preview/checkStates: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D%2Fpreview%2FcheckStates" }
   /monitors/{monitorIdOrUrn}/run: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D%2Frun" }
   /monitors/{monitorIdOrUrn}/status: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D%2Fstatus" }
   /monitors/{monitorIdOrUrn}/checkStates: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D%2FcheckStates" }
   /monitors/{monitorIdOrUrn}/publish: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D%2Fpublish" }
   /monitors/{monitorFunctionIdOrUrn}/test: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorFunctionIdOrUrn%7D%2Ftest" }
+  /monitors/{monitorFunctionIdOrUrn}/test/checkStates: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorFunctionIdOrUrn%7D%2Ftest%2FcheckStates" }
   /monitors/identifierLookup: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2FidentifierLookup" }
   /monitors/overview: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2Foverview" }
   /monitor/checkStatus/{id}: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7Bid%7D" }

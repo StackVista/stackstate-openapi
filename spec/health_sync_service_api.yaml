@@ -113,7 +113,7 @@ components:
         - matchedCheckStates
         - unmatchedCheckStates
         - multipleMatchesCheckStates
-    HealthSyncCheckState:
+    ViewCheckState:
       type: object
       properties:
         checkStateId:
