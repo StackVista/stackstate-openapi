@@ -122,6 +122,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/monitorIdOrUrn"
         - $ref: "#/components/parameters/healthState"
+        - $ref: "#/components/parameters/limit"
       summary: "Preview a monitor"
       description: "Performs a run of a monitor allowing to test it with new arguments and returns the health states produced"
       operationId: previewMonitorCheckStates
@@ -165,6 +166,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/monitorFunctionIdOrUrn"
         - $ref: "#/components/parameters/healthState"
+        - $ref: "#/components/parameters/limit"
       summary: "Test a monitor"
       description: "Performs a run of a monitor function to test arguments and returns the health states produced"
       operationId: testMonitorFunctionCheckStates
@@ -226,6 +228,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/monitorIdOrUrn"
         - $ref: "#/components/parameters/healthState"
+        - $ref: "#/components/parameters/limit"
       responses:
         "200":
           $ref: "#/components/responses/monitorCheckStates"
@@ -279,7 +282,6 @@ components:
       schema:
         $ref: "#/components/schemas/MonitorIdOrUrn"
       description: "The id or identifier (urn) of a monitor"
-
     monitorFunctionIdOrUrn:
       in: path
       name: monitorFunctionIdOrUrn
@@ -287,20 +289,24 @@ components:
       schema:
         $ref: "#/components/schemas/MonitorFunctionIdOrUrn"
       description: "The id or identifier (urn) of a monitor function"
-
     dryRun:
       in: query
       name: dryRun
       schema:
         type: boolean
       description: "If set, the topology state will not be modified"
-
     healthState:
       in: query
       name: healthState
       schema:
         $ref: "common.api.yaml#/components/schemas/HealthStateValue"
       description: "Health state of check states"
+    limit:
+      in: query
+      name: limit
+      schema:
+        type: integer
+
   responses:
     monitors:
       description: "List of all available monitors"
