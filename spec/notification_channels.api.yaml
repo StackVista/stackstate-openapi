@@ -318,6 +318,95 @@ paths:
         "500":
           $ref: "#/components/responses/notificationChannelError"
 
+  /notifications/channels/teams:
+    post:
+      requestBody:
+        $ref: "#/components/requestBodies/teamsChannelWrite"
+      tags:
+        - notification_channels
+      summary: "Create a Teams Notification channel"
+      description: "Create a Teams Notification channel"
+      operationId: createTeamsNotificationChannel
+      responses:
+        "200":
+          $ref: "#/components/responses/teamsNotificationChannel"
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+  /notifications/channels/teams/{channelId}:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+      tags:
+        - notification_channels
+      summary: "Get the Teams Notification channel by id"
+      description: "Get the teams notification channel by id"
+      operationId: getTeamsNotificationChannel
+      responses:
+        "200":
+          $ref: "#/components/responses/teamsNotificationChannel"
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "404":
+          $ref: "#/components/responses/notificationChannelNotFound"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+    put:
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+      requestBody:
+        $ref: "#/components/requestBodies/teamsChannelWrite"
+      tags:
+        - notification_channels
+      summary: "Update the Teams Notification channel by id"
+      description: "Update the teams notification channel by id"
+      operationId: updateTeamsNotificationChannel
+      responses:
+        "200":
+          $ref: "#/components/responses/teamsNotificationChannel"
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "404":
+          $ref: "#/components/responses/notificationChannelNotFound"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+      tags:
+        - notification_channels
+      summary: "Delete the Teams Notification channel by id"
+      description: "Delete the teams notification channel by id"
+      operationId: deleteTeamsNotificationChannel
+      responses:
+        "204":
+          description: "Teams notification channel is deleted."
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "404":
+          $ref: "#/components/responses/notificationChannelNotFound"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+  /notifications/channels/teams/{channelId}/test:
+    post:
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+      tags:
+        - notification_channels
+      summary: "Test the Teams notification channel"
+      description: "Test the teams notification channel by sending a test message to the notification channel."
+      operationId: testTeamsChannel
+      responses:
+        "204":
+          description: "Successfully tested channel."
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "404":
+          $ref: "#/components/responses/notificationChannelNotFound"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+
 components:
   parameters:
     channelId:
@@ -399,6 +488,13 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/OpsgenieChannelWriteSchema"
+    teamsChannelWrite:
+      description: "Create or update a teams channel"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TeamsChannelWriteSchema"
   responses:
     slackNotificationChannel:
       description: "Slack notification channel"
@@ -424,6 +520,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/OpsgenieNotificationChannel"
+    teamsNotificationChannel:
+      description: "Teams notification channel"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TeamsNotificationChannel"
     notificationChannelError:
       description: "Error while executing the request."
       content:
@@ -513,6 +615,7 @@ components:
         - $ref: "#/components/schemas/SlackNotificationChannel"
         - $ref: "#/components/schemas/WebhookNotificationChannel"
         - $ref: "#/components/schemas/OpsgenieNotificationChannel"
+        - $ref: "#/components/schemas/TeamsNotificationChannel"
       discriminator:
         propertyName: _type
     BaseNotificationChannel:
@@ -629,6 +732,25 @@ components:
               type: string
               enum:
                 - OpsgenieNotificationChannel
+          required:
+            - _type
+    TeamsChannelWriteSchema:
+      type: object
+      properties:
+        url:
+          type: string
+      required:
+        - url
+    TeamsNotificationChannel:
+      allOf:
+        - $ref: "#/components/schemas/BaseNotificationChannel"
+        - $ref: "#/components/schemas/TeamsChannelWriteSchema"
+        - type: object
+          properties:
+            _type:
+              type: string
+              enum:
+                - TeamsNotificationChannel
           required:
             - _type
     NotificationChannelStatus:
