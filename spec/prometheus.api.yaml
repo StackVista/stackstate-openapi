@@ -13,6 +13,8 @@ components:
     PromTimeout:
       type: string
       pattern: '^((([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?|0)$'
+    PromAligned:
+      type: boolean
     PromStep:
       type: string
       pattern: '(^((([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?|0)$)|(^[0-9]+$)'
@@ -44,6 +46,8 @@ components:
           $ref: "#/components/schemas/PromTime"
         timeout:
           $ref: "#/components/schemas/PromTimeout"
+        step:
+          $ref: "#/components/schemas/PromStep"
         post_filter:
           $ref: "#/components/schemas/PromPostFilter"
       required:
@@ -61,6 +65,8 @@ components:
           $ref: "#/components/schemas/PromStep"
         timeout:
           $ref: "#/components/schemas/PromTimeout"
+        aligned:
+          $ref: "#/components/schemas/PromAligned"
         maxNumberOfDataPoints:
           $ref: "#/components/schemas/PromMaxNumberOfDataPoints"
         post_filter:
