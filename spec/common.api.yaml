@@ -40,6 +40,12 @@ components:
           type: string
         message:
           type: string
+        existedEarlier:
+          type: number
+          format: unix_timestamp
+        existsLater:
+          type: number
+          format: unix_timestamp
       required:
         - _type
         - objectType
