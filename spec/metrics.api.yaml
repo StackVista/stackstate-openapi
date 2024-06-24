@@ -206,6 +206,7 @@ paths:
         - $ref: "#/components/parameters/query"
         - $ref: "#/components/parameters/time"
         - $ref: "#/components/parameters/timeout"
+        - $ref: "#/components/parameters/stepOptional"
         - $ref: "#/components/parameters/postFilterOptional"
       responses:
         "200":
@@ -257,6 +258,7 @@ paths:
         - $ref: "#/components/parameters/end"
         - $ref: "#/components/parameters/step"
         - $ref: "#/components/parameters/timeout"
+        - $ref: "#/components/parameters/aligned"
         - $ref: "#/components/parameters/maxNumberOfDataPointsOptional"
         - $ref: "#/components/parameters/postFilterOptional"
       responses:
@@ -462,6 +464,21 @@ components:
         $ref: "prometheus.api.yaml#/components/schemas/PromPostFilter"
       description: "Enforce additional label filters for queries"
       example: "service=carts"
+    stepOptional:
+      in: query
+      name: step
+      required: false
+      schema:
+        $ref: "prometheus.api.yaml#/components/schemas/PromStep"
+      description: Query resolution step width in duration format or float number of seconds.
+      example: "5m or 300"
+    aligned:
+      in: query
+      name: aligned
+      required: false
+      schema:
+        type: boolean
+      description: "Align start and end times with step size"
   responses:
     ### Instant/Range Query
     successEnvelope:
