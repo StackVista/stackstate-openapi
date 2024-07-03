@@ -407,6 +407,95 @@ paths:
         "500":
           $ref: "#/components/responses/notificationChannelError"
 
+  /notifications/channels/email:
+    post:
+      requestBody:
+        $ref: "#/components/requestBodies/emailChannelWrite"
+      tags:
+        - notification_channels
+      summary: "Create a Email Notification channel"
+      description: "Create Email Teams Notification channel"
+      operationId: createEmailNotificationChannel
+      responses:
+        "200":
+          $ref: "#/components/responses/emailNotificationChannel"
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+  /notifications/channels/email/{channelId}:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+      tags:
+        - notification_channels
+      summary: "Get the Email Notification channel by id"
+      description: "Get the email notification channel by id"
+      operationId: getEmailNotificationChannel
+      responses:
+        "200":
+          $ref: "#/components/responses/emailNotificationChannel"
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "404":
+          $ref: "#/components/responses/notificationChannelNotFound"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+    put:
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+      requestBody:
+        $ref: "#/components/requestBodies/emailChannelWrite"
+      tags:
+        - notification_channels
+      summary: "Update the Email Notification channel by id"
+      description: "Update the email notification channel by id"
+      operationId: updateEmailNotificationChannel
+      responses:
+        "200":
+          $ref: "#/components/responses/emailNotificationChannel"
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "404":
+          $ref: "#/components/responses/notificationChannelNotFound"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+      tags:
+        - notification_channels
+      summary: "Delete the Email Notification channel by id"
+      description: "Delete the email notification channel by id"
+      operationId: deleteEmailNotificationChannel
+      responses:
+        "204":
+          description: "Email notification channel is deleted."
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "404":
+          $ref: "#/components/responses/notificationChannelNotFound"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+  /notifications/channels/email/{channelId}/test:
+    post:
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+      tags:
+        - notification_channels
+      summary: "Test the Email notification channel"
+      description: "Test the email notification channel by sending a test message to the notification channel."
+      operationId: testEmailChannel
+      responses:
+        "204":
+          description: "Successfully tested channel."
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "404":
+          $ref: "#/components/responses/notificationChannelNotFound"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+
 components:
   parameters:
     channelId:
@@ -495,6 +584,13 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/TeamsChannelWriteSchema"
+    emailChannelWrite:
+      description: "Create or update a email channel"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EmailChannelWriteSchema"
   responses:
     slackNotificationChannel:
       description: "Slack notification channel"
@@ -526,6 +622,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/TeamsNotificationChannel"
+    emailNotificationChannel:
+      description: "Email notification channel"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EmailNotificationChannel"
     notificationChannelError:
       description: "Error while executing the request."
       content:
@@ -616,6 +718,7 @@ components:
         - $ref: "#/components/schemas/WebhookNotificationChannel"
         - $ref: "#/components/schemas/OpsgenieNotificationChannel"
         - $ref: "#/components/schemas/TeamsNotificationChannel"
+        - $ref: "#/components/schemas/EmailNotificationChannel"
       discriminator:
         propertyName: _type
     BaseNotificationChannel:
@@ -751,6 +854,35 @@ components:
               type: string
               enum:
                 - TeamsNotificationChannel
+          required:
+            - _type
+    EmailChannelWriteSchema:
+      type: object
+      properties:
+        to:
+          type: array
+          items:
+            type: string
+          minItems: 1
+        cc:
+          type: array
+          items:
+            type: string
+        subjectPrefix:
+          type: string
+      required:
+        - to
+        - cc
+    EmailNotificationChannel:
+      allOf:
+        - $ref: "#/components/schemas/BaseNotificationChannel"
+        - $ref: "#/components/schemas/EmailChannelWriteSchema"
+        - type: object
+          properties:
+            _type:
+              type: string
+              enum:
+                - EmailNotificationChannel
           required:
             - _type
     NotificationChannelStatus:

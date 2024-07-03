@@ -302,6 +302,7 @@ components:
         - $ref: "#/components/schemas/WebhookChannelRefId"
         - $ref: "#/components/schemas/OpsgenieChannelRefId"
         - $ref: "#/components/schemas/TeamsChannelRefId"
+        - $ref: "#/components/schemas/EmailChannelRefId"
     SlackChannelRefId:
       type: object
       properties:
@@ -344,6 +345,18 @@ components:
         _type:
           enum:
             - TeamsChannelRefId
+        id:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - id
+    EmailChannelRefId:
+      type: object
+      properties:
+        _type:
+          enum:
+            - EmailChannelRefId
         id:
           type: integer
           format: int64
