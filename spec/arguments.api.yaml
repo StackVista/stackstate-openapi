@@ -5,14 +5,6 @@ info:
 
 components:
   schemas:
-    PropagatedHealthStateValue:
-      enum:
-        - UNKNOWN
-        - PROPAGATION_ERROR
-        - DEVIATING
-        - FLAPPING
-        - CRITICAL
-      type: string
     FailingHealthStateValue:
       enum:
         - DEVIATING
@@ -39,7 +31,6 @@ components:
         - $ref: "#/components/schemas/ArgumentDoubleVal"
         - $ref: "#/components/schemas/ArgumentStateVal"
         - $ref: "#/components/schemas/ArgumentNodeIdVal"
-        - $ref: "#/components/schemas/ArgumentPropagatedHealthStateVal"
         - $ref: "#/components/schemas/ArgumentDurationVal"
         - $ref: "#/components/schemas/ArgumentStringVal"
         - $ref: "#/components/schemas/ArgumentTimeWindowVal"
@@ -229,28 +220,6 @@ components:
         - _type
         - parameter
         - query
-    ArgumentPropagatedHealthStateVal:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - ArgumentPropagatedHealthStateVal
-        id:
-          type: integer
-          format: int64
-        lastUpdateTimestamp:
-          type: integer
-          format: int64
-        parameter:
-          type: integer
-          format: int64
-        value:
-          $ref: "#/components/schemas/PropagatedHealthStateValue"
-      required:
-        - _type
-        - parameter
-        - value
     ArgumentNodeIdVal:
       type: object
       properties:
