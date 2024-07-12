@@ -67,6 +67,7 @@ paths:
   /notifications/channels/teams/{channelId}: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fteams%2F%7BchannelId%7D" }
   /notifications/channels/teams/{channelId}/test: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fteams%2F%7BchannelId%7D%2Ftest" }
   /notifications/channels/email: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Femail" }
+  /notifications/channels/email/status: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Femail%2Fstatus" }
   /notifications/channels/email/{channelId}: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Femail%2F%7BchannelId%7D" }
   /notifications/channels/email/{channelId}/test: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Femail%2F%7BchannelId%7D%2Ftest" }
   /notifications/configurations: { $ref: "notification_configurations.api.yaml#/paths/%2Fnotifications%2Fconfigurations" }

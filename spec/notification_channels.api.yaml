@@ -414,11 +414,25 @@ paths:
       tags:
         - notification_channels
       summary: "Create a Email Notification channel"
-      description: "Create Email Teams Notification channel"
+      description: "Create Email Notification channel"
       operationId: createEmailNotificationChannel
       responses:
         "200":
           $ref: "#/components/responses/emailNotificationChannel"
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
+  /notifications/channels/email/status:
+    get:
+      tags:
+        - notification_channels
+      summary: "Email Notification channel status"
+      description: "Email Notification channel status, test whether it can be used"
+      operationId: getEmailNotificationStatus
+      responses:
+        "200":
+          $ref: "#/components/responses/emailNotificationStatus"
         "400":
           $ref: "#/components/responses/notificationChannelError"
         "500":
@@ -628,6 +642,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/EmailNotificationChannel"
+    emailNotificationStatus:
+      description: "Email notification status"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EmailNotificationStatus"
     notificationChannelError:
       description: "Error while executing the request."
       content:
@@ -885,6 +905,13 @@ components:
                 - EmailNotificationChannel
           required:
             - _type
+    EmailNotificationStatus:
+      type: object
+      properties:
+        validConfiguration:
+          type: boolean
+      required:
+        - validConfiguration
     NotificationChannelStatus:
       type: object
       properties:
