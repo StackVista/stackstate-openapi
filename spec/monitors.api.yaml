@@ -208,6 +208,7 @@ paths:
       operationId: getMonitorWithStatus
       parameters:
         - $ref: "#/components/parameters/monitorIdOrUrn"
+        - $ref: "#/components/parameters/timestamp"
       responses:
         "200":
           $ref: "#/components/responses/monitorStatus"
@@ -229,6 +230,7 @@ paths:
         - $ref: "#/components/parameters/monitorIdOrUrn"
         - $ref: "#/components/parameters/healthState"
         - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/timestamp"
       responses:
         "200":
           $ref: "#/components/responses/monitorCheckStates"
@@ -306,6 +308,12 @@ components:
       name: limit
       schema:
         type: integer
+    timestamp:
+      in: query
+      name: timestamp
+      schema:
+        type: integer
+        format: int64
 
   responses:
     monitors:
