@@ -146,6 +146,9 @@ paths:
   /traces/components: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fcomponents" }
   /layouts: { $ref: "layouts.api.yaml#/paths/%2Flayouts" }
   /components/{componentIdOrUrn}/healthHistory: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrUrn%7D%2FhealthHistory" }
+  /agents/{agentId}/checkLease: { $ref: "agent_leases.api.yaml#/paths/%2Fagents%2F%7BagentId%7D%2FcheckLease" }
+  /agents: { $ref: "agent_registrations.api.yaml#/paths/%2Fagents" }
+  /system/notifications: { $ref: "system_notifications.api.yaml#/paths/%2Fsystem%2Fnotifications" }
   # Dummy path to make sure that some types are included, which otherwise would be excluded
   /dummy/dummy: { $ref: "common.api.yaml#/paths/%2Fdummy%2Fdummy" }
 security:

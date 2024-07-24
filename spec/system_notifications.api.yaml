@@ -1,0 +1,71 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: System-wide notifications active
+  description: System-wide notifications which are active at the moment
+  version: "1.0.0"
+paths:
+  /system/notifications:
+    get:
+      tags:
+        - systemNotifications
+      summary: "Overview of system notifications"
+      description: "All active system notifications"
+      operationId: allSystemNotifications
+      responses:
+        "200":
+          description: "All system notifications"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SystemNotifications"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
+components:
+
+  schemas:
+    SystemNotificationId:
+      type: string
+
+    SystemNotificationSeverity:
+      type: string
+      enum:
+        - info
+        - ok
+        - warning
+        - problem
+
+    SystemNotification:
+      type: object
+      properties:
+        notificationId:
+          $ref: "#/components/schemas/SystemNotificationId"
+        title:
+          type: string
+        severity:
+          $ref: "#/components/schemas/SystemNotificationSeverity"
+        notificationTimeEpochMs:
+          type: integer
+          format: int64
+        content:
+          type: string
+        toast:
+          type: boolean
+      required:
+        - notificationId
+        - title
+        - severity
+        - notificationTimeEpochMs
+        - content
+        - toast
+
+    SystemNotifications:
+      type: object
+      properties:
+        notifications:
+          type: array
+          items:
+            $ref: "#/components/schemas/SystemNotification"
+      required:
+        - notifications

@@ -1,0 +1,76 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+# This is a separate file from agent_registrations because these live in a different security realm (with api keys) so will be exposed in a different way.
+openapi: 3.0.3
+info:
+  title: Management of registered agents, can be used to limit the amount of active agents.
+  description: StackState does not allow unlimited agents in all cases, this api allows to register agents and maybe some metadata.
+  version: "1.0.0"
+paths:
+  /agents/{agentId}/checkLease:
+    post:
+      tags:
+        - agentLeases
+      summary: "Check the lease of an agent."
+      description: "Checks the lease of an agent and might register it if it does not exist yet."
+      operationId: agentCheckLease
+      parameters:
+        - $ref: "#/components/parameters/agentId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckLeaseRequest"
+      responses:
+        "200":
+          description: The lease was given
+          content:
+            application/json:
+              schema:
+                $ref: "agent_registrations.api.yaml#/components/schemas/AgentRegistration"
+        "403":
+          description: Forbidden
+        "429":
+          description: Too many agents registered
+          content:
+            application/json:
+              schema:
+                $ref: "agent_registrations.api.yaml#/components/schemas/AgentRegistration"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
+components:
+  parameters:
+    agentId:
+      in: path
+      name: agentId
+      required: true
+      schema:
+        $ref: "agent_registrations.api.yaml#/components/schemas/AgentId"
+      description: "The identifier of an agent"
+
+  schemas:
+    CheckLeaseRequest:
+      type: object
+      properties:
+        apiKey:
+          type: string
+        platform:
+          type: string
+        coreCount:
+          type: integer
+        memoryBytes:
+          type: integer
+          format: int64
+        kernelVersion:
+          type: string
+      required:
+        - apiKey
+        - platform
+        - coreCount
+        - memoryBytes
+        - kernelVersion
+
+
+
+
