@@ -55,21 +55,11 @@ components:
       properties:
         apiKey:
           type: string
-        platform:
-          type: string
-        coreCount:
-          type: integer
-        memoryBytes:
-          type: integer
-          format: int64
-        kernelVersion:
-          type: string
+        agentData:
+          $ref: "agent_registrations.api.yaml#/components/schemas/AgentData"
       required:
         - apiKey
-        - platform
-        - coreCount
-        - memoryBytes
-        - kernelVersion
+
 
 
 

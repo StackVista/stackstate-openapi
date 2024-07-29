@@ -37,9 +37,23 @@ components:
           $ref: "#/components/schemas/AgentId"
         active:
           type: boolean
+        leaseUntilEpochMs:
+          type: integer
+          format: int64
         registeredEpochMs:
           type: integer
           format: int64
+        agentData:
+          $ref: "#/components/schemas/AgentData"
+      required:
+        - agentId
+        - active
+        - leaseUntilEpochMs
+        - registeredEpochMs
+
+    AgentData:
+      type: object
+      properties:
         platform:
           type: string
         coreCount:
@@ -50,9 +64,6 @@ components:
         kernelVersion:
           type: string
       required:
-        - agentId
-        - active
-        - registeredEpochMs
         - platform
         - coreCount
         - memoryBytes
