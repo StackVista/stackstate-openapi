@@ -1,0 +1,28 @@
+openapi: 3.0.3
+info:
+  description: |
+    This API documentation page describes the StackState server API. The StackState UI and CLI use the StackState server API to configure and query StackState. 
+    You can use the API for similar purposes.
+
+    Each request sent to the StackState server API must be authenticated using one of the available authentication methods. 
+    
+    *Note that the StackState receiver API, used to send topology, telemetry and traces to StackState, is not described on this page and requires a different authentication method.*
+
+    For more information on StackState, refer to the [StackState documentation](https://docs.stackstate.com).
+  version: 5.2.0
+  title: StackState Internal API
+  license:
+    name: "Apache 2.0"
+    url: "https://www.apache.org/licenses/LICENSE-2.0.html"
+  contact:
+    name: StackState
+    email: info@stackstate.com
+    url: "https://stackstate.com"
+  x-logo:
+    url: "https://raw.githubusercontent.com/StackVista/stackstate-docs/master/resources/logo/StackState-Color-padding.png"
+    href: "#top"
+paths:
+  /security/ingestion/authorize: { $ref: "ingestion_api_key.api.yaml#/paths/%2Fsecurity%2Fingestion%2Fauthorize" }
+  /agents/{agentId}/checkLease: { $ref: "agent_leases.api.yaml#/paths/%2Fagents%2F%7BagentId%7D%2FcheckLease" }
+  # Dummy path to make sure that some types are included, which otherwise would be excluded
+  /dummy/dummy: { $ref: "common.api.yaml#/paths/%2Fdummy%2Fdummy" }
