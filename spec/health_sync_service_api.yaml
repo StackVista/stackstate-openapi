@@ -132,9 +132,7 @@ components:
       required:
         - checkStateId
         - healthState
-        - componentName
         - componentIdentifier
-        - componentType
         - lastUpdateTimestamp
     HealthStreamError:
       type: object
