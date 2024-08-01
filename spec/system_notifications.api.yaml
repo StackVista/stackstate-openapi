@@ -19,6 +19,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SystemNotifications"
+        "403":
+          description: Forbidden
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 

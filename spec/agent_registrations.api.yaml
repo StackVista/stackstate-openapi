@@ -35,8 +35,8 @@ components:
       properties:
         agentId:
           $ref: "#/components/schemas/AgentId"
-        active:
-          type: boolean
+        lease:
+          $ref: "#/components/schemas/AgentLease"
         leaseUntilEpochMs:
           type: integer
           format: int64
@@ -47,9 +47,16 @@ components:
           $ref: "#/components/schemas/AgentData"
       required:
         - agentId
-        - active
+        - lease
         - leaseUntilEpochMs
         - registeredEpochMs
+
+    AgentLease:
+      type: string
+      enum:
+        - Active
+        - Limited
+        - Stale
 
     AgentData:
       type: object
