@@ -144,10 +144,15 @@ components:
           items:
             type: integer
             format: int64
+        systemNotificationsRead:
+          type: array
+          items:
+            type: string
         ownedBy:
           type: string
       required:
         - name
+        - systemNotificationsRead
     ApiToken:
       type: object
       properties:
