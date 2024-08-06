@@ -9,6 +9,7 @@ components:
       enum:
         - DEVIATING
         - CRITICAL
+        - UNKNOWN
       type: string
     ComparatorWithoutEquality:
       enum:
