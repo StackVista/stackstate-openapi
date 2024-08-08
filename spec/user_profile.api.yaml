@@ -148,11 +148,14 @@ components:
           type: array
           items:
             type: string
+        hideUnavailableMonitors:
+          type: boolean
         ownedBy:
           type: string
       required:
         - name
         - systemNotificationsRead
+        - hideUnavailableMonitors
     ApiToken:
       type: object
       properties:
