@@ -520,6 +520,8 @@ components:
           $ref: "#/components/schemas/MonitorStatusValue"
         runtimeStatus:
           $ref: "#/components/schemas/MonitorRuntimeStatusValue"
+        dummy:
+          type: boolean
         lastUpdateTimestamp:
           type: integer
           format: int64
