@@ -150,12 +150,15 @@ components:
             type: string
         hideUnavailableMonitors:
           type: boolean
+        hideUnavailableMetrics:
+          type: boolean
         ownedBy:
           type: string
       required:
         - name
         - systemNotificationsRead
         - hideUnavailableMonitors
+        - hideUnavailableMetrics
     ApiToken:
       type: object
       properties:
