@@ -47,7 +47,7 @@ components:
           $ref: "#/components/schemas/AgentData"
         nodeBudgetCount:
           type: integer
-          description: "The registration might count for more than one standard (4CPU, 16Gb) node"
+          description: "The number of standard (4CPU, 16Gb) nodes this agent counts for"
       required:
         - agentId
         - lease
