@@ -152,6 +152,8 @@ components:
           type: boolean
         hideUnavailableMetrics:
           type: boolean
+        hideUnavailableConnections:
+          type: boolean
         ownedBy:
           type: string
       required:
@@ -159,6 +161,7 @@ components:
         - systemNotificationsRead
         - hideUnavailableMonitors
         - hideUnavailableMetrics
+        - hideUnavailableConnections
     ApiToken:
       type: object
       properties:
