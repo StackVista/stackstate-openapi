@@ -14,9 +14,9 @@ paths:
         - $ref: "#/components/parameters/pageSize"
         - $ref: "#/components/parameters/page"
       requestBody:
-        $ref: "#/components/requestBodies/spanQuery"
-      summary: Query for spans
-      description: Query for spans using filters, get all spans for a trace by trace id. Filters that accept an array of values match if any of the values match (think of a SQL IN expression).
+        $ref: "#/components/requestBodies/traceQuery"
+      summary: Query for traces
+      description: Query for traces using filters. Filters that accept an array of values match if any of the values match (think of a SQL IN expression).
       operationId: querySpans
       responses:
         "200":
@@ -35,7 +35,7 @@ paths:
         - $ref: "#/components/parameters/endTime"
         - $ref: "#/components/parameters/bucketsCount"
       requestBody:
-        $ref: "#/components/requestBodies/spanFilter"
+        $ref: "#/components/requestBodies/traceFilter"
       summary: Query duration distribution
       description: Query for durations using filters.  Filters that accept an array of values match if any of the values match (think of a SQL IN expression).
       operationId: queryDuration
@@ -233,18 +233,18 @@ components:
       schema:
         $ref: "#/components/schemas/SpanSuggestionField"
   requestBodies:
-    spanQuery:
-      description: Query for spans
+    traceQuery:
+      description: Query for traces
       required: true
       content:
         application/json:
-          schema: { $ref: "#/components/schemas/SpanQuery" }
-    spanFilter:
-      description: Filter for spans
+          schema: { $ref: "#/components/schemas/TraceQuery" }
+    traceFilter:
+      description: Filter for traces
       required: true
       content:
         application/json:
-          schema: { $ref: "#/components/schemas/SpanFilter" }
+          schema: { $ref: "#/components/schemas/TraceFilter" }
     componentQuery:
       description: Span properties to find matching components
       required: true
@@ -324,15 +324,22 @@ components:
         - External
         - Internal
         - Root
-    SpanQuery:
+    TraceQuery:
       type: object
       properties:
-        filter:
+        primary:
           $ref: "#/components/schemas/SpanFilter"
+        filters:
+          type: array
+          items:
+            $ref: "#/components/schemas/SpanFilter"
         sortBy:
           type: array
           items:
             $ref: "#/components/schemas/SpanSortOption"
+      required:
+        - primary
+        - filters
     SpanSortOption:
       type: object
       properties:
@@ -364,6 +371,15 @@ components:
         - SpanName
         - ScopeName
         - ScopeVersion
+    TraceFilter:
+      type: object
+      properties:
+        filters:
+          type: array
+          items:
+            $ref: "#/components/schemas/SpanFilter"
+      required:
+        - filters
     SpanFilter:
       type: object
       properties:
