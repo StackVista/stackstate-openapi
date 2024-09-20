@@ -374,11 +374,14 @@ components:
     TraceFilter:
       type: object
       properties:
+        primary:
+          $ref: "#/components/schemas/SpanFilter"
         filters:
           type: array
           items:
             $ref: "#/components/schemas/SpanFilter"
       required:
+        - primary
         - filters
     SpanFilter:
       type: object
