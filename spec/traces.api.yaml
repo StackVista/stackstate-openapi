@@ -329,17 +329,20 @@ components:
       properties:
         primary:
           $ref: "#/components/schemas/SpanFilter"
-        filters:
-          type: array
-          items:
-            $ref: "#/components/schemas/SpanFilter"
+        attributes:
+          type: object
+          additionalProperties: 
+            type: array
+            items:
+              type: string
+          description: "Filter traces by 1 or more attributes"
         sortBy:
           type: array
           items:
             $ref: "#/components/schemas/SpanSortOption"
       required:
         - primary
-        - filters
+        - attributes
     SpanSortOption:
       type: object
       properties:
@@ -376,13 +379,16 @@ components:
       properties:
         primary:
           $ref: "#/components/schemas/SpanFilter"
-        filters:
-          type: array
-          items:
-            $ref: "#/components/schemas/SpanFilter"
+        attributes:
+          type: object
+          additionalProperties: 
+            type: array
+            items:
+              type: string
+          description: "Filter traces by 1 or more attributes"
       required:
         - primary
-        - filters
+        - attributes
     SpanFilter:
       type: object
       properties:
