@@ -327,9 +327,9 @@ components:
     TraceQuery:
       type: object
       properties:
-        rootSelector:
+        spanFilter:
           $ref: "#/components/schemas/SpanFilter"
-        attributes:
+        traceAttributes:
           type: object
           additionalProperties: 
             type: array
@@ -341,8 +341,8 @@ components:
           items:
             $ref: "#/components/schemas/SpanSortOption"
       required:
-        - rootSelector
-        - attributes
+        - spanFilter
+        - traceAttributes
     SpanSortOption:
       type: object
       properties:
@@ -377,9 +377,9 @@ components:
     TraceFilter:
       type: object
       properties:
-        rootSelector:
+        spanFilter:
           $ref: "#/components/schemas/SpanFilter"
-        attributes:
+        traceAttributes:
           type: object
           additionalProperties: 
             type: array
@@ -387,8 +387,8 @@ components:
               type: string
           description: "Filter traces by 1 or more attributes"
       required:
-        - rootSelector
-        - attributes
+        - spanFilter
+        - traceAttributes
     SpanFilter:
       type: object
       properties:
