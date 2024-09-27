@@ -4,7 +4,7 @@ info:
   title: Traces API
   version: "1.0.0"
 paths:
-  /traces/spans:
+  /traces/query:
     post:
       tags: 
         - traces
@@ -17,16 +17,16 @@ paths:
         $ref: "#/components/requestBodies/traceQuery"
       summary: Query for traces
       description: Query for traces using filters. Filters that accept an array of values match if any of the values match (think of a SQL IN expression).
-      operationId: querySpans
+      operationId: queryTraces
       responses:
         "200":
-          $ref: "#/components/responses/spans"
+          $ref: "#/components/responses/traces"
         "400":
           $ref: "#/components/responses/traceApiSpansBadRequest"
         "500":
           $ref: "#/components/responses/traceApiError"
 
-  /traces/spans/duration/histogram:
+  /traces/duration/histogram:
     post:
       tags: 
         - traces
@@ -257,11 +257,11 @@ components:
       content:
         application/json:
           schema: { $ref: "#/components/schemas/Span" }
-    spans:
-      description: Spans
+    traces:
+      description: Traces
       content:
         application/json:
-          schema: { $ref: "#/components/schemas/Spans" }
+          schema: { $ref: "#/components/schemas/Traces" }
     durations:
       description: DurationHistogram
       content:
@@ -327,7 +327,7 @@ components:
     TraceQuery:
       type: object
       properties:
-        primary:
+        rootSelector:
           $ref: "#/components/schemas/SpanFilter"
         attributes:
           type: object
@@ -341,7 +341,7 @@ components:
           items:
             $ref: "#/components/schemas/SpanSortOption"
       required:
-        - primary
+        - rootSelector
         - attributes
     SpanSortOption:
       type: object
@@ -377,7 +377,7 @@ components:
     TraceFilter:
       type: object
       properties:
-        primary:
+        rootSelector:
           $ref: "#/components/schemas/SpanFilter"
         attributes:
           type: object
@@ -387,7 +387,7 @@ components:
               type: string
           description: "Filter traces by 1 or more attributes"
       required:
-        - primary
+        - rootSelector
         - attributes
     SpanFilter:
       type: object
@@ -476,26 +476,26 @@ components:
           $ref: "common.api.yaml#/components/schemas/Instant"
       required:
         - resourceAttributes
-    Spans:
+    Traces:
       type: object
       properties:
-        spans:
+        traces:
           type: array
           items: 
-            $ref: "#/components/schemas/SpanSummary"
-          description: "List of spans"
+            $ref: "#/components/schemas/TraceIdentifier"
+          description: "List of traces"
         pageSize:
           type: integer
-          description: "Maximum number of the spans in the result."
+          description: "Maximum number of the traces in the result."
         page:
           type: integer
           description: "The requested page."
         matchesTotal:
           type: integer
           format: int64
-          description: "The total number of matching spans."
+          description: "The total number of matching traces."
       required:
-        - spans
+        - traces
         - pageSize
         - page
         - matchesTotal
@@ -689,46 +689,19 @@ components:
         - statusCode
         - events
         - links
-    SpanSummary:
+    TraceIdentifier:
+      description: Identifier for a "service trace", the branch of an OTEL trace that corresponds to a single service entry span
       type: object
       properties:
-        startTime: 
-          description: Start time of the span
-          $ref: "common.api.yaml#/components/schemas/InstantNanoPrecision"
-        endTime:
-          description: End time of the span        
-          $ref: "common.api.yaml#/components/schemas/InstantNanoPrecision"
-        durationNanos:
-          description: Duration of the span in nanoseconds
-          type: integer
-          format: int64
         traceId:
           description: The unique identifier for the trace, all spans of the same trace share the same trace_id
           type: string
         spanId:
           description: The unique identifier of the span within the trace
           type: string
-        parentSpanId:
-          description: The id of the parent span of this span. Empty if this is the root span
-          type: string
-        spanName:
-          description: A description of the span's operation. For example, the name can be a qualified method name or a file name and a line number where the operation is called
-          type: string
-        serviceName:
-          description: Logical name of the service for the span 
-          type: string
-        statusCode:
-          description: The status of the operation for the span
-          $ref: "#/components/schemas/StatusCode"
       required:
-        - startTime
-        - endTime
-        - durationNanos
         - traceId
         - spanId
-        - spanName
-        - serviceName
-        - statusCode
     Attributes:
       description: Set of key/value pairs providing extra contextual information. Keys are unique.
       type: object

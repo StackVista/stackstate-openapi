@@ -136,8 +136,8 @@ paths:
   /k8s/logs: { $ref: "kubernetes_logs.api.yaml#/paths/%2Fk8s%2Flogs" }
   /k8s/logs/histogram: { $ref: "kubernetes_logs.api.yaml#/paths/%2Fk8s%2Flogs%2Fhistogram" }
   /k8s/logs/autocomplete: { $ref: "kubernetes_logs.api.yaml#/paths/%2Fk8s%2Flogs%2Fautocomplete" }
-  /traces/spans: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fspans"}
-  /traces/spans/duration/histogram: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fspans%2Fduration%2Fhistogram"}
+  /traces/query: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fquery"}
+  /traces/duration/histogram: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fduration%2Fhistogram"}
   /traces/{traceId}: { $ref: "traces.api.yaml#/paths/%2Ftraces%2F%7BtraceId%7D"}
   /traces/{traceId}/spans/{spanId}: { $ref: "traces.api.yaml#/paths/%2Ftraces%2F%7BtraceId%7D%2Fspans%2F%7BspanId%7D"}
   /traces/spans/fields/attributes: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fspans%2Ffields%2Fattributes" }
