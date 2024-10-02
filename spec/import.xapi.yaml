@@ -38,6 +38,15 @@ paths:
               - fail
               - skip
               - overwrite
+        - name: locked
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - fail
+              - skip
+              - overwrite
       responses:
         "200":
           description: The full description of all imported nodes.
