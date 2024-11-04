@@ -23,6 +23,24 @@ paths:
           $ref: "#/components/responses/componentNotFoundError"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /components/topology/healthHistory:
+    get:
+      tags:
+        - component
+      summary: "Get a topology health history"
+      description: "Get a topology health history for a defined period of time"
+      operationId: getTopologyHealthHistory
+      parameters:
+        - $ref: "#/components/parameters/startTime"
+        - $ref: "#/components/parameters/endTime"
+        - $ref: "#/components/parameters/topologyQuery"
+      responses:
+        "200":
+          $ref: "#/components/responses/componentHealthHistory"
+        "400":
+          $ref: "#/components/responses/componentNotFoundError"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 
 components:
   parameters:
@@ -57,6 +75,12 @@ components:
       schema:
         type: integer
         format: instant
+    topologyQuery:
+      name: topologyQuery
+      in: query
+      required: true
+      schema:
+        type: string
   responses:
     componentNotFoundError:
       description: "Component not found error"
