@@ -149,6 +149,7 @@ paths:
   /agents/{agentId}/checkLease: { $ref: "agent_leases.api.yaml#/paths/%2Fagents%2F%7BagentId%7D%2FcheckLease" }
   /agents: { $ref: "agent_registrations.api.yaml#/paths/%2Fagents" }
   /system/notifications: { $ref: "system_notifications.api.yaml#/paths/%2Fsystem%2Fnotifications" }
+  /timeline/history: { $ref: "timeline.api.yaml#/paths/%2Ftimeline%2Fhistory" }
   # Dummy path to make sure that some types are included, which otherwise would be excluded
   /dummy/dummy: { $ref: "common.api.yaml#/paths/%2Fdummy%2Fdummy" }
 security:
