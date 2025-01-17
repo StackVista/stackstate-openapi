@@ -149,6 +149,10 @@ components:
     EventSummaryBucket:
       type: object
       properties:
+        _type:
+          type: string
+          enum:
+            - EventSummaryBucket
         count:
           type: integer
           format: int64
@@ -159,19 +163,29 @@ components:
           type: integer
           format: int64
       required:
+        - _type
         - count
         - startTimeEpochMillis
+      discriminator:
+        propertyName: _type
     EventSummaryHealthChange:
       type: object
       properties:
+        _type:
+          type: string
+          enum:
+            - EventSummaryHealthChange
         timestamp:
           type: integer
           format: int64
         newHealth:
           $ref: "common.api.yaml#/components/schemas/HealthStateValue"
       required:
+        - _type
         - timestamp
         - newHealth
+      discriminator:
+        propertyName: _type
     EventSummaryError:
       type: object
       properties:
