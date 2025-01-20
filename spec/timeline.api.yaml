@@ -56,9 +56,10 @@ components:
           $ref: "common.api.yaml#/components/schemas/Instant"
         endTime:
           $ref: "common.api.yaml#/components/schemas/Instant"
-#        eventFilters:
         histogramBucketCount:
           type: integer
+        eventFilters:
+          $ref: "#/components/schemas/EventFilters"
       required:
         - arguments
         - startTime
@@ -128,6 +129,25 @@ components:
         - connectedComponents
         - neighboringComponents
         - showFullComponent
+    EventFilters:
+      type: object
+      properties:
+        types:
+          type: array
+          items:
+            type: string
+        tags:
+          type: array
+          items:
+            type: string
+        categories:
+          type: array
+          items:
+            type: string
+        sources:
+          type: array
+          items:
+            type: string
     EventSummary:
       type: object
       properties:
