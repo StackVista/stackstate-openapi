@@ -4,45 +4,45 @@ info:
   title: Timeline API
   version: "1.0.0"
 paths:
-  /timeline/history:
+  /timeline/summary:
     post:
       tags:
         - timeline
       requestBody:
-        $ref: "#/components/requestBodies/eventSummaryRequest"
-      summary: "Event summary"
-      description: "Events and health for a topology over a range of time"
-      operationId: viewEventSummary
+        $ref: "#/components/requestBodies/timelineSummaryRequest"
+      summary: "Timeline summary"
+      description: "Event summary and aggregated health changes for a topology over a range of time"
+      operationId: getTimelineSummary
       responses:
         "200":
-          $ref: "#/components/responses/eventSummary"
+          $ref: "#/components/responses/timelineSummaryResponse"
         "500":
-          $ref: "#/components/responses/eventSummaryError"
+          $ref: "#/components/responses/timelineSummaryErrorResponse"
 
 components:
   requestBodies:
-    eventSummaryRequest:
-      description: "Request for event summary and health over time"
+    timelineSummaryRequest:
+      description: "Request for event summary and aggregated health over time"
       required: true
       content:
         application/json:
           schema: 
-            $ref: "#/components/schemas/EventSummaryRequest"
+            $ref: "#/components/schemas/TimelineSummaryRequest"
   responses:
-    eventSummary:
-      description: "Events and health state over range of time"
+    timelineSummaryResponse:
+      description: "Event summary and aggregated health changes over a range of time"
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/EventSummary"
-    eventSummaryError:
+            $ref: "#/components/schemas/TimelineSummary"
+    timelineSummaryErrorResponse:
       description: "Errors when computing events and health state"
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/EventSummaryError"
+            $ref: "#/components/schemas/TimelineSummaryError"
   schemas:
-    EventSummaryRequest:
+    TimelineSummaryRequest:
       type: object
       properties:
         arguments:
@@ -87,48 +87,11 @@ components:
             - QueryViewArguments
         query:
           type: string
-        metadata:
-          $ref: "#/components/schemas/QueryMetadata"
+        queryTime:
+          $ref: "common.api.yaml#/components/schemas/Instant"
       required:
         - _type
         - query
-        - metadata
-    QueryMetadata:
-      type: object
-      properties:
-        groupingEnabled:
-          type: boolean
-        showIndirectRelations:
-          type: boolean
-        minGroupSize:
-          type: integer
-        groupedByLayer:
-          type: boolean
-        groupedByDomain:
-          type: boolean
-        groupedByRelation:
-          type: boolean
-        queryTime:
-          $ref: "common.api.yaml#/components/schemas/Instant"
-        autoGrouping:
-          type: boolean
-        connectedComponents:
-          type: boolean
-        neighboringComponents:
-          type: boolean
-        showFullComponent:
-          type: boolean
-      required:
-        - groupingEnabled
-        - showIndirectRelations
-        - minGroupSize
-        - groupedByLayer
-        - groupedByDomain
-        - groupedByRelation
-        - autoGrouping
-        - connectedComponents
-        - neighboringComponents
-        - showFullComponent
     EventFilters:
       type: object
       properties:
@@ -148,17 +111,17 @@ components:
           type: array
           items:
             type: string
-    EventSummary:
+    TimelineSummary:
       type: object
       properties:
         buckets:
           type: array
           items:
-            $ref: "#/components/schemas/EventSummaryBucket"
+            $ref: "#/components/schemas/TimelineSummaryEventBucket"
         healthHistory:
           type: array
           items:
-            $ref: "#/components/schemas/EventSummaryHealthChange"
+            $ref: "#/components/schemas/TimelineSummaryHealthChange"
         fromTime:
           type: integer
           format: int64
@@ -166,13 +129,13 @@ components:
         - buckets
         - healthHistory
         - fromTime
-    EventSummaryBucket:
+    TimelineSummaryEventBucket:
       type: object
       properties:
         _type:
           type: string
           enum:
-            - EventSummaryBucket
+            - TimelineSummaryEventBucket
         count:
           type: integer
           format: int64
@@ -188,13 +151,13 @@ components:
         - startTimeEpochMillis
       discriminator:
         propertyName: _type
-    EventSummaryHealthChange:
+    TimelineSummaryHealthChange:
       type: object
       properties:
         _type:
           type: string
           enum:
-            - EventSummaryHealthChange
+            - TimelineSummaryHealthChange
         timestamp:
           type: integer
           format: int64
@@ -206,7 +169,7 @@ components:
         - newHealth
       discriminator:
         propertyName: _type
-    EventSummaryError:
+    TimelineSummaryError:
       type: object
       properties:
         message:
