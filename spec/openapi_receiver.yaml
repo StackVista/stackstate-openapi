@@ -15,5 +15,5 @@ info:
     url: "https://raw.githubusercontent.com/StackVista/stackstate-docs/master/resources/logo/StackState-Color-padding.png"
     href: "#top"
 paths:
-  /rbac/instance: { $ref: "common_rbac.api.yaml#/paths/%2Frbac%2Finstance" }
-  /rbac/scope: { $ref: "common_rbac.api.yaml#/paths/%2Frbac%2Fscope" }
+  /stsAgent/rbac/instance: { $ref: "common_rbac.api.yaml#/paths/%2FstsAgent%2Frbac%2Finstance" }
+  /stsAgent/rbac/scope: { $ref: "common_rbac.api.yaml#/paths/%2FstsAgent%2Frbac%2Fscope" }
