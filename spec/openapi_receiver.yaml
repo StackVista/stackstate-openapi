@@ -16,3 +16,4 @@ info:
     href: "#top"
 paths:
   /rbac/instance: { $ref: "common_rbac.api.yaml#/paths/%2Frbac%2Finstance" }
+  /rbac/scope: { $ref: "common_rbac.api.yaml#/paths/%2Frbac%2Fscope" }

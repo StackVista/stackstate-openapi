@@ -4,7 +4,7 @@ paths:
       tags:
         - rbac
         - instance
-      summary: "Create instance RBAC model"
+      summary: "Create instance RBAC objects"
       operationId: ingestInstanceRBAC
       description: "Ingest RBAC data snapshots to build a scoped authorization model for data access for the server API"
       requestBody:
@@ -12,17 +12,42 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateInstanceRBACRequest"
+              $ref: "#/components/schemas/RBACRequest"
       responses:
         "201":
-          description: "Payload accepted"
+          description: "RBAC Data accepted"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /rbac/scope:
+    post:
+      tags:
+        - rbac
+        - instance
+      summary: "Create scope RBAC objects"
+      operationId: ingestScopeRBAC
+      description: "Ingest RBAC data snapshots to build a scoped authorization model for data access for the server API"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RBACRequest"
+      responses:
+        "201":
+          description: "RBAC Data accepted"
+        "401":
+          description: "Unauthorized"
         "403":
           description: "Forbidden"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
   schemas:
-    CreateInstanceRBACRequest:
+    RBACRequest:
       type: object
       description: "CreateInstanceRBACRequest holds the a snapshot of data or individual updates or RBAC data"
       properties:
@@ -41,6 +66,11 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/RbacData"
+        delete_uids:
+          type: array
+          items:
+            description: "UID of the RBAC object."
+            type: string
 
     StartSnapshot:
       type: object
@@ -48,6 +78,7 @@ components:
       properties:
         repeat_interval_s:
           type: integer
+          format: int64
           description: "Number of seconds when the RBAC Agent will send the following snapshot. Heartbeat of the Agent"
 
     StopSnapshot:
