@@ -15,4 +15,4 @@ info:
     url: "https://raw.githubusercontent.com/StackVista/stackstate-docs/master/resources/logo/StackState-Color-padding.png"
     href: "#top"
 paths:
-  /dummy/dummy: { $ref: "common.api.yaml#/paths/%2Fdummy%2Fdummy" }
+  /rbac/instance: { $ref: "common_rbac.api.yaml#/paths/%2Frbac%2Finstance" }
