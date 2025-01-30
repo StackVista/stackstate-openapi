@@ -71,6 +71,10 @@ components:
           items:
             description: "UID of the RBAC object."
             type: string
+      required:
+        - collection_timestamp
+        - cluster
+        - rbac_data
 
     StartSnapshot:
       type: object
