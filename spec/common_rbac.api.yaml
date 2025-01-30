@@ -1,0 +1,405 @@
+paths:
+  /dummy/dummy:
+    get:
+      tags:
+        - dummy
+      #  Its not possible to make a ref unfortunately (https://github.com/OpenAPITools/openapi-generator/issues/11151)
+      summary: "Dummy path to fix omission in openapi generation when a type is not included."
+      operationId: dummy
+      description: ""
+      responses:
+        "400":
+          $ref: "#/components/responses/stackElementNotFound"
+components:
+  schemas:
+    StackElementNotFound:
+      type: object
+      discriminator:
+        propertyName: _type
+      properties:
+        _type:
+          type: string
+          enum:
+            - StackElementNotFound
+        objectType:
+          type: string
+        objectId:
+          type: string
+        message:
+          type: string
+        existedEarlierMs:
+          type: integer
+          format: int64
+        existsLaterMs:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - objectType
+        - objectId
+        - message
+
+    PolicyRule:
+      type: object
+      description: "PolicyRule holds information that describes a policy rule."
+      properties:
+        apiGroups:
+          type: array
+          description: "APIGroups is the name of the APIGroup that contains the resources."
+          items:
+            type: string
+          x-kubernetes-list-type: atomic
+        nonResourceURLs:
+          type: array
+          description: "NonResourceURLs is a set of partial URLs that a user should have access to."
+          items:
+            type: string
+          x-kubernetes-list-type: atomic
+        resourceNames:
+          type: array
+          description: "ResourceNames is an optional white list of names that the rule applies to."
+          items:
+            type: string
+          x-kubernetes-list-type: atomic
+        resources:
+          type: array
+          description: "Resources is a list of resources this rule applies to."
+          items:
+            type: string
+          x-kubernetes-list-type: atomic
+        verbs:
+          type: array
+          description: "Verbs is a list of Verbs that apply to all ResourceKinds contained in this rule."
+          items:
+            type: string
+          x-kubernetes-list-type: atomic
+      required:
+        - verbs
+
+    Subject:
+      type: object
+      description: "Subject contains a reference to the object or user identities a role binding applies to."
+      properties:
+        apiGroup:
+          type: string
+          description: "APIGroup holds the API group of the referenced subject."
+        kind:
+          type: string
+          description: "Kind of object being referenced."
+        name:
+          type: string
+          description: "Name of the object being referenced."
+        namespace:
+          type: string
+          description: "Namespace of the referenced object."
+      required:
+        - kind
+        - name
+      x-kubernetes-map-type: atomic
+
+    RoleRef:
+      description: "RoleRef contains information that points to the role being used"
+      type: object
+      x-kubernetes-map-type: atomic
+      properties:
+        apiGroup:
+          description: "APIGroup is the group for the resource being referenced"
+          type: string
+        kind:
+          description: "Kind is the type of resource being referenced"
+          type: string
+        name:
+          description: "Name is the name of resource being referenced"
+          type: string
+      required:
+        - apiGroup
+        - kind
+        - name
+
+    LabelSelector:
+      description: "A label selector is a label query over a set of resources. The result of matchLabels and matchExpressions are ANDed. An empty label selector matches all objects. A null label selector matches no objects."
+      type: object
+      properties:
+        matchExpressions:
+          description: "matchExpressions is a list of label selector requirements. The requirements are ANDed."
+          type: array
+          items:
+            $ref: "#/components/schemas/LabelSelectorRequirement"
+          x-kubernetes-list-type: atomic
+        matchLabels:
+          description: "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is 'key', the operator is 'In', and the values array contains only 'value'. The requirements are ANDed."
+          type: object
+          additionalProperties:
+            type: string
+      x-kubernetes-map-type: atomic
+
+    LabelSelectorRequirement:
+      description: "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+      type: object
+      required:
+        - key
+        - operator
+      properties:
+        key:
+          description: "key is the label key that the selector applies to."
+          type: string
+        operator:
+          description: "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+          type: string
+        values:
+          description: "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+          type: array
+          items:
+            type: string
+          x-kubernetes-list-type: atomic
+
+    OwnerReference:
+      description: "OwnerReference contains enough information to let you identify an owning object. An owning object must be in the same namespace as the dependent, or be cluster-scoped, so there is no namespace field."
+      type: object
+      required:
+        - apiVersion
+        - kind
+        - name
+        - uid
+      properties:
+        apiVersion:
+          description: "API version of the referent."
+          type: string
+        blockOwnerDeletion:
+          description: "If true, AND if the owner has the 'foregroundDeletion' finalizer, then the owner cannot be deleted from the key-value store until this reference is removed."
+          type: boolean
+        controller:
+          description: "If true, this reference points to the managing controller."
+          type: boolean
+        kind:
+          description: "Kind of the referent."
+          type: string
+        name:
+          description: "Name of the referent."
+          type: string
+        uid:
+          description: "UID of the referent."
+          type: string
+      x-kubernetes-map-type: atomic
+
+    Time:
+      description: "Time is a wrapper around time.Time which supports correct marshaling to YAML and JSON."
+      type: string
+      format: date-time
+
+    ManagedFieldsEntry:
+      description: "ManagedFieldsEntry is a workflow-id, a FieldSet and the group version of the resource that the fieldset applies to."
+      type: object
+      properties:
+        apiVersion:
+          description: "APIVersion defines the version of this resource that this field set applies to. The format is \"group/version\" just like the top-level APIVersion field. It is necessary to track the version of a field set because it cannot be automatically converted."
+          type: string
+        fieldsType:
+          description: "FieldsType is the discriminator for the different fields format and version. There is currently only one possible value: \"FieldsV1\""
+          type: string
+        fieldsV1:
+          $ref: "#/components/schemas/FieldsV1"
+          description: "FieldsV1 holds the first JSON version format as described in the \"FieldsV1\" type."
+        manager:
+          description: "Manager is an identifier of the workflow managing these fields."
+          type: string
+        operation:
+          description: "Operation is the type of operation which lead to this ManagedFieldsEntry being created. The only valid values for this field are 'Apply' and 'Update'."
+          type: string
+        subresource:
+          description: "Subresource is the name of the subresource used to update that object, or empty string if the object was updated through the main resource. The value of this field is used to distinguish between managers, even if they share the same name. For example, a status update will be distinct from a regular update using the same manager name. Note that the APIVersion field is not related to the Subresource field and it always corresponds to the version of the main resource."
+          type: string
+        time:
+          $ref: "#/components/schemas/Time"
+          description: "Time is the timestamp of when the ManagedFields entry was added. The timestamp will also be updated if a field is added, the manager changes any of the owned fields value or removes a field. The timestamp does not update when a field is removed from the entry because another manager took it over."
+
+    ObjectMeta:
+      type: object
+      description: "ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create."
+      properties:
+        annotations:
+          type: object
+          additionalProperties:
+            type: string
+          description: "Annotations is an unstructured key-value map stored with a resource that may be set by external tools. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations"
+        creationTimestamp:
+          $ref: "#/components/schemas/Time"
+        deletionGracePeriodSeconds:
+          type: integer
+          format: int64
+          description: "Number of seconds allowed for this object to gracefully terminate before removal."
+        deletionTimestamp:
+          $ref: "#/components/schemas/Time"
+        finalizers:
+          type: array
+          items:
+            type: string
+          description: "Must be empty before deletion."
+        generateName:
+          type: string
+          description: "Optional prefix for generating a unique name."
+        generation:
+          type: integer
+          format: int64
+          description: "A sequence number representing a specific generation of the desired state."
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          description: "Map of string keys and values used to organize and categorize objects."
+        managedFields:
+          type: array
+          items:
+            $ref: "#/components/schemas/ManagedFieldsEntry"
+          description: "Maps workflow-id and version to the set of fields managed by that workflow."
+        name:
+          type: string
+          description: "Unique name within a namespace. Required for resource creation."
+        namespace:
+          type: string
+          description: "Defines the space within which each name must be unique."
+        ownerReferences:
+          type: array
+          items:
+            $ref: "#/components/schemas/OwnerReference"
+          description: "List of objects depended by this object."
+        resourceVersion:
+          type: string
+          description: "Opaque value representing the internal version of this object."
+        selfLink:
+          type: string
+          description: "Deprecated: selfLink is no longer populated."
+        uid:
+          type: string
+          description: "Unique identifier for this object. Populated by the system."
+      Time:
+        type: string
+        format: date-time
+      ManagedFieldsEntry:
+        type: object
+        properties: { }
+      OwnerReference:
+        type: object
+        properties: { }
+
+    AggregationRule:
+      description: "AggregationRule describes how to locate ClusterRoles to aggregate into the ClusterRole."
+      type: object
+      properties:
+        clusterRoleSelectors:
+          description: "ClusterRoleSelectors holds a list of selectors which will be used to find ClusterRoles and create the rules. If any of the selectors match, then the ClusterRole's permissions will be added."
+          type: array
+          items:
+            $ref: "#/components/schemas/LabelSelector"
+          x-kubernetes-list-type: atomic
+
+    ClusterRole:
+      description: "ClusterRole is a cluster level, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding or ClusterRoleBinding."
+      type: object
+      properties:
+        aggregationRule:
+          $ref: "#/components/schemas/AggregationRule"
+          description: "AggregationRule is an optional field that describes how to build the Rules for this ClusterRole. If AggregationRule is set, then the Rules are controller-managed and direct changes to Rules will be overwritten by the controller."
+        apiVersion:
+          description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value and may reject unrecognized values."
+          type: string
+        kind:
+          description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated."
+          type: string
+        metadata:
+          $ref: "#/components/schemas/ObjectMeta"
+          description: "Standard object's metadata."
+        rules:
+          description: "Rules holds all the PolicyRules for this ClusterRole."
+          type: array
+          items:
+            $ref: "#/components/schemas/PolicyRule"
+          x-kubernetes-list-type: atomic
+      x-kubernetes-group-version-kind:
+        - group: "rbac.authorization.k8s.io"
+          kind: "ClusterRole"
+          version: "v1"
+
+    ClusterRoleBinding:
+      description: "ClusterRoleBinding references a ClusterRole but does not contain it. It can reference a ClusterRole in the global namespace and adds subject information via the Subject field."
+      type: object
+      required:
+        - roleRef
+      properties:
+        apiVersion:
+          description: "APIVersion defines the versioned schema of this representation of an object."
+          type: string
+        kind:
+          description: "Kind is a string value representing the REST resource this object represents."
+          type: string
+        metadata:
+          $ref: "#/components/schemas/ObjectMeta"
+          description: "Standard object's metadata."
+        roleRef:
+          $ref: "#/components/schemas/RoleRef"
+          description: "RoleRef can only reference a ClusterRole in the global namespace. If the RoleRef cannot be resolved, the Authorizer must return an error. This field is immutable."
+        subjects:
+          description: "Subjects holds references to the objects the role applies to."
+          type: array
+          items:
+            $ref: "#/components/schemas/Subject"
+          x-kubernetes-list-type: atomic
+      x-kubernetes-group-version-kind:
+        - group: "rbac.authorization.k8s.io"
+          kind: "ClusterRoleBinding"
+          version: "v1"
+
+    Role:
+      description: "Role is a namespaced, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding."
+      type: object
+      properties:
+        apiVersion:
+          description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values."
+          type: string
+        kind:
+          description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated."
+          type: string
+        metadata:
+          $ref: "#/components/schemas/ObjectMeta"
+          description: "Standard object's metadata."
+        rules:
+          description: "Rules holds all the PolicyRules for this Role."
+          type: array
+          items:
+            $ref: "#/components/schemas/PolicyRule"
+          x-kubernetes-list-type: atomic
+      x-kubernetes-group-version-kind:
+        - group: "rbac.authorization.k8s.io"
+          kind: "Role"
+          version: "v1"
+
+    RoleBinding:
+      description: "RoleBinding references a Role in the same namespace or a ClusterRole in the global namespace. It adds who information via Subjects and namespace information by which namespace it exists in."
+      type: object
+      required:
+        - roleRef
+      properties:
+        apiVersion:
+          description: "APIVersion defines the versioned schema of this representation of an object."
+          type: string
+        kind:
+          description: "Kind is a string value representing the REST resource this object represents."
+          type: string
+        metadata:
+          $ref: "#/components/schemas/ObjectMeta"
+          description: "Standard object's metadata."
+        roleRef:
+          $ref: "#/components/schemas/RoleRef"
+          description: "RoleRef can reference a Role in the current namespace or a ClusterRole in the global namespace. This field is immutable."
+        subjects:
+          description: "Subjects holds references to the objects the role applies to."
+          type: array
+          items:
+            $ref: "#/components/schemas/Subject"
+          x-kubernetes-list-type: atomic
+      x-kubernetes-group-version-kind:
+        - group: "rbac.authorization.k8s.io"
+          kind: "RoleBinding"
+          version: "v1"
+
+
