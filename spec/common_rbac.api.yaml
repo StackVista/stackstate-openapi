@@ -4,7 +4,7 @@ paths:
       tags:
         - rbac
         - instance
-      summary: "Create RBAC model"
+      summary: "Create instance RBAC model"
       operationId: ingestInstanceRBAC
       description: "Ingest RBAC data snapshots to build a scoped authorization model for data access for the server API"
       requestBody:
@@ -22,33 +22,6 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
   schemas:
-    StackElementNotFound:
-      type: object
-      discriminator:
-        propertyName: _type
-      properties:
-        _type:
-          type: string
-          enum:
-            - StackElementNotFound
-        objectType:
-          type: string
-        objectId:
-          type: string
-        message:
-          type: string
-        existedEarlierMs:
-          type: integer
-          format: int64
-        existsLaterMs:
-          type: integer
-          format: int64
-      required:
-        - _type
-        - objectType
-        - objectId
-        - message
-
     CreateInstanceRBACRequest:
       type: object
       description: "CreateInstanceRBACRequest holds the a snapshot of data or individual updates or RBAC data"
