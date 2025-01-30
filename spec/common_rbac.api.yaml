@@ -26,7 +26,7 @@ paths:
     post:
       tags:
         - rbac
-        - instance
+        - scope
       summary: "Create scope RBAC objects"
       operationId: ingestScopeRBAC
       description: "Ingest RBAC data snapshots to build a scoped authorization model for data access for the server API"
@@ -48,13 +48,29 @@ paths:
 components:
   schemas:
     RBACRequest:
+      discriminator:
+        propertyName: _type
+      description: "RBACRequest holds the data needed to create or update RBAC objects"
+      oneOf:
+        - $ref: "#/components/schemas/RBACSnapshotRequest"
+        - $ref: "#/components/schemas/RBACIncrementRequest"
+      required:
+        - _type
+    RBACSnapshotRequest:
       type: object
-      description: "CreateInstanceRBACRequest holds the a snapshot of data or individual updates or RBAC data"
+      description: "RBACSnapshotRequest holds a complete or partial snapshot of RBAC data"
       properties:
+        _type:
+          type: string
+          enum:
+            - RBACSnapshotRequest  
         collection_timestamp:
           type: integer
           format: int64
           description: "Timestamp where the data was collected by the RBAC Agent"
+        sequence:
+          type: integer
+          description: "Incremental number for snapshot batches. Helpful to detect incomplete snapshots that could lead to incorrect conclusions."
         cluster:
           type: string
           description: "Cluster name which identifies the scope of the RBAC data"
@@ -66,15 +82,36 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/RbacData"
-        delete_uids:
-          type: array
-          items:
-            description: "UID of the RBAC object."
-            type: string
       required:
+        - _type
         - collection_timestamp
+        - sequence
         - cluster
         - rbac_data
+    RBACIncrementRequest:
+      type: object
+      description: "CreateInstanceRBACRequest holds the a snapshot of data or individual updates or RBAC data"
+      properties:
+        _type:
+          type: string
+          enum:
+            - RBACIncrementRequest 
+        collection_timestamp:
+          type: integer
+          format: int64
+          description: "Timestamp where the data was collected by the RBAC Agent"
+        cluster:
+          type: string
+          description: "Cluster name which identifies the scope of the RBAC data"
+        changes:
+          type: array
+          items:
+            $ref: "#/components/schemas/RbacDataChanges"
+      required:
+        - _type
+        - collection_timestamp
+        - cluster
+        - changes
 
     StartSnapshot:
       type: object
@@ -99,7 +136,55 @@ components:
         - $ref: "#/components/schemas/RoleBinding"
       required:
         - kind
-
+    RbacDataChanges:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/CreateRbacData"
+        - $ref: "#/components/schemas/UpdateRbacData"
+        - $ref: "#/components/schemas/DeleteRbacData"
+      required:
+        - _type
+    CreateRbacData:
+      type: object
+      description: "Defines a RBAC resource that needs to be created"
+      properties:
+        _type:
+          type: string
+          enum:
+            - CreateRbacData
+        resource:
+          $ref: "#/components/schemas/RbacData"
+      required:
+        - _type
+        - resource
+    UpdateRbacData:
+      type: object
+      description: "Defines a RBAC resource that needs to be updated"
+      properties:
+        _type:
+          type: string
+          enum:
+            - UpdateRbacData
+        resource:
+          $ref: "#/components/schemas/RbacData"
+      required:
+        - _type
+        - resource
+    DeleteRbacData:
+      type: object
+      description: "Defines a RBAC resource that needs to be delete"
+      properties:
+        _type:
+          type: string
+          enum:
+            - DeleteRbacData
+        uid:
+          description: "UID of the referent."
+          type: string
+      required:
+        - _type
+        - uid
     PolicyRule:
       type: object
       description: "PolicyRule holds information that describes a policy rule."
