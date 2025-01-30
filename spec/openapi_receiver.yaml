@@ -1,0 +1,18 @@
+openapi: 3.0.3
+info:
+  description: |
+    This API documentation page describes the SUSE Observability receiver API.
+  version: 5.2.0
+  title: SUSE Observability Receiver API
+  license:
+    name: "Apache 2.0"
+    url: "https://www.apache.org/licenses/LICENSE-2.0.html"
+  contact:
+    name: StackState
+    email: info@stackstate.com
+    url: "https://stackstate.com"
+  x-logo:
+    url: "https://raw.githubusercontent.com/StackVista/stackstate-docs/master/resources/logo/StackState-Color-padding.png"
+    href: "#top"
+paths:
+  /dummy/dummy: { $ref: "common.api.yaml#/paths/%2Fdummy%2Fdummy" }
