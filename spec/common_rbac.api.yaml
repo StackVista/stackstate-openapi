@@ -2,7 +2,7 @@ paths:
   /stsAgent/rbac/instance:
     post:
       tags:
-        - instance
+        - receiverRbacInstance
       summary: "Create instance RBAC objects"
       operationId: ingestInstanceRBAC
       description: "Ingest RBAC data snapshots to build a scoped authorization model for data access for the server API"
@@ -24,7 +24,7 @@ paths:
   /stsAgent/rbac/scope:
     post:
       tags:
-        - scope
+        - receiverRbacScope
       summary: "Create scope RBAC objects"
       operationId: ingestScopeRBAC
       description: "Ingest RBAC data snapshots to build a scoped authorization model for data access for the server API"
