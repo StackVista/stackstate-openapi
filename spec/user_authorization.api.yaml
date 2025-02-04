@@ -1,0 +1,30 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: User Authorization API
+  version: "1.0.0"
+paths:
+  /user/authorization/for:
+    get:
+      tags:
+        - userAuthorization
+      summary: "Is the current user authorized for the provided permission"
+      description: "Is the current user authorized for the provided permission"
+      operationId: getUserAuthorizationFor
+      parameters:
+        - name: permission
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: "User is authorized"
+        "400":
+          description: "Provided permission does not exist"
+        "401":
+          description: "User is not authorized"
+        "403":
+          description: "User is forbidden for the provided permission"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"

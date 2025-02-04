@@ -23,6 +23,7 @@ info:
     href: "#top"
 paths:
   /security/ingestion/authorize: { $ref: "ingestion_api_key.api.yaml#/paths/%2Fsecurity%2Fingestion%2Fauthorize" }
+  /user/authorization/for: { $ref: "user_authorization.api.yaml#/paths/%2Fuser%2Fauthorization%2Ffor" }
   /agents/{agentId}/checkLease: { $ref: "agent_leases.api.yaml#/paths/%2Fagents%2F%7BagentId%7D%2FcheckLease" }
   # Dummy path to make sure that some types are included, which otherwise would be excluded
   /dummy/dummy: { $ref: "common.api.yaml#/paths/%2Fdummy%2Fdummy" }

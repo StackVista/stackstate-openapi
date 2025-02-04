@@ -77,6 +77,7 @@ paths:
   /user/profile/tokens: { $ref: "user_profile.api.yaml#/paths/%2Fuser%2Fprofile%2Ftokens" }
   /user/session/assumedRole: { $ref: "user_session.api.yaml#/paths/%2Fuser%2Fsession%2FassumedRole" }
   /user/session/availableRoles: { $ref: "user_session.api.yaml#/paths/%2Fuser%2Fsession%2FavailableRoles" }
+  /user/authorization/for: { $ref: "user_authorization.api.yaml#/paths/%2Fuser%2Fauthorization%2Ffor" }
   /events: { $ref: "events.api.yaml#/paths/%2Fevents" }
   /events/{eventId}: { $ref: "events.api.yaml#/paths/%2Fevents%2F%7BeventId%7D" }
   /eventsHistogram: { $ref: "events.api.yaml#/paths/%2FeventsHistogram" }
