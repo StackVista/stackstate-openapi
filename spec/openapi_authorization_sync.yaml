@@ -1,9 +1,9 @@
 openapi: 3.0.3
 info:
   description: |
-    This API documentation page describes the SUSE Observability receiver API.
+    This API documentation page describes the SUSE Observability authorization sync API.
   version: 5.2.0
-  title: SUSE Observability Receiver API
+  title: SUSE Observability Authorization Sync API
   license:
     name: "Apache 2.0"
     url: "https://www.apache.org/licenses/LICENSE-2.0.html"
@@ -15,10 +15,10 @@ info:
     url: "https://raw.githubusercontent.com/StackVista/stackstate-docs/master/resources/logo/StackState-Color-padding.png"
     href: "#top"
 paths:
-  /stsAgent/rbac/instance:
+  /rbac/instance:
     post:
       tags:
-        - receiverRbacInstance
+        - authorizationSyncRbacInstance
       summary: "Create instance RBAC objects"
       operationId: ingestInstanceRBAC
       description: "Ingest RBAC data snapshots to build a scoped authorization model for data access for the server API"
@@ -37,10 +37,10 @@ paths:
           description: "Forbidden"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-  /stsAgent/rbac/scope:
+  /rbac/scope:
     post:
       tags:
-        - receiverRbacScope
+        - authorizationSyncRbacScope
       summary: "Create scope RBAC objects"
       operationId: ingestScopeRBAC
       description: "Ingest RBAC data snapshots to build a scoped authorization model for data access for the server API"

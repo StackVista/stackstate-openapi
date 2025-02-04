@@ -16,6 +16,7 @@ openapi-validate:
   script:
     - nix develop -c openapi-generator-cli validate -i spec/openapi.yaml
     - nix develop -c openapi-generator-cli validate -i spec/openapi_admin.yaml
+    - nix develop -c openapi-generator-cli validate -i spec/openapi_authorization_sync.yaml
     - nix develop -c openapi-generator-cli validate -i spec/openapi_receiver.yaml
     - nix develop -c openapi-generator-cli validate -i spec_webhook/openapi.yaml
 
