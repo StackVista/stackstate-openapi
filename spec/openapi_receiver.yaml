@@ -17,3 +17,4 @@ info:
 paths:
   /stsAgent/rbac/instance: { $ref: "common_rbac.api.yaml#/paths/%2FstsAgent%2Frbac%2Finstance" }
   /stsAgent/rbac/scope: { $ref: "common_rbac.api.yaml#/paths/%2FstsAgent%2Frbac%2Fscope" }
+  /stsAgent/features: { $ref: "receiver_features.api.yaml#/paths/%2FstsAgent%2Ffeatures" }
