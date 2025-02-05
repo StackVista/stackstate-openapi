@@ -1,49 +1,11 @@
-paths:
-  /stsAgent/rbac/instance:
-    post:
-      tags:
-        - receiverRbacInstance
-      summary: "Create instance RBAC objects"
-      operationId: ingestInstanceRBAC
-      description: "Ingest RBAC data snapshots to build a scoped authorization model for data access for the server API"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RBACRequest"
-      responses:
-        "201":
-          description: "RBAC Data accepted"
-        "401":
-          description: "Unauthorized"
-        "403":
-          description: "Forbidden"
-        "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-  /stsAgent/rbac/scope:
-    post:
-      tags:
-        - receiverRbacScope
-      summary: "Create scope RBAC objects"
-      operationId: ingestScopeRBAC
-      description: "Ingest RBAC data snapshots to build a scoped authorization model for data access for the server API"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RBACRequest"
-      responses:
-        "201":
-          description: "RBAC Data accepted"
-        "401":
-          description: "Unauthorized"
-        "403":
-          description: "Forbidden"
-        "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
+  responses:
+    rbacError:
+      description: "Error while executing the request."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RBACResponseError"
   schemas:
     RBACRequest:
       discriminator:
@@ -53,6 +15,18 @@ components:
         - $ref: "#/components/schemas/RBACSnapshotRequest"
         - $ref: "#/components/schemas/RBACIncrementRequest"
       required:
+        - _type
+    RBACResponseError:
+      type: object
+      properties:
+        message:
+          type: string
+        _type:
+          type: string
+          enum:
+            - RBACResponseError
+      required:
+        - message
         - _type
     RBACSnapshotRequest:
       type: object

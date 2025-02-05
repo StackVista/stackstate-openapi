@@ -31,6 +31,8 @@ paths:
       responses:
         "201":
           description: "RBAC Data accepted"
+        "400":
+          $ref: "common_rbac.api.yaml#/components/responses/rbacError"
         "401":
           description: "Unauthorized"
         "403":
@@ -53,6 +55,8 @@ paths:
       responses:
         "201":
           description: "RBAC Data accepted"
+        "400":
+          $ref: "common_rbac.api.yaml#/components/responses/rbacError"
         "401":
           description: "Unauthorized"
         "403":

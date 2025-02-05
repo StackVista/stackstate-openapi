@@ -29,6 +29,7 @@ openapi-lint:
     - nix develop -c npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec/openapi.yaml
     - nix develop -c npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec/openapi_admin.yaml
     - nix develop -c npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec/openapi_receiver.yaml
+    - nix develop -c npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec/openapi_authorization_sync.yaml
     - nix develop -c npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec_webhook/openapi.yaml
 
 publish-docs:
