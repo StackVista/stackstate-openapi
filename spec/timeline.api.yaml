@@ -1,0 +1,178 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Timeline API
+  version: "1.0.0"
+paths:
+  /timeline/summary:
+    post:
+      tags:
+        - timeline
+      requestBody:
+        $ref: "#/components/requestBodies/timelineSummaryRequest"
+      summary: "Timeline summary"
+      description: "Event summary and aggregated health changes for a topology over a range of time"
+      operationId: getTimelineSummary
+      responses:
+        "200":
+          $ref: "#/components/responses/timelineSummaryResponse"
+        "500":
+          $ref: "#/components/responses/timelineSummaryErrorResponse"
+
+components:
+  requestBodies:
+    timelineSummaryRequest:
+      description: "Request for event summary and aggregated health over time"
+      required: true
+      content:
+        application/json:
+          schema: 
+            $ref: "#/components/schemas/TimelineSummaryRequest"
+  responses:
+    timelineSummaryResponse:
+      description: "Event summary and aggregated health changes over a range of time"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TimelineSummary"
+    timelineSummaryErrorResponse:
+      description: "Errors when computing events and health state"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TimelineSummaryError"
+  schemas:
+    TimelineSummaryRequest:
+      type: object
+      properties:
+        arguments:
+          type: object
+          discriminator:
+            propertyName: _type
+          oneOf:
+            - $ref: "#/components/schemas/ComponentViewArguments"
+            - $ref: "#/components/schemas/QueryViewArguments"
+        startTime:
+          $ref: "common.api.yaml#/components/schemas/Instant"
+        endTime:
+          $ref: "common.api.yaml#/components/schemas/Instant"
+        histogramBucketCount:
+          type: integer
+        eventFilters:
+          $ref: "#/components/schemas/EventFilters"
+      required:
+        - arguments
+        - startTime
+        - histogramBucketCount
+    ComponentViewArguments:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ComponentViewArguments
+        componentIdentifier:
+          type: string
+        queryTime:
+          $ref: "common.api.yaml#/components/schemas/Instant"
+      required:
+        - _type
+        - componentIdentifier
+    QueryViewArguments:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - QueryViewArguments
+        query:
+          type: string
+        queryTime:
+          $ref: "common.api.yaml#/components/schemas/Instant"
+      required:
+        - _type
+        - query
+    EventFilters:
+      type: object
+      properties:
+        types:
+          type: array
+          items:
+            type: string
+        tags:
+          type: array
+          items:
+            type: string
+        categories:
+          type: array
+          items:
+            type: string
+        sources:
+          type: array
+          items:
+            type: string
+    TimelineSummary:
+      type: object
+      properties:
+        buckets:
+          type: array
+          items:
+            $ref: "#/components/schemas/TimelineSummaryEventBucket"
+        healthHistory:
+          type: array
+          items:
+            $ref: "#/components/schemas/TimelineSummaryHealthChange"
+        fromTime:
+          type: integer
+          format: int64
+      required:
+        - buckets
+        - healthHistory
+        - fromTime
+    TimelineSummaryEventBucket:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - TimelineSummaryEventBucket
+        count:
+          type: integer
+          format: int64
+        startTimeEpochMillis:
+          type: integer
+          format: int64
+        endTimeEpochMillis:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - count
+        - startTimeEpochMillis
+      discriminator:
+        propertyName: _type
+    TimelineSummaryHealthChange:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - TimelineSummaryHealthChange
+        timestamp:
+          type: integer
+          format: int64
+        newHealth:
+          $ref: "common.api.yaml#/components/schemas/HealthStateValue"
+      required:
+        - _type
+        - timestamp
+        - newHealth
+      discriminator:
+        propertyName: _type
+    TimelineSummaryError:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message

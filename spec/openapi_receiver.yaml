@@ -15,6 +15,7 @@ info:
     url: "https://raw.githubusercontent.com/StackVista/stackstate-docs/master/resources/logo/StackState-Color-padding.png"
     href: "#top"
 paths:
+  /stsAgent/features: { $ref: "receiver_features.api.yaml#/paths/%2FstsAgent%2Ffeatures" }
   /stsAgent/rbac/instance:
     post:
       tags:
