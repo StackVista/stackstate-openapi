@@ -1,0 +1,54 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Receiver Features Api
+  version: "1.0.0"
+paths:
+  /stsAgent/rbac/instance:
+    post:
+      tags:
+        - receiverRbacInstance
+      summary: "Create instance RBAC objects"
+      operationId: ingestInstanceRBAC
+      description: "Ingest RBAC data snapshots to build a scoped authorization model for data access for the server API"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "common_rbac.api.yaml#/components/schemas/RBACRequest"
+      responses:
+        "201":
+          description: "RBAC Data accepted"
+        "400":
+          $ref: "common_rbac.api.yaml#/components/responses/rbacError"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /stsAgent/rbac/scope:
+    post:
+      tags:
+        - receiverRbacScope
+      summary: "Create scope RBAC objects"
+      operationId: ingestScopeRBAC
+      description: "Ingest RBAC data snapshots to build a scoped authorization model for data access for the server API"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "common_rbac.api.yaml#/components/schemas/RBACRequest"
+      responses:
+        "201":
+          description: "RBAC Data accepted"
+        "400":
+          $ref: "common_rbac.api.yaml#/components/responses/rbacError"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
