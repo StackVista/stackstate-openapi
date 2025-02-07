@@ -188,7 +188,6 @@ components:
             type: string
       required:
         - apiGroups
-        - nonResourceURLs
         - resources
         - verbs
     Subject:
