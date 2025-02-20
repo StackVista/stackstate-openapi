@@ -165,13 +165,6 @@ components:
       enum:
         - NodeId
         - Identifier
-    TopologySyncStatus:
-      type: string
-      enum:
-        - Running
-        - Resetting
-        - Deleting
-        - DeleteFailed
     TopologyStreamListItemWithErrorDetails:
       type: object
       properties:
@@ -208,8 +201,6 @@ components:
         errors:
           type: integer
           format: int64
-        status:
-          $ref: "#/components/schemas/TopologySyncStatus"
       required:
         - nodeId
         - name
@@ -217,7 +208,6 @@ components:
         - deletedRelations
         - createdComponents
         - deletedComponents
-        - status
         - errors
     InvalidSyncIdentifier:
       type: object
