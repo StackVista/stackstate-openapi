@@ -426,16 +426,15 @@ components:
         id:
           type: integer
           format: int64
-        componentTypeId:
-          type: integer
-          format: int64
+        type:
+          type: string
         name:
           type: string
       required:
         - _type
         - id
         - name
-        - componentTypeId
+        - type
     EventRelation:
       type: object
       properties:
@@ -446,9 +445,8 @@ components:
         id:
           type: integer
           format: int64
-        relationTypeId:
-          type: integer
-          format: int64
+        type:
+          type: string
         name:
           type: string
         source:
@@ -460,7 +458,7 @@ components:
       required:
         - _type
         - id
-        - relationTypeId
+        - type
         - source
         - target
         - dependencyDirection
