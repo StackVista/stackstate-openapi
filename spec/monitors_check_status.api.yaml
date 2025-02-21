@@ -257,10 +257,6 @@ components:
           type: string
         iconbase64:
           type: string
-        relatedResources:
-          type: array
-          items:
-            $ref: "component_types.api.yaml#/components/schemas/ComponentTypeRelatedResources"
         namespace:
           type: string
         cluster:
@@ -270,7 +266,6 @@ components:
         - identifier
         - name
         - type
-        - relatedResources
     MonitorCheckStatusRelatedFailuresTopology:
       properties:
         distance:
