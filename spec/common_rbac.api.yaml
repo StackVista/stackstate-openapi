@@ -187,8 +187,6 @@ components:
           items:
             type: string
       required:
-        - apiGroups
-        - resources
         - verbs
     Subject:
       type: object
