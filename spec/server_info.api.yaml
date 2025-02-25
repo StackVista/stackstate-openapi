@@ -35,6 +35,8 @@ components:
           enum:
             - Saas
             - SelfHosted
+        platformVersion:
+          $ref: "#/components/schemas/SemanticVersion"
     ServerVersion:
       type: object
       required:
@@ -57,3 +59,7 @@ components:
           type: string
         isDev:
           type: boolean
+    SemanticVersion:
+      type: string
+      example: "1.2.3-alpha.1+build5678"
+      description: "The version value is a semantic version, based on the official Semantic Versioning spec (https://semver.org/)."
