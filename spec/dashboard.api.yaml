@@ -1,0 +1,220 @@
+openapi: 3.0.3
+info:
+  title: Dashboards API
+  version: "1.0.0"
+paths:
+  /dashboards:
+    get:
+      tags:
+        - dashboards
+      summary: "Get list of dashboards"
+      description: "Get a list of dashboards, optionally filtered by name."
+      operationId: getDashboards
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+            description: "Filter dashboards by name."
+      responses:
+        "200":
+          description: "A list of dashboards"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Dashboard"
+        "400":
+          description: "Invalid query parameters"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardInvalidQueryError"
+        "401":
+          description: "User is not authorized"
+        "403":
+          description: "User is forbidden for the provided permission"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    post:
+      tags:
+        - dashboards
+      summary: "Create a new dashboard"
+      description: "Save a new dashboard."
+      operationId: saveDashboard
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dashboard"
+      responses:
+        "201":
+          description: "Dashboard created"
+        "400":
+          description: "Invalid dashboard data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardCreateError"
+        "401":
+          description: "User is not authorized"
+        "403":
+          description: "User is forbidden for the provided permission"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /dashboards/{dashboardId}:
+    get:
+      tags:
+        - dashboards
+      summary: "Get a single dashboard"
+      description: "Get a dashboard by its ID."
+      operationId: getDashboard
+      parameters:
+        - name: dashboardId
+          in: path
+          required: true
+          schema:
+            type: string
+            description: "The ID of the dashboard"
+      responses:
+        "200":
+          description: "A dashboard"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dashboard"
+        "400":
+          description: "Invalid dashboard ID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardInvalidQueryError"
+        "401":
+          description: "User is not authorized"
+        "403":
+          description: "User is forbidden for the provided permission"
+        "404":
+          description: "Dashboard not found"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    put:
+      tags:
+        - dashboards
+      summary: "Update a dashboard"
+      description: "Update an existing dashboard."
+      operationId: updateDashboard
+      parameters:
+        - name: dashboardId
+          in: path
+          required: true
+          schema:
+            type: string
+            description: "The ID of the dashboard"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dashboard"
+      responses:
+        "200":
+          description: "Dashboard updated"
+        "400":
+          description: "Invalid dashboard data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardCreateError"
+        "401":
+          description: "User is not authorized"
+        "403":
+          description: "User is forbidden for the provided permission"
+        "404":
+          description: "Dashboard not found"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    delete:
+      tags:
+        - dashboards
+      summary: "Delete a dashboard"
+      description: "Delete a dashboard by its ID."
+      operationId: deleteDashboard
+      parameters:
+        - name: dashboardId
+          in: path
+          required: true
+          schema:
+            type: string
+            description: "The ID of the dashboard"
+      responses:
+        "200":
+          description: "Dashboard deleted"
+        "400":
+          description: "Invalid dashboard ID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardInvalidQueryError"
+        "401":
+          description: "User is not authorized"
+        "403":
+          description: "User is forbidden for the provided permission"
+        "404":
+          description: "Dashboard not found"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
+components:
+  schemas:
+    Dashboard:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Unique identifier for the dashboard"
+        name:
+          type: string
+          description: "Name of the dashboard"
+        description:
+          type: string
+          description: "Description of the dashboard"
+        json:
+          type: string
+          description: "JSON content for the dashboard"
+        starred:
+          type: boolean
+          description: "Whether the dashboard has been starred"
+      required:
+        - name
+        - json
+
+    DashboardCreateError:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - DashboardCreateError
+        errorMessage:
+          type: string
+          description: "A detailed error message describing why the dashboard could not be saved."
+      required:
+        - _type
+        - errorMessage
+
+    DashboardInvalidQueryError:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - DashboardInvalidQueryError
+        errorMessage:
+          type: string
+          description: "A detailed error message describing why the query was invalid."
+      required:
+        - _type
+        - errorMessage
