@@ -1,886 +1,187 @@
 components:
   schemas:
     Dashboard:
-      type: object
-      required:
-        - kind
-        - metadata
-        - spec
       properties:
         kind:
-          $ref: '#/components/schemas/KindDashboard'
+          $ref: '#/components/schemas/Kind'
         metadata:
           $ref: '#/components/schemas/ProjectMetadata'
         spec:
           $ref: '#/components/schemas/DashboardSpec'
-    DashboardSpec:
       type: object
-      required:
-        - panels
-        - layouts
-        - duration
+    DashboardSpec:
       properties:
-        display:
-          $ref: '#/components/schemas/Display'
         datasources:
-          type: object
           additionalProperties:
             $ref: '#/components/schemas/DatasourceSpec'
-        variables:
-          type: array
-          items:
-            $ref: '#/components/schemas/Variable'
-        panels:
+          description: Datasources is an optional list of datasource definition.
           type: object
-          additionalProperties:
-            $ref: '#/components/schemas/Panel'
-        layouts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Layout'
+        display:
+          $ref: '#/components/schemas/Display'
         duration:
           $ref: '#/components/schemas/Duration'
+        layouts:
+          items:
+            $ref: '#/components/schemas/Layout'
+          type: array
+        panels:
+          additionalProperties:
+            $ref: '#/components/schemas/Panel'
+          type: object
         refreshInterval:
           $ref: '#/components/schemas/Duration'
-    Datasource:
-      description: |-
-        Datasource will be the datasource you can define in your project/namespace
-        This is a resource that won't be shared across projects.
-        A Dashboard can use it only if it is in the same project.
-    DatasourceInterface: {}
-    DatasourceSpec:
+        variables:
+          items:
+            $ref: '#/components/schemas/Variable'
+          type: array
       type: object
-      required:
-        - default
-        - plugin
+    DatasourceSpec:
       properties:
-        display:
-          type: object
-          allOf:
-            - $ref: '#/components/schemas/Display'
-          nullable: true
         default:
           type: boolean
+        display:
+          $ref: '#/components/schemas/Display'
         plugin:
           $ref: '#/components/schemas/Plugin'
-    DefaultValue:
       type: object
-      required:
-        - singleValue
-        - sliceValues
-      properties:
-        singleValue:
-          type: string
-        sliceValues:
-          type: array
-          items:
-            type: string
     Display:
-      type: object
-      required:
-        - hidden
       properties:
-        name:
-          type: string
         description:
           type: string
-        hidden:
-          type: boolean
+        name:
+          type: string
+      type: object
     Duration:
       description: |-
-        Duration wraps time.Duration. It is used to parse the custom duration format
-        from YAML.
-        This type should not propagate beyond the scope of input/output processing.
-        +kubebuilder:validation:Type=string
-        +kubebuilder:validation:Format=duration
-        +kubebuilder:validation:Pattern=`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$`
-      type: string
-      pattern: ^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$
-    EphemeralDashboard: {}
-    EphemeralDashboardSpec: {}
-    EphemeralDashboardSpecBase: {}
-    Folder: {}
-    FolderSpec: {}
-    GlobalDatasource:
-      description: |-
-        GlobalDatasource is the struct representing the datasource shared to everybody.
-        Any Dashboard can reference it.
-    GlobalRole:
-      description: GlobalRole is the struct representing the role shared to everybody.
-    GlobalRoleBinding:
-      description: GlobalRoleBinding is the struct representing the roleBinding shared to everybody.
-    GlobalSecret:
-      type: object
-      required:
-        - kind
-        - metadata
-        - spec
-      properties:
-        kind:
-          $ref: '#/components/schemas/Kind'
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-        spec:
-          $ref: '#/components/schemas/SecretSpec'
-    GlobalVariable:
-      description: GlobalVariable is a global variable that be used everywhere regardless the project.
-      type: object
-      required:
-        - kind
-        - metadata
-        - spec
-      properties:
-        kind:
-          $ref: '#/components/schemas/Kind'
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-        spec:
-          $ref: '#/components/schemas/VariableSpec'
-    GridItem:
-      type: object
-      required:
-        - x
-        - "y"
-        - width
-        - height
-        - content
-      properties:
-        x:
-          type: integer
-        "y":
-          type: integer
-        width:
-          type: integer
-        height:
-          type: integer
-        content:
-          $ref: '#/components/schemas/JSONRef'
-    GridLayoutCollapse:
-      type: object
-      required:
-        - open
-      properties:
-        open:
-          type: boolean
-    GridLayoutDisplay:
-      type: object
-      required:
-        - title
-      properties:
-        title:
-          type: string
-        collapse:
-          $ref: '#/components/schemas/GridLayoutCollapse'
-    GridLayoutSpec:
-      type: object
-      required:
-        - display
-      properties:
-        display:
-          $ref: '#/components/schemas/GridLayoutDisplay'
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/GridItem'
-    Health:
-      description: Health is the struct that provides the health information of the API
-      type: object
-      required:
-        - buildTime
-        - version
-        - commit
-        - database
-      properties:
-        buildTime:
-          type: string
-        version:
-          type: string
-        commit:
-          type: string
-        database:
-          type: boolean
-    Hidden:
-      description: Hidden special type for storing secrets.
-    JSONRef:
-      type: object
-      required:
-        - $ref
-      properties:
-        $ref:
-          description: |-
-            Ref is the JSON reference. That's the only thing that is used during the marshalling / unmarshalling process.
-            Other attributes are ignored during these processes.
-          type: string
+        A Duration represents the elapsed time between two instants
+        as an int64 nanosecond count. The representation limits the
+        largest representable duration to approximately 290 years.
+      format: int64
+      type: integer
     Kind:
       type: string
-      enum:
-        - TextVariable
-        - ListVariable
-    KindDashboard:
-      type: string
-      allOf:
-        - $ref: '#/components/schemas/Kind'
-        - enum:
-            - Dashboard
-    KindDatasource:
-      type: string
-      allOf:
-        - $ref: '#/components/schemas/Kind'
-        - enum:
-            - Datasource
-    KindEphemeralDashboard:
-      type: string
-      allOf:
-        - $ref: '#/components/schemas/Kind'
-        - enum:
-            - EphemeralDashboard
-    KindFolder:
-      type: string
-      allOf:
-        - $ref: '#/components/schemas/Kind'
-        - enum:
-            - Folder
-    KindGlobalDatasource:
-      type: string
-      allOf:
-        - $ref: '#/components/schemas/Kind'
-        - enum:
-            - GlobalDatasource
-    KindGlobalRole:
-      type: string
-      allOf:
-        - $ref: '#/components/schemas/Kind'
-        - enum:
-            - GlobalRole
-    KindGlobalRoleBinding:
-      type: string
-      allOf:
-        - $ref: '#/components/schemas/Kind'
-        - enum:
-            - GlobalRoleBinding
-    KindGlobalSecret:
-      type: string
-      allOf:
-        - $ref: '#/components/schemas/Kind'
-        - enum:
-            - GlobalSecret
-    KindGlobalVariable:
-      type: string
-      allOf:
-        - $ref: '#/components/schemas/Kind'
-        - enum:
-            - GlobalVariable
-    KindProject:
-      type: string
-      allOf:
-        - $ref: '#/components/schemas/Kind'
-        - enum:
-            - Project
-    KindRole:
-      type: string
-      allOf:
-        - $ref: '#/components/schemas/Kind'
-        - enum:
-            - Role
-    KindRoleBinding:
-      type: string
-      allOf:
-        - $ref: '#/components/schemas/Kind'
-        - enum:
-            - RoleBinding
-    KindSecret:
-      type: string
-      allOf:
-        - $ref: '#/components/schemas/Kind'
-        - enum:
-            - Secret
-    KindUser:
-      type: string
-      allOf:
-        - $ref: '#/components/schemas/Kind'
-        - enum:
-            - User
-    KindVariable:
-      type: string
-      allOf:
-        - $ref: '#/components/schemas/Kind'
-        - enum:
-            - Variable
     Layout:
-      type: object
-      required:
-        - kind
-        - spec
       properties:
         kind:
           $ref: '#/components/schemas/LayoutKind'
         spec:
           $ref: '#/components/schemas/LayoutSpec'
+      type: object
     LayoutKind:
       type: string
-      enum:
-        - Grid
     LayoutSpec:
-      $ref: '#/components/schemas/GridLayoutSpec'
-    Link:
       type: object
-      required:
-        - url
+    Link:
       properties:
         name:
-          type: string
-        url:
-          type: string
-        tooltip:
           type: string
         renderVariables:
           type: boolean
         targetBlank:
           type: boolean
-    ListSpec:
+        tooltip:
+          type: string
+        url:
+          type: string
       type: object
-      required:
-        - allowAllValue
-        - allowMultiple
-        - plugin
-      properties:
-        display:
-          $ref: '#/components/schemas/Display'
-        defaultValue:
-          $ref: '#/components/schemas/DefaultValue'
-        allowAllValue:
-          description: Whether or not to append the "All" value that allows selecting all available values at once.
-          type: boolean
-        allowMultiple:
-          description: Whether or not to allow multi-selection of values.
-          type: boolean
-        customAllValue:
-          description: CustomAllValue is a custom value that will be used if AllowAllValue is true and if then `all` is selected
-          type: string
-        capturingRegexp:
-          description: |-
-            CapturingRegexp is the regexp used to catch and filter the result of the query.
-            If empty, then nothing is filtered. That's the equivalent of setting CapturingRegexp with (.*)
-          type: string
-        sort:
-          $ref: '#/components/schemas/Sort'
-        plugin:
-          $ref: '#/components/schemas/Plugin'
-    ListVariableSpec:
-      type: object
-      properties:
-        name:
-          type: string
-      allOf:
-        - $ref: '#/components/schemas/ListSpec'
-        - required:
-            - name
     Metadata:
-      type: object
-      required:
-        - name
-        - createdAt
-        - updatedAt
-        - version
       properties:
-        name:
-          $ref: '#/components/schemas/metadataName'
         createdAt:
-          description: |-
-            Placeholder values required to pass the CUE evaluation, as those
-            attributes are flagged as mandatory in the (Go) datamodel but
-            populated by the server in the end.
+          format: date-time
           type: string
-          allOf:
-            - $ref: '#/components/schemas/Time'
-            - enum:
-                - "0001-01-01T00:00:00Z"
-        updatedAt:
-          type: string
-          allOf:
-            - $ref: '#/components/schemas/Time'
-            - enum:
-                - "0001-01-01T00:00:00Z"
-        version:
-          type: integer
-          enum:
-            - 0
-    ModuleMetadata:
-      type: object
-      required:
-        - name
-        - version
-      properties:
         name:
           type: string
+        updatedAt:
+          format: date-time
+          type: string
         version:
-          type: string
-    ModuleSpec: {}
-    NativeProvider:
+          format: uint64
+          type: integer
       type: object
-      properties:
-        password:
-          type: string
-    OAuthProvider:
-      type: object
-      properties:
-        issuer:
-          type: string
-        email:
-          type: string
-        subject:
-          type: string
     Panel:
-      type: object
       properties:
         kind:
           type: string
-          enum:
-            - Panel
         spec:
           $ref: '#/components/schemas/PanelSpec'
-      allOf:
-        - required:
-            - kind
-            - spec
-        - required:
-            - kind
-    PanelDisplay:
       type: object
-      required:
-        - name
+    PanelDisplay:
       properties:
-        name:
-          type: string
         description:
           type: string
-    PanelSpec:
+        name:
+          type: string
       type: object
-      required:
-        - display
-        - plugin
+    PanelSpec:
       properties:
         display:
           $ref: '#/components/schemas/PanelDisplay'
+        links:
+          items:
+            $ref: '#/components/schemas/Link'
+          type: array
         plugin:
           $ref: '#/components/schemas/Plugin'
         queries:
-          type: array
           items:
             $ref: '#/components/schemas/Query'
-        links:
           type: array
-          items:
-            $ref: '#/components/schemas/Link'
-    PartialEntity:
       type: object
-      required:
-        - kind
-        - metadata
-      properties:
-        kind:
-          $ref: '#/components/schemas/Kind'
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-        spec:
-          type: object
-    PartialProjectEntity:
-      type: object
-      required:
-        - kind
-        - metadata
-      properties:
-        kind:
-          $ref: '#/components/schemas/Kind'
-        metadata:
-          $ref: '#/components/schemas/ProjectMetadata'
-        spec:
-          type: object
-    Permission: {}
     Plugin:
-      type: object
-      required:
-        - kind
-        - spec
       properties:
         kind:
           type: string
-        spec: {}
-    PluginModule:
-      type: object
-      required:
-        - kind
-        - metadata
-        - spec
-      properties:
-        kind:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/ModuleMetadata'
         spec:
-          $ref: '#/components/schemas/ModuleSpec'
-    PluginModuleKind:
-      type: string
-      enum:
-        - PluginModule
-    Project: {}
-    ProjectMetadata:
-      description: ProjectMetadata is the metadata struct for resources that belongs to a project.
+          type: object
       type: object
-      allOf:
-        - $ref: '#/components/schemas/Metadata'
-        - $ref: '#/components/schemas/ProjectMetadataWrapper'
+    ProjectMetadata:
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        name:
+          type: string
+        project:
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        version:
+          format: uint64
+          type: integer
+      title: ProjectMetadata is the metadata struct for resources that belongs to a project.
+      type: object
     ProjectMetadataWrapper:
       description: |-
         This wrapping struct is required to allow defining a custom unmarshall on Metadata
         without breaking the Project attribute (the fact Metadata is injected line in
         ProjectMetadata caused Project string to be ignored when unmarshalling)
-      type: object
-      required:
-        - project
       properties:
         project:
-          $ref: '#/components/schemas/metadataName'
-    ProjectSpec:
+          type: string
       type: object
-      properties:
-        display:
-          type: object
-          allOf:
-            - $ref: '#/components/schemas/Display'
-          nullable: true
-    PublicAuthorization:
-      description: |-
-        PublicAuthorization is the public struct of Authorization.
-        It's used when the API returns a response to a request
-      type: object
-      required:
-        - type
-      properties:
-        type:
-          type: string
-        credentials:
-          $ref: '#/components/schemas/Hidden'
-        credentialsFile:
-          type: string
-    PublicBasicAuth:
-      description: |-
-        PublicBasicAuth is the public struct of BasicAuth.
-        It's used when the API returns a response to a request
-      type: object
-      required:
-        - username
-      properties:
-        username:
-          type: string
-        password:
-          $ref: '#/components/schemas/Hidden'
-        passwordFile:
-          type: string
-    PublicGlobalSecret:
-      type: object
-      required:
-        - kind
-        - metadata
-        - spec
-      properties:
-        kind:
-          $ref: '#/components/schemas/Kind'
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-        spec:
-          $ref: '#/components/schemas/PublicSecretSpec'
-    PublicNativeProvider:
-      type: object
-      properties:
-        password:
-          $ref: '#/components/schemas/Hidden'
-    PublicOAuth:
-      type: object
-      required:
-        - clientID
-        - clientSecret
-        - clientSecretFile
-        - tokenURL
-        - scopes
-        - endpointParams
-        - authStyle
-      properties:
-        clientID:
-          $ref: '#/components/schemas/Hidden'
-        clientSecret:
-          $ref: '#/components/schemas/Hidden'
-        clientSecretFile:
-          type: string
-        tokenURL:
-          type: string
-        scopes:
-          type: array
-          items:
-            type: string
-        endpointParams:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-        authStyle:
-          type: integer
-    PublicSecret:
-      type: object
-      required:
-        - kind
-        - metadata
-        - spec
-      properties:
-        kind:
-          $ref: '#/components/schemas/Kind'
-        metadata:
-          $ref: '#/components/schemas/ProjectMetadata'
-        spec:
-          $ref: '#/components/schemas/PublicSecretSpec'
-    PublicSecretSpec:
-      type: object
-      properties:
-        basicAuth:
-          type: object
-          allOf:
-            - $ref: '#/components/schemas/PublicBasicAuth'
-          nullable: true
-        authorization:
-          description: The HTTP authorization credentials for the targets.
-          type: object
-          allOf:
-            - $ref: '#/components/schemas/PublicAuthorization'
-          nullable: true
-        oauth:
-          description: The Oauth configuration for the targets.
-          type: object
-          allOf:
-            - $ref: '#/components/schemas/PublicOAuth'
-          nullable: true
-        tlsConfig:
-          description: TLSConfig to use to connect to the targets.
-          type: object
-          allOf:
-            - $ref: '#/components/schemas/PublicTLSConfig'
-          nullable: true
-    PublicTLSConfig:
-      description: |-
-        PublicTLSConfig is the public struct of TLSConfig.
-        It's used when the API returns a response to a request
-      type: object
-      required:
-        - insecureSkipVerify
-      properties:
-        ca:
-          $ref: '#/components/schemas/Hidden'
-        cert:
-          $ref: '#/components/schemas/Hidden'
-        key:
-          $ref: '#/components/schemas/Hidden'
-        caFile:
-          type: string
-        certFile:
-          type: string
-        keyFile:
-          type: string
-        serverName:
-          type: string
-        insecureSkipVerify:
-          type: boolean
-        minVersion:
-          type: string
-        maxVersion:
-          type: string
-    PublicUser:
-      type: object
-      required:
-        - kind
-        - metadata
-        - spec
-      properties:
-        kind:
-          $ref: '#/components/schemas/Kind'
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-        spec:
-          $ref: '#/components/schemas/PublicUserSpec'
-    PublicUserSpec:
-      type: object
-      properties:
-        firstName:
-          type: string
-        lastName:
-          type: string
-        nativeProvider:
-          $ref: '#/components/schemas/PublicNativeProvider'
-        oauthProviders:
-          type: array
-          items:
-            $ref: '#/components/schemas/OAuthProvider'
     Query:
-      type: object
-      required:
-        - kind
-        - spec
       properties:
         kind:
           type: string
         spec:
           $ref: '#/components/schemas/QuerySpec'
-    QuerySpec:
       type: object
-      required:
-        - plugin
+    QuerySpec:
       properties:
         plugin:
           $ref: '#/components/schemas/Plugin'
-    Role:
-      description: |-
-        Role will be the role you can define in your project/namespace
-        This is a resource that won't be shared across projects.
-    RoleBinding:
-      description: |-
-        RoleBinding will be the roleBinding you can define in your project/namespace
-        This is a resource that won't be shared across projects.
-    RoleBindingInterface: {}
-    RoleBindingSpec: {}
-    RoleInterface: {}
-    RoleSpec:
       type: object
-      required:
-        - permissions
-      properties:
-        permissions:
-          description: List of permissions owned by the role
-          type: array
-          items:
-            $ref: '#/components/schemas/Permission'
-    Secret:
-      type: object
-      required:
-        - kind
-        - metadata
-        - spec
-      properties:
-        kind:
-          $ref: '#/components/schemas/Kind'
-        metadata:
-          $ref: '#/components/schemas/ProjectMetadata'
-        spec:
-          $ref: '#/components/schemas/SecretSpec'
-    SecretSpec: {}
-    Sort:
-      type: string
-      enum:
-        - none
-        - alphabetical-asc
-        - alphabetical-desc
-        - numerical-asc
-        - numerical-desc
-        - alphabetical-ci-asc
-        - alphabetical-ci-desc
-    Subject: {}
-    TextSpec:
-      type: object
-      required:
-        - value
-      properties:
-        display:
-          $ref: '#/components/schemas/Display'
-        value:
-          type: string
-        constant:
-          type: boolean
-    TextVariableSpec:
-      type: object
-      properties:
-        name:
-          type: string
-      allOf:
-        - $ref: '#/components/schemas/TextSpec'
-        - required:
-            - name
-    Time:
-      type: string
-      format: date-time
-    User: {}
-    UserSpec:
-      type: object
-      properties:
-        firstName:
-          type: string
-        lastName:
-          type: string
-        nativeProvider:
-          $ref: '#/components/schemas/NativeProvider'
-        oauthProviders:
-          type: array
-          items:
-            $ref: '#/components/schemas/OAuthProvider'
     Variable:
-      type: object
-      required:
-        - kind
       properties:
         kind:
           $ref: '#/components/schemas/Kind'
         spec:
-          type: object
-          oneOf:
-            - $ref: '#/components/schemas/TextVariableSpec'
-            - $ref: '#/components/schemas/ListVariableSpec'
-    VariableInterface: {}
-    VariableSpec:
+          $ref: '#/components/schemas/variableSpec'
       type: object
-      required:
-        - kind
-        - spec
+    variableSpec:
       properties:
-        kind:
-          $ref: '#/components/schemas/Kind'
-        spec: {}
-    View:
+        GetName:
+          description: GetName returns the name of the variable. It will be used to reference the variable in others
+          type: string
       type: object
-      required:
-        - project
-        - dashboard
-        - renderTimeSecs
-        - renderErrors
-      properties:
-        project:
-          description: The resource being viewed.
-          type: string
-        dashboard:
-          type: string
-        renderTimeSecs:
-          description: Stats about the view.
-          type: number
-          format: double
-        renderErrors:
-          type: integer
-    enumKind:
-      type: string
-      enum:
-        - Dashboard
-        - Datasource
-        - EphemeralDashboard
-        - Folder
-        - GlobalDatasource
-        - GlobalRole
-        - GlobalRoleBinding
-        - GlobalVariable
-        - GlobalSecret
-        - Project
-        - Role
-        - RoleBinding
-        - Secret
-        - User
-        - Variable
-    metadataName:
-      description: Extra constraints for the name attributes, that reproduce validation we have on the Golang side.
-      type: string
-      minLength: 1
-      maxLength: 75
-      pattern: ^[a-zA-Z0-9_.-]+$
