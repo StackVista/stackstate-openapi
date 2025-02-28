@@ -25,7 +25,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/DashboardContainer"
+                  $ref: "#/components/schemas/DashboardReadSchema"
         "400":
           description: "Invalid query parameters."
           content:
@@ -49,14 +49,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/DashboardContainer"
+              $ref: "#/components/schemas/DashboardWriteSchema"
       responses:
         "201":
           description: "Dashboard created."
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DashboardContainer"
+                $ref: "#/components/schemas/DashboardReadSchema"
         "400":
           description: "Invalid dashboard data."
           content:
@@ -84,7 +84,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DashboardContainer"
+                $ref: "#/components/schemas/DashboardReadSchema"
         "401":
           description: "User is not authorized."
         "403":
@@ -106,14 +106,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/DashboardContainer"
+              $ref: "#/components/schemas/DashboardWriteSchema"
       responses:
         "200":
           description: "Dashboard updated."
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DashboardContainer"
+                $ref: "#/components/schemas/DashboardReadSchema"
         "400":
           description: "Invalid dashboard data."
           content:
@@ -270,16 +270,11 @@ components:
       enum: [ readDashboard, editDashboard ]
       description: "Permission level for sharing: read-only or edit access"
 
-    DashboardContainer:
+    DashboardWriteSchema:
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
-          readOnly: true
         identifier:
           $ref: "#/components/schemas/DashboardId"
-          readOnly: true
         name:
           type: string
           description: "Name of the dashboard"
@@ -288,20 +283,34 @@ components:
           description: "Description of the dashboard"
         scope:
           $ref: "#/components/schemas/DashboardScope"
-        ownerId:
-          type: string
-          description: "Identifier of the user who owns this dashboard. Set automatically for personal dashboards. Unset for global dashboards."
-          readOnly: true
         dashboard:
           $ref: "common_perses.api.yaml#/components/schemas/Dashboard"
-        lastUpdateTimestamp:
-          type: integer
-          format: int64
-          description: "When the dashboard was last updated"
-          readOnly: true
       required:
         - name
+        - description
+        - scope
         - dashboard
+
+    DashboardReadSchema:
+      allOf:
+        - $ref: "#/components/schemas/DashboardWriteSchema"
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              readOnly: true
+            ownerId:
+              type: string
+              description: "Identifier of the user who owns this dashboard. Set automatically for personal dashboards. Unset for global dashboards."
+              readOnly: true
+            lastUpdateTimestamp:
+              type: integer
+              format: int64
+          required:
+            - id
+            - ownerId
+            - lastUpdateTimestamp
 
     DashboardShareRequest:
       type: object
