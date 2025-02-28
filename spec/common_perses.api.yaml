@@ -60,17 +60,89 @@ components:
       type: integer
     Kind:
       type: string
+    LayoutKind:
+      type: string
+      enum:
+        - Grid
+      description: "Defines the layout type. Currently, only 'Grid' is supported."
+    JSONRef:
+      type: object
+      properties:
+        $ref:
+          type: string
+          description: "The JSON reference pointing to the actual object."
+        path:
+          type: array
+          items:
+            type: string
+          description: "A list of strings used to navigate to the referenced object."
+        object:
+          type: object
+          description: "The actual referenced object (not included in the OpenAPI spec, but used internally)."
+      required:
+        - $ref
+    GridLayoutCollapse:
+      type: object
+      properties:
+        open:
+          type: boolean
+          description: "Indicates whether the grid layout is collapsed."
+      required:
+        - open
+    GridLayoutDisplay:
+      type: object
+      properties:
+        title:
+          type: string
+          description: "The title of the grid layout."
+        collapse:
+          $ref: '#/components/schemas/GridLayoutCollapse'
+      required:
+        - title
+    GridItem:
+      type: object
+      properties:
+        x:
+          type: integer
+          description: "The x-coordinate of the item in the grid."
+        y:
+          type: integer
+          description: "The y-coordinate of the item in the grid."
+        width:
+          type: integer
+          description: "The width of the item in the grid."
+        height:
+          type: integer
+          description: "The height of the item in the grid."
+        content:
+          $ref: '#/components/schemas/JSONRef'
+      required:
+        - x
+        - y
+        - width
+        - height
+        - content
+    LayoutSpec:
+      type: object
+      properties:
+        display:
+          $ref: '#/components/schemas/GridLayoutDisplay'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GridItem'
+      required:
+        - items
     Layout:
+      type: object
       properties:
         kind:
           $ref: '#/components/schemas/LayoutKind'
         spec:
           $ref: '#/components/schemas/LayoutSpec'
-      type: object
-    LayoutKind:
-      type: string
-    LayoutSpec:
-      type: object
+      required:
+        - kind
+        - spec
     Link:
       properties:
         name:
