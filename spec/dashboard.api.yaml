@@ -74,10 +74,10 @@ paths:
       tags:
         - dashboards
       summary: "Get a single dashboard"
-      description: "Get a dashboard by its ID."
+      description: "Get a dashboard by its identifier."
       operationId: getDashboard
       parameters:
-        - $ref: "#/components/parameters/dashboardId"
+        - $ref: "#/components/parameters/dashboardIdentifier"
       responses:
         "200":
           description: "A dashboard"
@@ -97,10 +97,10 @@ paths:
       tags:
         - dashboards
       summary: "Update a dashboard"
-      description: "Update an existing dashboard."
+      description: "Update an existing dashboard by its identifier."
       operationId: updateDashboard
       parameters:
-        - $ref: "#/components/parameters/dashboardId"
+        - $ref: "#/components/parameters/dashboardIdentifier"
       requestBody:
         required: true
         content:
@@ -132,16 +132,11 @@ paths:
       tags:
         - dashboards
       summary: "Delete a dashboard"
-      description: "Delete a dashboard by its ID. Only personal dashboards can be deleted. The dashboard will also be
+      description: "Delete a dashboard by its identifier. Only personal dashboards can be deleted. The dashboard will also be
       be removed from other users/groups starred dashboards."
       operationId: deleteDashboard
       parameters:
-        - name: dashboardId
-          in: path
-          required: true
-          schema:
-            type: string
-            description: "The ID of the dashboard."
+        - $ref: "#/components/parameters/dashboardIdentifier"
       responses:
         "202":
           description: "Dashboard deletion request accepted."
@@ -162,7 +157,7 @@ paths:
       description: "Share a dashboard with users or groups."
       operationId: shareDashboard
       parameters:
-        - $ref: "#/components/parameters/dashboardId"
+        - $ref: "#/components/parameters/dashboardIdentifier"
       requestBody:
         required: true
         content:
@@ -193,7 +188,7 @@ paths:
       description: "Get the current sharing settings for a dashboard."
       operationId: getDashboardSharing
       parameters:
-        - $ref: "#/components/parameters/dashboardId"
+        - $ref: "#/components/parameters/dashboardIdentifier"
       responses:
         "200":
           description: "Dashboard sharing settings."
@@ -216,7 +211,7 @@ paths:
       description: "Remove sharing settings for specific users or groups."
       operationId: removeDashboardSharing
       parameters:
-        - $ref: "#/components/parameters/dashboardId"
+        - $ref: "#/components/parameters/dashboardIdentifier"
       requestBody:
         required: true
         content:
@@ -243,7 +238,7 @@ paths:
 
 components:
   parameters:
-    dashboardId:
+    dashboardIdentifier:
       in: path
       name: dashboardId
       required: true
@@ -281,8 +276,10 @@ components:
         id:
           type: integer
           format: int64
+          readOnly: true
         identifier:
           $ref: "#/components/schemas/DashboardId"
+          readOnly: true
         name:
           type: string
           description: "Name of the dashboard"
@@ -305,20 +302,6 @@ components:
       required:
         - name
         - dashboard
-
-    DashboardSharePrincipalList:
-      type: object
-      properties:
-        users:
-          type: array
-          description: "List of user IDs"
-          items:
-            $ref: "#/components/schemas/UserId"
-        groups:
-          type: array
-          description: "List of group IDs"
-          items:
-            $ref: "#/components/schemas/GroupId"
 
     DashboardShareRequest:
       type: object
