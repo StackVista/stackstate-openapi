@@ -19,50 +19,54 @@ paths:
             description: "Filter dashboards by name."
       responses:
         "200":
-          description: "A list of dashboards"
+          description: "A list of dashboard containers."
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Dashboard"
+                  $ref: "#/components/schemas/DashboardContainer"
         "400":
-          description: "Invalid query parameters"
+          description: "Invalid query parameters."
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/DashboardInvalidQueryError"
         "401":
-          description: "User is not authorized"
+          description: "User is not authorized."
         "403":
-          description: "User is forbidden for the provided permission"
+          description: "User is forbidden for the provided permission."
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     post:
       tags:
         - dashboards
       summary: "Create a new dashboard"
-      description: "Save a new dashboard."
+      description: "Save a new dashboard. The dashboard can be personal or global based on the scope parameter."
       operationId: saveDashboard
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Dashboard"
+              $ref: "#/components/schemas/DashboardContainer"
       responses:
         "201":
-          description: "Dashboard created"
+          description: "Dashboard created."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardContainer"
         "400":
-          description: "Invalid dashboard data"
+          description: "Invalid dashboard data."
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/DashboardCreateError"
         "401":
-          description: "User is not authorized"
+          description: "User is not authorized."
         "403":
-          description: "User is forbidden for the provided permission"
+          description: "User is forbidden for the provided permission."
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /dashboards/{dashboardId}:
@@ -73,31 +77,20 @@ paths:
       description: "Get a dashboard by its ID."
       operationId: getDashboard
       parameters:
-        - name: dashboardId
-          in: path
-          required: true
-          schema:
-            type: string
-            description: "The ID of the dashboard"
+        - $ref: "#/components/parameters/dashboardId"
       responses:
         "200":
           description: "A dashboard"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Dashboard"
-        "400":
-          description: "Invalid dashboard ID"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DashboardInvalidQueryError"
+                $ref: "#/components/schemas/DashboardContainer"
         "401":
-          description: "User is not authorized"
+          description: "User is not authorized."
         "403":
-          description: "User is forbidden for the provided permission"
+          description: "User is forbidden for the provided permission."
         "404":
-          description: "Dashboard not found"
+          description: "Dashboard not found."
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     put:
@@ -107,40 +100,40 @@ paths:
       description: "Update an existing dashboard."
       operationId: updateDashboard
       parameters:
-        - name: dashboardId
-          in: path
-          required: true
-          schema:
-            type: string
-            description: "The ID of the dashboard"
+        - $ref: "#/components/parameters/dashboardId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Dashboard"
+              $ref: "#/components/schemas/DashboardContainer"
       responses:
         "200":
-          description: "Dashboard updated"
+          description: "Dashboard updated."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardContainer"
         "400":
-          description: "Invalid dashboard data"
+          description: "Invalid dashboard data."
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/DashboardCreateError"
         "401":
-          description: "User is not authorized"
+          description: "User is not authorized."
         "403":
-          description: "User is forbidden for the provided permission"
+          description: "User is forbidden for the provided permission."
         "404":
-          description: "Dashboard not found"
+          description: "Dashboard not found."
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     delete:
       tags:
         - dashboards
       summary: "Delete a dashboard"
-      description: "Delete a dashboard by its ID."
+      description: "Delete a dashboard by its ID. Only personal dashboards can be deleted. The dashboard will also be
+      be removed from other users/groups starred dashboards."
       operationId: deleteDashboard
       parameters:
         - name: dashboardId
@@ -148,48 +141,254 @@ paths:
           required: true
           schema:
             type: string
-            description: "The ID of the dashboard"
+            description: "The ID of the dashboard."
       responses:
-        "200":
-          description: "Dashboard deleted"
+        "202":
+          description: "Dashboard deletion request accepted."
+        "401":
+          description: "User is not authorized."
+        "403":
+          description: "User is forbidden for the provided permission."
+        "404":
+          description: "Dashboard not found."
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
+  /dashboards/{dashboardId}/share:
+    post:
+      tags:
+        - dashboards
+      summary: "Share a dashboard"
+      description: "Share a dashboard with users or groups."
+      operationId: shareDashboard
+      parameters:
+        - $ref: "#/components/parameters/dashboardId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DashboardShareRequest"
+      responses:
+        "202":
+          description: "Dashboard share request accepted."
         "400":
-          description: "Invalid dashboard ID"
+          description: "Invalid share request."
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DashboardInvalidQueryError"
+                $ref: "#/components/schemas/DashboardShareError"
         "401":
-          description: "User is not authorized"
+          description: "User is not authorized."
         "403":
-          description: "User is forbidden for the provided permission"
+          description: "User is forbidden for the provided permission."
         "404":
-          description: "Dashboard not found"
+          description: "Dashboard not found."
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    get:
+      tags:
+        - dashboards
+      summary: "Get dashboard sharing settings"
+      description: "Get the current sharing settings for a dashboard."
+      operationId: getDashboardSharing
+      parameters:
+        - $ref: "#/components/parameters/dashboardId"
+      responses:
+        "200":
+          description: "Dashboard sharing settings."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardShareInfo"
+        "401":
+          description: "User is not authorized."
+        "403":
+          description: "User is forbidden for the provided permission."
+        "404":
+          description: "Dashboard not found."
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    delete:
+      tags:
+        - dashboards
+      summary: "Remove dashboard sharing"
+      description: "Remove sharing settings for specific users or groups."
+      operationId: removeDashboardSharing
+      parameters:
+        - $ref: "#/components/parameters/dashboardId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DashboardUnshareRequest"
+      responses:
+        "202":
+          description: "Dashboard unshare request accepted."
+        "400":
+          description: "Invalid unshare request."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardShareError"
+        "401":
+          description: "User is not authorized."
+        "403":
+          description: "User is forbidden for the provided permission."
+        "404":
+          description: "Dashboard not found."
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 
 components:
+  parameters:
+    dashboardId:
+      in: path
+      name: dashboardId
+      required: true
+      schema:
+        $ref: "#/components/schemas/DashboardId"
+      description: "The identifier of a dashboard"
+
   schemas:
-    Dashboard:
+    DashboardId:
+      type: string
+      description: "The identifier of a dashboard"
+
+    UserId:
+      type: string
+      description: "The identifier of a user"
+
+    GroupId:
+      type: string
+      description: "The identifier of a group"
+
+    DashboardScope:
+      type: string
+      enum: [ globalDashboard, personalDashboard ]
+      description: "Scope of the dashboard. 'globalDashboard' for shared with everyone, 'personalDashboard' for owned by the current user."
+      default: "personalDashboard"
+
+    DashboardSharePermission:
+      type: string
+      enum: [ readDashboard, editDashboard ]
+      description: "Permission level for sharing: read-only or edit access"
+
+    DashboardContainer:
       type: object
       properties:
         id:
-          type: string
-          description: "Unique identifier for the dashboard"
+          type: integer
+          format: int64
+        identifier:
+          $ref: "#/components/schemas/DashboardId"
         name:
           type: string
           description: "Name of the dashboard"
         description:
           type: string
           description: "Description of the dashboard"
-        json:
+        scope:
+          $ref: "#/components/schemas/DashboardScope"
+        ownerId:
           type: string
-          description: "JSON content for the dashboard"
-        starred:
-          type: boolean
-          description: "Whether the dashboard has been starred"
+          description: "Identifier of the user who owns this dashboard. Set automatically for personal dashboards. Unset for global dashboards."
+          readOnly: true
+        dashboard:
+          $ref: "common_perses.api.yaml#/components/schemas/Dashboard"
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+          description: "When the dashboard was last updated"
+          readOnly: true
       required:
         - name
-        - json
+        - dashboard
+
+    DashboardSharePrincipalList:
+      type: object
+      properties:
+        users:
+          type: array
+          description: "List of user IDs"
+          items:
+            $ref: "#/components/schemas/UserId"
+        groups:
+          type: array
+          description: "List of group IDs"
+          items:
+            $ref: "#/components/schemas/GroupId"
+
+    DashboardShareRequest:
+      type: object
+      properties:
+        users:
+          type: array
+          description: "List of user identifiers to share the dashboard with"
+          items:
+            $ref: "#/components/schemas/UserId"
+        groups:
+          type: array
+          description: "List of group identifiers to share the dashboard with"
+          items:
+            $ref: "#/components/schemas/GroupId"
+        permission:
+          $ref: "#/components/schemas/DashboardSharePermission"
+      required:
+        - permissions
+
+    DashboardUnshareRequest:
+      type: object
+      properties:
+        users:
+          type: array
+          description: "List of user IDs to remove sharing for"
+          items:
+            $ref: "#/components/schemas/UserId"
+        groups:
+          type: array
+          description: "List of group IDs to remove sharing for"
+          items:
+            $ref: "#/components/schemas/GroupId"
+        all:
+          type: boolean
+          description: "If true, removes all sharing (except for the owner)"
+          default: false
+
+    DashboardShareInfo:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/DashboardUserPermission"
+        groups:
+          type: array
+          items:
+            $ref: "#/components/schemas/DashboardGroupPermission"
+
+    DashboardUserPermission:
+      type: object
+      properties:
+        userId:
+          $ref: "#/components/schemas/UserId"
+        permission:
+          $ref: "#/components/schemas/DashboardSharePermission"
+      required:
+        - userId
+        - permission
+
+    DashboardGroupPermission:
+      type: object
+      properties:
+        groupId:
+          $ref: "#/components/schemas/GroupId"
+        permission:
+          $ref: "#/components/schemas/DashboardSharePermission"
+      required:
+        - groupId
+        - permissionn
 
     DashboardCreateError:
       type: object
@@ -200,7 +399,7 @@ components:
             - DashboardCreateError
         errorMessage:
           type: string
-          description: "A detailed error message describing why the dashboard could not be saved."
+          description: "A detailed error message describing why create operation failed."
       required:
         - _type
         - errorMessage
@@ -215,6 +414,20 @@ components:
         errorMessage:
           type: string
           description: "A detailed error message describing why the query was invalid."
+      required:
+        - _type
+        - errorMessage
+
+    DashboardShareError:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - DashboardShareError
+        errorMessage:
+          type: string
+          description: "A detailed error message describing why the sharing operation failed."
       required:
         - _type
         - errorMessage
