@@ -153,7 +153,7 @@ paths:
   /timeline/summary: { $ref: "timeline.api.yaml#/paths/%2Ftimeline%2Fsummary" }
   /dashboards: { $ref: "dashboard.api.yaml#/paths/%2Fdashboards"}
   /dashboards/{dashboardId}: { $ref: "dashboard.api.yaml#/paths/%2Fdashboards%2F%7BdashboardId%7D"}
-  /dashboards/{dashboardId}/share: { $ref: "dashboard.api.yaml#/paths/%2Fdashboards%2F%7BdashboardId%7D%2Fshare"}
+  /dashboards/{dashboardId}/clone: { $ref: "dashboard.api.yaml#/paths/%2Fdashboards%2F%7BdashboardId%7D%2Fclone"}
   # Dummy path to make sure that some types are included, which otherwise would be excluded
   /dummy/dummy: { $ref: "common.api.yaml#/paths/%2Fdummy%2Fdummy" }
 security:
