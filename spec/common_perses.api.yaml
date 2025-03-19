@@ -1,71 +1,82 @@
+info:
+  title: Peres Dashboard Schemas
+  version: "1.0.0"
+  description: |
+    This spec encapsulates the Perses Dashboard models necessary to embody a Perses Dashboard. 
+      
+    See the Perses API reference here: https://perses.dev/perses/docs/api/ 
+    
+    Note:
+      - there's no automation to generate theses models. They were generated manually as a once-off exercise, with the expectation that minor tweaks and adjustments would likely need to happen over time.
+      - schemas are prefixed with 'Perses' to make it simpler to post process generated code.
 components:
   schemas:
-    Dashboard:
+    PersesDashboard:
       properties:
         kind:
-          $ref: '#/components/schemas/Kind'
+          $ref: '#/components/schemas/PersesKind'
         metadata:
-          $ref: '#/components/schemas/ProjectMetadata'
+          $ref: '#/components/schemas/PersesProjectMetadata'
         spec:
-          $ref: '#/components/schemas/DashboardSpec'
+          $ref: '#/components/schemas/PersesDashboardSpec'
       type: object
-    DashboardSpec:
+    PersesDashboardSpec:
       properties:
         datasources:
           additionalProperties:
-            $ref: '#/components/schemas/DatasourceSpec'
+            $ref: '#/components/schemas/PersesDatasourceSpec'
           description: Datasources is an optional list of datasource definition.
           type: object
         display:
-          $ref: '#/components/schemas/Display'
+          $ref: '#/components/schemas/PersesDisplay'
         duration:
-          $ref: '#/components/schemas/Duration'
+          $ref: '#/components/schemas/PersesDuration'
         layouts:
           items:
-            $ref: '#/components/schemas/Layout'
+            $ref: '#/components/schemas/PersesLayout'
           type: array
         panels:
           additionalProperties:
-            $ref: '#/components/schemas/Panel'
+            $ref: '#/components/schemas/PersesPanel'
           type: object
         refreshInterval:
-          $ref: '#/components/schemas/Duration'
+          $ref: '#/components/schemas/PersesDuration'
         variables:
           items:
-            $ref: '#/components/schemas/Variable'
+            $ref: '#/components/schemas/PersesVariable'
           type: array
       type: object
-    DatasourceSpec:
+    PersesDatasourceSpec:
       properties:
         default:
           type: boolean
         display:
-          $ref: '#/components/schemas/Display'
+          $ref: '#/components/schemas/PersesDisplay'
         plugin:
-          $ref: '#/components/schemas/Plugin'
+          $ref: '#/components/schemas/PersesPlugin'
       type: object
-    Display:
+    PersesDisplay:
       properties:
         description:
           type: string
         name:
           type: string
       type: object
-    Duration:
+    PersesDuration:
       description: |-
         A Duration represents the elapsed time between two instants
         as an int64 nanosecond count. The representation limits the
         largest representable duration to approximately 290 years.
       format: int64
       type: integer
-    Kind:
+    PersesKind:
       type: string
-    LayoutKind:
+    PersesLayoutKind:
       type: string
       enum:
         - Grid
       description: "Defines the layout type. Currently, only 'Grid' is supported."
-    JSONRef:
+    PersesJSONRef:
       type: object
       properties:
         $ref:
@@ -81,7 +92,7 @@ components:
           description: "The actual referenced object (not included in the OpenAPI spec, but used internally)."
       required:
         - $ref
-    GridLayoutCollapse:
+    PersesGridLayoutCollapse:
       type: object
       properties:
         open:
@@ -89,17 +100,17 @@ components:
           description: "Indicates whether the grid layout is collapsed."
       required:
         - open
-    GridLayoutDisplay:
+    PersesGridLayoutDisplay:
       type: object
       properties:
         title:
           type: string
           description: "The title of the grid layout."
         collapse:
-          $ref: '#/components/schemas/GridLayoutCollapse'
+          $ref: '#/components/schemas/PersesGridLayoutCollapse'
       required:
         - title
-    GridItem:
+    PersesGridItem:
       type: object
       properties:
         x:
@@ -115,35 +126,35 @@ components:
           type: integer
           description: "The height of the item in the grid."
         content:
-          $ref: '#/components/schemas/JSONRef'
+          $ref: '#/components/schemas/PersesJSONRef'
       required:
         - x
         - y
         - width
         - height
         - content
-    LayoutSpec:
+    PersesLayoutSpec:
       type: object
       properties:
         display:
-          $ref: '#/components/schemas/GridLayoutDisplay'
+          $ref: '#/components/schemas/PersesGridLayoutDisplay'
         items:
           type: array
           items:
-            $ref: '#/components/schemas/GridItem'
+            $ref: '#/components/schemas/PersesGridItem'
       required:
         - items
-    Layout:
+    PersesLayout:
       type: object
       properties:
         kind:
-          $ref: '#/components/schemas/LayoutKind'
+          $ref: '#/components/schemas/PersesLayoutKind'
         spec:
-          $ref: '#/components/schemas/LayoutSpec'
+          $ref: '#/components/schemas/PersesLayoutSpec'
       required:
         - kind
         - spec
-    Link:
+    PersesLink:
       properties:
         name:
           type: string
@@ -156,7 +167,7 @@ components:
         url:
           type: string
       type: object
-    Metadata:
+    PersesMetadata:
       properties:
         createdAt:
           format: date-time
@@ -170,43 +181,43 @@ components:
           format: uint64
           type: integer
       type: object
-    Panel:
+    PersesPanel:
       properties:
         kind:
           type: string
         spec:
-          $ref: '#/components/schemas/PanelSpec'
+          $ref: '#/components/schemas/PersesPanelSpec'
       type: object
-    PanelDisplay:
+    PersesPanelDisplay:
       properties:
         description:
           type: string
         name:
           type: string
       type: object
-    PanelSpec:
+    PersesPanelSpec:
       properties:
         display:
-          $ref: '#/components/schemas/PanelDisplay'
+          $ref: '#/components/schemas/PersesPanelDisplay'
         links:
           items:
-            $ref: '#/components/schemas/Link'
+            $ref: '#/components/schemas/PersesLink'
           type: array
         plugin:
-          $ref: '#/components/schemas/Plugin'
+          $ref: '#/components/schemas/PersesPlugin'
         queries:
           items:
-            $ref: '#/components/schemas/Query'
+            $ref: '#/components/schemas/PersesQuery'
           type: array
       type: object
-    Plugin:
+    PersesPlugin:
       properties:
         kind:
           type: string
         spec:
           type: object
       type: object
-    ProjectMetadata:
+    PersesProjectMetadata:
       properties:
         createdAt:
           format: date-time
@@ -223,7 +234,7 @@ components:
           type: integer
       title: ProjectMetadata is the metadata struct for resources that belongs to a project.
       type: object
-    ProjectMetadataWrapper:
+    PersesProjectMetadataWrapper:
       description: |-
         This wrapping struct is required to allow defining a custom unmarshall on Metadata
         without breaking the Project attribute (the fact Metadata is injected line in
@@ -232,26 +243,26 @@ components:
         project:
           type: string
       type: object
-    Query:
+    PersesQuery:
       properties:
         kind:
           type: string
         spec:
-          $ref: '#/components/schemas/QuerySpec'
+          $ref: '#/components/schemas/PersesQuerySpec'
       type: object
-    QuerySpec:
+    PersesQuerySpec:
       properties:
         plugin:
-          $ref: '#/components/schemas/Plugin'
+          $ref: '#/components/schemas/PersesPlugin'
       type: object
-    Variable:
+    PersesVariable:
       properties:
         kind:
-          $ref: '#/components/schemas/Kind'
+          $ref: '#/components/schemas/PersesKind'
         spec:
-          $ref: '#/components/schemas/variableSpec'
+          $ref: '#/components/schemas/PersesvariableSpec'
       type: object
-    variableSpec:
+    PersesvariableSpec:
       properties:
         GetName:
           description: GetName returns the name of the variable. It will be used to reference the variable in others

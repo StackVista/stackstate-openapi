@@ -17,7 +17,7 @@ paths:
           schema:
             type: string
             description: "Filter dashboards by name."
-        - name: includeDashboard
+        - name: loadFullDashboard
           in: query
           required: false
           schema:
@@ -47,8 +47,8 @@ paths:
       tags:
         - dashboards
       summary: "Create a new dashboard"
-      description: "Save a new dashboard. The dashboard can be personal or global based on the scope parameter."
-      operationId: saveDashboard
+      description: "Create a new dashboard. The dashboard can be personal or global based on the scope parameter."
+      operationId: createDashboard
       requestBody:
         required: true
         content:
@@ -83,7 +83,7 @@ paths:
       operationId: getDashboard
       parameters:
         - $ref: "#/components/parameters/dashboardIdentifier"
-        - name: includeDashboard
+        - name: loadFullDashboard
           in: query
           required: false
           schema:
@@ -233,7 +233,7 @@ components:
         scope:
           $ref: "#/components/schemas/DashboardScope"
         dashboard:
-          $ref: "common_perses.api.yaml#/components/schemas/Dashboard"
+          $ref: "common_perses.api.yaml#/components/schemas/PersesDashboard"
       required:
         - name
         - description
@@ -299,7 +299,7 @@ components:
               enum:
                 - DashboardReadFullSchema
             dashboard:
-              $ref: "common_perses.api.yaml#/components/schemas/Dashboard"
+              $ref: "common_perses.api.yaml#/components/schemas/PersesDashboard"
           required:
             - _type
             - dashboard
