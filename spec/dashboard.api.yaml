@@ -2,41 +2,24 @@ openapi: 3.0.3
 info:
   title: Dashboards API
   version: "1.0.0"
+  description: |
+    This spec encapsulates the SUSE Observability Dashboard API.
 paths:
   /dashboards:
     get:
       tags:
         - dashboards
-      summary: "Get list of dashboards"
+      summary: "Get a list of dashboards"
       description: "Get a list of dashboards, optionally filtered by name."
       operationId: getDashboards
       parameters:
-        - name: name
-          in: query
-          required: false
-          schema:
-            type: string
-            description: "Filter dashboards by name."
-        - name: loadFullDashboard
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: false
-            description: "If true, includes the full dashboard content. Defaults to false (only metadata is returned)."
+        - $ref: "#/components/parameters/filterByName"
+        - $ref: "#/components/parameters/loadFullDashboard"
       responses:
         "200":
-          description: "A list of dashboards."
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DashboardReadSchema"
+          $ref: "#/components/responses/dashboards"
         "400":
-          description: "Invalid query parameters."
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DashboardInvalidQueryError"
+          $ref: "#/components/responses/dashboardInvalidQueryError"
         "401":
           description: "User is not authorized."
         "403":
@@ -47,27 +30,15 @@ paths:
       tags:
         - dashboards
       summary: "Create a new dashboard"
-      description: "Create a new dashboard. The dashboard can be personal or global based on the scope parameter."
+      description: "Create a new dashboard. The dashboard can be private or global based on the scope parameter."
       operationId: createDashboard
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/DashboardWriteSchema"
+        $ref: "#/components/requestBodies/dashboardWriteRequest"
       responses:
         "201":
-          description: "Dashboard created."
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DashboardReadFullSchema"
+          $ref: "#/components/responses/dashboardSaved"
         "400":
-          description: "Invalid dashboard data."
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DashboardCreateError"
+          $ref: "#/components/responses/dashboardValidationError"
         "401":
           description: "User is not authorized."
         "403":
@@ -83,20 +54,10 @@ paths:
       operationId: getDashboard
       parameters:
         - $ref: "#/components/parameters/dashboardIdentifier"
-        - name: loadFullDashboard
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: false
-            description: "If true, includes the full dashboard content. Defaults to false (only metadata is returned)."
+        - $ref: "#/components/parameters/loadFullDashboard"
       responses:
         "200":
-          description: "A dashboard"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DashboardReadSchema"
+          $ref: "#/components/responses/dashboard"
         "401":
           description: "User is not authorized."
         "403":
@@ -114,24 +75,12 @@ paths:
       parameters:
         - $ref: "#/components/parameters/dashboardIdentifier"
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/DashboardWriteSchema"
+        $ref: "#/components/requestBodies/dashboardWriteRequest"
       responses:
         "200":
-          description: "Dashboard updated."
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DashboardReadFullSchema"
+          $ref: "#/components/responses/dashboardSaved"
         "400":
-          description: "Invalid dashboard data."
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DashboardCreateError"
+          $ref: "#/components/responses/dashboardValidationError"
         "401":
           description: "User is not authorized."
         "403":
@@ -144,8 +93,7 @@ paths:
       tags:
         - dashboards
       summary: "Delete a dashboard"
-      description: "Delete a dashboard by its identifier. Only personal dashboards can be deleted. The dashboard will also be
-      be removed from other users/groups starred dashboards."
+      description: "Delete a dashboard by its identifier. Only private dashboards can be deleted."
       operationId: deleteDashboard
       parameters:
         - $ref: "#/components/parameters/dashboardIdentifier"
@@ -171,20 +119,12 @@ paths:
       parameters:
         - $ref: "#/components/parameters/dashboardIdentifier"
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/DashboardCloneRequest"
+        $ref: "#/components/requestBodies/dashboardCloneRequest"
       responses:
         "202":
           description: "Dashboard clone request accepted."
         "400":
-          description: "Invalid clone request."
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DashboardCloneError"
+          $ref: "#/components/responses/dashboardCloneError"
         "401":
           description: "User is not authorized."
         "403":
@@ -204,6 +144,81 @@ components:
         $ref: "#/components/schemas/DashboardId"
       description: "The identifier of a dashboard"
 
+    filterByName:
+      name: name
+      in: query
+      required: false
+      schema:
+        type: string
+        description: "Filter dashboards by name."
+
+    loadFullDashboard:
+      in: query
+      name: loadFullDashboard
+      required: false
+      schema:
+        type: boolean
+        default: false
+        description: "If true, includes the full dashboard content. Defaults to false (only metadata is returned)."
+
+  requestBodies:
+    dashboardWriteRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardWriteSchema"
+
+    dashboardCloneRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardCloneRequest"
+
+  responses:
+    dashboards:
+      description: "List of dashboards"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardList"
+
+    dashboard:
+      description: "A single dashboard"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardReadSchema"
+
+    dashboardSaved:
+      description: "Dashboard saved."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardReadFullSchema"
+
+    dashboardInvalidQueryError:
+      description: "Invalid query parameters."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardInvalidQueryError"
+
+    dashboardValidationError:
+      description: "Invalid dashboard data."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardValidationError"
+
+    dashboardCloneError:
+      description: "Invalid clone request."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardCloneError"
+
   schemas:
     DashboardId:
       type: string
@@ -218,6 +233,16 @@ components:
       enum: [ globalDashboard, privateDashboard ]
       description: "Scope of the dashboard. 'globalDashboard' for accessible by everyone, 'privateDashboard' for owned and accessible by the current user."
       default: "privateDashboard"
+
+    DashboardList:
+      type: object
+      properties:
+        dashboards:
+          type: array
+          items:
+            $ref: "#/components/schemas/DashboardReadSchema"
+      required:
+        - dashboards
     
     DashboardWriteSchema:
       type: object
@@ -312,44 +337,51 @@ components:
       required:
         - userId
 
-    DashboardCreateError:
+    DashboardBaseError:
       type: object
       properties:
         _type:
           type: string
-          enum:
-            - DashboardCreateError
+          description: "The specific error type."
         errorMessage:
           type: string
-          description: "A detailed error message describing why create operation failed."
+          description: "A detailed error message describing why the operation failed."
       required:
         - _type
         - errorMessage
+
+    DashboardValidationError:
+      allOf:
+        - $ref: "#/components/schemas/DashboardBaseError"
+        - type: object
+          properties:
+            _type:
+              type: string
+              enum:
+                - DashboardValidationError
+          required:
+            - _type
 
     DashboardInvalidQueryError:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - DashboardInvalidQueryError
-        errorMessage:
-          type: string
-          description: "A detailed error message describing why the query was invalid."
-      required:
-        - _type
-        - errorMessage
+      allOf:
+        - $ref: "#/components/schemas/DashboardBaseError"
+        - type: object
+          properties:
+            _type:
+              type: string
+              enum:
+                - DashboardInvalidQueryError
+          required:
+            - _type
 
     DashboardCloneError:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - DashboardCloneError
-        errorMessage:
-          type: string
-          description: "A detailed error message describing why the cloning operation failed."
-      required:
-        - _type
-        - errorMessage
+      allOf:
+        - $ref: "#/components/schemas/DashboardBaseError"
+        - type: object
+          properties:
+            _type:
+              type: string
+              enum:
+                - DashboardCloneError
+          required:
+            - _type
