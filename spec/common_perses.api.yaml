@@ -79,7 +79,7 @@ components:
       properties:
         $ref:
           type: string
-          description: "The JSON reference pointing to the actual object."
+          description: "The JSON reference pointing to the actual object. The property name '$ref' contains a reserved char, which gets stripped away when generated (it's possible to handle this but makes the generation code more complex). For now, consumers of this spec will need to omit the '$' in the property name."
       required:
         - $ref
     PersesGridLayoutCollapse:
