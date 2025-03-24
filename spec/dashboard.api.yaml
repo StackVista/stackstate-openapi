@@ -19,7 +19,7 @@ paths:
         "200":
           $ref: "#/components/responses/dashboards"
         "400":
-          $ref: "#/components/responses/dashboardInvalidQueryError"
+          $ref: "#/components/responses/dashboardClientErrors"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     post:
@@ -34,10 +34,10 @@ paths:
         "201":
           $ref: "#/components/responses/dashboardSaved"
         "400":
-          $ref: "#/components/responses/dashboardValidationError"
+          $ref: "#/components/responses/dashboardClientErrors"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-  /dashboards/{dashboardId}:
+  /dashboards/{dashboardIdOrUrn}:
     get:
       tags:
         - dashboards
@@ -45,13 +45,15 @@ paths:
       description: "Get a dashboard by its identifier."
       operationId: getDashboard
       parameters:
-        - $ref: "#/components/parameters/dashboardIdentifier"
+        - $ref: "#/components/parameters/dashboardIdOrUrn"
         - $ref: "#/components/parameters/loadFullDashboard"
       responses:
         "200":
           $ref: "#/components/responses/dashboard"
+        "400":
+          $ref: "#/components/responses/dashboardClientErrors"
         "404":
-          description: "Dashboard not found."
+          $ref: "#/components/responses/dashboardNotFoundError"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     put:
@@ -61,16 +63,16 @@ paths:
       description: "Update an existing dashboard by its identifier."
       operationId: updateDashboard
       parameters:
-        - $ref: "#/components/parameters/dashboardIdentifier"
+        - $ref: "#/components/parameters/dashboardIdOrUrn"
       requestBody:
         $ref: "#/components/requestBodies/dashboardWriteRequest"
       responses:
         "200":
           $ref: "#/components/responses/dashboardSaved"
         "400":
-          $ref: "#/components/responses/dashboardValidationError"
+          $ref: "#/components/responses/dashboardClientErrors"
         "404":
-          description: "Dashboard not found."
+          $ref: "#/components/responses/dashboardNotFoundError"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     delete:
@@ -80,46 +82,45 @@ paths:
       description: "Delete a dashboard by its identifier. Only private dashboards can be deleted."
       operationId: deleteDashboard
       parameters:
-        - $ref: "#/components/parameters/dashboardIdentifier"
+        - $ref: "#/components/parameters/dashboardIdOrUrn"
       responses:
         "200":
           description: "Dashboard deleted."
+        "400":
+          $ref: "#/components/responses/dashboardClientErrors"
         "404":
-          description: "Dashboard not found."
+          $ref: "#/components/responses/dashboardNotFoundError"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-
-  /dashboards/{dashboardId}/clone:
+  /dashboards/{dashboardIdOrUrn}/clone:
     post:
       tags:
         - dashboards
       summary: "Clone a dashboard"
-      description: "Clone a dashboard with users or groups."
+      description: "Clone a dashboard for a user."
       operationId: cloneDashboard
       parameters:
-        - $ref: "#/components/parameters/dashboardIdentifier"
+        - $ref: "#/components/parameters/dashboardIdOrUrn"
       requestBody:
         $ref: "#/components/requestBodies/dashboardCloneRequest"
       responses:
         "201":
           $ref: "#/components/responses/dashboardSaved"
         "400":
-          $ref: "#/components/responses/dashboardCloneError"
+          $ref: "#/components/responses/dashboardClientErrors"
         "404":
-          description: "Dashboard not found."
+          $ref: "#/components/responses/dashboardNotFoundError"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-
 components:
   parameters:
-    dashboardIdentifier:
+    dashboardIdOrUrn:
       in: path
-      name: dashboardId
+      name: dashboardIdOrUrn
       required: true
       description: "The identifier of a dashboard"
       schema:
-        $ref: "#/components/schemas/DashboardId"
-
+        $ref: "#/components/schemas/DashboardIdOrUrn"
     filterByName:
       in: query
       name: name
@@ -127,7 +128,6 @@ components:
       description: "Filter dashboards by name."
       schema:
         type: string
-
     loadFullDashboard:
       in: query
       name: loadFullDashboard
@@ -136,7 +136,6 @@ components:
       schema:
         type: boolean
         default: false
-
   requestBodies:
     dashboardWriteRequest:
       required: true
@@ -144,14 +143,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/DashboardWriteSchema"
-
     dashboardCloneRequest:
       required: true
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/DashboardCloneRequest"
-
   responses:
     dashboards:
       description: "List of dashboards"
@@ -159,56 +156,69 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/DashboardList"
-
     dashboard:
       description: "A single dashboard"
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/DashboardReadSchema"
-
     dashboardSaved:
       description: "Dashboard saved."
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/DashboardReadFullSchema"
-
+            $ref: "#/components/schemas/DashboardReadSchema"
     dashboardInvalidQueryError:
       description: "Invalid query parameters."
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/DashboardInvalidQueryError"
-
+    dashboardInvalidIdentifierError:
+      description: "Invalid dashboard identifier."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardInvalidIdentifierError"
     dashboardValidationError:
       description: "Invalid dashboard data."
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/DashboardValidationError"
-
     dashboardCloneError:
       description: "Invalid clone request."
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/DashboardCloneError"
-
+    dashboardNotFoundError:
+      description: "Dashboard not found."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardNotFoundError"
+    dashboardClientErrors:
+      description: "Dashboard client errors."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardClientErrors"
   schemas:
-    DashboardId:
+    DashboardIdOrUrn:
       type: string
-      description: "The identifier of a dashboard"
-
-    UserId:
+      pattern: ^urn:.+|[0-9]+$
+      description: "The identifier of a dashboard. Either the system ID or URN for the resource."
+    DashboardUrn:
+      type: string
+      description: "The URN of a dashboard"
+    UserIdentifier:
       type: string
       description: "The identifier of a user"
-
     DashboardScope:
       type: string
       enum: [ globalDashboard, privateDashboard ]
       description: "Scope of the dashboard. 'globalDashboard' for accessible by everyone, 'privateDashboard' for owned and accessible by the current user."
-
     DashboardList:
       type: object
       properties:
@@ -218,12 +228,11 @@ components:
             $ref: "#/components/schemas/DashboardReadSchema"
       required:
         - dashboards
-    
     DashboardWriteSchema:
       type: object
       properties:
         identifier:
-          $ref: "#/components/schemas/DashboardId"
+          $ref: "#/components/schemas/DashboardUrn"
         name:
           type: string
           description: "Name of the dashboard"
@@ -232,6 +241,8 @@ components:
           description: "Description of the dashboard"
         scope:
           $ref: "#/components/schemas/DashboardScope"
+        ownerId:
+          $ref: "#/components/schemas/UserIdentifier"
         dashboard:
           $ref: "common_perses.api.yaml#/components/schemas/PersesDashboard"
       required:
@@ -239,15 +250,7 @@ components:
         - description
         - scope
         - dashboard
-
     DashboardReadSchema:
-      discriminator:
-        propertyName: _type
-      oneOf:
-        - $ref: "#/components/schemas/DashboardReadMetadataSchema"
-        - $ref: "#/components/schemas/DashboardReadFullSchema"
-
-    DashboardReadBaseSchema:
       type: object
       properties:
         id:
@@ -263,9 +266,9 @@ components:
         scope:
           $ref: "#/components/schemas/DashboardScope"
         ownerId:
-          type: string
-          description: "Identifier of the user who owns this dashboard."
-          readOnly: true
+          $ref: "#/components/schemas/UserIdentifier"
+        dashboard:
+          $ref: "common_perses.api.yaml#/components/schemas/PersesDashboard"
         lastUpdateTimestamp:
           type: integer
           format: int64
@@ -274,53 +277,25 @@ components:
         - name
         - description
         - scope
-        - ownerId
         - lastUpdateTimestamp
-
-    DashboardReadMetadataSchema:
-      allOf:
-        - $ref: "#/components/schemas/DashboardReadBaseSchema"
-        - type: object
-          properties:
-            _type:
-              type: string
-              enum:
-                - DashboardReadMetadataSchema
-          required:
-            - _type
-
-    DashboardReadFullSchema:
-      allOf:
-        - $ref: "#/components/schemas/DashboardReadBaseSchema"
-        - type: object
-          properties:
-            _type:
-              type: string
-              enum:
-                - DashboardReadFullSchema
-            dashboard:
-              $ref: "common_perses.api.yaml#/components/schemas/PersesDashboard"
-          required:
-            - _type
-            - dashboard
-
     DashboardCloneRequest:
       type: object
       properties:
-        userId:
-          $ref: "#/components/schemas/UserId"
+        userIdentifier:
+          $ref: "#/components/schemas/UserIdentifier"
       required:
-        - userId
-
+        - userIdentifier
     DashboardBaseError:
       type: object
       properties:
-        errorMessage:
+        _type:
+          type: string
+        message:
           type: string
           description: "A detailed error message describing why the operation failed."
       required:
-        - errorMessage
-
+        - _type
+        - message
     DashboardValidationError:
       allOf:
         - $ref: "#/components/schemas/DashboardBaseError"
@@ -330,9 +305,6 @@ components:
               type: string
               enum:
                 - DashboardValidationError
-          required:
-            - _type
-
     DashboardInvalidQueryError:
       allOf:
         - $ref: "#/components/schemas/DashboardBaseError"
@@ -342,9 +314,19 @@ components:
               type: string
               enum:
                 - DashboardInvalidQueryError
+    DashboardInvalidIdentifierError:
+      allOf:
+        - $ref: "#/components/schemas/DashboardBaseError"
+        - type: object
+          properties:
+            _type:
+              type: string
+              enum:
+                - DashboardInvalidIdentifierError
+            dashboardIdOrUrn:
+              type: string
           required:
-            - _type
-
+            - dashboardIdOrUrn
     DashboardCloneError:
       allOf:
         - $ref: "#/components/schemas/DashboardBaseError"
@@ -354,5 +336,24 @@ components:
               type: string
               enum:
                 - DashboardCloneError
+    DashboardNotFoundError:
+      allOf:
+        - $ref: "#/components/schemas/DashboardBaseError"
+        - type: object
+          properties:
+            _type:
+              type: string
+              enum:
+                - DashboardNotFoundError
+            dashboardIdOrUrn:
+              type: string
           required:
-            - _type
+            - dashboardIdOrUrn
+    DashboardClientErrors:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/DashboardInvalidIdentifierError"
+        - $ref: "#/components/schemas/DashboardInvalidQueryError"
+        - $ref: "#/components/schemas/DashboardValidationError"
+        - $ref: "#/components/schemas/DashboardCloneError"

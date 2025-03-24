@@ -152,8 +152,8 @@ paths:
   /system/notifications: { $ref: "system_notifications.api.yaml#/paths/%2Fsystem%2Fnotifications" }
   /timeline/summary: { $ref: "timeline.api.yaml#/paths/%2Ftimeline%2Fsummary" }
   /dashboards: { $ref: "dashboard.api.yaml#/paths/%2Fdashboards"}
-  /dashboards/{dashboardId}: { $ref: "dashboard.api.yaml#/paths/%2Fdashboards%2F%7BdashboardId%7D"}
-  /dashboards/{dashboardId}/clone: { $ref: "dashboard.api.yaml#/paths/%2Fdashboards%2F%7BdashboardId%7D%2Fclone"}
+  /dashboards/{dashboardIdOrUrn}: { $ref: "dashboard.api.yaml#/paths/%2Fdashboards%2F%7BdashboardIdOrUrn%7D"}
+  /dashboards/{dashboardIdOrUrn}/clone: { $ref: "dashboard.api.yaml#/paths/%2Fdashboards%2F%7BdashboardIdOrUrn%7D%2Fclone"}
   # Dummy path to make sure that some types are included, which otherwise would be excluded
   /dummy/dummy: { $ref: "common.api.yaml#/paths/%2Fdummy%2Fdummy" }
 security:
