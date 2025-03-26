@@ -136,24 +136,6 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/DashboardReadSchema"
-    dashboardInvalidQueryError:
-      description: "Invalid query parameters."
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/DashboardInvalidQueryError"
-    dashboardInvalidIdentifierError:
-      description: "Invalid dashboard identifier."
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/DashboardInvalidIdentifierError"
-    dashboardValidationError:
-      description: "Invalid dashboard data."
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/DashboardValidationError"
     dashboardNotFoundError:
       description: "Dashboard not found."
       content:
@@ -192,7 +174,7 @@ components:
             $ref: "#/components/schemas/DashboardReadSchema"
           description: "List of dashboards, which can be either metadata or full representations."
       required:
-          - dashboards
+        - dashboards
     DashboardWriteSchema:
       type: object
       properties:
@@ -217,13 +199,11 @@ components:
       oneOf:
         - $ref: "#/components/schemas/DashboardReadMetadataSchema"
         - $ref: "#/components/schemas/DashboardReadFullSchema"
-    DashboardReadMetadataSchema:
+    DashboardReadBaseSchema:
       type: object
       properties:
         _type:
           type: string
-          enum:
-            - DashboardReadMetadataSchema
         identifier:
           $ref: "#/components/schemas/DashboardIdOrUrn"
         id:
@@ -250,9 +230,18 @@ components:
         - scope
         - ownerIdentifier
         - lastUpdateTimestamp
+    DashboardReadMetadataSchema:
+      allOf:
+        - $ref: "#/components/schemas/DashboardReadBaseSchema"
+        - type: object
+          properties:
+            _type:
+              type: string
+              enum:
+                - DashboardReadMetadataSchema
     DashboardReadFullSchema:
       allOf:
-        - $ref: "#/components/schemas/DashboardReadMetadataSchema"
+        - $ref: "#/components/schemas/DashboardReadBaseSchema"
         - type: object
           properties:
             _type:
@@ -262,63 +251,61 @@ components:
             dashboard:
               $ref: "common_perses.api.yaml#/components/schemas/PersesDashboard"
           required:
-            - _type
+#            - _type
             - dashboard
-    DashboardBaseError:
+    DashboardValidationError:
       type: object
       properties:
         _type:
           type: string
+          enum:
+            - DashboardValidationError
         message:
           type: string
           description: "A detailed error message describing why the operation failed."
       required:
         - _type
         - message
-    DashboardValidationError:
-      allOf:
-        - $ref: "#/components/schemas/DashboardBaseError"
-        - type: object
-          properties:
-            _type:
-              type: string
-              enum:
-                - DashboardValidationError
     DashboardInvalidQueryError:
-      allOf:
-        - $ref: "#/components/schemas/DashboardBaseError"
-        - type: object
-          properties:
-            _type:
-              type: string
-              enum:
-                - DashboardInvalidQueryError
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - DashboardInvalidQueryError
+        message:
+          type: string
+          description: "A detailed error message describing why the operation failed."
+      required:
+        - _type
+        - message
     DashboardInvalidIdentifierError:
-      allOf:
-        - $ref: "#/components/schemas/DashboardBaseError"
-        - type: object
-          properties:
-            _type:
-              type: string
-              enum:
-                - DashboardInvalidIdentifierError
-            dashboardIdOrUrn:
-              type: string
-          required:
-            - dashboardIdOrUrn
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - DashboardInvalidIdentifierError
+        message:
+          type: string
+          description: "A detailed error message describing why the operation failed."
+        dashboardIdOrUrn:
+          type: string
+      required:
+        - _type
+        - message
+        - dashboardIdOrUrn
     DashboardNotFoundError:
-      allOf:
-        - $ref: "#/components/schemas/DashboardBaseError"
-        - type: object
-          properties:
-            _type:
-              type: string
-              enum:
-                - DashboardNotFoundError
-            dashboardIdOrUrn:
-              type: string
-          required:
-            - dashboardIdOrUrn
+      type: object
+      properties:
+        message:
+          type: string
+          description: "A detailed error message describing why the operation failed."
+        dashboardIdOrUrn:
+          type: string
+      required:
+        - message
+        - dashboardIdOrUrn
     DashboardClientErrors:
       discriminator:
         propertyName: _type
