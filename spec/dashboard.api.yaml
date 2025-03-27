@@ -13,13 +13,10 @@ paths:
       description: "Get a list of dashboards, optionally filtered by name."
       operationId: getDashboards
       parameters:
-        - $ref: "#/components/parameters/filterByName"
         - $ref: "#/components/parameters/loadFullDashboard"
       responses:
         "200":
           $ref: "#/components/responses/dashboards"
-        "400":
-          $ref: "#/components/responses/dashboardClientErrors"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     post:
@@ -101,13 +98,6 @@ components:
       description: "The identifier of a dashboard"
       schema:
         $ref: "#/components/schemas/DashboardIdOrUrn"
-    filterByName:
-      in: query
-      name: name
-      required: false
-      description: "Filter dashboards by name."
-      schema:
-        type: string
     loadFullDashboard:
       in: query
       name: loadFullDashboard
@@ -251,7 +241,6 @@ components:
             dashboard:
               $ref: "common_perses.api.yaml#/components/schemas/PersesDashboard"
           required:
-#            - _type
             - dashboard
     DashboardValidationError:
       type: object
@@ -260,19 +249,6 @@ components:
           type: string
           enum:
             - DashboardValidationError
-        message:
-          type: string
-          description: "A detailed error message describing why the operation failed."
-      required:
-        - _type
-        - message
-    DashboardInvalidQueryError:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum:
-            - DashboardInvalidQueryError
         message:
           type: string
           description: "A detailed error message describing why the operation failed."
@@ -311,5 +287,4 @@ components:
         propertyName: _type
       oneOf:
         - $ref: "#/components/schemas/DashboardInvalidIdentifierError"
-        - $ref: "#/components/schemas/DashboardInvalidQueryError"
         - $ref: "#/components/schemas/DashboardValidationError"
