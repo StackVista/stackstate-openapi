@@ -68,6 +68,8 @@ paths:
           $ref: "#/components/responses/dashboard"
         "400":
           $ref: "#/components/responses/dashboardClientErrors"
+        "403":
+          $ref: "#/components/responses/dashboardAuthorizationError"
         "404":
           $ref: "#/components/responses/dashboardNotFoundError"
         "500":
@@ -85,6 +87,8 @@ paths:
           description: "Dashboard deleted."
         "400":
           $ref: "#/components/responses/dashboardClientErrors"
+        "403":
+          $ref: "#/components/responses/dashboardAuthorizationError"
         "404":
           $ref: "#/components/responses/dashboardNotFoundError"
         "500":
@@ -102,7 +106,7 @@ components:
       in: query
       name: loadFullDashboard
       required: false
-      description: "If true, includes the full dashboard content. Defaults to false (only metadata is returned)."
+      description: "If true, includes the full dashboard content in the response. Defaults to false (only metadata is returned) for retrieval endpoints. Defaults to true for create/update operations."
       schema:
         type: boolean
         default: false
@@ -132,6 +136,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/DashboardNotFoundError"
+    dashboardAuthorizationError:
+      description: "Dashboard not found."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardAuthorizationError"
     dashboardClientErrors:
       description: "Dashboard client errors."
       content:
@@ -143,14 +153,6 @@ components:
       type: string
       pattern: ^urn:.+|[0-9]+$
       description: "The identifier of a dashboard. Either the system/graph ID or URN of the resource."
-    DashboardUrn:
-      type: string
-      pattern: ^urn:.+
-      description: "The URN of a dashboard."
-    DashboardOwnerIdentifier:
-      description: "The identifier of the dashboard owner. A dashboard was either created by a user or from a StackPack. For a user, the identifier will be the system/graph ID, and for a StackPack, the identifier will the system URN."
-      type: string
-      pattern: ^urn:stackpack:.+|[0-9]+$
     DashboardScope:
       type: string
       enum: [ publicDashboard, privateDashboard ]
@@ -207,8 +209,10 @@ components:
           description: "Description of the dashboard"
         scope:
           $ref: "#/components/schemas/DashboardScope"
-        ownerIdentifier:
-          $ref: "#/components/schemas/DashboardOwnerIdentifier"
+        ownerId:
+          type: integer
+          format: int64
+          description: "The user id of the dashboard owner. A dashboard was either created by a user or from a StackPack. For a user, the identifier will be the system/graph ID, and for a StackPack, the field will be empty/omitted."
         lastUpdateTimestamp:
           type: integer
           format: int64
@@ -218,7 +222,6 @@ components:
         - name
         - description
         - scope
-        - ownerIdentifier
         - lastUpdateTimestamp
     DashboardReadMetadataSchema:
       allOf:
@@ -282,6 +285,20 @@ components:
       required:
         - message
         - dashboardIdOrUrn
+    DashboardAuthorizationError:
+      type: object
+      properties:
+        message:
+          type: string
+          description: "A detailed error message describing why the operation failed."
+        dashboardIdOrUrn:
+          type: string
+        userName:
+          type: string
+      required:
+        - message
+        - dashboardIdOrUrn
+        - userName
     DashboardClientErrors:
       discriminator:
         propertyName: _type
