@@ -57,7 +57,7 @@ paths:
       tags:
         - dashboards
       summary: "Update a dashboard"
-      description: "Update an existing dashboard by its identifier."
+      description: "Update an existing dashboard by its identifier. Only user-owned dashboard can be updated."
       operationId: updateDashboard
       parameters:
         - $ref: "#/components/parameters/dashboardIdOrUrn"
@@ -78,13 +78,35 @@ paths:
       tags:
         - dashboards
       summary: "Delete a dashboard"
-      description: "Delete a dashboard by its identifier. Only private dashboards can be deleted."
+      description: "Delete a dashboard by its identifier. Only user-owned dashboards can be deleted."
       operationId: deleteDashboard
       parameters:
         - $ref: "#/components/parameters/dashboardIdOrUrn"
       responses:
         "200":
           description: "Dashboard deleted."
+        "400":
+          $ref: "#/components/responses/dashboardClientErrors"
+        "403":
+          $ref: "#/components/responses/dashboardAuthorizationError"
+        "404":
+          $ref: "#/components/responses/dashboardNotFoundError"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /dashboards/{dashboardIdOrUrn}/clone:
+    post:
+      tags:
+        - dashboards
+      summary: "Clone a dashboard"
+      description: "Clone a dashboard by its identifier."
+      operationId: cloneDashboard
+      parameters:
+        - $ref: "#/components/parameters/dashboardIdOrUrn"
+      requestBody:
+        $ref: "#/components/requestBodies/dashboardCloneRequest"
+      responses:
+        "201":
+          $ref: "#/components/responses/dashboard"
         "400":
           $ref: "#/components/responses/dashboardClientErrors"
         "403":
@@ -117,6 +139,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/DashboardWriteSchema"
+    dashboardCloneRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardCloneSchema"
   responses:
     dashboards:
       description: "List of dashboards"
@@ -185,6 +213,22 @@ components:
         - description
         - scope
         - dashboard
+    DashboardCloneSchema:
+      type: object
+      description: "The populated fields will override the corresponding values from the source dashboard during the clone process."
+      properties:
+        name:
+          type: string
+          description: "Name of the dashboard"
+        description:
+          type: string
+          description: "Description of the dashboard"
+        scope:
+          $ref: "#/components/schemas/DashboardScope"
+        dashboard:
+          $ref: "common_perses.api.yaml#/components/schemas/PersesDashboard"
+      required:
+        - name
     DashboardReadSchema:
       discriminator:
         propertyName: _type
