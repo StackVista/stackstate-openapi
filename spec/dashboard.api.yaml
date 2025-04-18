@@ -29,7 +29,7 @@ paths:
         $ref: "#/components/requestBodies/dashboardWriteRequest"
       responses:
         "201":
-          $ref: "#/components/responses/dashboard"
+          $ref: "#/components/responses/dashboardFullSchema"
         "400":
           $ref: "#/components/responses/dashboardClientErrors"
         "500":
@@ -53,19 +53,19 @@ paths:
           $ref: "#/components/responses/dashboardNotFoundError"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-    put:
+    patch:
       tags:
         - dashboards
-      summary: "Update a dashboard"
-      description: "Update an existing dashboard by its identifier. Only user-owned dashboard can be updated."
-      operationId: updateDashboard
+      summary: "Patch a dashboard"
+      description: "Patch an existing dashboard by its identifier. Only user-owned dashboard can be patched."
+      operationId: patchDashboard
       parameters:
         - $ref: "#/components/parameters/dashboardIdOrUrn"
       requestBody:
-        $ref: "#/components/requestBodies/dashboardWriteRequest"
+        $ref: "#/components/requestBodies/dashboardPatchRequest"
       responses:
         "200":
-          $ref: "#/components/responses/dashboard"
+          $ref: "#/components/responses/dashboardFullSchema"
         "400":
           $ref: "#/components/responses/dashboardClientErrors"
         "403":
@@ -106,7 +106,7 @@ paths:
         $ref: "#/components/requestBodies/dashboardCloneRequest"
       responses:
         "201":
-          $ref: "#/components/responses/dashboard"
+          $ref: "#/components/responses/dashboardFullSchema"
         "400":
           $ref: "#/components/responses/dashboardClientErrors"
         "403":
@@ -139,6 +139,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/DashboardWriteSchema"
+    dashboardPatchRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardPatchSchema"
     dashboardCloneRequest:
       required: true
       content:
@@ -158,6 +164,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/DashboardReadSchema"
+    dashboardFullSchema:
+      description: "A single fully loaded dashboard response"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardReadFullSchema"
     dashboardNotFoundError:
       description: "Dashboard not found."
       content:
@@ -213,13 +225,27 @@ components:
         - description
         - scope
         - dashboard
-    DashboardCloneSchema:
+    DashboardPatchSchema:
       type: object
-      description: "The populated fields will override the corresponding values from the source dashboard during the clone process."
+      description: "The provided fields are used to patch the corresponding fields of a dashboard."
       properties:
         name:
           type: string
           description: "Name of the dashboard"
+        description:
+          type: string
+          description: "Description of the dashboard"
+        scope:
+          $ref: "#/components/schemas/DashboardScope"
+        dashboard:
+          $ref: "common_perses.api.yaml#/components/schemas/PersesDashboard"
+    DashboardCloneSchema:
+      type: object
+      description: "The provided fields are used to override the corresponding fields of the new (cloned) dashboard."
+      properties:
+        name:
+          type: string
+          description: "Name of the dashboard. Required to make it easier so see which dashboard is the new (cloned) dashboard."
         description:
           type: string
           description: "Description of the dashboard"
@@ -262,6 +288,7 @@ components:
           format: int64
       required:
         - _type
+        - identifier
         - id
         - name
         - description
