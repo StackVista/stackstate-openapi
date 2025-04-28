@@ -1,0 +1,363 @@
+info:
+  title: Peres Dashboard Schemas
+  version: "1.0.0"
+  description: |
+    This spec encapsulates the Perses Dashboard models necessary to embody a Perses Dashboard. 
+    
+    See the Perses API reference here: https://perses.dev/perses/docs/api/ 
+    
+    Note:
+      - there's no automation to (re)generate theses models. They were generated manually as a once-off exercise, with the expectation that minor tweaks and adjustments would likely need to happen over time.
+      - schemas are prefixed with 'Perses' to make it simpler to post process generated code.
+components:
+  schemas:
+    PersesKind:
+      type: string
+    PersesDashboard:
+      type: object
+      properties:
+        kind:
+          $ref: '#/components/schemas/PersesKind'
+        metadata:
+          $ref: '#/components/schemas/PersesProjectMetadata'
+        spec:
+          $ref: '#/components/schemas/PersesDashboardSpec'
+    PersesDashboardSpec:
+      type: object
+      properties:
+        datasources:
+          description: Datasources is an optional list of datasource definition.
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/PersesDatasourceSpec'
+        display:
+          $ref: '#/components/schemas/PersesDashboardDisplaySpec'
+        duration:
+          $ref: '#/components/schemas/PersesDuration'
+        layouts:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersesLayout'
+        panels:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/PersesPanel'
+        refreshInterval:
+          $ref: '#/components/schemas/PersesDuration'
+        variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersesVariableTypes'
+    PersesDatasourceSpec:
+      type: object
+      properties:
+        default:
+          type: boolean
+        display:
+          $ref: '#/components/schemas/PersesDashboardDisplaySpec'
+        plugin:
+          $ref: '#/components/schemas/PersesPlugin'
+    PersesDashboardDisplaySpec:
+      type: object
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+    PersesDuration:
+      type: string
+      description: |
+        A Duration represents the elapsed time between two instants.
+        It must be provided as a string like "1h", "30m", "15s".
+    PersesLayoutKind:
+      type: string
+      enum:
+        - Grid
+      description: "Defines the layout type. Currently, only 'Grid' is supported."
+    PersesJSONRef:
+      type: object
+      properties:
+        $ref:
+          type: string
+          description: "The JSON reference pointing to the actual object. The property name '$ref' contains a reserved char, which gets stripped away when generated (it's possible to handle this but makes the generation code more complex). For now, consumers of this spec will need to omit the '$' in the property name."
+      required:
+        - $ref
+    PersesGridLayoutCollapse:
+      type: object
+      properties:
+        open:
+          type: boolean
+          description: "Indicates whether the grid layout is collapsed."
+      required:
+        - open
+    PersesGridLayoutDisplay:
+      type: object
+      properties:
+        title:
+          type: string
+          description: "The title of the grid layout."
+        collapse:
+          $ref: '#/components/schemas/PersesGridLayoutCollapse'
+      required:
+        - title
+    PersesGridItem:
+      type: object
+      properties:
+        x:
+          type: integer
+          description: "The x-coordinate of the item in the grid."
+        y:
+          type: integer
+          description: "The y-coordinate of the item in the grid."
+        width:
+          type: integer
+          description: "The width of the item in the grid."
+        height:
+          type: integer
+          description: "The height of the item in the grid."
+        content:
+          $ref: '#/components/schemas/PersesJSONRef'
+      required:
+        - x
+        - y
+        - width
+        - height
+        - content
+    PersesLayoutSpec:
+      type: object
+      properties:
+        display:
+          $ref: '#/components/schemas/PersesGridLayoutDisplay'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersesGridItem'
+      required:
+        - items
+    PersesLayout:
+      type: object
+      properties:
+        kind:
+          $ref: '#/components/schemas/PersesLayoutKind'
+        spec:
+          $ref: '#/components/schemas/PersesLayoutSpec'
+      required:
+        - kind
+        - spec
+    PersesLink:
+      type: object
+      properties:
+        name:
+          type: string
+        renderVariables:
+          type: boolean
+        targetBlank:
+          type: boolean
+        tooltip:
+          type: string
+        url:
+          type: string
+    PersesMetadata:
+      type: object
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        name:
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        version:
+          format: uint64
+          type: integer
+    PersesPanel:
+      type: object
+      properties:
+        kind:
+          type: string
+        spec:
+          $ref: '#/components/schemas/PersesPanelSpec'
+    PersesPanelDisplay:
+      type: object
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+    PersesPanelSpec:
+      type: object
+      properties:
+        display:
+          $ref: '#/components/schemas/PersesPanelDisplay'
+        links:
+          items:
+            $ref: '#/components/schemas/PersesLink'
+          type: array
+        plugin:
+          $ref: '#/components/schemas/PersesPlugin'
+        queries:
+          items:
+            $ref: '#/components/schemas/PersesQuery'
+          type: array
+    PersesPlugin:
+      type: object
+      properties:
+        kind:
+          type: string
+        spec:
+          type: object
+    PersesProjectMetadata:
+      type: object
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        name:
+          type: string
+        project:
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        version:
+          format: uint64
+          type: integer
+    PersesQuery:
+      type: object
+      properties:
+        kind:
+          type: string
+        spec:
+          $ref: '#/components/schemas/PersesQuerySpec'
+    PersesQuerySpec:
+      type: object
+      properties:
+        plugin:
+          $ref: '#/components/schemas/PersesPlugin'
+    PersesVariableDisplaySpec:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        hidden:
+          type: boolean
+    PersesVariableSort:
+      type: string
+      enum:
+        - none
+        - alphabetical-asc
+        - alphabetical-desc
+        - numerical-asc
+        - numerical-desc
+        - alphabetical-ci-asc
+        - alphabetical-ci-desc
+    PersesListVariableDefaultSingleValue:
+      type: object
+      properties:
+        kind:
+          type: string
+          enum:
+            - singleValue
+        singleValue:
+          type: string
+      required:
+        - kind
+        - singleValue
+    PersesListVariableDefaultSliceValues:
+      type: object
+      properties:
+        kind:
+          type: string
+          enum:
+            - sliceValues
+        sliceValues:
+          type: array
+          items:
+            type: string
+      required:
+        - kind
+        - sliceValues
+    PersesListVariableDefaultValue:
+      type: object
+      discriminator:
+        propertyName: kind
+        mapping:
+          singleValue: '#/components/schemas/PersesListVariableDefaultSingleValue'
+          sliceValues: '#/components/schemas/PersesListVariableDefaultSliceValues'
+      oneOf:
+        - $ref: '#/components/schemas/PersesListVariableDefaultSingleValue'
+        - $ref: '#/components/schemas/PersesListVariableDefaultSliceValues'
+    PersesTextVariableSpec:
+      type: object
+      properties:
+        name:
+          type: string
+        display:
+          $ref: '#/components/schemas/PersesVariableDisplaySpec'
+        value:
+          type: string
+        constant:
+          type: boolean
+      required:
+        - name
+        - value
+    PersesTextVariable:
+      type: object
+      properties:
+        kind:
+          type: string
+          enum:
+            - TextVariable
+        spec:
+          $ref: '#/components/schemas/PersesTextVariableSpec'
+      required:
+        - kind
+    PersesListVariableSpec:
+      type: object
+      properties:
+        name:
+          type: string
+        display:
+          $ref: '#/components/schemas/PersesVariableDisplaySpec'
+        defaultValue:
+          $ref: '#/components/schemas/PersesListVariableDefaultValue'
+        allowAllValue:
+          type: boolean
+        allowMultiple:
+          type: boolean
+        customAllValue:
+          type: string
+        capturingRegexp:
+          type: string
+        sort:
+          $ref: '#/components/schemas/PersesVariableSort'
+        plugin:
+          $ref: '#/components/schemas/PersesPlugin'
+      required:
+        - name
+        - allowAllValue
+        - allowMultiple
+        - plugin
+    PersesListVariable:
+      type: object
+      properties:
+        kind:
+          type: string
+          enum:
+            - ListVariable
+        spec:
+          $ref: '#/components/schemas/PersesListVariableSpec'
+      required:
+        - kind
+    PersesVariableTypes:
+      discriminator:
+        propertyName: kind
+        mapping:
+          TextVariable: '#/components/schemas/PersesTextVariable'
+          ListVariable: '#/components/schemas/PersesListVariable'
+      oneOf:
+        - $ref: '#/components/schemas/PersesTextVariable'
+        - $ref: '#/components/schemas/PersesListVariable'

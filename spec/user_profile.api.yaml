@@ -144,6 +144,11 @@ components:
           items:
             type: integer
             format: int64
+        starredDashboards:
+          type: array
+          items:
+            type: integer
+            format: int64
         systemNotificationsRead:
           type: array
           items:

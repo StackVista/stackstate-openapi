@@ -18,6 +18,7 @@ paths:
         - $ref: "#/components/parameters/page"
         - $ref: "#/components/parameters/query"
         - $ref: "#/components/parameters/podUID"
+        - $ref: "#/components/parameters/cluster"
         - $ref: "#/components/parameters/containerNames"
         - $ref: "#/components/parameters/direction"
         - $ref: "#/components/parameters/severity"
@@ -39,6 +40,7 @@ paths:
         - $ref: "#/components/parameters/to"
         - $ref: "#/components/parameters/query"
         - $ref: "#/components/parameters/podUID"
+        - $ref: "#/components/parameters/cluster"
         - $ref: "#/components/parameters/containerNames"
         - $ref: "#/components/parameters/histogramBucketsCount"
         - $ref: "#/components/parameters/severity"
@@ -59,6 +61,7 @@ paths:
         - $ref: "#/components/parameters/from"
         - $ref: "#/components/parameters/to"
         - $ref: "#/components/parameters/podUID"
+        - $ref: "#/components/parameters/cluster"
       responses:
         "200":
           $ref: "#/components/responses/GetKubernetesLogsAutocompleteResult"
@@ -118,6 +121,13 @@ components:
       schema:
         type: string
         format: uuid
+    cluster:
+      name: cluster
+      in: query
+      required: true
+      description: "Cluster name which identifies the scope of the RBAC data"
+      schema:
+        type: string
     containerNames:
       name: containerNames
       in: query

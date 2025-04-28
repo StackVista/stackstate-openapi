@@ -1,0 +1,378 @@
+openapi: 3.0.3
+info:
+  title: Dashboards API
+  version: "1.0.0"
+  description: |
+    This spec encapsulates the SUSE Observability Dashboard API.
+paths:
+  /dashboards:
+    get:
+      tags:
+        - dashboards
+      summary: "Get a list of dashboards"
+      description: "Get a list of dashboards, optionally filtered by name."
+      operationId: getDashboards
+      parameters:
+        - $ref: "#/components/parameters/loadFullDashboard"
+      responses:
+        "200":
+          $ref: "#/components/responses/dashboards"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    post:
+      tags:
+        - dashboards
+      summary: "Create a new dashboard"
+      description: "Create a new dashboard. The dashboard can be private or public based on the scope parameter."
+      operationId: createDashboard
+      requestBody:
+        $ref: "#/components/requestBodies/dashboardWriteRequest"
+      responses:
+        "201":
+          $ref: "#/components/responses/dashboardFullSchema"
+        "400":
+          $ref: "#/components/responses/dashboardClientErrors"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /dashboards/{dashboardIdOrUrn}:
+    get:
+      tags:
+        - dashboards
+      summary: "Get a single dashboard"
+      description: "Get a dashboard by its identifier."
+      operationId: getDashboard
+      parameters:
+        - $ref: "#/components/parameters/dashboardIdOrUrn"
+        - $ref: "#/components/parameters/loadFullDashboard"
+      responses:
+        "200":
+          $ref: "#/components/responses/dashboard"
+        "400":
+          $ref: "#/components/responses/dashboardClientErrors"
+        "404":
+          $ref: "#/components/responses/dashboardNotFoundError"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    patch:
+      tags:
+        - dashboards
+      summary: "Patch a dashboard"
+      description: "Patch an existing dashboard by its identifier. Only user-owned dashboard can be patched."
+      operationId: patchDashboard
+      parameters:
+        - $ref: "#/components/parameters/dashboardIdOrUrn"
+      requestBody:
+        $ref: "#/components/requestBodies/dashboardPatchRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/dashboardFullSchema"
+        "400":
+          $ref: "#/components/responses/dashboardClientErrors"
+        "403":
+          $ref: "#/components/responses/dashboardAuthorizationError"
+        "404":
+          $ref: "#/components/responses/dashboardNotFoundError"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    delete:
+      tags:
+        - dashboards
+      summary: "Delete a dashboard"
+      description: "Delete a dashboard by its identifier. Only user-owned dashboards can be deleted."
+      operationId: deleteDashboard
+      parameters:
+        - $ref: "#/components/parameters/dashboardIdOrUrn"
+      responses:
+        "204":
+          description: "Dashboard deleted (return ok, but no content)."
+        "400":
+          $ref: "#/components/responses/dashboardClientErrors"
+        "403":
+          $ref: "#/components/responses/dashboardAuthorizationError"
+        "404":
+          $ref: "#/components/responses/dashboardNotFoundError"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /dashboards/{dashboardIdOrUrn}/clone:
+    post:
+      tags:
+        - dashboards
+      summary: "Clone a dashboard"
+      description: "Clone a dashboard by its identifier."
+      operationId: cloneDashboard
+      parameters:
+        - $ref: "#/components/parameters/dashboardIdOrUrn"
+      requestBody:
+        $ref: "#/components/requestBodies/dashboardCloneRequest"
+      responses:
+        "201":
+          $ref: "#/components/responses/dashboardFullSchema"
+        "400":
+          $ref: "#/components/responses/dashboardClientErrors"
+        "403":
+          $ref: "#/components/responses/dashboardAuthorizationError"
+        "404":
+          $ref: "#/components/responses/dashboardNotFoundError"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+components:
+  parameters:
+    dashboardIdOrUrn:
+      in: path
+      name: dashboardIdOrUrn
+      required: true
+      description: "The identifier of a dashboard"
+      schema:
+        $ref: "#/components/schemas/DashboardIdOrUrn"
+    loadFullDashboard:
+      in: query
+      name: loadFullDashboard
+      required: false
+      description: "If true, includes the full dashboard content in the response. Defaults to false (only metadata is returned) for retrieval endpoints. Defaults to true for create/update operations."
+      schema:
+        type: boolean
+        default: false
+  requestBodies:
+    dashboardWriteRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardWriteSchema"
+    dashboardPatchRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardPatchSchema"
+    dashboardCloneRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardCloneSchema"
+  responses:
+    dashboards:
+      description: "List of dashboards"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardList"
+    dashboard:
+      description: "A single dashboard"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardReadSchema"
+    dashboardFullSchema:
+      description: "A single fully loaded dashboard response"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardReadFullSchema"
+    dashboardNotFoundError:
+      description: "Dashboard not found."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardNotFoundError"
+    dashboardAuthorizationError:
+      description: "Dashboard not found."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardAuthorizationError"
+    dashboardClientErrors:
+      description: "Dashboard client errors."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DashboardClientErrors"
+  schemas:
+    DashboardIdOrUrn:
+      type: string
+      pattern: ^urn:.+|[0-9]+$
+      description: "The identifier of a dashboard. Either the system/graph ID or URN of the resource."
+    DashboardScope:
+      type: string
+      enum: [ publicDashboard, privateDashboard ]
+      description: "Scope of the dashboard. 'publicDashboard' for accessible by everyone, 'privateDashboard' for owned and accessible by the current user."
+    DashboardList:
+      type: object
+      properties:
+        dashboards:
+          type: array
+          items:
+            $ref: "#/components/schemas/DashboardReadSchema"
+          description: "List of dashboards, which can be either metadata or full representations."
+      required:
+        - dashboards
+    DashboardWriteSchema:
+      type: object
+      properties:
+        name:
+          type: string
+          description: "Name of the dashboard"
+        description:
+          type: string
+          description: "Description of the dashboard"
+        scope:
+          $ref: "#/components/schemas/DashboardScope"
+        dashboard:
+          $ref: "common_perses.api.yaml#/components/schemas/PersesDashboard"
+      required:
+        - name
+        - description
+        - scope
+        - dashboard
+    DashboardPatchSchema:
+      type: object
+      description: "The provided fields are used to patch the corresponding fields of a dashboard."
+      properties:
+        name:
+          type: string
+          description: "Name of the dashboard"
+        description:
+          type: string
+          description: "Description of the dashboard"
+        scope:
+          $ref: "#/components/schemas/DashboardScope"
+        dashboard:
+          $ref: "common_perses.api.yaml#/components/schemas/PersesDashboard"
+    DashboardCloneSchema:
+      type: object
+      description: "The provided fields are used to override the corresponding fields of the new (cloned) dashboard."
+      properties:
+        name:
+          type: string
+          description: "Name of the dashboard. Required to make it easier so see which dashboard is the new (cloned) dashboard."
+        description:
+          type: string
+          description: "Description of the dashboard"
+        scope:
+          $ref: "#/components/schemas/DashboardScope"
+        dashboard:
+          $ref: "common_perses.api.yaml#/components/schemas/PersesDashboard"
+      required:
+        - name
+    DashboardReadSchema:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/DashboardReadMetadataSchema"
+        - $ref: "#/components/schemas/DashboardReadFullSchema"
+    DashboardReadBaseSchema:
+      type: object
+      properties:
+        _type:
+          type: string
+        identifier:
+          $ref: "#/components/schemas/DashboardIdOrUrn"
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          description: "Name of the dashboard"
+        description:
+          type: string
+          description: "Description of the dashboard"
+        scope:
+          $ref: "#/components/schemas/DashboardScope"
+        ownerId:
+          type: integer
+          format: int64
+          description: "The user id of the dashboard owner. A dashboard was either created by a user or from a StackPack. For a user, the identifier will be the system/graph ID, and for a StackPack, the field will be empty/omitted."
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - identifier
+        - id
+        - name
+        - description
+        - scope
+        - lastUpdateTimestamp
+    DashboardReadMetadataSchema:
+      allOf:
+        - $ref: "#/components/schemas/DashboardReadBaseSchema"
+        - type: object
+          properties:
+            _type:
+              type: string
+              enum:
+                - DashboardReadMetadataSchema
+    DashboardReadFullSchema:
+      allOf:
+        - $ref: "#/components/schemas/DashboardReadBaseSchema"
+        - type: object
+          properties:
+            _type:
+              type: string
+              enum:
+                - DashboardReadFullSchema
+            dashboard:
+              $ref: "common_perses.api.yaml#/components/schemas/PersesDashboard"
+          required:
+            - dashboard
+    DashboardValidationError:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - DashboardValidationError
+        message:
+          type: string
+          description: "A detailed error message describing why the operation failed."
+      required:
+        - _type
+        - message
+    DashboardInvalidIdentifierError:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - DashboardInvalidIdentifierError
+        message:
+          type: string
+          description: "A detailed error message describing why the operation failed."
+        dashboardIdOrUrn:
+          type: string
+      required:
+        - _type
+        - message
+        - dashboardIdOrUrn
+    DashboardNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+          description: "A detailed error message describing why the operation failed."
+        dashboardIdOrUrn:
+          type: string
+      required:
+        - message
+        - dashboardIdOrUrn
+    DashboardAuthorizationError:
+      type: object
+      properties:
+        message:
+          type: string
+          description: "A detailed error message describing why the operation failed."
+        dashboardIdOrUrn:
+          type: string
+        userName:
+          type: string
+      required:
+        - message
+        - dashboardIdOrUrn
+        - userName
+    DashboardClientErrors:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/DashboardInvalidIdentifierError"
+        - $ref: "#/components/schemas/DashboardValidationError"
