@@ -16,6 +16,8 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/timelineSummaryResponse"
+        "413": # Used to denote an overflow. This can happen when a limit is reached (like traversal/topology limit).
+          $ref: "#/components/responses/timelineSummaryErrorResponse"
         "500":
           $ref: "#/components/responses/timelineSummaryErrorResponse"
 
