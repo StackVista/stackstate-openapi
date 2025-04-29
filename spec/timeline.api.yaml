@@ -17,7 +17,7 @@ paths:
         "200":
           $ref: "#/components/responses/timelineSummaryResponse"
         "413": # Used to denote an overflow. This can happen when a limit is reached (like traversal/topology limit).
-          $ref: "#/components/responses/timelineSummaryErrorResponse"
+          $ref: "#/components/responses/timelineSummaryOverflowResponse"
         "500":
           $ref: "#/components/responses/timelineSummaryErrorResponse"
 
@@ -43,6 +43,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/TimelineSummaryError"
+    timelineSummaryOverflowResponse:
+      description: "Limit was reached during timeline processing"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TimelineSummaryOverflow"
   schemas:
     TimelineSummaryRequest:
       type: object
@@ -172,6 +178,13 @@ components:
       discriminator:
         propertyName: _type
     TimelineSummaryError:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    TimelineSummaryOverflow:
       type: object
       properties:
         message:
