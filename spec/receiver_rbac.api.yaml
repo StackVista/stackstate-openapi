@@ -27,7 +27,7 @@ paths:
         "403":
           description: "Forbidden"
         "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/receiverGenericErrorsResponse"
   /stsAgent/rbac/scope:
     post:
       tags:
@@ -51,4 +51,4 @@ paths:
         "403":
           description: "Forbidden"
         "500":
-          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/receiverGenericErrorsResponse"
