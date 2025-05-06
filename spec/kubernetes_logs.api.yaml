@@ -22,6 +22,7 @@ paths:
         - $ref: "#/components/parameters/containerNames"
         - $ref: "#/components/parameters/direction"
         - $ref: "#/components/parameters/severity"
+        - $ref: "#/components/parameters/topologyTimestamp"
       responses:
         "200":
           $ref: "#/components/responses/GetKubernetesLogsResult"
@@ -44,6 +45,7 @@ paths:
         - $ref: "#/components/parameters/containerNames"
         - $ref: "#/components/parameters/histogramBucketsCount"
         - $ref: "#/components/parameters/severity"
+        - $ref: "#/components/parameters/topologyTimestamp"
       responses:
         "200":
           $ref: "#/components/responses/GetKubernetesLogsHistogramResult"
@@ -62,6 +64,7 @@ paths:
         - $ref: "#/components/parameters/to"
         - $ref: "#/components/parameters/podUID"
         - $ref: "#/components/parameters/cluster"
+        - $ref: "#/components/parameters/topologyTimestamp"
       responses:
         "200":
           $ref: "#/components/responses/GetKubernetesLogsAutocompleteResult"
@@ -159,6 +162,13 @@ components:
         type: array
         items:
           $ref: "#/components/schemas/LogSeverity"
+    topologyTimestamp:
+      name: topologyTimestamp
+      in: query
+      description: "When time traveling instant when the pod was available"
+      schema:
+        type: integer
+        format: instant
   responses:
     GetKubernetesLogsResult:
       description: Get logs successful result
