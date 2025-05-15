@@ -557,10 +557,7 @@ components:
       name: region
       required: true
       schema:
-        type: string
-        enum:
-          - EU
-          - US
+        $ref: "#/components/schemas/OpsgenieRegion"
       description: "OpsGenie region"
     genieKey:
       in: query
@@ -803,14 +800,24 @@ components:
                 - WebhookNotificationChannel
           required:
             - _type
+    OpsgenieRegion:
+      type: string
+      enum:
+        - EU
+        - US
+    OpsgeniePriority:
+      type: string
+      enum:
+        - P1
+        - P2
+        - P3
+        - P4
+        - P5
     OpsgenieChannelWriteSchema:
       type: object
       properties:
         region:
-          type: string
-          enum:
-            - EU
-            - US
+          $ref: "#/components/schemas/OpsgenieRegion"
         genieKey:
           type: string
         responders:
@@ -818,28 +825,24 @@ components:
           items:
             $ref: "#/components/schemas/OpsgenieResponder"
         priority:
-          type: string
-          enum:
-            - P1
-            - P2
-            - P3
-            - P4
-            - P5
+          $ref: "#/components/schemas/OpsgeniePriority"
       required:
         - region
         - genieKey
         - responders
         - priority
+    OpsgenieResponderType:
+      type: string
+      enum:
+        - TEAM
+        - USER
+        - SCHEDULE
+        - ESCALATION
     OpsgenieResponder:
       type: object
       properties:
         responderType:
-          type: string
-          enum:
-            - TEAM
-            - USER
-            - SCHEDULE
-            - ESCALATION
+          $ref: "#/components/schemas/OpsgenieResponderType"
         responder:
           type: string
       required:
