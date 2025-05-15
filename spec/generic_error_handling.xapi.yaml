@@ -6,6 +6,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/GenericErrorsResponse"
+    receiverGenericErrorsResponse:
+      description: "Error when handling the request on the server side."
+      content:
+        text/plain:
+          schema:
+            $ref: "#/components/schemas/ReceiverGenericErrorsResponse"
   schemas:
     GenericErrorsResponse:
       type: object
@@ -48,3 +54,5 @@ components:
         - WARN
         - ERROR
         - INFO
+    ReceiverGenericErrorsResponse:
+      type: string

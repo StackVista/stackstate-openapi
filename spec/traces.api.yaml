@@ -20,7 +20,7 @@ paths:
       operationId: queryTraces
       responses:
         "200":
-          $ref: "#/components/responses/traces"
+          $ref: "#/components/responses/traceQueryResponse"
         "400":
           $ref: "#/components/responses/traceApiSpansBadRequest"
         "500":
@@ -256,12 +256,12 @@ components:
       description: Span
       content:
         application/json:
-          schema: { $ref: "#/components/schemas/Span" }
-    traces:
+          schema: { $ref: "#/components/schemas/SpanResponse" }
+    traceQueryResponse:
       description: Traces
       content:
         application/json:
-          schema: { $ref: "#/components/schemas/Traces" }
+          schema: { $ref: "#/components/schemas/TraceQueryResponse" }
     durations:
       description: DurationHistogram
       content:
@@ -325,24 +325,19 @@ components:
         - Internal
         - Root
     TraceQuery:
+      description: Find traces that have a span that matches the primary filter and a span that matches the secondary filter. These could be the same, or two different spans of the same trace.
       type: object
       properties:
-        spanFilter:
+        primarySpanFilter:
           $ref: "#/components/schemas/SpanFilter"
-        traceAttributes:
-          type: object
-          additionalProperties: 
-            type: array
-            items:
-              type: string
-          description: "Filter traces by 1 or more attributes"
+        secondarySpanFilter:
+          $ref: "#/components/schemas/SpanFilter"
         sortBy:
           type: array
           items:
             $ref: "#/components/schemas/SpanSortOption"
       required:
-        - spanFilter
-        - traceAttributes
+        - primarySpanFilter
     SpanSortOption:
       type: object
       properties:
@@ -375,20 +370,15 @@ components:
         - ScopeName
         - ScopeVersion
     TraceFilter:
+      description: Filter traces that have a span that matches the primary filter and a span that matches the secondary filter. These could be the same, or two different spans of the same trace.
       type: object
       properties:
-        spanFilter:
+        primarySpanFilter:
           $ref: "#/components/schemas/SpanFilter"
-        traceAttributes:
-          type: object
-          additionalProperties: 
-            type: array
-            items:
-              type: string
-          description: "Filter traces by 1 or more attributes"
+        secondarySpanFilter:
+          $ref: "#/components/schemas/SpanFilter"
       required:
-        - spanFilter
-        - traceAttributes
+        - primarySpanFilter
     SpanFilter:
       type: object
       properties:
@@ -476,14 +466,14 @@ components:
           $ref: "common.api.yaml#/components/schemas/Instant"
       required:
         - resourceAttributes
-    Traces:
+    TraceQueryResponse:
       type: object
       properties:
         traces:
           type: array
           items: 
-            $ref: "#/components/schemas/TraceIdentifier"
-          description: "List of traces"
+            $ref: "#/components/schemas/TraceQueryMatch"
+          description: "List of traces matching the query"
         pageSize:
           type: integer
           description: "Maximum number of the traces in the result."
@@ -606,17 +596,24 @@ components:
           description: All spans for the trace
           items:
             $ref: "#/components/schemas/Span"
+        resources:
+          description: |
+            Map of resource identifiers to their corresponding resource attributes (key/value pairs). Keys are UUIDs used in the spans’ `resourceId` fields.
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/Attributes"
       required:
         - traceId
-        - spans 
+        - spans
+        - resources
     Span:
       type: object
       properties:
-        startTime: 
+        startTime:
           description: Start time of the span
           $ref: "common.api.yaml#/components/schemas/InstantNanoPrecision"
         endTime:
-          description: End time of the span        
+          description: End time of the span
           $ref: "common.api.yaml#/components/schemas/InstantNanoPrecision"
         durationNanos:
           description: Duration of the span in nanoseconds
@@ -638,7 +635,7 @@ components:
           description: A description of the span's operation. For example, the name can be a qualified method name or a file name and a line number where the operation is called
           type: string
         serviceName:
-          description: Logical name of the service for the span 
+          description: Logical name of the service for the span
           type: string
         spanKind:
           description: The type of span. Distinguishes between spans generated in a particular context.
@@ -646,12 +643,12 @@ components:
         spanParentType:
           description: The type of relation of the parent with respect to the span.
           $ref: "#/components/schemas/SpanParentType"
-        resourceAttributes:
-          description: Attributes (key/value pairs) describing the resource for the span.
-          $ref: "#/components/schemas/Attributes"
         spanAttributes:
           description: Attributes (key/value pairs) describing the span.
           $ref: "#/components/schemas/Attributes"
+        resourceId:
+          description: Reference to shared resource attributes, used to deduplicate repeated resource data.
+          type: string
         statusCode:
           description: The status of the operation for the span
           $ref: "#/components/schemas/StatusCode"
@@ -684,24 +681,47 @@ components:
         - serviceName
         - spanKind
         - spanParentType
-        - resourceAttributes
+        - resourceId
         - spanAttributes
         - statusCode
         - events
         - links
-    TraceIdentifier:
-      description: Identifier for a "service trace", the branch of an OTEL trace that corresponds to a single service entry span
+    SpanResponse:
+      description: |
+        The result of looking up a span. As an optimization to reduce duplication, resource attributes are inlined at the
+        root-level of the schema.
       type: object
       properties:
-        traceId:
-          description: The unique identifier for the trace, all spans of the same trace share the same trace_id
-          type: string
-        spanId:
-          description: The unique identifier of the span within the trace
-          type: string
+        span:
+          $ref: "#/components/schemas/Span"
+        resourceAttributes:
+          $ref: "#/components/schemas/Attributes"
       required:
-        - traceId
-        - spanId
+        - span
+        - resourceAttributes
+    TraceQueryMatch:
+      description: |
+        A trace that matched the query filters. It structurally matches the Trace schema, with extra fields representing 
+        the result of the trace query.
+      allOf:
+        - $ref: "#/components/schemas/Trace"
+        - type: object
+          properties:
+            primaryFilterMatches:
+              description: Spans matching the primary filter
+              type: array
+              items:
+                description: The unique identifier of the span within the trace
+                type: string
+            secondaryFilterMatches:
+              description: Spans matching the secondary filter
+              type: array
+              items:
+                description: The unique identifier of the span within the trace
+                type: string
+          required:
+            - primaryFilterMatches
+            - secondaryFilterMatches
     Attributes:
       description: Set of key/value pairs providing extra contextual information. Keys are unique.
       type: object
