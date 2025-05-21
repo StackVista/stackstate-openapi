@@ -430,6 +430,8 @@ components:
           type: string
         name:
           type: string
+        iconbase64:
+          type: string
       required:
         - _type
         - id
