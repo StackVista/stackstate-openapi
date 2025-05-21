@@ -257,10 +257,6 @@ components:
           type: string
         iconbase64:
           type: string
-        namespace:
-          type: string
-        cluster:
-          type: string
       required:
         - id
         - identifier
