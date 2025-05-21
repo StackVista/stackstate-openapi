@@ -135,6 +135,8 @@ components:
           readOnly: true
         name:
           type: string
+        displayName:
+          type: string
         description:
           type: string
         identifier:
