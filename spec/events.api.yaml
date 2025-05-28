@@ -430,12 +430,17 @@ components:
           type: string
         name:
           type: string
+        identifiers:
+          type: array
+          items:
+            type: string
         iconbase64:
           type: string
       required:
         - _type
         - id
         - name
+        - identifiers
         - type
     EventRelation:
       type: object
@@ -451,6 +456,10 @@ components:
           type: string
         name:
           type: string
+        identifiers:
+          type: array
+          items:
+            type: string
         source:
           $ref: "#/components/schemas/EventComponent"
         target:
@@ -460,6 +469,7 @@ components:
       required:
         - _type
         - id
+        - identifiers
         - type
         - source
         - target
