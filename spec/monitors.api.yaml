@@ -920,8 +920,7 @@ components:
         metricQuery:
           type: string
         componentType:
-          type: integer
-          format: int64
+          type: string
         topN:
           type: integer
           format: int32
