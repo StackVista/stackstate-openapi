@@ -228,7 +228,7 @@ components:
           type: array
           items:
             type: string
-        componentTypes:
+        componentTypeNames:
           type: array
           items:
             type: string
@@ -247,7 +247,7 @@ components:
         - notifyHealthStates
         - monitors
         - monitorTags
-        - componentTypes
+        - componentTypeNames
         - componentTags
         - status
         - notificationChannels
