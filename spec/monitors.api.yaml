@@ -919,7 +919,7 @@ components:
       properties:
         metricQuery:
           type: string
-        componentType:
+        componentTypeName:
           type: string
         topN:
           type: integer
@@ -938,7 +938,7 @@ components:
             - timeSeries
       required:
         - metricQuery
-        - componentType
+        - componentTypeName
     MonitorIdentifierSuggestions:
       type: object
       properties:
