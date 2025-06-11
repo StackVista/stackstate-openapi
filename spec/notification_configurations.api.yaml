@@ -231,8 +231,7 @@ components:
         componentTypes:
           type: array
           items:
-            type: integer
-            format: int64
+            type: string
         componentTags:
           type: array
           items:
