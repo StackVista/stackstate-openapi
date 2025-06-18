@@ -48,6 +48,12 @@ paths:
       operationId: createSubject
       parameters:
         - $ref: "#/components/parameters/subject"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSubject"
       responses:
         "200":
           description: "Subject created"
@@ -82,6 +88,13 @@ components:
   schemas:
     Subject:
       type: string
+    Query:
+      type: string
+    CreateSubject:
+      type: object
+      properties:
+        query:
+          $ref: "#/components/schemas/Query"
     SubjectConfig:
       type: object
       properties:
