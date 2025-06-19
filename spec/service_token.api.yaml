@@ -121,6 +121,8 @@ components:
           type: array
           items:
             type: string
+        dedicatedSubject:
+          type: string
       required:
         - name
         - roles
@@ -136,6 +138,8 @@ components:
           type: array
           items:
             type: string
+        dedicatedSubject:
+          type: string
       required:
         - name
         - roles
