@@ -90,25 +90,16 @@ components:
       type: string
     Query:
       type: string
-    Version:
-      type: string
     CreateSubject:
       type: object
       properties:
         query:
           $ref: "#/components/schemas/Query"
-        version:
-          $ref: "#/components/schemas/Version"
-      required:
-        - version
-        - query
     SubjectConfig:
       type: object
       properties:
         handle:
           $ref: "#/components/schemas/Subject"
-        scopeQuery:
-          $ref: "#/components/schemas/Query"
       required:
         - handle
     SubjectList:

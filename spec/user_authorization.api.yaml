@@ -8,13 +8,18 @@ paths:
     get:
       tags:
         - userAuthorization
-      summary: "Is the current user authorized for the provided permission"
-      description: "Is the current user authorized for the provided permission"
+      summary: "Is the current user authorized for the provided permission and resource"
+      description: "Is the current user authorized for the provided permission and resource"
       operationId: getUserAuthorizationFor
       parameters:
         - name: permission
           in: query
           required: true
+          schema:
+            type: string
+        - name: resourceName
+          in: query
+          required: false
           schema:
             type: string
       responses:
