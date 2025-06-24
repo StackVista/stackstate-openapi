@@ -426,7 +426,7 @@ components:
         id:
           type: integer
           format: int64
-        type:
+        typeName:
           type: string
         name:
           type: string
@@ -441,7 +441,7 @@ components:
         - id
         - name
         - identifiers
-        - type
+        - typeName
     EventRelation:
       type: object
       properties:
@@ -452,7 +452,7 @@ components:
         id:
           type: integer
           format: int64
-        type:
+        typeName:
           type: string
         name:
           type: string
@@ -470,7 +470,7 @@ components:
         - _type
         - id
         - identifiers
-        - type
+        - typeName
         - source
         - target
         - dependencyDirection
