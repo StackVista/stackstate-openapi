@@ -25,7 +25,7 @@ paths:
       tags:
         - subject
       summary: "Get subject"
-      description: "Describe a subject and its scope"
+      description: "Describe a subject"
       operationId: getSubject
       parameters:
         - $ref: "#/components/parameters/subject"
@@ -88,6 +88,12 @@ components:
   schemas:
     Subject:
       type: string
+    SubjectSource:
+      enum:
+        - Static
+        - Observability
+        - K8s
+      type: string
     Query:
       type: string
     CreateSubject:
@@ -100,8 +106,11 @@ components:
       properties:
         handle:
           $ref: "#/components/schemas/Subject"
+        source:
+          $ref: "#/components/schemas/SubjectSource"
       required:
         - handle
+        - source
     SubjectList:
       type: array
       items:
