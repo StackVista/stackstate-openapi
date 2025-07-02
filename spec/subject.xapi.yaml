@@ -92,7 +92,7 @@ components:
       enum:
         - Static
         - Observability
-        - K8s
+        - Kubernetes
       type: string
     Query:
       type: string
