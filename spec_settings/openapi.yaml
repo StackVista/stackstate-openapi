@@ -1,0 +1,882 @@
+openapi: 3.0.3
+info:
+  description: Protocol for distributing settings between different SUSE Observability services
+  version: 0.0.1
+  title: SUSE Observability Settings protocol
+  license:
+    name: "Apache 2.0"
+    url: "https://www.apache.org/licenses/LICENSE-2.0.html"
+  contact:
+    name: SUSE Observability
+    email: suse-observability-ops@suse.com
+    url: "https://www.suse.com/observability/"
+  x-logo:
+    url: "https://raw.githubusercontent.com/StackVista/stackstate-docs/master/resources/logo/StackState-Color-padding.png"
+    href: "#top"
+externalDocs:
+  description: Documentation
+  url: "https://docs.suse.com/"
+paths: {}
+components:
+  schemas:
+    SettingsSnapshot:
+      type: object
+      properties:
+        settingType:
+          $ref: "#/components/schemas/SettingType"
+        settings:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/Setting"
+      required:
+        - settingType
+        - settings
+
+    # Base types
+
+    SettingType:
+      type: string
+      enum:
+        - NotificationConfiguration
+        - Sync
+        - Monitor
+        - ExternalMonitor
+        - QueryView
+        - EmailNotificationChannel
+        - OpsgenieNotificationChannel
+        - SlackNotificationChannel
+        - TeamsNotificationChannel
+        - WebhookNotificationChannel
+
+    Setting:
+      type: object
+      oneOf:
+        - $ref: "#/components/schemas/NotificationConfiguration"
+        - $ref: "#/components/schemas/EmailNotificationChannel"
+        - $ref: "#/components/schemas/OpsgenieNotificationChannel"
+        - $ref: "#/components/schemas/SlackNotificationChannel"
+        - $ref: "#/components/schemas/TeamsNotificationChannel"
+        - $ref: "#/components/schemas/WebhookNotificationChannel"
+        - $ref: "#/components/schemas/Sync"
+        - $ref: "#/components/schemas/Monitor"
+        - $ref: "#/components/schemas/ExternalMonitor"
+        - $ref: "#/components/schemas/QueryView"
+      discriminator:
+        propertyName: type
+      required:
+        - type
+
+    Shard:
+      type: integer
+      format: int32
+
+    SettingId:
+      type: string
+      description: A Setting is uniquely identified by the combination of type+id is a unique identification for a setting
+
+    SettingBase:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/SettingId"
+        shard:
+          $ref: "#/components/schemas/Shard"
+        createdTimeStamp:
+          type: integer
+          format: int64
+          description: The timestamp of when the setting was created.
+      required:
+        - id
+        - shard
+        - createdTimeStamp
+
+    # Notification configurations
+    NotificationConfiguration:
+      allOf:
+        - $ref: "#/components/schemas/SettingBase"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [NotificationConfiguration]
+              description: The combination of type+id is a unique identification for a setting
+            name:
+              type: string
+              description: The name of the setting.
+            identifier:
+              type: string
+            notifyOnHealthStates:
+              $ref: "#/components/schemas/NotifyOnOptions"
+            notifyMonitors:
+              type: array
+              items:
+                $ref: "#/components/schemas/MonitorPresentationId"
+              uniqueItems: true
+            notifyMonitorTags:
+              type: array
+              items:
+                type: string
+              uniqueItems: true
+            componentTypes:
+              type: array
+              items:
+                type: string
+              uniqueItems: true
+            componentTags:
+              type: array
+              items:
+                type: string
+              uniqueItems: true
+            status:
+              $ref: "#/components/schemas/NotificationConfigurationStatus"
+            channelIds:
+              type: array
+              items:
+                $ref: "#/components/schemas/NotificationChannelId"
+              uniqueItems: true
+          required:
+            - type
+            - name
+            - notifyOnHealthStates
+            - notifyMonitors
+            - notifyMonitorTags
+            - componentTypes
+            - componentTags
+            - status
+            - channelIds
+
+    NotificationChannelId:
+      type: object
+      oneOf:
+        - $ref: "#/components/schemas/SlackNotificationChannelId"
+        - $ref: "#/components/schemas/WebhookNotificationChannelId"
+        - $ref: "#/components/schemas/OpsgenieNotificationChannelId"
+        - $ref: "#/components/schemas/TeamsNotificationChannelId"
+        - $ref: "#/components/schemas/EmailNotificationChannelId"
+      discriminator:
+        propertyName: channelType
+      required:
+        - channelType
+
+    SlackNotificationChannelId:
+      type: object
+      properties:
+        id:
+          type: string
+        channelType:
+          type: string
+          enum: [SlackNotificationChannel]
+      required:
+        - channelType
+        - id
+
+    WebhookNotificationChannelId:
+      type: object
+      properties:
+        id:
+          type: string
+        channelType:
+          type: string
+          enum: [SlackNotificationChannel]
+      required:
+        - channelType
+        - id
+
+    OpsgenieNotificationChannelId:
+      type: object
+      properties:
+        id:
+          type: string
+        channelType:
+          type: string
+          enum: [OpsgenieNotificationChannel]
+      required:
+        - channelType
+        - id
+
+    TeamsNotificationChannelId:
+      type: object
+      properties:
+        id:
+          type: string
+        channelType:
+          type: string
+          enum: [TeamsNotificationChannel]
+      required:
+        - channelType
+        - id
+
+    EmailNotificationChannelId:
+      type: object
+      properties:
+        id:
+          type: string
+        channelType:
+          type: string
+          enum: [EmailNotificationChannel]
+      required:
+        - channelType
+        - id
+
+    NotificationChannelType:
+      type: string
+      enum:
+        - EmailNotificationChannel
+        - OpsgenieNotificationChannel
+        - SlackNotificationChannel
+        - TeamsNotificationChannel
+        - WebhookNotificationChannel
+
+    NotificationChannel:
+      type: object
+      oneOf:
+        - $ref: "#/components/schemas/EmailNotificationChannel"
+        - $ref: "#/components/schemas/OpsgenieNotificationChannel"
+        - $ref: "#/components/schemas/SlackNotificationChannel"
+        - $ref: "#/components/schemas/TeamsNotificationChannel"
+        - $ref: "#/components/schemas/WebhookNotificationChannel"
+      discriminator:
+        propertyName: type
+      required:
+        - type
+
+    EmailNotificationChannel:
+      allOf:
+        - $ref: "#/components/schemas/SettingBase"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [EmailNotificationChannel]
+              description: The combination of type+id is a unique identification for a setting
+            lastUpdateTimestamp:
+              type: integer
+              format: instant
+              description: The timestamp of when the setting was last updated.
+            to:
+              type: array
+              items:
+                type: string
+            cc:
+              type: array
+              items:
+                type: string
+            subjectPrefix:
+              type: string
+          required:
+            - type
+            - lastUpdateTimestamp
+            - to
+            - cc
+    OpsgenieNotificationChannel:
+      allOf:
+        - $ref: "#/components/schemas/SettingBase"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [OpsgenieNotificationChannel]
+              description: The combination of type+id is a unique identification for a setting
+            lastUpdateTimestamp:
+              type: integer
+              format: instant
+              description: The timestamp of when the setting was last updated.
+            region:
+              $ref: "#/components/schemas/OpsgenieRegion"
+            genieKey:
+              type: string
+            responders:
+              type: array
+              items:
+                $ref: "#/components/schemas/OpsgenieResponder"
+            priority:
+              $ref: "#/components/schemas/OpsgeniePriority"
+          required:
+            - type
+            - lastUpdateTimestamp
+            - region
+            - genieKey
+            - responders
+            - priority
+
+    OpsgenieRegion:
+      type: string
+      enum: [EU, US]
+
+    OpsgenieResponder:
+      type: object
+      properties:
+        responder:
+          type: string
+        responderType:
+          $ref: "#/components/schemas/OpsgenieResponderType"
+
+    OpsgenieResponderType:
+      type: string
+      enum:
+        - TEAM
+        - USER
+        - SCHEDULE
+        - ESCALATION
+
+    OpsgeniePriority:
+      type: string
+      enum: [P1, P2, P3, P4, P5]
+
+    SlackNotificationChannel:
+      allOf:
+        - $ref: "#/components/schemas/SettingBase"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [OpsgenieNotificationChannel]
+              description: The combination of type+id is a unique identification for a setting
+            lastUpdateTimestamp:
+              type: integer
+              format: instant
+              description: The timestamp of when the setting was last updated.
+            accessToken:
+              type: string
+            slackWorkspace:
+              type: string
+            slackChannel:
+              type: string
+              nullable: true
+            slackChannelId:
+              type: string
+              nullable: true
+          required:
+            - type
+            - lastUpdateTimestamp
+            - accessToken
+            - slackWorkspace
+
+    TeamsNotificationChannel:
+      allOf:
+        - $ref: "#/components/schemas/SettingBase"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [TeamsNotificationChannel]
+              description: The combination of type+id is a unique identification for a setting
+            lastUpdateTimestamp:
+              type: integer
+              format: instant
+              description: The timestamp of when the setting was last updated.
+            url:
+              type: string
+          required:
+            - type
+            - lastUpdateTimestamp
+            - url
+
+    WebhookNotificationChannel:
+      allOf:
+        - $ref: "#/components/schemas/SettingBase"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [WebhookNotificationChannel]
+              description: The combination of type+id is a unique identification for a setting
+            lastUpdateTimestamp:
+              type: integer
+              format: instant
+              description: The timestamp of when the setting was last updated.
+            token:
+              type: string
+            url:
+              type: string
+            verifySsl:
+              type: boolean
+            tags:
+              type: object
+              additionalProperties:
+                type: string
+          required:
+            - type
+            - lastUpdateTimestamp
+            - token
+            - url
+            - verifySsl
+            - tags
+
+    # TODO: OtelComponentMapping + OtelRelationMapping
+
+    # Synchronization
+    Sync:
+      allOf:
+        - $ref: "#/components/schemas/SettingBase"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [Sync]
+              description: The combination of type+id is a unique identification for a setting
+            name:
+              type: string
+              description: The name of the setting.
+            componentActions:
+              type: array
+              items:
+                $ref: "#/components/schemas/SyncActionComponent"
+              uniqueItems: true
+            relationActions:
+              type: array
+              items:
+                $ref: "#/components/schemas/SyncActionRelation"
+              uniqueItems: true
+            defaultComponentAction:
+              $ref: "#/components/schemas/SyncActionComponent"
+            defaultRelationAction:
+              $ref: "#/components/schemas/SyncActionRelation"
+            componentIdExtractor:
+              $ref: "#/components/schemas/IdExtractorFunctionBody"
+            relationIdExtractor:
+              $ref: "#/components/schemas/IdExtractorFunctionBody"
+            integrationType:
+              type: string
+            topic:
+              type: string
+            autoExpireElements:
+              type: boolean
+            expireElementsAfterMs:
+              type: integer
+              format: int64
+          required:
+            - type
+            - name
+            - componentActions
+            - relationActions
+            - defaultComponentAction
+            - defaultRelationAction
+            - componentIdExtractor
+            - relationIdExtractor
+            - integrationType
+            - topic
+            - autoExpireElements
+            - expireElementsAfterMs
+
+    SyncActionComponent:
+      oneOf:
+        - $ref: "#/components/schemas/SyncActionCreateComponent"
+        - $ref: "#/components/schemas/SyncActionCreateOnMerge"
+      discriminator:
+        propertyName: actionType
+    SyncActionRelation:
+      oneOf:
+        - $ref: "#/components/schemas/SyncActionCreateRelation"
+        - $ref: "#/components/schemas/SyncActionCreateOnMerge"
+      discriminator:
+        propertyName: actionType
+    SyncActionCreateComponent:
+      type: object
+      properties:
+        actionType:
+          type: string
+          enum: [create_component]
+        type:
+          type: string
+          description: "The component type to create."
+        mappingFunction:
+          $ref: "#/components/schemas/GroovyFunctionBody"
+        templateFunction:
+          $ref: "#/components/schemas/HandlebarsFunctionBody"
+        mergeStrategy:
+          $ref: "#/components/schemas/MergeStrategy"
+      required:
+        - actionType
+        - type
+        - templateFunction
+        - mergeStrategy
+    SyncActionCreateRelation:
+      type: object
+      properties:
+        actionType:
+          type: string
+          enum: [create_relation]
+        type:
+          type: string
+          description: "The relation type to create."
+        mappingFunction:
+          $ref: "#/components/schemas/GroovyFunctionBody"
+        templateFunction:
+          $ref: "#/components/schemas/HandlebarsFunctionBody"
+        mergeStrategy:
+          $ref: "#/components/schemas/MergeStrategy"
+      required:
+        - actionType
+        - type
+        - templateFunction
+        - mergeStrategy
+    SyncActionCreateOnMerge:
+      type: object
+      properties:
+        actionType:
+          type: string
+          enum: [create_on_merge]
+        type:
+          type: string
+      required:
+        - actionType
+        - type
+
+    # Monitors and External Monitors
+    Monitor:
+      allOf:
+        - $ref: "#/components/schemas/SettingBase"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [Monitor]
+              description: The combination of type+id is a unique identification for a setting
+            name:
+              type: string
+              description: The name of the setting.
+            identifier:
+              type: string
+            functionCall:
+              $ref: "#/components/schemas/MonitorFunctionCall"
+            remediationHint:
+              type: string
+            intervalSeconds:
+              type: integer
+            tags:
+              type: array
+              items:
+                type: string
+              uniqueItems: true
+            status:
+              $ref: "#/components/schemas/MonitorStatus"
+            dummy:
+              type: boolean
+          required:
+            - type
+            - name
+            - functionCall
+            - intervalSeconds
+            - tags
+            - status
+
+    ExternalMonitor:
+      allOf:
+        - $ref: "#/components/schemas/SettingBase"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [ExternalMonitor]
+              description: The combination of type+id is a unique identification for a setting
+            name:
+              type: string
+              description: The name of the setting.
+            identifier:
+              type: string
+            healthStreamUrn:
+              type: string
+            remediationHint:
+              type: string
+            tags:
+              type: array
+              items:
+                type: string
+              uniqueItems: true
+          required:
+            - type
+            - name
+            - healthStreamUrn
+            - tags
+
+    MonitorPresentation:
+      type: object
+      oneOf:
+        - $ref: "#/components/schemas/Monitor"
+        - $ref: "#/components/schemas/ExternalMonitor"
+      discriminator:
+        propertyName: type
+      required:
+        - type
+
+    MonitorPresentationId:
+      oneOf:
+        - $ref: "#/components/schemas/MonitorId"
+        - $ref: "#/components/schemas/ExternalMonitorId"
+      discriminator:
+        propertyName: type
+    MonitorId:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [Monitor]
+        id:
+          type: string
+      required:
+        - type
+        - id
+    ExternalMonitorId:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [ExternalMonitor]
+        id:
+          type: string
+      required:
+        - type
+        - id
+
+    MonitorFunctionCall:
+      type: object
+      properties:
+        body:
+          $ref: "#/components/schemas/MonitorFunctionBody"
+        arguments:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/MonitorArgument"
+      required:
+        - body
+        - arguments
+    MonitorFunctionBody:
+      oneOf:
+        - $ref: "#/components/schemas/NativeFunctionBody"
+        - $ref: "#/components/schemas/GroovyFunctionBody"
+      discriminator:
+        propertyName: functionType
+    IdExtractorFunctionBody:
+      oneOf:
+        - $ref: "#/components/schemas/NativeFunctionBody"
+        - $ref: "#/components/schemas/GroovyFunctionBody"
+      discriminator:
+        propertyName: functionType
+
+    MonitorArgument:
+      oneOf:
+        - $ref: "#/components/schemas/ArgumentBoolean"
+        - $ref: "#/components/schemas/ArgumentDouble"
+        - $ref: "#/components/schemas/ArgumentLong"
+        - $ref: "#/components/schemas/ArgumentString"
+        - $ref: "#/components/schemas/ArgumentTimeWindow"
+        - $ref: "#/components/schemas/ArgumentPromQLMetric"
+        - $ref: "#/components/schemas/ArgumentComparatorWithoutEquality"
+        - $ref: "#/components/schemas/ArgumentFailingHealthState"
+        - $ref: "#/components/schemas/ArgumentTopologyQuery"
+        - $ref: "#/components/schemas/ArgumentTopologyPromQLMetric"
+      discriminator:
+        propertyName: argumentType
+
+    # Queryview
+    QueryView:
+      allOf:
+        - $ref: "#/components/schemas/SettingBase"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [QueryView]
+              description: The combination of type+id is a unique identification for a setting
+            name:
+              type: string
+              description: The name of the setting.
+            topologyQuery:
+              type: string
+          required:
+            - type
+            - name
+            - topologyQuery
+
+    # Supporting types
+    NotificationConfigurationStatus:
+      type: string
+      enum: [ENABLED, DISABLED]
+    NotifyOnOptions:
+      type: string
+      enum: [CRITICAL, DEVIATING_AND_CRITICAL]
+    MergeStrategy:
+      type: string
+      enum: [UseTheirs, MergePreferTheirs, MergePreferMine, UseMine]
+    MonitorStatus:
+      type: string
+      enum: [ENABLED, DISABLED]
+    ComparatorWithoutEquality:
+      type: string
+      enum: [LT, LTE, GTE, GT]
+    FailingHealthState:
+      type: string
+      enum: [CRITICAL, DEVIATING, UNKNOWN]
+
+    NativeFunctionBody:
+      type: object
+      properties:
+        functionType:
+          type: string
+          enum: [native]
+        name:
+          type: string
+        functionRef:
+          type: string
+      required:
+        - functionType
+        - name
+        - functionRef
+    GroovyFunctionBody:
+      type: object
+      properties:
+        functionType:
+          type: string
+          enum: [groovy]
+        name:
+          type: string
+        functionBody:
+          type: string
+      required:
+        - functionType
+        - name
+        - functionBody
+    HandlebarsFunctionBody:
+      type: object
+      properties:
+        functionType:
+          type: string
+          enum: [handlebars]
+        name:
+          type: string
+        functionBody:
+          type: string
+      required:
+        - functionType
+        - name
+        - functionBody
+
+    ArgumentBoolean:
+      type: object
+      properties:
+        argumentType:
+          type: string
+          enum: [boolean]
+        value:
+          type: boolean
+      required:
+        - argumentType
+        - value
+    ArgumentDouble:
+      type: object
+      properties:
+        argumentType:
+          type: string
+          enum: [double]
+        value:
+          type: number
+          format: double
+      required:
+        - argumentType
+        - value
+    ArgumentLong:
+      type: object
+      properties:
+        argumentType:
+          type: string
+          enum: [long]
+        value:
+          type: integer
+          format: int64
+      required:
+        - argumentType
+        - value
+    ArgumentString:
+      type: object
+      properties:
+        argumentType:
+          type: string
+          enum: [string]
+        value:
+          type: string
+      required:
+        - argumentType
+        - value
+    ArgumentTimeWindow:
+      type: object
+      properties:
+        argumentType:
+          type: string
+          enum: [time_window]
+        valueMs:
+          type: integer
+          format: int64
+      required:
+        - argumentType
+        - value
+    ArgumentPromQLMetric:
+      type: object
+      properties:
+        argumentType:
+          type: string
+          enum: [promql_metric]
+        query:
+          type: string
+        unit:
+          type: string
+        aliasTemplate:
+          type: string
+      required:
+        - argumentType
+        - query
+        - unit
+        - aliasTemplate
+    ArgumentComparatorWithoutEquality:
+      type: object
+      properties:
+        argumentType:
+          type: string
+          enum: [comparator_without_equality]
+        value:
+          $ref: "#/components/schemas/ComparatorWithoutEquality"
+      required:
+        - argumentType
+        - value
+    ArgumentFailingHealthState:
+      type: object
+      properties:
+        argumentType:
+          type: string
+          enum: [failing_health_state]
+        value:
+          $ref: "#/components/schemas/FailingHealthState"
+      required:
+        - argumentType
+        - value
+    ArgumentTopologyQuery:
+      type: object
+      properties:
+        argumentType:
+          type: string
+          enum: [topology_query]
+        value:
+          type: string
+      required:
+        - argumentType
+        - value
+    ArgumentTopologyPromQLMetric:
+      type: object
+      properties:
+        argumentType:
+          type: string
+          enum: [topology_promql_metric]
+        topologyQuery:
+          type: string
+        metricQuery:
+          type: string
+        unit:
+          type: string
+        aliasTemplate:
+          type: string
+      required:
+        - argumentType
+        - topologyQuery
+        - metricQuery
+        - unit
+        - aliasTemplate
