@@ -18,6 +18,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ServerInfo"
+        "401":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
