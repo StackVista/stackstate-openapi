@@ -52,11 +52,7 @@ components:
       type: object
       oneOf:
         - $ref: "#/components/schemas/NotificationConfiguration"
-        - $ref: "#/components/schemas/EmailNotificationChannel"
-        - $ref: "#/components/schemas/OpsgenieNotificationChannel"
-        - $ref: "#/components/schemas/SlackNotificationChannel"
-        - $ref: "#/components/schemas/TeamsNotificationChannel"
-        - $ref: "#/components/schemas/WebhookNotificationChannel"
+        - $ref: "#/components/schemas/NotificationChannel"
         - $ref: "#/components/schemas/Sync"
         - $ref: "#/components/schemas/Monitor"
         - $ref: "#/components/schemas/ExternalMonitor"
@@ -310,6 +306,9 @@ components:
           type: string
         responderType:
           $ref: "#/components/schemas/OpsgenieResponderType"
+      required:
+        - responder
+        - responderType
 
     OpsgenieResponderType:
       type: string
@@ -641,6 +640,15 @@ components:
       required:
         - body
         - arguments
+    
+    FunctionBody:
+      oneOf:
+        - $ref: "#/components/schemas/MonitorFunctionBody"
+        - $ref: "#/components/schemas/IdExtractorFunctionBody"
+
+      discriminator:
+        propertyName: functionType
+
     MonitorFunctionBody:
       oneOf:
         - $ref: "#/components/schemas/NativeFunctionBody"
@@ -653,6 +661,12 @@ components:
         - $ref: "#/components/schemas/GroovyFunctionBody"
       discriminator:
         propertyName: functionType
+
+    Argument:
+      oneOf:
+        - $ref: "#/components/schemas/MonitorArgument"   
+      discriminator:
+        propertyName: argumentType
 
     MonitorArgument:
       oneOf:
@@ -714,7 +728,7 @@ components:
       properties:
         functionType:
           type: string
-          enum: [native]
+          enum: [NativeFunctionBody]
         name:
           type: string
         functionRef:
@@ -728,7 +742,7 @@ components:
       properties:
         functionType:
           type: string
-          enum: [groovy]
+          enum: [GroovyFunctionBody]
         name:
           type: string
         functionBody:
@@ -742,7 +756,7 @@ components:
       properties:
         functionType:
           type: string
-          enum: [handlebars]
+          enum: [HandlebarsFunctionBody]
         name:
           type: string
         functionBody:
@@ -809,7 +823,7 @@ components:
           format: int64
       required:
         - argumentType
-        - value
+        - valueMs
     ArgumentPromQLMetric:
       type: object
       properties:
