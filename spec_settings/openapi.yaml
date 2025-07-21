@@ -61,6 +61,9 @@ components:
         propertyName: type
       required:
         - type
+        - id
+        - shard
+        - createdTimeStamp
 
     Shard:
       type: integer
@@ -150,70 +153,70 @@ components:
         - $ref: "#/components/schemas/TeamsNotificationChannelId"
         - $ref: "#/components/schemas/EmailNotificationChannelId"
       discriminator:
-        propertyName: channelType
+        propertyName: type
       required:
-        - channelType
+        - type
 
     SlackNotificationChannelId:
       type: object
       properties:
         id:
           type: string
-        channelType:
+        type: 
           type: string
-          enum: [SlackNotificationChannel]
+          enum: [SlackNotificationChannelId]
       required:
-        - channelType
         - id
+        - type
 
     WebhookNotificationChannelId:
       type: object
       properties:
         id:
           type: string
-        channelType:
+        type: 
           type: string
-          enum: [SlackNotificationChannel]
+          enum: [WebhookNotificationChannelId]
       required:
-        - channelType
         - id
+        - type
 
     OpsgenieNotificationChannelId:
       type: object
       properties:
         id:
           type: string
-        channelType:
+        type: 
           type: string
-          enum: [OpsgenieNotificationChannel]
+          enum: [OpsgenieNotificationChannelId]
       required:
-        - channelType
         - id
+        - type
 
     TeamsNotificationChannelId:
       type: object
       properties:
         id:
           type: string
-        channelType:
+        type: 
           type: string
-          enum: [TeamsNotificationChannel]
+          enum: [TeamsNotificationChannelId]
       required:
-        - channelType
         - id
+        - type
 
     EmailNotificationChannelId:
       type: object
       properties:
         id:
           type: string
-        channelType:
+        type: 
           type: string
-          enum: [EmailNotificationChannel]
+          enum: [EmailNotificationChannelId]
       required:
-        - channelType
         - id
-
+        - type
+  
     NotificationChannelType:
       type: string
       enum:
@@ -329,7 +332,7 @@ components:
           properties:
             type:
               type: string
-              enum: [OpsgenieNotificationChannel]
+              enum: [SlackNotificationChannel]
               description: The combination of type+id is a unique identification for a setting
             lastUpdateTimestamp:
               type: integer
@@ -341,10 +344,8 @@ components:
               type: string
             slackChannel:
               type: string
-              nullable: true
             slackChannelId:
               type: string
-              nullable: true
           required:
             - type
             - lastUpdateTimestamp
@@ -457,6 +458,21 @@ components:
             - topic
             - autoExpireElements
             - expireElementsAfterMs
+    SyncAction:
+      oneOf:
+        - $ref: "#/components/schemas/SyncActionComponent"
+        - $ref: "#/components/schemas/SyncActionRelation"
+        - $ref: "#/components/schemas/SyncActionCreate"
+        - $ref: "#/components/schemas/SyncActionCreateOnMerge"
+      discriminator:
+        propertyName: actionType
+    
+    SyncActionCreate:
+      oneOf:
+        - $ref: "#/components/schemas/SyncActionCreateComponent"
+        - $ref: "#/components/schemas/SyncActionCreateRelation"
+      discriminator:
+        propertyName: actionType
 
     SyncActionComponent:
       oneOf:
@@ -475,10 +491,9 @@ components:
       properties:
         actionType:
           type: string
-          enum: [create_component]
+          enum: [SyncActionCreateComponent]
         type:
           type: string
-          description: "The component type to create."
         mappingFunction:
           $ref: "#/components/schemas/GroovyFunctionBody"
         templateFunction:
@@ -495,10 +510,9 @@ components:
       properties:
         actionType:
           type: string
-          enum: [create_relation]
+          enum: [SyncActionCreateRelation]
         type:
           type: string
-          description: "The relation type to create."
         mappingFunction:
           $ref: "#/components/schemas/GroovyFunctionBody"
         templateFunction:
@@ -515,7 +529,7 @@ components:
       properties:
         actionType:
           type: string
-          enum: [create_on_merge]
+          enum: [SyncActionCreateOnMerge]
         type:
           type: string
       required:
@@ -605,12 +619,13 @@ components:
         - $ref: "#/components/schemas/ExternalMonitorId"
       discriminator:
         propertyName: type
+
     MonitorId:
       type: object
       properties:
         type:
           type: string
-          enum: [Monitor]
+          enum: [MonitorId]
         id:
           type: string
       required:
@@ -621,13 +636,19 @@ components:
       properties:
         type:
           type: string
-          enum: [ExternalMonitor]
+          enum: [ExternalMonitorId]
         id:
           type: string
       required:
         - type
         - id
 
+    FunctionCall:
+      oneOf:
+        - $ref: "#/components/schemas/MonitorFunctionCall"
+      discriminator:
+        propertyName: type
+  
     MonitorFunctionCall:
       type: object
       properties:
@@ -637,14 +658,21 @@ components:
           type: object
           additionalProperties:
             $ref: "#/components/schemas/MonitorArgument"
+        type: 
+          type: string
+          enum: [MonitorFunctionCall]
       required:
         - body
         - arguments
+        - type
     
     FunctionBody:
       oneOf:
         - $ref: "#/components/schemas/MonitorFunctionBody"
         - $ref: "#/components/schemas/IdExtractorFunctionBody"
+        - $ref: "#/components/schemas/HandlebarsFunctionBody"
+        - $ref: "#/components/schemas/GroovyFunctionBody"
+        - $ref: "#/components/schemas/NativeFunctionBody"
 
       discriminator:
         propertyName: functionType
