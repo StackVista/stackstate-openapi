@@ -1,0 +1,193 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Receiver Topo Stream ingestion Api
+  version: "1.0.0"
+paths:
+  /topology:
+    post:
+      tags:
+        - receiverTopologyStream
+      summary: Submit a topology stream message
+      operationId: ingestTopologyStream
+      description: "Ingest topology streaming data"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopologyStreamMessage'
+      responses:
+        '200':
+          description: "Successfully received"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/receiverGenericErrorsResponse"
+
+components:
+  schemas:
+    TopologyStreamComponent:
+      type: object
+      properties:
+        external_id:
+          type: string
+        identifiers:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        type_name:
+          type: string
+        type_identifier:
+          type: string
+        layer_name:
+          type: string
+        layer_identifier:
+          type: string
+        domain_name:
+          type: string
+        domain_identifier:
+          type: string
+        resource_definition:
+          type: object
+        status_data:
+          type: object
+        tags:
+          type: array
+          items:
+            type: string
+      required:
+        - external_id
+        - identifiers
+        - name
+        - type_name
+        - layer_name
+        - domain_name
+        - resource_definition
+
+    TopologyStreamRelation:
+      type: object
+      properties:
+        external_id:
+          type: string
+        source_identifier:
+          type: string
+        target_identifier:
+          type: string
+        name:
+          type: string
+        type_name:
+          type: string
+        type_identifier:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+      required:
+        - external_id
+        - source_identifier
+        - target_identifier
+        - name
+        - type_name
+
+    TopologyStreamRemove:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - TopologyStreamRemove
+        removal_cause:
+          type: string
+      required:
+        - _type
+        - removal_cause
+
+    TopologyStreamSnapshotData:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - TopologyStreamSnapshotData
+        repeat_interval_ms:
+          type: integer
+        expiry_interval_ms:
+          type: integer
+        snapshot_start:
+          type: boolean
+        snapshot_stop:
+          type: boolean
+        components:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopologyStreamComponent'
+        relations:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopologyStreamRelation'
+        errors:
+          type: array
+          items:
+            type: string
+      required:
+        - _type
+        - repeat_interval_ms
+
+    TopologyStreamRepeatElementsData:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - TopologyStreamRepeatElementsData
+        expiry_interval_ms:
+          type: integer
+        components:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopologyStreamComponent'
+        relations:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopologyStreamRelation'
+        errors:
+          type: array
+          items:
+            type: string
+      required:
+        - _type
+        - expiry_interval_ms
+
+    TopologyStreamPayload:
+      discriminator:
+        propertyName: _type
+      description: "Main payload to materialize topology."
+      oneOf:
+        - $ref: '#/components/schemas/TopologyStreamSnapshotData'
+        - $ref: '#/components/schemas/TopologyStreamRepeatElementsData'
+        - $ref: '#/components/schemas/TopologyStreamRemove'
+      required:
+        - _type
+    TopologyStreamMessage:
+      type: object
+      properties:
+        datasource:
+          type:
+            string
+        shardId:
+          type: string
+        collection_timestamp:
+          type: integer
+          format: int64
+        payload:
+          $ref: "#/components/schemas/TopologyStreamPayload"
+      required:
+        - datasource
+        - collection_timestamp
+        - payload

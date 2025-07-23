@@ -18,3 +18,4 @@ paths:
   /stsAgent/rbac/instance: { $ref: "receiver_rbac.api.yaml#/paths/%2FstsAgent%2Frbac%2Finstance" }
   /stsAgent/rbac/scope: { $ref: "receiver_rbac.api.yaml#/paths/%2FstsAgent%2Frbac%2Fscope" }
   /stsAgent/features: { $ref: "receiver_features.api.yaml#/paths/%2FstsAgent%2Ffeatures" }
+  /stsAgent/topology: { $ref: "receiver_topo_stream.api.yaml#/paths/%2Ftopology" }
