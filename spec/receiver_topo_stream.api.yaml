@@ -177,10 +177,10 @@ components:
     TopologyStreamMessage:
       type: object
       properties:
-        datasource:
+        data_source:
           type:
             string
-        shardId:
+        shard_id:
           type: string
         collection_timestamp:
           type: integer
@@ -188,6 +188,6 @@ components:
         payload:
           $ref: "#/components/schemas/TopologyStreamPayload"
       required:
-        - datasource
+        - data_source
         - collection_timestamp
         - payload
