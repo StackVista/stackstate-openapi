@@ -403,8 +403,6 @@ components:
             - verifySsl
             - tags
 
-    # TODO: OtelComponentMapping + OtelRelationMapping
-
     # Synchronization
     Sync:
       allOf:
@@ -799,7 +797,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [boolean]
+          enum: [ArgumentBoolean]
         value:
           type: boolean
       required:
@@ -810,7 +808,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [double]
+          enum: [ArgumentDouble]
         value:
           type: number
           format: double
@@ -822,7 +820,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [long]
+          enum: [ArgumentLong]
         value:
           type: integer
           format: int64
@@ -834,7 +832,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [string]
+          enum: [ArgumentString]
         value:
           type: string
       required:
@@ -845,7 +843,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [time_window]
+          enum: [ArgumentTimeWindow]
         valueMs:
           type: integer
           format: int64
@@ -857,7 +855,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [promql_metric]
+          enum: [ArgumentPromQLMetric]
         query:
           type: string
         unit:
@@ -874,7 +872,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [comparator_without_equality]
+          enum: [ArgumentComparatorWithoutEquality]
         value:
           $ref: "#/components/schemas/ComparatorWithoutEquality"
       required:
@@ -885,7 +883,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [failing_health_state]
+          enum: [ArgumentFailingHealthState]
         value:
           $ref: "#/components/schemas/FailingHealthState"
       required:
@@ -896,7 +894,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [topology_query]
+          enum: [ArgumentTopologyQuery]
         value:
           type: string
       required:
@@ -907,7 +905,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [topology_promql_metric]
+          enum: [ArgumentTopologyPromQLMetric]
         topologyQuery:
           type: string
         metricQuery:
