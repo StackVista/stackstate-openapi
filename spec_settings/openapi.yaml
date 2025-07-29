@@ -47,6 +47,8 @@ components:
         - SlackNotificationChannel
         - TeamsNotificationChannel
         - WebhookNotificationChannel
+        - OtelComponentMapping
+        - OtelRelationMapping
 
     Setting:
       type: object
@@ -57,6 +59,8 @@ components:
         - $ref: "#/components/schemas/Monitor"
         - $ref: "#/components/schemas/ExternalMonitor"
         - $ref: "#/components/schemas/QueryView"
+        - $ref: "#/components/schemas/OtelComponentMapping"
+        - $ref: "#/components/schemas/OtelRelationMapping"
       discriminator:
         propertyName: type
       required:
@@ -71,7 +75,7 @@ components:
 
     SettingId:
       type: string
-      description: A Setting is uniquely identified by the combination of type+id is a unique identification for a setting
+      description: A Setting is uniquely identified by the combination of type+id
 
     SettingBase:
       type: object
@@ -920,3 +924,156 @@ components:
         - metricQuery
         - unit
         - aliasTemplate
+
+    # OTel topology synchronization
+
+    OtelMapping:
+      oneOf:
+        - $ref: "#/components/schemas/OtelComponentMapping"
+        - $ref: "#/components/schemas/OtelRelationMapping"
+      discriminator:
+        propertyName: type
+
+    OtelComponentMapping:
+      allOf:
+        - $ref: "#/components/schemas/SettingBase"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [OtelComponentMapping]
+              description: The combination of type+id is a unique identification for a setting
+            name:
+              type: string
+            output:
+              $ref: "#/components/schemas/OtelComponentMappingOutput"
+            vars:
+              type: array
+              items: 
+                $ref: "#/components/schemas/OtelVariableMapping"
+            conditions:
+              type: array
+              items: 
+                $ref: "#/components/schemas/OtelConditionMapping"
+          required:
+            - type
+            - name
+            - output
+    
+    OtelRelationMapping:
+      allOf:
+        - $ref: "#/components/schemas/SettingBase"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [OtelRelationMapping]
+              description: The combination of type+id is a unique identification for a setting
+            name:
+              type: string
+            output:
+              $ref: "#/components/schemas/OtelRelationMappingOutput"
+            vars:
+              type: array
+              items: 
+                $ref: "#/components/schemas/OtelVariableMapping"
+            conditions:
+              type: array
+              items: 
+                $ref: "#/components/schemas/OtelConditionMapping"
+          required:
+            - type
+            - name
+            - output
+
+    OtelComponentMappingOutput:
+      type: object
+      properties:
+        identifier:
+          $ref: "#/components/schemas/OtelStringExpression"
+        name:
+          $ref: "#/components/schemas/OtelStringExpression"
+        typeName:
+          $ref: "#/components/schemas/OtelStringExpression"
+        typeIdentifier:
+          $ref: "#/components/schemas/OtelStringExpression"
+        layerName:
+          $ref: "#/components/schemas/OtelStringExpression"
+        layerIdentifier:
+          $ref: "#/components/schemas/OtelStringExpression"
+        domainName:
+          $ref: "#/components/schemas/OtelStringExpression"
+        domainIdentifier:
+          $ref: "#/components/schemas/OtelStringExpression"
+        required:
+          $ref: "#/components/schemas/OtelComponentMappingFieldMapping"
+        optional:
+          $ref: "#/components/schemas/OtelComponentMappingFieldMapping"
+      required:
+        - identifier
+        - name
+        - typeName
+        - layerName
+        - domainName
+        - required
+        - optional
+
+    OtelComponentMappingFieldMapping:
+      type: object
+      properties:
+        additionalIdentifiers:
+          type: array
+          items:
+            $ref: "#/components/schemas/OtelStringExpression"
+        version:
+          $ref: "#/components/schemas/OtelStringExpression"
+        tags:
+          additionalProperties:
+            $ref: "#/components/schemas/OtelStringExpression"
+    
+    OtelRelationMappingOutput:
+      type: object
+      properties:
+        sourceId:
+          $ref: "#/components/schemas/OtelStringExpression"
+        targetId:
+          $ref: "#/components/schemas/OtelStringExpression"
+        typeName:
+          $ref: "#/components/schemas/OtelStringExpression"
+        typeIdentifier:
+          $ref: "#/components/schemas/OtelStringExpression"
+      required:
+        - sourceId
+        - targetId
+        - typeName
+
+    OtelVariableMapping:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          $ref: "#/components/schemas/OtelStringExpression"        
+
+    OtelConditionMapping:
+      type: object
+      properties:
+        expression:
+          $ref: "#/components/schemas/OtelStringExpression"        
+        action:
+          $ref: "#/components/schemas/OtelConditionMappingAction"
+     
+    OtelConditionMappingAction:
+      type: string
+      enum:
+        - CREATE
+        - CONTINUE
+        - REJECT
+
+    OtelStringExpression:
+      type: object
+      properties:
+        expression:
+          type: string
+      required: 
+        - expression
