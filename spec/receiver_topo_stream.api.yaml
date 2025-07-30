@@ -4,7 +4,7 @@ info:
   title: Receiver Topo Stream ingestion Api
   version: "1.0.0"
 paths:
-  /topology:
+  /topology/debug:
     post:
       tags:
         - receiverTopologyStream
