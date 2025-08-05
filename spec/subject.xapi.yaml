@@ -48,6 +48,7 @@ paths:
       operationId: createSubject
       parameters:
         - $ref: "#/components/parameters/subject"
+        - $ref: "#/components/parameters/createOnly"
       requestBody:
         required: true
         content:
@@ -85,6 +86,12 @@ components:
       required: true
       schema:
         $ref: "#/components/schemas/Subject"
+    createOnly:
+      in: query
+      name: createOnly
+      required: false
+      schema:
+        type: boolean
   schemas:
     Subject:
       type: string
