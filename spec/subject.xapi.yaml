@@ -96,11 +96,15 @@ components:
       type: string
     Query:
       type: string
+    Version:
+      type: string
     CreateSubject:
       type: object
       properties:
         query:
           $ref: "#/components/schemas/Query"
+        version:
+          $ref: "#/components/schemas/Version"
     SubjectConfig:
       type: object
       properties:
