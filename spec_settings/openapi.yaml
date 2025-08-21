@@ -1019,11 +1019,17 @@ components:
               type: array
               items: 
                 $ref: "#/components/schemas/OtelConditionMapping"
+              minItems: 1
+            expireAfterMs:
+              type: integer
+              format: int64
           required:
             - type
             - name
             - output
-    
+            - conditions
+            - expireAfterMs
+
     OtelRelationMapping:
       allOf:
         - $ref: "#/components/schemas/SettingBase"
@@ -1045,10 +1051,15 @@ components:
               type: array
               items: 
                 $ref: "#/components/schemas/OtelConditionMapping"
+            expireAfterMs:
+              type: integer
+              format: int64
           required:
             - type
             - name
             - output
+            - conditions
+            - expireAfterMs
 
     OtelComponentMappingOutput:
       type: object
@@ -1135,7 +1146,6 @@ components:
       type: string
       enum:
         - CREATE
-        - CONTINUE
         - REJECT
 
     OtelStringExpression:
