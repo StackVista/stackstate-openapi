@@ -108,8 +108,6 @@ paths:
   /synchronization/topology/streams: { $ref: "topology_sync.api.yaml#/paths/%2Fsynchronization%2Ftopology%2Fstreams" }
   /synchronization/topology/streams/sync:
     { $ref: "topology_sync.api.yaml#/paths/%2Fsynchronization%2Ftopology%2Fstreams%2Fsync" }
-  /synchronization/topology/streams/status:
-    { $ref: "topology_sync.api.yaml#/paths/%2Fsynchronization%2Ftopology%2Fstreams%2Fstatus" }
   /synchronization/topology/streams/clearErrors:
     { $ref: "topology_sync.api.yaml#/paths/%2Fsynchronization%2Ftopology%2Fstreams%2FclearErrors" }
   /script/execute: { $ref: "script.api.yaml#/paths/%2Fscript%2Fexecute" }

@@ -50,31 +50,6 @@ paths:
           $ref: "#/components/responses/TopologySyncBadRequest"
         "404":
           $ref: "#/components/responses/TopologySyncNotFound"
-  /synchronization/topology/streams/status:
-    parameters:
-      - in: query
-        name: identifier
-        allowReserved: true
-        required: true
-        schema:
-          type: string
-    get:
-      tags:
-        - topologySynchronization
-      description: Metrics of a specific Topology Stream, queried by node id
-      summary: Metrics of a specific Topology Stream, queried by node id
-      operationId: getTopologySynchronizationStreamStatusById
-      responses:
-        "200":
-          description: "A specific topology stream metrics"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TopologyStreamMetrics"
-        "400":
-          $ref: "#/components/responses/TopologySyncBadRequest"
-        "404":
-          $ref: "#/components/responses/TopologySyncNotFound"
   /synchronization/topology/streams/clearErrors:
     parameters:
       - in: query
@@ -139,18 +114,6 @@ components:
           $ref: "#/components/schemas/MetricBucketValues"
       required:
         - bucketSizeSeconds
-    TopologySyncMetrics:
-      type: object
-      properties:
-        partition:
-          type: integer
-        recoverMessage:
-          type: string
-        aggregateMetrics:
-          $ref: "#/components/schemas/TopologyStreamMetrics"
-      required:
-        - partition
-        - aggregateMetrics
     TopologyStreamList:
       type: object
       properties:
@@ -179,6 +142,8 @@ components:
           $ref: "#/components/schemas/TopologyStreamListItem"
         errorDetails:
           $ref: "#/components/schemas/TopologyStreamErrors"
+        metrics:
+          $ref: "#/components/schemas/TopologyStreamMetrics"
       required:
         - item
         - errorDetails
