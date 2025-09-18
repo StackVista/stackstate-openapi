@@ -1,0 +1,143 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Otel Mapping API
+  version: "1.0.0"
+
+paths:
+  /otel-component-mappings/{identifier}/status:
+    parameters:
+      - $ref: "#/components/parameters/identifier"
+    get:
+      tags:
+        - otelMapping
+      summary: "Get the status of an otel mapping synchronization."
+      operationId: getOtelMappingStatus
+      responses:
+        "200":
+          description: "Status data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OtelMappingStatus"
+        "404":
+          $ref: "#/components/responses/OtelMappingNotFound"
+        "500":
+          $ref: "#/components/responses/OtelMappingErrorResponse"
+components:
+  responses:
+    OtelMappingNotFound:
+      description: "Otel mapping with given identifier not found"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OtelMappingApiError"
+    OtelMappingErrorResponse:
+      description: "Error when handling the request on the server side."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OtelMappingApiError"
+  parameters:
+    identifier:
+      in: path
+      name: identifier
+      schema:
+        type: string
+      required: true
+  schemas:
+    OtelMappingStatus:
+      type: object
+      properties:
+        item:
+          $ref: "#/components/schemas/OtelMappingItem"
+        errorDetails:
+          $ref: "#/components/schemas/OtelMappingErrors"
+        metrics:
+          $ref: "#/components/schemas/OtelMappingMetrics"
+      required:
+        - item
+        - errorDetails
+    MetricBucketValue:
+      type: object
+      properties:
+        value:
+          type: number
+          format: double
+    MetricBucketValues:
+      type: array
+      items:
+        $ref: "#/components/schemas/MetricBucketValue"
+    OtelMappingStreamError:
+      type: object
+      properties:
+        level:
+          $ref: "generic_error_handling.xapi.yaml#/components/schemas/MessageLevel"
+        message:
+          type: string
+        externalId:
+          type: string
+      required:
+        - level
+        - message
+    OtelMappingErrors:
+      type: array
+      items:
+        $ref: "#/components/schemas/OtelMappingError"
+    OtelMappingMetrics:
+      type: object
+      properties:
+        bucketSizeSeconds:
+          type: integer
+        latencySeconds:
+          $ref: "#/components/schemas/MetricBucketValues"
+      required:
+        - bucketSizeSeconds
+    OtelMappingItem:
+      type: object
+      properties:
+        name:
+          type: string
+        createdRelations:
+          type: integer
+          format: int64
+        deletedRelations:
+          type: integer
+          format: int64
+        createdComponents:
+          type: integer
+          format: int64
+        deletedComponents:
+          type: integer
+          format: int64
+        errors:
+          type: integer
+          format: int64
+      required:
+        - nodeId
+        - name
+        - createdRelations
+        - deletedRelations
+        - createdComponents
+        - deletedComponents
+        - status
+        - errors
+    OtelMappingError:
+      type: object
+      properties:
+        level:
+          $ref: "generic_error_handling.xapi.yaml#/components/schemas/MessageLevel"
+        message:
+          type: string
+        issueId:
+          type: string
+      required:
+        - level
+        - message
+    OtelMappingApiError:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
