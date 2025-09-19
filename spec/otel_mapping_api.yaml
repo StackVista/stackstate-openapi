@@ -11,11 +11,30 @@ paths:
     get:
       tags:
         - otelMapping
-      summary: "Get the status of an otel mapping synchronization."
-      operationId: getOtelMappingStatus
+      summary: "Get the status of an otel component mapping synchronization."
+      operationId: getOtelComponentMappingStatus
       responses:
         "200":
-          description: "Status data"
+          description: "Otel Component Mappping Status data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OtelMappingStatus"
+        "404":
+          $ref: "#/components/responses/OtelMappingNotFound"
+        "500":
+          $ref: "#/components/responses/OtelMappingErrorResponse"
+  /otel-relation-mappings/{identifier}/status:
+    parameters:
+      - $ref: "#/components/parameters/identifier"
+    get:
+      tags:
+        - otelMapping
+      summary: "Get the status of an otel relation mapping synchronization."
+      operationId: getOtelRelationMappingStatus
+      responses:
+        "200":
+          description: "Otel Relation Mapping Status data"
           content:
             application/json:
               schema:
@@ -98,30 +117,19 @@ components:
       properties:
         name:
           type: string
-        createdRelations:
+        identifier:
+          type: string
+        relationCount:
           type: integer
           format: int64
-        deletedRelations:
-          type: integer
-          format: int64
-        createdComponents:
-          type: integer
-          format: int64
-        deletedComponents:
-          type: integer
-          format: int64
-        errors:
+        componentCount:
           type: integer
           format: int64
       required:
-        - nodeId
         - name
-        - createdRelations
-        - deletedRelations
-        - createdComponents
-        - deletedComponents
+        - componentCount
+        - relationCount
         - status
-        - errors
     OtelMappingError:
       type: object
       properties:
