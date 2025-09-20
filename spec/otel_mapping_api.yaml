@@ -5,6 +5,23 @@ info:
   version: "1.0.0"
 
 paths:
+  /otel-component-mappings:
+    get:
+      tags:
+        - otelMapping
+      summary: "Get all otel component mappings."
+      operationId: getOtelComponentMappings
+      responses:
+        "200":
+          description: "A list of all Otel Component Mappings"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OtelMappingItem"
+        "500":
+          $ref: "#/components/responses/OtelMappingErrorResponse"
   /otel-component-mappings/{identifier}/status:
     parameters:
       - $ref: "#/components/parameters/identifier"
@@ -22,6 +39,23 @@ paths:
                 $ref: "#/components/schemas/OtelMappingStatus"
         "404":
           $ref: "#/components/responses/OtelMappingNotFound"
+        "500":
+          $ref: "#/components/responses/OtelMappingErrorResponse"
+  /otel-relation-mappings:
+    get:
+      tags:
+        - otelMapping
+      summary: "Get all otel relation mappings."
+      operationId: getOtelRelationMappings
+      responses:
+        "200":
+          description: "A list of all Otel Relation Mappings"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OtelMappingItem"
         "500":
           $ref: "#/components/responses/OtelMappingErrorResponse"
   /otel-relation-mappings/{identifier}/status:
@@ -69,7 +103,7 @@ components:
       type: object
       properties:
         item:
-          $ref: "#/components/schemas/OtelMappingItem"
+          $ref: "#/components/schemas/OtelMappingStatusItem"
         errorDetails:
           $ref: "#/components/schemas/OtelMappingErrors"
         metrics:
@@ -113,6 +147,15 @@ components:
       required:
         - bucketSizeSeconds
     OtelMappingItem:
+      type: object
+      properties:
+        name:
+          type: string
+        identifier:
+          type: string
+      required:
+        - name
+    OtelMappingStatusItem:
       type: object
       properties:
         name:

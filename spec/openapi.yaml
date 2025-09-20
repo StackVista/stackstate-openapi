@@ -149,7 +149,9 @@ paths:
   /dashboards: { $ref: "dashboard.api.yaml#/paths/%2Fdashboards"}
   /dashboards/{dashboardIdOrUrn}: { $ref: "dashboard.api.yaml#/paths/%2Fdashboards%2F%7BdashboardIdOrUrn%7D"}
   /dashboards/{dashboardIdOrUrn}/clone: { $ref: "dashboard.api.yaml#/paths/%2Fdashboards%2F%7BdashboardIdOrUrn%7D%2Fclone"}
+  /otel-component-mappings: { $ref: "otel_mapping_api.yaml#/paths/%2Fotel-component-mappings" }
   /otel-component-mappings/{identifier}/status: { $ref: "otel_mapping_api.yaml#/paths/%2Fotel-component-mappings%2F%7Bidentifier%7D%2Fstatus" }
+  /otel-relation-mappings: { $ref: "otel_mapping_api.yaml#/paths/%2Fotel-relation-mappings" }
   /otel-relation-mappings/{identifier}/status: { $ref: "otel_mapping_api.yaml#/paths/%2Fotel-relation-mappings%2F%7Bidentifier%7D%2Fstatus" }
   # Dummy path to make sure that some types are included, which otherwise would be excluded
   /dummy/dummy: { $ref: "common.api.yaml#/paths/%2Fdummy%2Fdummy" }
