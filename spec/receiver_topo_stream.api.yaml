@@ -177,6 +177,12 @@ components:
     TopologyStreamMessage:
       type: object
       properties:
+        owner:
+          type: string
+          enum:
+            - TOPOLOGY_STREAM_OWNER_EXTERNAL
+            - TOPOLOGY_STREAM_OWNER_OTEL
+            - TOPOLOGY_STREAM_OWNER_AGENT
         data_source:
           type:
             string
