@@ -162,6 +162,8 @@ components:
         topologyTime:
           type: integer
           format: instant
+        dummy:
+          type: boolean
       required:
         - id
         - checkStateId
@@ -173,6 +175,7 @@ components:
         - monitorName
         - topologyTime
         - component
+        - dummy
     MonitorCheckStatusMetric:
       type: object
       properties:
