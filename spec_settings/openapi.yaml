@@ -16,12 +16,12 @@ info:
 externalDocs:
   description: Documentation
   url: "https://docs.suse.com/"
-paths: {}
+paths: { }
 components:
   schemas:
     SettingsProtocol:
       properties:
-        type: 
+        type:
           type: string
       oneOf:
         - $ref: "#/components/schemas/SettingsSnapshotStart"
@@ -36,9 +36,9 @@ components:
     SettingsSnapshotStart:
       type: object
       properties:
-        type: 
+        type:
           type: string
-          enum: [SettingsSnapshotStart]
+          enum: [ SettingsSnapshotStart ]
         id:
           type: string
           description: UUID to match snapshot start, stop and envelope
@@ -52,9 +52,9 @@ components:
     SettingsSnapshotStop:
       type: object
       properties:
-        type: 
+        type:
           type: string
-          enum: [SettingsSnapshotStop]
+          enum: [ SettingsSnapshotStop ]
         id:
           type: string
           description: UUID to match snapshot start, stop and envelope
@@ -65,9 +65,9 @@ components:
     SettingsEnvelope:
       type: object
       properties:
-        type: 
+        type:
           type: string
-          enum: [SettingsEnvelope]
+          enum: [ SettingsEnvelope ]
         id:
           type: string
           description: UUID to match snapshot start, stop and envelope
@@ -77,7 +77,7 @@ components:
         - type
         - id
         - setting
-  
+
     # Base types
 
     SettingType:
@@ -150,7 +150,7 @@ components:
           properties:
             type:
               type: string
-              enum: [NotificationConfiguration]
+              enum: [ NotificationConfiguration ]
               description: The combination of type+id is a unique identification for a setting
             name:
               type: string
@@ -215,9 +215,9 @@ components:
       properties:
         id:
           type: string
-        type: 
+        type:
           type: string
-          enum: [SlackNotificationChannelId]
+          enum: [ SlackNotificationChannelId ]
       required:
         - id
         - type
@@ -227,9 +227,9 @@ components:
       properties:
         id:
           type: string
-        type: 
+        type:
           type: string
-          enum: [WebhookNotificationChannelId]
+          enum: [ WebhookNotificationChannelId ]
       required:
         - id
         - type
@@ -239,9 +239,9 @@ components:
       properties:
         id:
           type: string
-        type: 
+        type:
           type: string
-          enum: [OpsgenieNotificationChannelId]
+          enum: [ OpsgenieNotificationChannelId ]
       required:
         - id
         - type
@@ -251,9 +251,9 @@ components:
       properties:
         id:
           type: string
-        type: 
+        type:
           type: string
-          enum: [TeamsNotificationChannelId]
+          enum: [ TeamsNotificationChannelId ]
       required:
         - id
         - type
@@ -263,13 +263,13 @@ components:
       properties:
         id:
           type: string
-        type: 
+        type:
           type: string
-          enum: [EmailNotificationChannelId]
+          enum: [ EmailNotificationChannelId ]
       required:
         - id
         - type
-  
+
     NotificationChannelType:
       type: string
       enum:
@@ -299,7 +299,7 @@ components:
           properties:
             type:
               type: string
-              enum: [EmailNotificationChannel]
+              enum: [ EmailNotificationChannel ]
               description: The combination of type+id is a unique identification for a setting
             lastUpdateTimestamp:
               type: integer
@@ -327,7 +327,7 @@ components:
           properties:
             type:
               type: string
-              enum: [OpsgenieNotificationChannel]
+              enum: [ OpsgenieNotificationChannel ]
               description: The combination of type+id is a unique identification for a setting
             lastUpdateTimestamp:
               type: integer
@@ -353,7 +353,7 @@ components:
 
     OpsgenieRegion:
       type: string
-      enum: [EU, US]
+      enum: [ EU, US ]
 
     OpsgenieResponder:
       type: object
@@ -376,7 +376,7 @@ components:
 
     OpsgeniePriority:
       type: string
-      enum: [P1, P2, P3, P4, P5]
+      enum: [ P1, P2, P3, P4, P5 ]
 
     SlackNotificationChannel:
       allOf:
@@ -385,7 +385,7 @@ components:
           properties:
             type:
               type: string
-              enum: [SlackNotificationChannel]
+              enum: [ SlackNotificationChannel ]
               description: The combination of type+id is a unique identification for a setting
             lastUpdateTimestamp:
               type: integer
@@ -412,7 +412,7 @@ components:
           properties:
             type:
               type: string
-              enum: [TeamsNotificationChannel]
+              enum: [ TeamsNotificationChannel ]
               description: The combination of type+id is a unique identification for a setting
             lastUpdateTimestamp:
               type: integer
@@ -432,7 +432,7 @@ components:
           properties:
             type:
               type: string
-              enum: [WebhookNotificationChannel]
+              enum: [ WebhookNotificationChannel ]
               description: The combination of type+id is a unique identification for a setting
             lastUpdateTimestamp:
               type: integer
@@ -464,7 +464,7 @@ components:
           properties:
             type:
               type: string
-              enum: [Sync]
+              enum: [ Sync ]
               description: The combination of type+id is a unique identification for a setting
             name:
               type: string
@@ -547,7 +547,7 @@ components:
       properties:
         actionType:
           type: string
-          enum: [SyncActionCreateComponent]
+          enum: [ SyncActionCreateComponent ]
         type:
           type: string
         mappingFunction:
@@ -566,7 +566,7 @@ components:
       properties:
         actionType:
           type: string
-          enum: [SyncActionCreateRelation]
+          enum: [ SyncActionCreateRelation ]
         type:
           type: string
         mappingFunction:
@@ -585,7 +585,7 @@ components:
       properties:
         actionType:
           type: string
-          enum: [SyncActionCreateOnMerge]
+          enum: [ SyncActionCreateOnMerge ]
         type:
           type: string
       required:
@@ -600,7 +600,7 @@ components:
           properties:
             type:
               type: string
-              enum: [Monitor]
+              enum: [ Monitor ]
               description: The combination of type+id is a unique identification for a setting
             name:
               type: string
@@ -637,7 +637,7 @@ components:
           properties:
             type:
               type: string
-              enum: [ExternalMonitor]
+              enum: [ ExternalMonitor ]
               description: The combination of type+id is a unique identification for a setting
             name:
               type: string
@@ -681,7 +681,7 @@ components:
       properties:
         type:
           type: string
-          enum: [MonitorId]
+          enum: [ MonitorId ]
         id:
           type: string
       required:
@@ -692,7 +692,7 @@ components:
       properties:
         type:
           type: string
-          enum: [ExternalMonitorId]
+          enum: [ ExternalMonitorId ]
         id:
           type: string
       required:
@@ -704,7 +704,7 @@ components:
         - $ref: "#/components/schemas/MonitorFunctionCall"
       discriminator:
         propertyName: type
-  
+
     MonitorFunctionCall:
       type: object
       properties:
@@ -714,9 +714,9 @@ components:
           type: object
           additionalProperties:
             $ref: "#/components/schemas/MonitorArgument"
-        type: 
+        type:
           type: string
-          enum: [MonitorFunctionCall]
+          enum: [ MonitorFunctionCall ]
       required:
         - body
         - arguments
@@ -756,7 +756,7 @@ components:
         argumentType:
           type: string
       oneOf:
-        - $ref: "#/components/schemas/MonitorArgument"   
+        - $ref: "#/components/schemas/MonitorArgument"
       discriminator:
         propertyName: argumentType
       required:
@@ -785,7 +785,7 @@ components:
           properties:
             type:
               type: string
-              enum: [QueryView]
+              enum: [ QueryView ]
               description: The combination of type+id is a unique identification for a setting
             name:
               type: string
@@ -800,29 +800,29 @@ components:
     # Supporting types
     NotificationConfigurationStatus:
       type: string
-      enum: [ENABLED, DISABLED]
+      enum: [ ENABLED, DISABLED ]
     NotifyOnOptions:
       type: string
-      enum: [CRITICAL, DEVIATING_AND_CRITICAL]
+      enum: [ CRITICAL, DEVIATING_AND_CRITICAL ]
     MergeStrategy:
       type: string
-      enum: [UseTheirs, MergePreferTheirs, MergePreferMine, UseMine]
+      enum: [ UseTheirs, MergePreferTheirs, MergePreferMine, UseMine ]
     MonitorStatus:
       type: string
-      enum: [ENABLED, DISABLED]
+      enum: [ ENABLED, DISABLED ]
     ComparatorWithoutEquality:
       type: string
-      enum: [LT, LTE, GTE, GT]
+      enum: [ LT, LTE, GTE, GT ]
     FailingHealthState:
       type: string
-      enum: [CRITICAL, DEVIATING, UNKNOWN]
+      enum: [ CRITICAL, DEVIATING, UNKNOWN ]
 
     NativeFunctionBody:
       type: object
       properties:
         functionType:
           type: string
-          enum: [NativeFunctionBody]
+          enum: [ NativeFunctionBody ]
         name:
           type: string
         functionRef:
@@ -836,7 +836,7 @@ components:
       properties:
         functionType:
           type: string
-          enum: [GroovyFunctionBody]
+          enum: [ GroovyFunctionBody ]
         name:
           type: string
         functionBody:
@@ -850,7 +850,7 @@ components:
       properties:
         functionType:
           type: string
-          enum: [HandlebarsFunctionBody]
+          enum: [ HandlebarsFunctionBody ]
         name:
           type: string
         functionBody:
@@ -865,7 +865,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [ArgumentBoolean]
+          enum: [ ArgumentBoolean ]
         value:
           type: boolean
       required:
@@ -876,7 +876,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [ArgumentDouble]
+          enum: [ ArgumentDouble ]
         value:
           type: number
           format: double
@@ -888,7 +888,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [ArgumentLong]
+          enum: [ ArgumentLong ]
         value:
           type: integer
           format: int64
@@ -900,7 +900,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [ArgumentString]
+          enum: [ ArgumentString ]
         value:
           type: string
       required:
@@ -911,7 +911,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [ArgumentTimeWindow]
+          enum: [ ArgumentTimeWindow ]
         valueMs:
           type: integer
           format: int64
@@ -923,7 +923,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [ArgumentPromQLMetric]
+          enum: [ ArgumentPromQLMetric ]
         query:
           type: string
         unit:
@@ -940,7 +940,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [ArgumentComparatorWithoutEquality]
+          enum: [ ArgumentComparatorWithoutEquality ]
         value:
           $ref: "#/components/schemas/ComparatorWithoutEquality"
       required:
@@ -951,7 +951,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [ArgumentFailingHealthState]
+          enum: [ ArgumentFailingHealthState ]
         value:
           $ref: "#/components/schemas/FailingHealthState"
       required:
@@ -962,7 +962,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [ArgumentTopologyQuery]
+          enum: [ ArgumentTopologyQuery ]
         value:
           type: string
       required:
@@ -973,7 +973,7 @@ components:
       properties:
         argumentType:
           type: string
-          enum: [ArgumentTopologyPromQLMetric]
+          enum: [ ArgumentTopologyPromQLMetric ]
         topologyQuery:
           type: string
         metricQuery:
@@ -1005,19 +1005,21 @@ components:
           properties:
             type:
               type: string
-              enum: [OtelComponentMapping]
+              enum: [ OtelComponentMapping ]
               description: The combination of type+id is a unique identification for a setting
+            identifier:
+              type: string
             name:
               type: string
             output:
               $ref: "#/components/schemas/OtelComponentMappingOutput"
             vars:
               type: array
-              items: 
+              items:
                 $ref: "#/components/schemas/OtelVariableMapping"
             conditions:
               type: array
-              items: 
+              items:
                 $ref: "#/components/schemas/OtelConditionMapping"
               minItems: 1
             expireAfterMs:
@@ -1037,19 +1039,21 @@ components:
           properties:
             type:
               type: string
-              enum: [OtelRelationMapping]
+              enum: [ OtelRelationMapping ]
               description: The combination of type+id is a unique identification for a setting
+            identifier:
+              type: string
             name:
               type: string
             output:
               $ref: "#/components/schemas/OtelRelationMappingOutput"
             vars:
               type: array
-              items: 
+              items:
                 $ref: "#/components/schemas/OtelVariableMapping"
             conditions:
               type: array
-              items: 
+              items:
                 $ref: "#/components/schemas/OtelConditionMapping"
               minItems: 1
             expireAfterMs:
@@ -1144,7 +1148,7 @@ components:
         name:
           type: string
         value:
-          $ref: "#/components/schemas/OtelStringExpression"        
+          $ref: "#/components/schemas/OtelStringExpression"
       required:
         - name
         - value
@@ -1153,7 +1157,7 @@ components:
       type: object
       properties:
         expression:
-          $ref: "#/components/schemas/OtelBooleanExpression"        
+          $ref: "#/components/schemas/OtelBooleanExpression"
         action:
           $ref: "#/components/schemas/OtelConditionMappingAction"
       required:
@@ -1168,7 +1172,7 @@ components:
 
     OtelStringExpression:
       type: object
-      description: |- 
+      description: |-
         An expression that must produce a string. It must be one of these formats:
           - A plain string, for example `"this is a plain string"`
           - A string containing a CEL expression within curly braces `${}`, for example "a string with a cell expression: `${input.tags.namespace}"`
@@ -1176,7 +1180,7 @@ components:
       properties:
         expression:
           type: string
-      required: 
+      required:
         - expression
 
     OtelBooleanExpression:
@@ -1185,5 +1189,5 @@ components:
       properties:
         expression:
           type: string
-      required: 
+      required:
         - expression
