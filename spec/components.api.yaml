@@ -35,7 +35,6 @@ paths:
         - $ref: "#/components/parameters/componentIdOrUrn"
         - $ref: "#/components/parameters/startTime"
         - $ref: "#/components/parameters/endTime"
-        - $ref: "#/components/parameters/topologyTime"
       responses:
         "200":
           $ref: "#/components/responses/componentCheckStates"
