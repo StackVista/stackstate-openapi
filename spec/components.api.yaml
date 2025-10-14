@@ -9,7 +9,7 @@ paths:
       tags:
         - component
       summary: "Get a component health history"
-      description: "Get a component health history for a defined period of time by id"
+      description: "Get a component health history for a defined period of time by id or identifier"
       operationId: getComponentHealthHistory
       parameters:
         - $ref: "#/components/parameters/componentIdOrUrn"
@@ -29,7 +29,7 @@ paths:
       tags:
         - component
       summary: "Get a component checkstates"
-      description: "Get a component checkstates for a defined period of time by id"
+      description: "Get a component checkstates for a defined period of time by id or identifier"
       operationId: getComponentCheckStates
       parameters:
         - $ref: "#/components/parameters/componentIdOrUrn"
