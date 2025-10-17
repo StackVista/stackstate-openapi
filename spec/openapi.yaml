@@ -47,9 +47,9 @@ paths:
   /monitors/{monitorFunctionIdOrUrn}/test/checkStates: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorFunctionIdOrUrn%7D%2Ftest%2FcheckStates" }
   /monitors/identifierLookup: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2FidentifierLookup" }
   /monitors/overview: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2Foverview" }
-  /monitor/checkStatus/{checkStateId}: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7BcheckStateId%7D" }
-  /monitor/checkStatus/{checkStateId}/relatedFailures: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7BcheckStateId%7D%2FrelatedFailures" }
-  /monitor/checkStatus/{checkStateId}/healthHistory: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7BcheckStateId%7D%2FhealthHistory" }
+  /monitor/checkStatus/{identifier}: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7Bidentifier%7D" }
+  /monitor/checkStatus/{identifier}/relatedFailures: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7Bidentifier%7D%2FrelatedFailures" }
+  /monitor/checkStatus/{identifier}/healthHistory: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7Bidentifier%7D%2FhealthHistory" }
   /notifications/channels/slack/oauth-redirect: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2Foauth-redirect" }
   /notifications/channels/slack/oauth-callback: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2Foauth-callback" }
   /notifications/channels/slack/{channelId}: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2F%7BchannelId%7D" }

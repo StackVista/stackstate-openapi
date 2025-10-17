@@ -117,7 +117,7 @@ components:
         - newHealth
     ComponentCheckState:
       properties:
-        checkStateId:
+        identifier:
           type: string
         startTime:
           type: integer
@@ -126,7 +126,7 @@ components:
           type: integer
           format: instant
       required:
-        - checkStateId
+        - identifier
         - startTime
         - endTime
     ComponentCheckStates:

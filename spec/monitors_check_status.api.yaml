@@ -4,7 +4,7 @@ info:
   title: Monitor Check Status API
   version: "1.0.0"
 paths:
-  /monitor/checkStatus/{checkStateId}:
+  /monitor/checkStatus/{identifier}:
     get:
       tags:
         - monitorCheckStatus
@@ -23,7 +23,7 @@ paths:
           $ref: "#/components/responses/monitorCheckStatusNotFoundError"
         "500":
           $ref: "#/components/responses/monitorCheckStatusApiError"
-  /monitor/checkStatus/{checkStateId}/relatedFailures:
+  /monitor/checkStatus/{identifier}/relatedFailures:
     get:
       tags:
         - monitorCheckStatus
@@ -42,7 +42,7 @@ paths:
           $ref: "#/components/responses/monitorCheckStatusNotFoundError"
         "500":
           $ref: "#/components/responses/monitorCheckStatusApiError"
-  /monitor/checkStatus/{checkStateId}/healthHistory:
+  /monitor/checkStatus/{identifier}/healthHistory:
     get:
       tags:
         - monitorCheckStatus
@@ -65,7 +65,7 @@ components:
   parameters:
     id:
       in: path
-      name: checkStateId
+      name: identifier
       required: true
       schema:
         type: string
@@ -132,7 +132,7 @@ components:
         id:
           type: integer
           format: int64
-        checkStateId:
+        identifier:
           type: string
         message:
           type: string
@@ -164,7 +164,7 @@ components:
           type: boolean
       required:
         - id
-        - checkStateId
+        - identifier
         - message
         - health
         - triggeredTimestamp
@@ -208,7 +208,7 @@ components:
         - query
     MonitorCheckStatusRelatedFailures:
       properties:
-        checkStateId:
+        identifier:
           type: string
         topologyTime:
           type: integer
@@ -218,12 +218,12 @@ components:
           items:
               $ref: "#/components/schemas/MonitorCheckStatusRelatedFailuresCheckStatus"
       required:
-        - checkStateId
+        - identifier
         - topologyTime
         - checkStatuses
     MonitorCheckStatusRelatedFailuresCheckStatus:
       properties:
-        checkStateId:
+        identifier:
           type: string
         health:
           $ref: "common.api.yaml#/components/schemas/HealthStateValue"
@@ -237,7 +237,7 @@ components:
           type: integer
           format: instant
       required:
-        - checkStateId
+        - identifier
         - health
         - name
         - component
@@ -277,7 +277,7 @@ components:
         - relation
     MonitorCheckStatusHealthHistory:
       properties:
-        checkStatusId:
+        identifier:
           type: string
         startTime:
           type: integer
@@ -291,7 +291,7 @@ components:
             $ref: "#/components/schemas/MonitorCheckStatusHealthChange"
           description: "List of health state changes ordered from most recent to oldest."
       required:
-        - checkStatusId
+        - identifier
         - startTime
         - endTime
         - healthStateChanges
@@ -315,12 +315,12 @@ components:
     MonitorCheckStatusNotFoundError:
       type: object
       properties:
-        checkStateId:
+        identifier:
           type: string
         _type:
           type: string
           enum:
             - MonitorNotFoundError
       required:
-        - checkStateId
+        - identifier
         - _type
