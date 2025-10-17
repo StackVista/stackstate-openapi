@@ -4,7 +4,7 @@ info:
   title: Monitor Check Status API
   version: "1.0.0"
 paths:
-  /monitor/checkStatus/{id}:
+  /monitor/checkStatus/{checkStateId}:
     get:
       tags:
         - monitorCheckStatus
@@ -23,7 +23,7 @@ paths:
           $ref: "#/components/responses/monitorCheckStatusNotFoundError"
         "500":
           $ref: "#/components/responses/monitorCheckStatusApiError"
-  /monitor/checkStatus/{id}/relatedFailures:
+  /monitor/checkStatus/{checkStateId}/relatedFailures:
     get:
       tags:
         - monitorCheckStatus
@@ -42,7 +42,7 @@ paths:
           $ref: "#/components/responses/monitorCheckStatusNotFoundError"
         "500":
           $ref: "#/components/responses/monitorCheckStatusApiError"
-  /monitor/checkStatus/{id}/healthHistory:
+  /monitor/checkStatus/{checkStateId}/healthHistory:
     get:
       tags:
         - monitorCheckStatus
@@ -53,7 +53,6 @@ paths:
         - $ref: "#/components/parameters/id"
         - $ref: "#/components/parameters/startTime"
         - $ref: "#/components/parameters/endTime"
-        - $ref: "#/components/parameters/topologyTime"
       responses:
         "200":
           $ref: "#/components/responses/monitorCheckStatusHealthHistory"
@@ -66,11 +65,10 @@ components:
   parameters:
     id:
       in: path
-      name: id
+      name: checkStateId
       required: true
       schema:
-        type: integer
-        format: int64
+        type: string
       description: "The id of a monitor check status"
     topologyTime:
       name: topologyTime
@@ -210,9 +208,8 @@ components:
         - query
     MonitorCheckStatusRelatedFailures:
       properties:
-        checkStatusId:
-          type: integer
-          format: int64
+        checkStateId:
+          type: string
         topologyTime:
           type: integer
           format: instant
@@ -221,14 +218,13 @@ components:
           items:
               $ref: "#/components/schemas/MonitorCheckStatusRelatedFailuresCheckStatus"
       required:
-        - checkStatusId
+        - checkStateId
         - topologyTime
         - checkStatuses
     MonitorCheckStatusRelatedFailuresCheckStatus:
       properties:
-        id:
-          type: integer
-          format: int64
+        checkStateId:
+          type: string
         health:
           $ref: "common.api.yaml#/components/schemas/HealthStateValue"
         name:
@@ -241,7 +237,7 @@ components:
           type: integer
           format: instant
       required:
-        - id
+        - checkStateId
         - health
         - name
         - component
@@ -282,8 +278,7 @@ components:
     MonitorCheckStatusHealthHistory:
       properties:
         checkStatusId:
-          type: integer
-          format: int64
+          type: string
         startTime:
           type: integer
           format: instant      
@@ -320,13 +315,12 @@ components:
     MonitorCheckStatusNotFoundError:
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
+        checkStateId:
+          type: string
         _type:
           type: string
           enum:
             - MonitorNotFoundError
       required:
-        - id
+        - checkStateId
         - _type
