@@ -119,6 +119,8 @@ components:
       properties:
         identifier:
           type: string
+        idOrIdentifier:
+          type: string
         startTime:
           type: integer
           format: instant
@@ -127,6 +129,7 @@ components:
           format: instant
       required:
         - identifier
+        - idOrIdentifier
         - startTime
         - endTime
     ComponentCheckStates:
