@@ -20,6 +20,71 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/OtelMappingItem"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "500":
+          $ref: "#/components/responses/OtelMappingErrorResponse"
+    put:
+      tags:
+        - otelMapping
+      summary: "Upserts (creates/updates) an OTel Component Mappings."
+      operationId: upsertOtelComponentMappings
+      requestBody:
+        $ref: "#/components/requestBodies/OtelComponentMappingUpsertRequest"
+      responses:
+        "200":
+          description: "Otel Component Mapping upserted successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OtelMappingItem"
+        "400":
+          $ref: "#/components/responses/OtelMappingErrorResponse"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /otel-component-mappings/{identifier}:
+    parameters:
+      - $ref: "#/components/parameters/identifier"
+    get:
+      tags:
+        - otelMapping
+      summary: "Get an OTel Component Mapping."
+      operationId: getOtelComponentMapping
+      responses:
+        "200":
+          description: "Otel Component Mapping specification"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OtelComponentMapping"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          $ref: "#/components/responses/OtelMappingNotFound"
+        "500":
+          $ref: "#/components/responses/OtelMappingErrorResponse"
+    delete:
+      tags:
+        - otelMapping
+      summary: "Deletes an OTel Component Mapping."
+      operationId: deleteOtelComponentMapping
+      responses:
+        "204":
+          description: "Otel Component Mapping deleted successfully"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          $ref: "#/components/responses/OtelMappingNotFound"
         "500":
           $ref: "#/components/responses/OtelMappingErrorResponse"
   /otel-component-mappings/{identifier}/status:
@@ -37,6 +102,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/OtelMappingStatus"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
         "404":
           $ref: "#/components/responses/OtelMappingNotFound"
         "500":
@@ -56,6 +125,71 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/OtelMappingItem"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "500":
+          $ref: "#/components/responses/OtelMappingErrorResponse"
+    put:
+      tags:
+        - otelMapping
+      summary: "Upserts (creates/updates) an OTel Relation Mappings."
+      operationId: upsertOtelRelationMappings
+      requestBody:
+        $ref: "#/components/requestBodies/OtelRelationmappingUpsertRequest"
+      responses:
+        "200":
+          description: "Otel Relation Mapping created successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OtelMappingItem"
+        "400":
+          $ref: "#/components/responses/OtelMappingErrorResponse"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /otel-relation-mappings/{identifier}:
+    parameters:
+      - $ref: "#/components/parameters/identifier"
+    get:
+      tags:
+        - otelMapping
+      summary: "Get an OTel Relation Mapping."
+      operationId: getOtelRelationMapping
+      responses:
+        "200":
+          description: "Otel Component Relation specification"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OtelRelationMapping"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          $ref: "#/components/responses/OtelMappingNotFound"
+        "500":
+          $ref: "#/components/responses/OtelMappingErrorResponse"
+    delete:
+      tags:
+        - otelMapping
+      summary: "Deletes an OTel Relation Mapping."
+      operationId: deleteOtelRelationMapping
+      responses:
+        "204":
+          description: "Otel Relation Mapping deleted successfully"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          $ref: "#/components/responses/OtelMappingNotFound"
         "500":
           $ref: "#/components/responses/OtelMappingErrorResponse"
   /otel-relation-mappings/{identifier}/status:
@@ -73,11 +207,79 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/OtelMappingStatus"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
         "404":
           $ref: "#/components/responses/OtelMappingNotFound"
         "500":
           $ref: "#/components/responses/OtelMappingErrorResponse"
 components:
+  requestBodies:
+    OtelComponentMappingUpsertRequest:
+      description: "Otel Component Mapping to create/update"
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              identifier:
+                type: string
+              name:
+                type: string
+              description:
+                type: string
+              input:
+                $ref: "#/components/schemas/OtelInput"
+              output:
+                $ref: "#/components/schemas/OtelComponentMappingOutput"
+              vars:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OtelVariableMapping"
+              expireAfterMs:
+                type: integer
+                format: int64
+            required:
+              - identifier
+              - name
+              - input
+              - output
+              - expireAfterMs
+    OtelRelationmappingUpsertRequest:
+      description: "Otel Relation Mapping to create/update"
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              identifier:
+                type: string
+              name:
+                type: string
+              description:
+                type: string
+              input:
+                $ref: "#/components/schemas/OtelInput"
+              output:
+                $ref: "#/components/schemas/OtelRelationMappingOutput"
+              vars:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OtelVariableMapping"
+              expireAfterMs:
+                type: integer
+                format: int64
+            required:
+              - identifier
+              - name
+              - input
+              - output
+              - expireAfterMs
+
   responses:
     OtelMappingNotFound:
       description: "Otel mapping with given identifier not found"
@@ -99,6 +301,58 @@ components:
         type: string
       required: true
   schemas:
+    OtelComponentMapping:
+      type: object
+      properties:
+        identifier:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        input:
+          $ref: "#/components/schemas/OtelInput"
+        output:
+          $ref: "#/components/schemas/OtelComponentMappingOutput"
+        vars:
+          type: array
+          items:
+            $ref: "#/components/schemas/OtelVariableMapping"
+        expireAfterMs:
+          type: integer
+          format: int64
+      required:
+        - identifier
+        - name
+        - input
+        - output
+        - expireAfterMs
+    OtelRelationMapping:
+      type: object
+      properties:
+        identifier:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        input:
+          $ref: "#/components/schemas/OtelInput"
+        output:
+          $ref: "#/components/schemas/OtelRelationMappingOutput"
+        vars:
+          type: array
+          items:
+            $ref: "#/components/schemas/OtelVariableMapping"
+        expireAfterMs:
+          type: integer
+          format: int64
+      required:
+        - identifier
+        - name
+        - input
+        - output
+        - expireAfterMs
     OtelMappingStatus:
       type: object
       properties:
@@ -192,3 +446,233 @@ components:
           type: string
       required:
         - message
+
+    OtelInput:
+      type: object
+      description: Combines input signals and conditional resource/scope/metric/span mappings.
+      properties:
+        signal:
+          $ref: "#/components/schemas/OtelInputSignalList"
+        resource:
+          $ref: "#/components/schemas/OtelInputResource"
+      required:
+        - signal
+        - resource
+
+    OtelInputSignalList:
+      type: array
+      items:
+        $ref: '#/components/schemas/OtelInputSignal'
+      minItems: 1
+
+    OtelInputSignal:
+      type: string
+      description: |-
+        Signals exported by OpenTelemetry, which determine which data models and
+        attribute maps are available for expression evaluation in an OTel topology
+        mapping.
+
+        Each signal enables access to a specific set of fields and attribute maps
+        coming from the corresponding OTel data pipeline level.
+
+        Fields/attributes available per signal:
+
+          • **TRACES**
+          Provides access to:
+            - `resource.attributes`
+            - `scope.name`, `scope.version`, `scope.attributes`
+            - `span.name`, `span.kind`, `span.statusMessage`, `span.statusCode`, `span.attributes`
+
+          • **METRICS**
+          Provides access to:
+            - `resource.attributes`
+            - `scope.name`, `scope.version`, `scope.attributes`
+            - `metric.name`, `metric.description`, `metric.unit`
+            - `datapoint.attributes`
+
+          • **LOGS**
+          Not yet supported.
+
+        For example, if the signal is `METRICS`, expressions may reference:
+        `resource.attributes["service.name"]`, `scope.attributes["env"]`,
+        `metric.name`, or `datapoint.attributes["status"]`.
+      enum:
+        - TRACES
+        - METRICS
+        - LOGS
+
+    OtelInputResource:
+      type: object
+      description: |-
+        Defines the conditional mapping at the resource level.
+        If omitted, `condition` defaults to `true` and `action` defaults to `CONTINUE`.
+      properties:
+        condition:
+          $ref: "#/components/schemas/OtelBooleanExpression"
+        action:
+          $ref: "#/components/schemas/OtelInputConditionAction"
+        scope:
+          $ref: "#/components/schemas/OtelInputScope"
+
+    OtelInputConditionAction:
+      type: string
+      enum:
+        - CREATE
+        - CONTINUE
+
+    OtelInputScope:
+      type: object
+      description: |-
+        Defines conditional mapping at the resource -> scope level.
+        If omitted, `condition` defaults to `true` and `action` defaults to `CONTINUE`.
+      properties:
+        condition:
+          $ref: "#/components/schemas/OtelBooleanExpression"
+        action:
+          $ref: "#/components/schemas/OtelInputConditionAction"
+        metric:
+          $ref: "#/components/schemas/OtelInputMetric"
+        span:
+          $ref: "#/components/schemas/OtelInputSpan"
+
+    OtelInputMetric:
+      type: object
+      description: |-
+        Defines conditional mapping at the resource -> scope -> metric level.
+        If omitted, `condition` defaults to `true` and `action` defaults to `CONTINUE`.
+      properties:
+        condition:
+          $ref: "#/components/schemas/OtelBooleanExpression"
+        action:
+          $ref: "#/components/schemas/OtelInputConditionAction"
+        datapoint:
+          $ref: "#/components/schemas/OtelInputDatapoint"
+
+    OtelInputSpan:
+      type: object
+      description: |-
+        Defines conditional mapping at the resource -> scope -> span level.
+        If omitted, `condition` defaults to `true` and `action` defaults to `CONTINUE`.
+      properties:
+        condition:
+          $ref: "#/components/schemas/OtelBooleanExpression"
+        action:
+          $ref: "#/components/schemas/OtelInputConditionAction"
+
+    OtelInputDatapoint:
+      type: object
+      description: |-
+        Defines conditional mapping at the resource -> scope -> metric -> datapoint level.
+        If omitted, `condition` defaults to `true` and `action` defaults to `CONTINUE`.
+      properties:
+        condition:
+          $ref: "#/components/schemas/OtelBooleanExpression"
+        action:
+          $ref: "#/components/schemas/OtelInputConditionAction"
+
+    OtelBooleanExpression:
+      type: string
+      description: A Cel expression that must return a boolean
+
+    OtelComponentMappingOutput:
+      type: object
+      properties:
+        identifier:
+          $ref: "#/components/schemas/OtelStringExpression"
+        name:
+          $ref: "#/components/schemas/OtelStringExpression"
+        typeName:
+          $ref: "#/components/schemas/OtelStringExpression"
+        typeIdentifier:
+          $ref: "#/components/schemas/OtelStringExpression"
+        layerName:
+          $ref: "#/components/schemas/OtelStringExpression"
+        layerIdentifier:
+          $ref: "#/components/schemas/OtelStringExpression"
+        domainName:
+          $ref: "#/components/schemas/OtelStringExpression"
+        domainIdentifier:
+          $ref: "#/components/schemas/OtelStringExpression"
+        required:
+          $ref: "#/components/schemas/OtelComponentMappingFieldMapping"
+        optional:
+          $ref: "#/components/schemas/OtelComponentMappingFieldMapping"
+      required:
+        - identifier
+        - name
+        - typeName
+        - layerName
+        - domainName
+
+    OtelRelationMappingOutput:
+      type: object
+      properties:
+        sourceId:
+          $ref: "#/components/schemas/OtelStringExpression"
+        targetId:
+          $ref: "#/components/schemas/OtelStringExpression"
+        typeName:
+          $ref: "#/components/schemas/OtelStringExpression"
+        typeIdentifier:
+          $ref: "#/components/schemas/OtelStringExpression"
+      required:
+        - sourceId
+        - targetId
+        - typeName
+
+    OtelStringExpression:
+      type: string
+      description: |-
+        An expression that must produce a string. It must be one of these formats:
+          - A plain string, for example `"this is a plain string"`
+          - A string containing a CEL expression within curly braces `${}`, for example "a string with a cel expression: `${resource.attributes['service.namespace']}"`
+        A string with only a cel expression is also valid as long as it is within a `${}` section, for example `"${resource.attributes['service.namespace']}"`.
+
+    OtelComponentMappingFieldMapping:
+      type: object
+      properties:
+        additionalIdentifiers:
+          type: array
+          items:
+            $ref: "#/components/schemas/OtelStringExpression"
+        version:
+          $ref: "#/components/schemas/OtelStringExpression"
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/OtelTagMapping"
+
+    OtelTagMapping:
+      type: object
+      description: Defines how a tag should be mapped from an input source to an output target, optionally using a regex pattern.
+      properties:
+        source:
+          $ref: "#/components/schemas/OtelAnyExpression"
+          description: When a `pattern` is specified the expression must return a Map, when no `pattern` is specified the expression must return a string.
+        target:
+          type: string
+          description: Name of the target tag key to which the value should be mapped.
+        pattern:
+          type: string
+          description: Optional regex pattern applied to the source value. Capturing groups can be referenced in the target (e.g., ${1}).
+      required:
+        - source
+        - target
+
+    OtelAnyExpression:
+      type: string
+      description: |-
+        An expression that can produce any type. It uses the CEL expression within curly braces `${}` syntax.
+        Variables use it to store any type of value. For example, to store a boolean in a variable named  `inTestNamespace` assign 
+        it the expression `"${resource.attributes['service.namespace'] == 'test'}"`. The variable can now be used directly in the conditions like this: `vars.inTestNamespace`.
+
+    OtelVariableMapping:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          $ref: "#/components/schemas/OtelAnyExpression"
+      required:
+        - name
+        - value
