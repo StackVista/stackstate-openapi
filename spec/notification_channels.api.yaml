@@ -70,6 +70,7 @@ paths:
     get:
       parameters:
         - $ref: "#/components/parameters/channelId"
+        - $ref: "#/components/parameters/cursor"
       tags:
         - notification_channels
       summary: "List all public Slack channels"
@@ -77,7 +78,7 @@ paths:
       operationId: listSlackChannels
       responses:
         "200":
-          $ref: "#/components/responses/slackChannels"
+          $ref: "#/components/responses/slackChannelsChunk"
         "400":
           $ref: "#/components/responses/notificationChannelError"
         "404":
@@ -566,6 +567,13 @@ components:
       schema:
         type: string
       description: "OpsGenie API key"
+    cursor:
+      in: query
+      name: cursor
+      required: false
+      schema:
+        type: string
+      description: "Slack list cursor"
   requestBodies:
     joinSlackChannel:
       description: "Provide a Slack channel id to join the specified Slack channel"
@@ -609,12 +617,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/SlackNotificationChannel"
-    slackChannels:
-      description: "Array of all available Slack channels to which StackState can send messages."
+    slackChannelsChunk:
+      description: "Chunk of available Slack channels to which StackState can send messages."
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/SlackChannels"
+            $ref: "#/components/schemas/SlackChannelsChunk"
     webhookNotificationChannel:
       description: "Webhook notification channel"
       content:
@@ -670,10 +678,17 @@ components:
     ChannelId:
       type: integer
       format: int64
-    SlackChannels:
-      type: array
-      items:
-        $ref: "#/components/schemas/SlackChannel"
+    SlackChannelsChunk:
+      type: object
+      properties:
+        channels:
+          type: array
+          items:
+            $ref: "#/components/schemas/SlackChannel"
+        next_cursor:
+          type: string
+      required:
+        - channels
     SlackChannel:
       type: object
       properties:
