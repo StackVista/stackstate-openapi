@@ -85,6 +85,25 @@ paths:
           $ref: "#/components/responses/notificationChannelNotFound"
         "500":
           $ref: "#/components/responses/notificationChannelError"
+  /notifications/channels/slack/{channelId}/slackChannelDetails/{slackChannelId}:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/channelId"
+        - $ref: "#/components/parameters/slackChannelId"
+      tags:
+        - notification_channels
+      summary: "Get Slack channel details"
+      description: "Get Slack channel details, used for validating a channel for the notifications"
+      operationId: slackChannelDetails
+      responses:
+        "200":
+          $ref: "#/components/responses/slackChannelDetails"
+        "400":
+          $ref: "#/components/responses/notificationChannelError"
+        "404":
+          $ref: "#/components/responses/notificationChannelNotFound"
+        "500":
+          $ref: "#/components/responses/notificationChannelError"
   /notifications/channels/slack/{channelId}/joinSlackChannel:
     post:
       parameters:
@@ -574,6 +593,13 @@ components:
       schema:
         type: string
       description: "Slack list cursor"
+    slackChannelId:
+      in: path
+      name: slackChannelId
+      required: true
+      schema:
+        type: string
+      description: "Slack Channel identifier"
   requestBodies:
     joinSlackChannel:
       description: "Provide a Slack channel id to join the specified Slack channel"
@@ -623,6 +649,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/SlackChannelsChunk"
+    slackChannelDetails:
+      description: "Details of a Slack channel to which StackState can send messages."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SlackChannel"
     webhookNotificationChannel:
       description: "Webhook notification channel"
       content:

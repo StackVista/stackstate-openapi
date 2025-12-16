@@ -54,6 +54,7 @@ paths:
   /notifications/channels/slack/oauth-callback: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2Foauth-callback" }
   /notifications/channels/slack/{channelId}: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2F%7BchannelId%7D" }
   /notifications/channels/slack/{channelId}/listSlackChannels: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2F%7BchannelId%7D%2FlistSlackChannels" }
+  /notifications/channels/slack/{channelId}/slackChannelDetails/{slackChannelId}: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2F%7BchannelId%7D%2FslackChannelDetails%2F%7BslackChannelId%7D" }
   /notifications/channels/slack/{channelId}/joinSlackChannel: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2F%7BchannelId%7D%2FjoinSlackChannel" }
   /notifications/channels/slack/{channelId}/test: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2F%7BchannelId%7D%2Ftest" }
   /notifications/channels/webhook: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fwebhook" }
