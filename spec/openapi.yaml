@@ -157,6 +157,8 @@ paths:
   /otel-relation-mappings: { $ref: "otel_mapping_api.yaml#/paths/%2Fotel-relation-mappings" }
   /otel-relation-mappings/{identifier}: { $ref: "otel_mapping_api.yaml#/paths/%2Fotel-relation-mappings%2F%7Bidentifier%7D" }
   /otel-relation-mappings/{identifier}/status: { $ref: "otel_mapping_api.yaml#/paths/%2Fotel-relation-mappings%2F%7Bidentifier%7D%2Fstatus" }
+  /component-presentations: { $ref: "component_presentations_api.yaml#/paths/%2Fcomponent-presentations" }
+  /component-presentations/{identifier}: { $ref: "component_presentations_api.yaml#/paths/%2Fcomponent-presentations%2F%7Bidentifier%7D" }
   # Dummy path to make sure that some types are included, which otherwise would be excluded
   /dummy/dummy: { $ref: "common.api.yaml#/paths/%2Fdummy%2Fdummy" }
 security:
