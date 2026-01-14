@@ -239,7 +239,7 @@ components:
                 type: array
                 items:
                   $ref: "#/components/schemas/OtelVariableMapping"
-              expireAfterMs:
+              expireAfter:
                 type: integer
                 format: int64
             required:
@@ -247,7 +247,7 @@ components:
               - name
               - input
               - output
-              - expireAfterMs
+              - expireAfter
     OtelRelationmappingUpsertRequest:
       description: "Otel Relation Mapping to create/update"
       required: true
@@ -270,7 +270,7 @@ components:
                 type: array
                 items:
                   $ref: "#/components/schemas/OtelVariableMapping"
-              expireAfterMs:
+              expireAfter:
                 type: integer
                 format: int64
             required:
@@ -278,7 +278,7 @@ components:
               - name
               - input
               - output
-              - expireAfterMs
+              - expireAfter
 
   responses:
     OtelMappingNotFound:
@@ -318,7 +318,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/OtelVariableMapping"
-        expireAfterMs:
+        expireAfter:
           type: integer
           format: int64
       required:
@@ -326,7 +326,7 @@ components:
         - name
         - input
         - output
-        - expireAfterMs
+        - expireAfter
     OtelRelationMapping:
       type: object
       properties:
@@ -344,7 +344,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/OtelVariableMapping"
-        expireAfterMs:
+        expireAfter:
           type: integer
           format: int64
       required:
@@ -352,7 +352,7 @@ components:
         - name
         - input
         - output
-        - expireAfterMs
+        - expireAfter
     OtelMappingStatus:
       type: object
       properties:
