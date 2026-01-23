@@ -115,12 +115,6 @@ components:
       type: string
     Permission:
       type: string
-    PermissionMap:
-      type: object
-      additionalProperties:
-        type: array
-        items:
-          $ref: "#/components/schemas/Permission"
     PermissionList:
       type: array
       items:
@@ -144,7 +138,7 @@ components:
         permissions:
           type: object
           additionalProperties:
-            $ref: "#/components/schemas/PermissionMap"
+            $ref: "#/components/schemas/PermissionList"
       required:
         - subjectHandle
         - permissions
