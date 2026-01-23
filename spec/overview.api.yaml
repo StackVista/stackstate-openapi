@@ -1,0 +1,168 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Timeline API
+  version: "1.0.0"
+paths:
+  /overview/components:
+    post:
+      tags:
+        - overview
+      requestBody:
+        $ref: "#/components/requestBodies/overviewComponentsRequest"
+      summary: "Overview components"
+      description: "Query components for an Overview perspective"
+      operationId: getOverviewComponents
+      responses:
+        "200":
+          $ref: "#/components/responses/overviewComponentsResponse"
+        "413": # Used to denote an overflow. This can happen when a limit is reached (like traversal/topology limit).
+          $ref: "#/components/responses/overviewOverflowResponse"
+        "500":
+          $ref: "#/components/responses/overviewErrorResponse"
+  /overview/delta:
+    post:
+      tags:
+        - overview
+      requestBody:
+        $ref: "#/components/requestBodies/overviewDeltaRequest"
+      summary: "Overview components delta"
+      description: "Query delta of components for an Overview perspective"
+      operationId: getOverviewDelta
+      responses:
+        "200":
+          $ref: "#/components/responses/overviewDeltaResponse"
+        "413": # Used to denote an overflow. This can happen when a limit is reached (like traversal/topology limit).
+          $ref: "#/components/responses/overviewOverflowResponse"
+        "500":
+          $ref: "#/components/responses/overviewErrorResponse"
+components:
+  requestBodies:
+    overviewComponentsRequest:
+      description: "Query components for overview perspective"
+      required: true
+      content:
+        application/json:
+          schema: 
+            $ref: "#/components/schemas/OverviewComponentsRequest"
+    overviewDeltaRequest:
+      description: "Query delta of components for overview perspective"
+      required: true
+      content:
+        application/json:
+          schema: 
+            $ref: "#/components/schemas/OverviewDeltaRequest"
+  responses:
+    overviewComponentsResponse:
+      description: "Overview components"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OverviewComponents"
+    overviewDeltaResponse:
+      description: "Delta of overview components"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OverviewDelta"
+    overviewErrorResponse:
+      description: "Errors when querying components"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OverviewError"
+    overviewOverflowResponse:
+      description: "Limit was reached during component querying"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OverviewOverflow"
+  schemas:
+    OverviewComponentsRequest:
+      properties:
+        query:
+          type: string
+        time:
+          $ref: "common.api.yaml#/components/schemas/Instant"
+      required:
+        - query
+        - time
+    OverviewDeltaRequest:
+      properties:
+        query:
+          type: string
+        fromTime:
+          $ref: "common.api.yaml#/components/schemas/Instant"
+        toTime:
+          $ref: "common.api.yaml#/components/schemas/Instant"
+      required:
+        - query
+        - fromTime
+        - toTime
+    OverviewComponents:
+      properties:
+        components:
+          type: array
+          items:
+            $ref: "#/components/schemas/OverviewComponent"
+      required:
+        - components
+    OverviewDelta:
+      properties:
+        added:
+          type: array
+          items:
+            $ref: "#/components/schemas/OverviewComponent"
+        updated:
+          type: array
+          items:
+            $ref: "#/components/schemas/OverviewComponent"
+        removed:
+          type: array
+          items:
+            type: integer
+      required:
+        - added
+        - updated
+        - removed
+    OverviewComponent:
+      properties:
+        presentationIdentifier: # ComponentPresentation identifier
+          type: string  
+        id:
+          type: integer
+        identifiers:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        health:
+          $ref: "common.api.yaml#/components/schemas/HealthStateValue"
+        tags:
+          type: array
+          items:
+            type: string
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+      required:
+        - presentationIdentifier
+        - id
+        - identifiers
+        - name
+        - tags
+        - properties
+    OverviewError:
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    OverviewOverflow:
+      properties:
+        message:
+          type: string
+      required:
+        - message

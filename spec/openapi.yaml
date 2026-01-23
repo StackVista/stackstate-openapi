@@ -142,6 +142,7 @@ paths:
   /traces/spans/fields/{field}/values: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fspans%2Ffields%2F%7Bfield%7D%2Fvalues" }
   /traces/components: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fcomponents" }
   /layouts: { $ref: "layouts.api.yaml#/paths/%2Flayouts" }
+  /components/{componentIdOrUrn}: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrUrn%7D" }
   /components/{componentIdOrUrn}/healthHistory: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrUrn%7D%2FhealthHistory" }
   /components/{componentIdOrUrn}/checkStates: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrUrn%7D%2FcheckStates" }
   /agents/{agentId}/checkLease: { $ref: "agent_leases.api.yaml#/paths/%2Fagents%2F%7BagentId%7D%2FcheckLease" }
@@ -159,6 +160,9 @@ paths:
   /otel-relation-mappings/{identifier}/status: { $ref: "otel_mapping_api.yaml#/paths/%2Fotel-relation-mappings%2F%7Bidentifier%7D%2Fstatus" }
   /component-presentations: { $ref: "component_presentations_api.yaml#/paths/%2Fcomponent-presentations" }
   /component-presentations/{identifier}: { $ref: "component_presentations_api.yaml#/paths/%2Fcomponent-presentations%2F%7Bidentifier%7D" }
+  /overview/components: {$ref: "overview.api.yaml#/paths/%2Foverview%2Fcomponents" }
+  /overview/delta: {$ref: "overview.api.yaml#/paths/%2Foverview%2Fdelta" }
+  /mainmenu: {$ref: "mainmenu.api.yaml#/paths/%2Fmainmenu" }
   # Dummy path to make sure that some types are included, which otherwise would be excluded
   /dummy/dummy: { $ref: "common.api.yaml#/paths/%2Fdummy%2Fdummy" }
 security:

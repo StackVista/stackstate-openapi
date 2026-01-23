@@ -4,6 +4,21 @@ info:
   title: Monitors API
   version: "1.0.0"
 paths:
+  /components/{componentIdOrUrn}:
+    get:
+      tags:
+        - component
+      summary: "Get full component"
+      description: "Get full component details"
+      operationId: getFullComponent
+      parameters:
+        - $ref: "#/components/parameters/componentIdOrUrn"
+        - $ref: "#/components/parameters/topologyTime"
+      responses:
+        "200":
+          $ref: "#/components/responses/fullComponent"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /components/{componentIdOrUrn}/healthHistory:
     get:
       tags:
@@ -20,7 +35,6 @@ paths:
           $ref: "#/components/responses/componentHealthHistory"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-
   /components/{componentIdOrUrn}/checkStates:
     get:
       tags:
@@ -37,7 +51,6 @@ paths:
           $ref: "#/components/responses/componentCheckStates"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-
 components:
   parameters:
     componentIdOrUrn:
@@ -84,6 +97,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/ComponentCheckStates"
+    fullComponent:
+      description: "Full component"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/FullComponent"
   schemas:
     ComponentIdOrUrn:
       type: string
@@ -140,3 +159,506 @@ components:
             $ref: "#/components/schemas/ComponentCheckState"
       required:
         - checkStateIds
+    FullComponent:
+      properties:
+        typeName:
+          type: string
+        iconbase64:
+          type: string
+        data:
+          $ref: "#/components/schemas/ComponentData"
+        highlights:
+          $ref: "#/components/schemas/ComponentHighlights"
+        metrics:
+          $ref: "#/components/schemas/ComponentMetrics"
+        traces:
+          $ref: "#/components/schemas/ComponentTraces"
+    ComponentData:
+      properties:
+        id:
+          type: integer
+        identifiers:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        description:
+          type: string
+        version:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+        layerName:
+          type: string
+        domainName:
+          type: string
+        health:
+          $ref: "common.api.yaml#/components/schemas/HealthStateValue"
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        synced:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExternalComponent"
+    ExternalComponent:
+      properties:
+        externalId:
+          type: string
+        identifiers:
+          type: array
+          items:
+            type: string
+        data:
+          type: object
+        id:
+          type: integer
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        elementTypeTag:
+          type: string
+        syncName:
+          type: string
+        sourceProperties:
+          type: object
+        status:
+          type: object
+      required:
+        - identifiers
+        - data
+        - syncName
+    ComponentHighlights:
+      properties:
+        about:
+          $ref: "#/components/schemas/ComponentTypeAbout"
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentTypeField"
+        events:
+          $ref: "#/components/schemas/ComponentHighlightEvents"
+        externalComponent:
+          $ref: "#/components/schemas/ComponentHighlightExternalComponent"
+        namePlural:
+          type: string
+        showLogs:
+          type: boolean
+        showLastChange:
+          type: boolean
+        relatedResources:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentRelatedResources"
+        metrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentHighlightMetrics"
+        actions:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentAction"
+    ComponentTypeAbout:
+      properties:
+        fields:
+          type: array
+          items:
+            type: string
+      required:
+        - fields
+    ComponentTypeField:
+      properties:
+        fieldId:
+          type: string
+        label:
+          $ref: "#/components/schemas/ComponentTypeLabel"
+        valueExtractor:
+          $ref: "#/components/schemas/ComponentTypeValueExtractor"
+        display:
+          $ref: "#/components/schemas/ComponentTypeFieldDisplay"
+    ComponentTypeValueExtractor:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/ComponentTypeSource"
+        - $ref: "#/components/schemas/CompositeSource"
+        - $ref: "#/components/schemas/ConstantSource"
+        - $ref: "#/components/schemas/HealthSource"
+        - $ref: "#/components/schemas/IdentifiersSource"
+        - $ref: "#/components/schemas/LastUpdatedTimestampSource"
+        - $ref: "#/components/schemas/NameSource"
+        - $ref: "#/components/schemas/PropertySource"
+        - $ref: "#/components/schemas/TagSource"
+        - $ref: "#/components/schemas/TagsSource"
+    ComponentTypeLabel:
+      properties:
+        title:
+          type: string
+        helpBubbleText:
+          type: string
+      required:
+        - title
+    ComponentTypeSource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - ComponentTypeSource
+      required:
+        - _type
+    CompositeSource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - CompositeSource
+        sources:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/ComponentTypeValueExtractor"
+      required:
+        - _type
+        - sources
+    ConstantSource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - ConstantSource
+        value:
+          type: string
+      required:
+        - _type
+        - value
+    HealthSource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - HealthSource
+      required:
+        - _type
+    IdentifiersSource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - IdentifiersSource
+      required:
+        - _type
+    LastUpdatedTimestampSource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - LastUpdatedTimestampSource
+      required:
+        - _type
+    NameSource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - NameSource
+      required:
+        - _type
+    PropertySource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - PropertySource
+        key:
+          type: string
+        defaultValue:
+          type: string
+      required:
+        - _type
+        - key
+    TagSource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - TagSource
+        tagName:
+          type: string
+      required:
+        - _type
+        - tagName
+    TagsSource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - TagsSource
+      required:
+        - _type
+    ComponentTypeFieldDisplay:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/ComponentLinkDisplay"
+        - $ref: "#/components/schemas/DurationDisplay"
+        - $ref: "#/components/schemas/HealthBadgeDisplay"
+        - $ref: "#/components/schemas/HealthCircleDisplay"
+        - $ref: "#/components/schemas/PromQLDisplay"
+        - $ref: "#/components/schemas/RatioDisplay"
+        - $ref: "#/components/schemas/ReadyStatusDisplay"
+        - $ref: "#/components/schemas/TagDisplay"
+        - $ref: "#/components/schemas/TextDisplay"
+        - $ref: "#/components/schemas/ViewTimeLink"
+      required:
+        - _type
+    ComponentLinkDisplay:
+      properties:
+        _type:
+          type: string
+          enum:
+            - ComponentLinkDisplay
+      required:
+        - _type
+    DurationDisplay:
+      properties:
+        _type:
+          type: string
+          enum:
+            - DurationDisplay
+      required:
+        - _type
+    HealthBadgeDisplay:
+      properties:
+        _type:
+          type: string
+          enum:
+            - HealthBadgeDisplay
+      required:
+        - _type
+    HealthCircleDisplay:
+      properties:
+        _type:
+          type: string
+          enum:
+            - HealthCircleDisplay
+      required:
+        - _type
+    PromQLDisplay:
+      properties:
+        _type:
+          type: string
+          enum:
+            - PromQLDisplay
+      required:
+        - _type
+    RatioDisplay:
+      properties:
+        _type:
+          type: string
+          enum:
+            - RatioDisplay
+      required:
+        - _type
+    ReadyStatusDisplay:
+      properties:
+        _type:
+          type: string
+          enum:
+            - RatioDisplay
+      required:
+        - _type
+    TagDisplay:
+      properties:
+        _type:
+          type: string
+          enum:
+            - TagDisplay
+        singular:
+          type: string
+      required:
+        - _type
+    TextDisplay:
+      properties:
+        _type:
+          type: string
+          enum:
+            - TextDisplay
+      required:
+        - _type
+    ViewTimeLink:
+      properties:
+        _type:
+          type: string
+          enum:
+            - ViewTimeLink
+      required:
+        - _type
+    ComponentHighlightEvents:
+      properties:
+        showEvents:
+          type: boolean
+        relatedResourcesTemplate:
+          type: string
+      required:
+        - showEvents
+    ComponentHighlightExternalComponent:
+      properties:
+        showConfiguration:
+          type: boolean
+        showStatus:
+          type: boolean
+        externalIdSelector:
+          type: string
+      required:
+        - showConfiguration
+        - showStatus
+        - externalIdSelector
+    ComponentRelatedResources:
+      properties:
+        resourceType:
+          type: string
+        title:
+          type: string
+        stql:
+          type: string
+        hint:
+          type: string
+        presentationIdentifier:
+          type: string
+      required:
+        - resourceType
+        - title
+        - stql
+    ComponentHighlightMetrics:
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        bindings:
+          type: array
+          items:
+            type: string
+        defaultExpanded:
+          type: boolean
+      required:
+        - name
+        - bindings
+        - defaultExpanded
+    ComponentAction:
+      properties:
+        description:
+          type: string
+        id:
+          type: integer
+        name:
+          type: string
+      required:
+        - id
+        - name
+    ComponentMetrics:
+      properties:
+        boundMetrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/BoundMetric"
+      required:
+        - boundMetrics
+    BoundMetric:
+      properties:
+        alias:
+          type: string
+        boundQueries:
+          type: array
+          items:
+            $ref: "#/components/schemas/BoundMetricQuery"
+        chartType:
+          $ref: "#/components/schemas/ChartType"
+        description:
+          type: string
+        dummy:
+          type: boolean
+        identifier:
+          type: string
+        layout: 
+          $ref: "#/components/schemas/MetricBindingLayout"
+        name:
+          type: string
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+        unit:
+          type: string
+        valuation:
+          $ref: "#/components/schemas/MetricValuation"
+      required:
+        - name
+        - boundQueries
+        - chartType
+    BoundMetricQuery:
+      properties:
+        alias:
+          type: string
+        componentIdentifierTemplate:
+          type: string
+        expression:
+          type: string
+        primary:
+          type: boolean
+      required:
+        - expression
+        - alias
+    ChartType:
+      type: string
+      enum:
+        - line
+    MetricValuation:
+      type: string
+      enum:
+        - higher-is-better
+        - lower-is-better
+    MetricBindingLayout:
+      properties:
+        componentHighlight:
+          $ref: "#/components/schemas/ComponentHighlightLocation"
+        componentSummary:
+          $ref: "#/components/schemas/ComponentSummaryLocation"
+        metricPerspective: 
+          $ref: "#/components/schemas/MetricPerspectiveLocation"
+    ComponentHighlightLocation:
+      properties:
+        section:
+          type: string
+        weight:
+          type: number
+      required:
+        - section
+    ComponentSummaryLocation:
+      properties:
+        weight:
+          type: number
+    MetricPerspectiveLocation:
+      properties:
+        tab:
+          type: string
+        section:
+          type: string
+        weight:
+          type: number
+      required:
+        - tab
+        - section
+    ComponentTraces:
+      properties:
+        filter:
+          $ref: "traces.api.yaml#/components/schemas/SpanFilter"
+      required:
+        - filter
+
