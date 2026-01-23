@@ -31,6 +31,7 @@ paths:
         - $ref: "#/components/parameters/subject"
         - $ref: "#/components/parameters/resource"
         - $ref: "#/components/parameters/permission"
+        - $ref: "#/components/parameters/source"
       responses:
         "200":
           description: "A permission description for a subject"
@@ -102,6 +103,11 @@ components:
       name: permission
       schema:
         $ref: "#/components/schemas/Permission"
+    source:
+      in: query
+      name: source
+      schema:
+        $ref: "subject.xapi.yaml#/components/schemas/SubjectSource"
   schemas:
     Subject:
       type: string
@@ -109,6 +115,12 @@ components:
       type: string
     Permission:
       type: string
+    PermissionMap:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          $ref: "#/components/schemas/Permission"
     PermissionList:
       type: array
       items:
@@ -125,10 +137,14 @@ components:
       properties:
         subjectHandle:
           $ref: "#/components/schemas/Subject"
+        fromSources:
+          type: array
+          items:
+            $ref: "subject.xapi.yaml#/components/schemas/SubjectSource"
         permissions:
           type: object
           additionalProperties:
-            $ref: "#/components/schemas/PermissionList"
+            $ref: "#/components/schemas/PermissionMap"
       required:
         - subjectHandle
         - permissions
