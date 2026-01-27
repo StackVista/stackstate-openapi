@@ -134,6 +134,14 @@ components:
       required:
         - timestamp
         - newHealth
+    ComponentCheckStates:
+      properties:
+        checkStates:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentCheckState"
+      required:
+        - checkStates
     ComponentCheckState:
       properties:
         identifier:
@@ -151,14 +159,6 @@ components:
         - idOrIdentifier
         - startTime
         - endTime
-    ComponentCheckStates:
-      properties:
-        checkStateIds:
-          type: array
-          items:
-            $ref: "#/components/schemas/ComponentCheckState"
-      required:
-        - checkStateIds
     FullComponent:
       properties:
         typeName:
@@ -168,15 +168,25 @@ components:
         data:
           $ref: "#/components/schemas/ComponentData"
         highlights:
-          $ref: "#/components/schemas/ComponentHighlights"
+          $ref: "#/components/schemas/ComponentTypeHighlights"
+        actions:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentAction"
         metrics:
-          $ref: "#/components/schemas/ComponentMetrics"
+          $ref: "#/components/schemas/BoundMetrics"
         traces:
-          $ref: "#/components/schemas/ComponentTraces"
+          $ref: "#/components/schemas/BoundTraces"
+      required:
+        - typeName
+        - data
+        - actions
+        - metrics
     ComponentData:
       properties:
         id:
           type: integer
+          format: int64
         identifiers:
           type: array
           items:
@@ -208,6 +218,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ExternalComponent"
+      required:
+        - name
+        - tags
+        - properties
     ExternalComponent:
       properties:
         externalId:
@@ -232,39 +246,46 @@ components:
         status:
           type: object
       required:
+        - sourceProperties
         - identifiers
         - data
         - syncName
-    ComponentHighlights:
+    ComponentTypeHighlights:
       properties:
-        about:
-          $ref: "#/components/schemas/ComponentTypeAbout"
+        namePlural:
+          type: string
         fields:
           type: array
           items:
             $ref: "#/components/schemas/ComponentTypeField"
+        about:
+          $ref: "#/components/schemas/ComponentTypeAbout"
         events:
-          $ref: "#/components/schemas/ComponentHighlightEvents"
-        externalComponent:
-          $ref: "#/components/schemas/ComponentHighlightExternalComponent"
-        namePlural:
-          type: string
+          $ref: "#/components/schemas/ComponentTypeEvents"
         showLogs:
           type: boolean
         showLastChange:
           type: boolean
+        externalComponent:
+          $ref: "#/components/schemas/ComponentTypeExternalComponent"
         relatedResources:
           type: array
           items:
-            $ref: "#/components/schemas/ComponentRelatedResources"
+            $ref: "#/components/schemas/ComponentTypeRelatedResources"
         metrics:
           type: array
           items:
             $ref: "#/components/schemas/ComponentHighlightMetrics"
-        actions:
-          type: array
-          items:
-            $ref: "#/components/schemas/ComponentAction"
+      required:
+        - namePlural
+        - fields
+        - about
+        - events
+        - showLogs
+        - showLastChange
+        - externalComponent
+        - relatedResources
+        - metrics
     ComponentTypeAbout:
       properties:
         fields:
@@ -283,6 +304,19 @@ components:
           $ref: "#/components/schemas/ComponentTypeValueExtractor"
         display:
           $ref: "#/components/schemas/ComponentTypeFieldDisplay"
+      required:
+        - fieldId
+        - label
+        - valueExtractor
+        - display
+    ComponentTypeLabel:
+      properties:
+        title:
+          type: string
+        helpBubbleText:
+          type: string
+      required:
+        - title
     ComponentTypeValueExtractor:
       discriminator:
         propertyName: _type
@@ -297,14 +331,6 @@ components:
         - $ref: "#/components/schemas/PropertySource"
         - $ref: "#/components/schemas/TagSource"
         - $ref: "#/components/schemas/TagsSource"
-    ComponentTypeLabel:
-      properties:
-        title:
-          type: string
-        helpBubbleText:
-          type: string
-      required:
-        - title
     ComponentTypeSource:
       properties:
         _type:
@@ -499,7 +525,7 @@ components:
             - ViewTimeLink
       required:
         - _type
-    ComponentHighlightEvents:
+    ComponentTypeEvents:
       properties:
         showEvents:
           type: boolean
@@ -507,7 +533,7 @@ components:
           type: string
       required:
         - showEvents
-    ComponentHighlightExternalComponent:
+    ComponentTypeExternalComponent:
       properties:
         showConfiguration:
           type: boolean
@@ -519,7 +545,7 @@ components:
         - showConfiguration
         - showStatus
         - externalIdSelector
-    ComponentRelatedResources:
+    ComponentTypeRelatedResources:
       properties:
         resourceType:
           type: string
@@ -529,7 +555,7 @@ components:
           type: string
         hint:
           type: string
-        presentationIdentifier:
+        viewTypeIdentifier:
           type: string
       required:
         - resourceType
@@ -553,16 +579,17 @@ components:
         - defaultExpanded
     ComponentAction:
       properties:
-        description:
-          type: string
         id:
           type: integer
+          format: int64
         name:
+          type: string
+        description:
           type: string
       required:
         - id
         - name
-    ComponentMetrics:
+    BoundMetrics:
       properties:
         boundMetrics:
           type: array
@@ -572,43 +599,44 @@ components:
         - boundMetrics
     BoundMetric:
       properties:
-        alias:
+        name:
+          type: string
+        identifier:
           type: string
         boundQueries:
           type: array
           items:
             $ref: "#/components/schemas/BoundMetricQuery"
-        chartType:
-          $ref: "#/components/schemas/ChartType"
         description:
           type: string
-        dummy:
-          type: boolean
-        identifier:
+        unit:
           type: string
-        layout: 
-          $ref: "#/components/schemas/MetricBindingLayout"
-        name:
+        chartType:
+          $ref: "#/components/schemas/ChartType"
+        alias:
           type: string
+        valuation:
+          $ref: "#/components/schemas/MetricValuation"
         tags:
           type: object
           additionalProperties:
             type: string
-        unit:
-          type: string
-        valuation:
-          $ref: "#/components/schemas/MetricValuation"
+        layout: 
+          $ref: "#/components/schemas/MetricBindingLayout"
+        dummy:
+          type: boolean
       required:
         - name
         - boundQueries
         - chartType
+        - tags
     BoundMetricQuery:
       properties:
+        expression:
+          type: string
         alias:
           type: string
         componentIdentifierTemplate:
-          type: string
-        expression:
           type: string
         primary:
           type: boolean
@@ -626,12 +654,12 @@ components:
         - lower-is-better
     MetricBindingLayout:
       properties:
+        metricPerspective: 
+          $ref: "#/components/schemas/MetricPerspectiveLocation"
         componentHighlight:
           $ref: "#/components/schemas/ComponentHighlightLocation"
         componentSummary:
           $ref: "#/components/schemas/ComponentSummaryLocation"
-        metricPerspective: 
-          $ref: "#/components/schemas/MetricPerspectiveLocation"
     ComponentHighlightLocation:
       properties:
         section:
@@ -655,10 +683,9 @@ components:
       required:
         - tab
         - section
-    ComponentTraces:
+    BoundTraces:
       properties:
         filter:
           $ref: "traces.api.yaml#/components/schemas/SpanFilter"
       required:
         - filter
-
