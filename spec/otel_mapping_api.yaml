@@ -304,6 +304,10 @@ components:
     OtelComponentMapping:
       type: object
       properties:
+        _type:
+          type: string
+          enum:
+            - OtelComponentMapping
         identifier:
           type: string
         name:
@@ -322,6 +326,7 @@ components:
           type: integer
           format: int64
       required:
+        - _type
         - identifier
         - name
         - input
@@ -330,6 +335,10 @@ components:
     OtelRelationMapping:
       type: object
       properties:
+        _type:
+          type: string
+          enum:
+            - OtelRelationMapping
         identifier:
           type: string
         name:
@@ -348,6 +357,7 @@ components:
           type: integer
           format: int64
       required:
+        - _type
         - identifier
         - name
         - input
