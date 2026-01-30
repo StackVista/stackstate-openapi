@@ -44,7 +44,6 @@ components:
             $ref: "#/components/schemas/MainMenuViewItem"
       required:
         - name
-        - identifier
         - defaultOpen
         - iconbase64
         - items
