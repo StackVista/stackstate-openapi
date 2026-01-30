@@ -94,6 +94,31 @@ paths:
           $ref: "#/components/responses/ComponentPresentationErrorResponse"
 components:
   schemas:
+    PresentationName:
+      type: object
+      properties:
+        singular:
+          type: string
+        plural:
+          type: string
+        title:
+          type: string
+      required:
+        - singular
+        - plural
+        - title
+    PresentationMainMenu:
+      type: object
+      properties:
+        group:
+            type: string
+        icon:
+          type: string
+        order:
+          type: integer
+      required:
+        - group
+        - order
     ComponentPresentation:
       type: object
       properties:
@@ -117,6 +142,10 @@ components:
       properties:
         icon:
           type: string
+        name:
+          $ref: "#/components/schemas/PresentationName"
+        mainMenu:
+          $ref: "#/components/schemas/PresentationMainMenu"
     ComponentPresentationApiError:
       type: object
       properties:
