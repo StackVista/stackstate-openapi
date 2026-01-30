@@ -306,18 +306,18 @@ components:
     SpanKind:
       type: string
       enum:
-        - Unspecified
         - Client
-        - Server
-        - Internal
         - Consumer
+        - Internal
         - Producer
-    StatusCode:
+        - Server
+        - Unspecified
+    SpanStatusCode:
       type: string
       enum:
-        - Unset
         - Error
         - Ok
+        - Unset
     SpanParentType:
       type: string
       enum:
@@ -357,7 +357,7 @@ components:
         - SpanKind
         - SpanParentType
         - DurationNanos
-        - StatusCode
+        - SpanStatusCode
         - TraceId
         - SpanId
         - ScopeName
@@ -426,7 +426,7 @@ components:
         statusCode:
           type: array
           items: 
-            $ref: "#/components/schemas/StatusCode"
+            $ref: "#/components/schemas/SpanStatusCode"
           description: "Filter spans by the StatusCode"
           example: ["Error"]
         traceId:
@@ -651,7 +651,7 @@ components:
           type: string
         statusCode:
           description: The status of the operation for the span
-          $ref: "#/components/schemas/StatusCode"
+          $ref: "#/components/schemas/SpanStatusCode"
         statusMessage:
           description: Human readable message for the status
           type: string

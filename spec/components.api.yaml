@@ -174,7 +174,9 @@ components:
           items:
             $ref: "#/components/schemas/ComponentAction"
         metrics:
-          $ref: "#/components/schemas/BoundMetrics"
+          type: array
+          items:
+            $ref: "#/components/schemas/BoundMetric"
         traces:
           $ref: "#/components/schemas/BoundTraces"
       required:
@@ -234,6 +236,7 @@ components:
           type: object
         id:
           type: integer
+          format: int64
         lastUpdateTimestamp:
           type: integer
           format: int64
@@ -589,14 +592,6 @@ components:
       required:
         - id
         - name
-    BoundMetrics:
-      properties:
-        boundMetrics:
-          type: array
-          items:
-            $ref: "#/components/schemas/BoundMetric"
-      required:
-        - boundMetrics
     BoundMetric:
       properties:
         name:
@@ -665,13 +660,13 @@ components:
         section:
           type: string
         weight:
-          type: number
+          type: integer
       required:
         - section
     ComponentSummaryLocation:
       properties:
         weight:
-          type: number
+          type: integer
     MetricPerspectiveLocation:
       properties:
         tab:
@@ -679,7 +674,7 @@ components:
         section:
           type: string
         weight:
-          type: number
+          type: integer
       required:
         - tab
         - section
