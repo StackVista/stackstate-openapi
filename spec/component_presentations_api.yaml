@@ -112,7 +112,7 @@ components:
       properties:
         group:
             type: string
-        icon:
+        iconbase64:
           type: string
         order:
           type: integer
@@ -140,7 +140,7 @@ components:
     PresentationDefinition:
       type: object
       properties:
-        icon:
+        iconbase64:
           type: string
         name:
           $ref: "#/components/schemas/PresentationName"
