@@ -465,7 +465,7 @@ components:
         target:
           $ref: "#/components/schemas/EventComponent"
         dependencyDirection:
-          $ref: "#/components/schemas/DependencyDirection"
+          $ref: "relations.api.yaml#/components/schemas/DependencyDirection"
       required:
         - _type
         - id
@@ -624,12 +624,6 @@ components:
       required:
         - lastEventTimestampMs
         - lastEventId
-    DependencyDirection:
-      type: string
-      enum:
-        - one-way
-        - none
-        - both
     EventId:
       type: string
     EventsHistogram:

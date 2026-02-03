@@ -145,6 +145,7 @@ paths:
   /components/{componentIdOrUrn}: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrUrn%7D" }
   /components/{componentIdOrUrn}/healthHistory: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrUrn%7D%2FhealthHistory" }
   /components/{componentIdOrUrn}/checkStates: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrUrn%7D%2FcheckStates" }
+  /relations/{relationId}: { $ref: "relations.api.yaml#/paths/%2Frelations%2F%7BrelationId%7D" }
   /agents/{agentId}/checkLease: { $ref: "agent_leases.api.yaml#/paths/%2Fagents%2F%7BagentId%7D%2FcheckLease" }
   /agents: { $ref: "agent_registrations.api.yaml#/paths/%2Fagents" }
   /system/notifications: { $ref: "system_notifications.api.yaml#/paths/%2Fsystem%2Fnotifications" }

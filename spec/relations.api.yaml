@@ -1,0 +1,127 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Monitors API
+  version: "1.0.0"
+paths:
+  /relations/{relationId}:
+    get:
+      tags:
+        - relation
+      summary: "Get full relation"
+      description: "Get full relation details"
+      operationId: getFullRelation
+      parameters:
+        - $ref: "#/components/parameters/componentIdOrUrn"
+        - $ref: "#/components/parameters/topologyTime"
+      responses:
+        "200":
+          $ref: "#/components/responses/fullRelation"
+        "404":
+          $ref: "common.api.yaml#/components/responses/stackElementNotFound"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+components:
+  parameters:
+    componentIdOrUrn:
+      in: path
+      name: relationId
+      required: true
+      schema:
+        type: integer
+        format: int64
+      description: "The id of a relation"
+    topologyTime:
+      name: topologyTime
+      in: query
+      description: "A timestamp at which resources will be queried. If not given the resources are queried at current time."
+      required: false
+      schema:
+        type: integer
+        format: instant
+  responses:
+    fullRelation:
+      description: "Full relation"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/FullRelation"
+  schemas:
+    FullRelation:
+      properties:
+        data:
+          $ref: "#/components/schemas/RelationData"
+        source:
+          $ref: "components.api.yaml#/components/schemas/FullComponent"
+        target:
+          $ref: "components.api.yaml#/components/schemas/FullComponent"
+        typeName:
+          type: string
+      required:
+        - data
+        - source
+        - target
+        - typeName
+    RelationData:
+      properties:
+        tags:
+          type: array
+          items:
+            type: string
+        health:
+          $ref: "common.api.yaml#/components/schemas/HealthStateValue"
+        synced:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExternalRelation"
+        identifiers:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        name:
+          type: string
+        dependencyDirection:
+          $ref: "#/components/schemas/DependencyDirection"
+      required:
+        - dependencyDirection
+        - tags
+        - identifiers
+        - synced
+    ExternalRelation:
+      properties:
+        externalId:
+          type: string
+        identifiers:
+          type: array
+          items:
+            type: string
+        data:
+          type: object
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        elementTypeTag:
+          type: string
+        syncName:
+          type: string
+      required:
+        - identifiers
+        - data
+        - syncName
+    DependencyDirection:
+      enum:
+        - one-way
+        - none
+        - both
+      type: string
