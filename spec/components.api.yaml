@@ -51,15 +51,55 @@ paths:
           $ref: "#/components/responses/componentCheckStates"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /components/{componentIdOrUrn}/bindmetric:
+    get:
+      tags:
+        - component
+      summary: "Bind a metric to a component"
+      description: "Bind a metric binding to a component"
+      operationId: getComponentMetricBinding
+      parameters:
+        - $ref: "#/components/parameters/componentIdOrUrn"
+        - $ref: "#/components/parameters/metricBindingIdentifier"
+        - $ref: "#/components/parameters/topologyTime"
+      responses:
+        "200":
+          $ref: "#/components/responses/boundMetric"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /components/{componentIdOrUrn}/boundMetricsWithData:
+    get:
+      tags:
+        - component
+      summary: "Metrics with data for a component"
+      description: "Metrics that have data for a component"
+      operationId: getComponentMetricsWithData
+      parameters:
+        - $ref: "#/components/parameters/componentIdOrUrn"
+        - $ref: "#/components/parameters/topologyTime"
+        - $ref: "#/components/parameters/startTime"
+        - $ref: "#/components/parameters/requiredEndTime"
+      responses:
+        "200":
+          $ref: "#/components/responses/boundMetrics"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
   parameters:
     componentIdOrUrn:
-      in: path
       name: componentIdOrUrn
+      in: path
       required: true
       schema:
         $ref: "#/components/schemas/ComponentIdOrUrn"
       description: "The id or identifier (urn) of a component"
+    metricBindingIdentifier:
+      name: metricBindingIdentifier
+      in: query
+      required: true
+      schema:
+        $ref: "#/components/schemas/ComponentIdOrUrn"
+      description: "The identifier (urn) of a metric binding"
     topologyTime:
       name: topologyTime
       in: query
@@ -84,6 +124,14 @@ components:
       schema:
         type: integer
         format: instant
+    requiredEndTime:
+      name: endTime
+      in: query
+      description: "The end time of a time range to query resources."
+      required: true
+      schema:
+        type: integer
+        format: instant
   responses:
     componentHealthHistory:
       description: "Component health history"
@@ -103,6 +151,18 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/FullComponent"
+    boundMetric:
+      description: "Bound metric"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BoundMetric"
+    boundMetrics:
+      description: "Bound metrics"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BoundMetrics"
   schemas:
     ComponentIdOrUrn:
       type: string
@@ -173,17 +233,17 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ComponentAction"
-        metrics:
+        boundMetrics:
           type: array
           items:
             $ref: "#/components/schemas/BoundMetric"
-        traces:
+        boundTraces:
           $ref: "#/components/schemas/BoundTraces"
       required:
         - typeName
         - data
         - actions
-        - metrics
+        - boundMetrics
     ComponentData:
       properties:
         id:
@@ -684,3 +744,11 @@ components:
           $ref: "traces.api.yaml#/components/schemas/SpanFilter"
       required:
         - filter
+    BoundMetrics:
+      properties:
+        boundMetrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/BoundMetric"
+      required:
+        - boundMetrics
