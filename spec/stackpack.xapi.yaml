@@ -158,6 +158,31 @@ paths:
                 type: string
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /stackpack/validate:
+    post:
+      tags:
+        - stackpack
+      summary: "Validate StackPack"
+      operationId: validateStackPack
+      description: "Validate a StackPack without installing it. Returns validation errors if any."
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/StackPackValidateRequest"
+      responses:
+        "204":
+          description: "Validation completed successfully (no errors found)"
+        "400":
+          description: "Validation failed with errors"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StackPackValidationError"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
   parameters:
     stackPackName:
@@ -181,6 +206,28 @@ components:
         stackPack:
           type: string
           format: binary
+
+    StackPackValidateRequest:
+      type: object
+      required:
+        - stackPack
+      properties:
+        stackPack:
+          type: string
+          format: binary
+          description: "The StackPack .sts file to validate"
+        configuration:
+          type: string
+          description: "JSON string containing configuration parameters for validation"
+
+    StackPackValidationError:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: "Human-readable error message"
 
     StackPack:
       type: object
