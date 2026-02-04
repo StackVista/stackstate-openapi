@@ -115,7 +115,8 @@ components:
         iconbase64:
           type: string
         order:
-          type: integer
+          type: number
+          format: double
       required:
         - group
         - order
