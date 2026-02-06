@@ -55,8 +55,8 @@ paths:
     get:
       tags:
         - component
-      summary: "Bind a metric to a component"
-      description: "Bind a metric binding to a component"
+      summary: "Get a bound metric binding to a component"
+      description: "Bind the variables in a metric binding to a component to get valid queries for fetching metric data"
       operationId: getComponentMetricBinding
       parameters:
         - $ref: "#/components/parameters/componentIdOrUrn"
@@ -71,8 +71,8 @@ paths:
     get:
       tags:
         - component
-      summary: "Metrics with data for a component"
-      description: "Metrics that have data for a component"
+      summary: "Bound metric bindings that have data for a component"
+      description: "Bound metric bindings for metrics that have data for a component"
       operationId: getComponentMetricsWithData
       parameters:
         - $ref: "#/components/parameters/componentIdOrUrn"
@@ -284,6 +284,7 @@ components:
         - name
         - tags
         - properties
+        - synced
     ExternalComponent:
       properties:
         externalId:
