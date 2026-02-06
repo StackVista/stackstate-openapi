@@ -94,6 +94,38 @@ paths:
           $ref: "#/components/responses/ComponentPresentationErrorResponse"
 components:
   schemas:
+    PresentationName:
+      type: object
+      properties:
+        singular:
+          type: string
+        plural:
+          type: string
+      required:
+        - singular
+        - plural
+    PresentationOverview:
+      type: object
+      properties:
+        title:
+          type: string
+        mainMenu:
+          $ref: "#/components/schemas/PresentationMainMenu"
+      required:
+        - title
+    PresentationMainMenu:
+      type: object
+      properties:
+        group:
+          type: string
+        iconbase64:
+          type: string
+        order:
+          type: number
+          format: double
+      required:
+        - group
+        - order
     ComponentPresentation:
       type: object
       properties:
@@ -115,8 +147,12 @@ components:
     PresentationDefinition:
       type: object
       properties:
-        icon:
+        iconbase64:
           type: string
+        name:
+          $ref: "#/components/schemas/PresentationName"
+        overview:
+          $ref: "#/components/schemas/PresentationOverview"
     ComponentPresentationApiError:
       type: object
       properties:
