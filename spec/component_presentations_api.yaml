@@ -147,7 +147,7 @@ components:
     PresentationDefinition:
       type: object
       properties:
-        iconbase64:
+        icon:
           type: string
         name:
           $ref: "#/components/schemas/PresentationName"
