@@ -223,7 +223,7 @@ components:
       properties:
         typeName:
           type: string
-        iconbase64:
+        icon:
           type: string
         data:
           $ref: "#/components/schemas/ComponentData"
