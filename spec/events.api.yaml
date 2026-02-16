@@ -434,7 +434,7 @@ components:
           type: array
           items:
             type: string
-        iconbase64:
+        icon:
           type: string
       required:
         - _type

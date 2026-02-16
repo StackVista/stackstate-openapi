@@ -254,7 +254,7 @@ components:
           type: string
         type:
           type: string
-        iconbase64:
+        icon:
           type: string
       required:
         - id
