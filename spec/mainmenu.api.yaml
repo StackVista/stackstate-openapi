@@ -36,7 +36,7 @@ components:
           type: string
         defaultOpen:
           type: boolean
-        iconbase64:
+        icon:
           type: string
         items:
           type: array
@@ -45,7 +45,7 @@ components:
       required:
         - name
         - defaultOpen
-        - iconbase64
+        - icon
         - items
     MainMenuViewItem:
       properties:
@@ -54,7 +54,7 @@ components:
           description: Either a viewIdentifier or a componentPresentationIdentifier
         title:
           type: string
-        iconbase64:
+        icon:
           type: string
       required:
         - identifier
