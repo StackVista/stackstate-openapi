@@ -111,8 +111,16 @@ components:
           type: string
         mainMenu:
           $ref: "#/components/schemas/PresentationMainMenu"
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/OverviewColumnDefinition'
+      description: |
+        Overview presentation definition. The `columns` field defines the columns to show in the overview table. The `flags` field can be used to enable/disable functionalities.
+        If multiple ComponentPresentations match, columns are merged by `columnId` according to binding rank. Absence of the field means no overview is shown.
       required:
         - title
+        - columns
     PresentationMainMenu:
       type: object
       properties:
@@ -160,6 +168,163 @@ components:
           type: string
       required:
         - message
+    OverviewColumnDefinition:
+      type: object
+      properties:
+        columnId:
+          type: string
+        _type:
+          type: string
+          enum: [OverviewColumn]
+        title:
+          type: string
+        display:
+          $ref: '#/components/schemas/OverviewColumnDisplay'
+        options:
+          type: object
+          additionalProperties: true
+      required:
+        - _type
+        - title
+        - display
+    OverviewColumnDisplay:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: '#/components/schemas/MetricChartDisplay'
+        - $ref: '#/components/schemas/ComponentLinkDisplay'
+        - $ref: '#/components/schemas/HealthDisplay'
+        - $ref: '#/components/schemas/TextDisplay'
+        - $ref: '#/components/schemas/NumericDisplay'
+        - $ref: '#/components/schemas/DurationDisplay'
+        - $ref: '#/components/schemas/ReadyStatusDisplay'
+        - $ref: '#/components/schemas/ContainerImageDisplay'
+      description: 'Display type and value for the column.'
+    MetricChartDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [MetricChart]
+#        chartType:
+#          type: string
+#          enum: [TimeSeriesChart, BarChart, StatChart, GaugeChart]
+        decimalPlaces:
+          type: integer
+        unit:
+          type: string
+        query:
+          type: string
+        componentIdentifierTemplate:
+          type: string
+        alias:
+          type: string
+      required:
+        - _type
+        - query
+    ComponentLinkDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [ComponentLink]
+        name:
+          type: string
+          description: 'Cel expression that returns a string that represents the name of the component to link to'
+        componentIdentifier:
+          type: string
+          description: 'Cel expression that returns a string that represents the componentIdentifier in order to build the link'
+      required:
+        - _type
+        - value
+    HealthDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [Health]
+        value:
+          type: string
+          description: 'Cel expression that returns a string that represents a valid HealthState'
+      required:
+        - _type
+        - value
+    TextDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [Text]
+        value:
+          type: string
+          description: 'Cel expression that returns a string'
+      required:
+        - _type
+        - value
+    NumericDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [Numeric]
+        value:
+          type: string
+          description: 'Cel expression that returns a number'
+      required:
+        - _type
+        - value
+    DurationDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [Duration]
+        startDate:
+          type: string
+          description: 'Cel expression that returns a date'
+        endDate:
+          type: string
+          description: 'Cel expression that returns a date'
+      required:
+        - _type
+        - startDate
+    ReadyStatusDisplay:
+      type: object
+      description: 'Helps rendering columns as Ready containers for K8s pods or Completions for K8s jobs'
+      properties:
+        _type:
+          type: string
+          enum: [ReadyStatus]
+        readyNumber:
+          type: string
+          description: 'Cel expression that returns a number'
+        totalNumber:
+          type: string
+          description: 'Cel expression that returns a number'
+        readyStatus:
+          type: string
+          description: 'Cel expression that returns a string that represents a valid HealthState'
+      required:
+        - _type
+        - readyNumber
+        - totalNumber
+    ContainerImageDisplay:
+      type: object
+      description: 'Helps rendering links for docker images'
+      properties:
+        _type:
+          type: string
+          enum: [ContainerImage]
+        imageId:
+          type: string
+          description: 'Cel expression that returns a string'
+        imageName:
+          type: string
+          description: 'Cel expression that returns a string'
+      required:
+        - _type
+        - imageId
+        - imageName
   responses:
     ComponentPresentationNotFound:
       description: "Component Presentation with given identifier not found"
