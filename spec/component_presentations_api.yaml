@@ -118,7 +118,7 @@ components:
       properties:
         group:
           type: string
-        iconbase64:
+        icon:
           type: string
         order:
           type: number
