@@ -95,6 +95,7 @@ components:
         - WebhookNotificationChannel
         - OtelComponentMapping
         - OtelRelationMapping
+        - ComponentPresentation
 
     Setting:
       type: object
@@ -110,6 +111,7 @@ components:
         - $ref: "#/components/schemas/QueryView"
         - $ref: "#/components/schemas/OtelComponentMapping"
         - $ref: "#/components/schemas/OtelRelationMapping"
+        - $ref: "#/components/schemas/ComponentPresentation"
       discriminator:
         propertyName: type
       required:
@@ -721,7 +723,7 @@ components:
         - body
         - arguments
         - type
-    
+
     FunctionBody:
       properties:
         functionType:
@@ -1197,7 +1199,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/OtelTagMapping"
-    
+
     OtelRelationMappingOutput:
       type: object
       properties:
@@ -1234,34 +1236,13 @@ components:
     OtelInputSignal:
       type: string
       description: |-
-        Signals exported by OpenTelemetry, which determine which data models and
-        attribute maps are available for expression evaluation in an OTel topology
-        mapping.
-
-        Each signal enables access to a specific set of fields and attribute maps
-        coming from the corresponding OTel data pipeline level.
-
-        Fields/attributes available per signal:
-
-          • **TRACES**
-          Provides access to:
-            - `resource.attributes`
-            - `scope.name`, `scope.version`, `scope.attributes`
-            - `span.name`, `span.kind`, `span.statusMessage`, `span.statusCode`, `span.attributes`
-
-          • **METRICS**
-          Provides access to:
-            - `resource.attributes`
-            - `scope.name`, `scope.version`, `scope.attributes`
-            - `metric.name`, `metric.description`, `metric.unit`
-            - `datapoint.attributes`
-
-          • **LOGS**
-          Not yet supported.
-
-        For example, if the signal is `METRICS`, expressions may reference:
-        `resource.attributes["service.name"]`, `scope.attributes["env"]`,
-        `metric.name`, or `datapoint.attributes["status"]`.
+        Signals exported by OpenTelemetry, which can be used as an input for an OTel topology mapping.
+        The value of each enum specifies which attributes are in scope for expressions in an OTel topology mapping.
+        Signals and their attribute map names:
+          - `TRACES` - `resourceAttributes`, `scopeAttributes`, `spanAttributes`,
+          - `METRICS` - `resourceAttributes`, `scopeAttributes`, `metricAttributes`
+          - `LOGS` - not yet supported
+        For example, if the value is `METRICS`, then the maps above (for metrics) will be in scope for expressions.
       enum:
         - TRACES
         - METRICS
@@ -1278,8 +1259,8 @@ components:
       description: |-
         An expression that must produce a string. It must be one of these formats:
           - A plain string, for example `"this is a plain string"`
-          - A string containing a CEL expression within curly braces `${}`, for example "a string with a cel expression: `${resource.attributes['service.namespace']}"`
-        A string with only a cel expression is also valid as long as it is within a `${}` section, for example `"${resource.attributes['service.namespace']}"`.
+          - A string containing a CEL expression within curly braces `${}`, for example "a string with a cel expression: `${resourceAttributes['service.namespace']}"`
+        A string with only a cel expression is also valid as long as it is within a `${}` section, for example `"${resourceAttributes['service.namespace']}"`.
       properties:
         expression:
           type: string
@@ -1290,8 +1271,8 @@ components:
       type: object
       description: |-
         An expression that can produce any type. It uses the CEL expression within curly braces `${}` syntax.
-        Variables use it to store any type of value. For example, to store a boolean in a variable named  `inTestNamespace` assign 
-        it the expression `"${resource.attributes['service.namespace'] == 'test'}"`. The variable can now be used directly in the conditions like this: `vars.inTestNamespace`.
+        Variables use it to store any type of value. For example, to store a boolean in a variable named  `inTestNamespace` assign
+        it the expression `"${resourceAttributes['service.namespace'] == 'test'}"`. The variable can now be used directly in the conditions like this: `vars.inTestNamespace`.
       properties:
         expression:
           type: string
@@ -1306,3 +1287,79 @@ components:
           type: string
       required:
         - expression
+
+    ComponentPresentation:
+      allOf:
+        - $ref: "#/components/schemas/SettingBase"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [ComponentPresentation]
+              description: A definition for representing a component
+            identifier:
+              type: string
+            name:
+              type: string
+            binding:
+              $ref: "#/components/schemas/ComponentPresentationQueryBinding"
+            definition:
+              $ref: "#/components/schemas/PresentationDefinition"
+          required:
+            - type
+            - name
+            - identifier
+            - binding
+
+    ComponentPresentationQueryBinding:
+      type: object
+      properties:
+        query:
+          type: string
+      required:
+        - query
+
+    PresentationDefinition:
+      type: object
+      properties:
+        icon:
+          type: string
+        name:
+          $ref: "#/components/schemas/PresentationName"
+        overview:
+          $ref: "#/components/schemas/PresentationOverview"
+
+    PresentationName:
+      type: object
+      properties:
+        singular:
+          type: string
+        plural:
+          type: string
+      required:
+        - singular
+        - plural
+
+    PresentationOverview:
+      type: object
+      properties:
+        title:
+          type: string
+        mainMenu:
+          $ref: "#/components/schemas/PresentationMainMenu"
+      required:
+        - title
+
+    PresentationMainMenu:
+      type: object
+      properties:
+        group:
+          type: string
+        icon:
+          type: string
+        order:
+          type: number
+          format: double
+      required:
+        - group
+        - order
