@@ -1,0 +1,281 @@
+openapi: 3.0.3
+info:
+  title: Overview page api.
+  description: Retrieves an overview based on a viewIdentifier or a componentIdentifier.
+  version: "1.0.0"
+
+paths:
+  /overview/{presentationOrViewUrn}:
+    post:
+      tags:
+        - overview
+      summary: Get overview data for components
+      operationId: getOverview
+      parameters:
+        - $ref: "#/components/parameters/presentationOrViewUrn"
+      responses:
+        '200':
+          description: Overview data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OverviewPageResponse'
+
+components:
+  parameters:
+    presentationOrViewUrn:
+      name: presentationOrViewUrn
+      in: path
+      required: true
+      schema:
+        $ref: "#/components/schemas/PresentationOrViewIdentifier"
+      description: "A Component Presentation or View Identifier"
+  schemas:
+    PresentationOrViewIdentifier:
+      type: string
+      pattern: ^urn.*$
+    OverviewPageResponse:
+      type: object
+      properties:
+        metadata:
+          $ref: "#/components/schemas/OverviewMetadata"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/OverviewRow'
+    OverviewMetadata:
+      type: object
+      required:
+        - columns
+      properties:
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/OverviewColumnMeta'
+    OverviewColumnMeta:
+      type: object
+      required:
+        - columnId
+        - title
+        - display
+      properties:
+        columnId:
+          type: string
+        title:
+          type: string
+        width:
+          type: integer
+          nullable: true
+        display:
+          $ref: '#/components/schemas/OverviewColumnDisplay'
+    OverviewColumnDisplay:
+      oneOf:
+        - $ref: '#/components/schemas/MetricChartMetaDisplay'
+        - $ref: '#/components/schemas/ComponentLinkMetaDisplay'
+        - $ref: '#/components/schemas/HealthMetaDisplay'
+        - $ref: '#/components/schemas/TextMetaDisplay'
+        - $ref: '#/components/schemas/NumericMetaDisplay'
+        - $ref: '#/components/schemas/DurationMetaDisplay'
+        - $ref: '#/components/schemas/ReadyStatusMetaDisplay'
+        - $ref: '#/components/schemas/ContainerImageMetaDisplay'
+      discriminator:
+        propertyName: _type
+    MetricChartMetaDisplay:
+      type: object
+      required:
+        - _type
+        - query
+        - componentIdentifierTemplate
+      properties:
+        _type:
+          type: string
+          enum: [MetricChartMeta]
+        query:
+          type: string
+          description: Global query used to fetch all metric values
+        componentIdentifierTemplate:
+          type: string
+        unit:
+          type: string
+          nullable: true
+        decimalPlaces:
+          type: integer
+          nullable: true
+    ComponentLinkMetaDisplay:
+      type: object
+      required:
+        - type
+      properties:
+        _type:
+          type: string
+          enum: [ComponentLinkMetaDisplay]
+    HealthMetaDisplay:
+      type: object
+      required:
+        - type
+      properties:
+        _type:
+          type: string
+          enum: [HealthMetaDisplay]
+    TextMetaDisplay:
+      type: object
+      required:
+        - type
+      properties:
+        _type:
+          type: string
+          enum: [TextMetaDisplay]
+    NumericMetaDisplay:
+      type: object
+      required:
+        - type
+      properties:
+        _type:
+          type: string
+          enum: [NumericMetaDisplay]
+        unit:
+          type: string
+          nullable: true
+    DurationMetaDisplay:
+      type: object
+      required:
+        - type
+      properties:
+        _type:
+          type: string
+          enum: [DurationMetaDisplay]
+    ReadyStatusMetaDisplay:
+      type: object
+      required:
+        - type
+      properties:
+        _type:
+          type: string
+          enum: [ReadyStatusMetaDisplay]
+    ContainerImageMetaDisplay:
+      type: object
+      required:
+        - type
+      properties:
+        _type:
+          type: string
+          enum: [ContainerImageMetaDisplay]
+    OverviewRow:
+      type: object
+      required:
+        - componentIdentifier
+        - cells
+      properties:
+        componentIdentifier:
+          type: string
+
+        cells:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/CellValue'
+    CellValue:
+      oneOf:
+        - $ref: '#/components/schemas/MetricCell'
+        - $ref: '#/components/schemas/LinkCell'
+        - $ref: '#/components/schemas/HealthCell'
+        - $ref: '#/components/schemas/TextCell'
+        - $ref: '#/components/schemas/NumericCell'
+        - $ref: '#/components/schemas/DurationCell'
+        - $ref: '#/components/schemas/ReadyStatusCell'
+    MetricCell:
+      type: object
+      required:
+        - _type
+        - value
+        - timestamp
+        - individualQuery
+      properties:
+        _type:
+          enum: [MetricCell]
+        value:
+          type: number
+          nullable: true
+          description: Returns the last value of the metric column. When user sorts on a metric column the value would be populated (as we have tu run que query on the BE to have the sorting in place)
+        individualQuery:
+          type: string
+          description: The frontend can use the individual query to refresh the metrics (at interval). Allows to keep the current behaviour of making individual calls for each row.
+        timestamp:
+          type: string
+          format: date-time
+          nullable: true
+    LinkCell:
+      type: object
+      required:
+        - _type
+        - name
+        - url
+        - external
+      properties:
+        _type:
+          enum: [LinkCell]
+        name:
+          type: string
+        url:
+          type: string
+        external:
+          type: boolean
+    HealthCell:
+      type: object
+      required:
+        - _type
+        - state
+      properties:
+        _type:
+          enum: [HealthCell]
+        state:
+          $ref: "common.api.yaml#/components/schemas/HealthStateValue"
+    TextCell:
+      type: object
+      required:
+        - _type
+        - value
+      properties:
+        _type:
+          enum: [TextCell]
+        value:
+          type: string
+    NumericCell:
+      type: object
+      required:
+        - _type
+        - value
+      properties:
+        _type:
+          enum: [NumericCell]
+        value:
+          type: number
+    DurationCell:
+      type: object
+      required:
+        - _type
+        - startDate
+      properties:
+        _type:
+          enum: [DurationCell]
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+          nullable: true
+    ReadyStatusCell:
+      type: object
+      required:
+        - _type
+        - ready
+        - total
+      properties:
+        _type:
+          enum: [DurationCell]
+        ready:
+          type: number
+        total:
+          type: number
+        status:
+          $ref: "common.api.yaml#/components/schemas/HealthStateValue"

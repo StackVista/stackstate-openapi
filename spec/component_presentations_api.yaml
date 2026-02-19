@@ -205,7 +205,7 @@ components:
       properties:
         _type:
           type: string
-          enum: [MetricChart]
+          enum: [MetricChartDisplay]
 #        chartType:
 #          type: string
 #          enum: [TimeSeriesChart, BarChart, StatChart, GaugeChart]
@@ -227,7 +227,7 @@ components:
       properties:
         _type:
           type: string
-          enum: [ComponentLink]
+          enum: [ComponentLinkDisplay]
         name:
           type: string
           description: 'Cel expression that returns a string that represents the name of the component to link to'
@@ -242,7 +242,7 @@ components:
       properties:
         _type:
           type: string
-          enum: [Health]
+          enum: [HealthDisplay]
         value:
           type: string
           description: 'Cel expression that returns a string that represents a valid HealthState'
@@ -254,7 +254,7 @@ components:
       properties:
         _type:
           type: string
-          enum: [Text]
+          enum: [TextDisplay]
         value:
           type: string
           description: 'Cel expression that returns a string'
@@ -266,10 +266,13 @@ components:
       properties:
         _type:
           type: string
-          enum: [Numeric]
+          enum: [NumericDisplay]
         value:
           type: string
           description: 'Cel expression that returns a number'
+        unit:
+          type: string
+          nullable: true
       required:
         - _type
         - value
@@ -278,7 +281,7 @@ components:
       properties:
         _type:
           type: string
-          enum: [Duration]
+          enum: [DurationDisplay]
         startDate:
           type: string
           description: 'Cel expression that returns a date'
@@ -294,7 +297,7 @@ components:
       properties:
         _type:
           type: string
-          enum: [ReadyStatus]
+          enum: [ReadyStatusDisplay]
         readyNumber:
           type: string
           description: 'Cel expression that returns a number'
@@ -314,7 +317,7 @@ components:
       properties:
         _type:
           type: string
-          enum: [ContainerImage]
+          enum: [ContainerImageDisplay]
         imageId:
           type: string
           description: 'Cel expression that returns a string'
