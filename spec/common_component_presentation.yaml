@@ -1,0 +1,137 @@
+info:
+  title: Component Presentation common definitions
+  version: "1.0.0"
+  description: |
+    We declare here the displays as a lot of them can be shared between overview and highlights
+components:
+  schemas:
+    MetricChartPDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [MetricChartDisplay]
+        #        chartType:
+        #          type: string
+        #          enum: [TimeSeriesChart, BarChart, StatChart, GaugeChart]
+        decimalPlaces:
+          type: integer
+        unit:
+          type: string
+        query:
+          type: string
+        componentIdentifierTemplate:
+          type: string
+        alias:
+          type: string
+      required:
+        - _type
+        - query
+        - componentIdentifierTemplate
+    ComponentLinkPDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [ComponentLinkDisplay]
+        name:
+          type: string
+          description: 'Cel expression that returns a string that represents the name of the component to link to'
+        componentIdentifier:
+          type: string
+          description: 'Cel expression that returns a string that represents the componentIdentifier in order to build the link'
+      required:
+        - _type
+        - name
+        - componentIdentifier
+    HealthPDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [HealthDisplay]
+        value:
+          type: string
+          description: 'Cel expression that returns a string that represents a valid HealthState'
+      required:
+        - _type
+        - value
+    TextPDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [TextDisplay]
+        value:
+          type: string
+          description: 'Cel expression that returns a string'
+      required:
+        - _type
+        - value
+    NumericPDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [NumericDisplay]
+        value:
+          type: string
+          description: 'Cel expression that returns a number'
+        unit:
+          type: string
+          nullable: true
+      required:
+        - _type
+        - value
+    DurationPDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [DurationDisplay]
+        startDate:
+          type: string
+          description: 'Cel expression that returns a date'
+        endDate:
+          type: string
+          description: 'Cel expression that returns a date'
+      required:
+        - _type
+        - startDate
+    ReadyStatusPDisplay:
+      type: object
+      description: 'Helps rendering columns as Ready containers for K8s pods or Completions for K8s jobs'
+      properties:
+        _type:
+          type: string
+          enum: [ReadyStatusDisplay]
+        readyNumber:
+          type: string
+          description: 'Cel expression that returns a number'
+        totalNumber:
+          type: string
+          description: 'Cel expression that returns a number'
+        readyStatus:
+          type: string
+          description: 'Cel expression that returns a string that represents a valid HealthState'
+      required:
+        - _type
+        - readyNumber
+        - totalNumber
+    ContainerImagePDisplay:
+      type: object
+      description: 'Helps rendering links for docker images'
+      properties:
+        _type:
+          type: string
+          enum: [ContainerImageDisplay]
+        imageId:
+          type: string
+          description: 'Cel expression that returns a string'
+        imageName:
+          type: string
+          description: 'Cel expression that returns a string'
+      required:
+        - _type
+        - imageId
+        - imageName

@@ -188,145 +188,15 @@ components:
       discriminator:
         propertyName: _type
       oneOf:
-        - $ref: '#/components/schemas/MetricChartDisplay'
-        - $ref: '#/components/schemas/ComponentLinkDisplay'
-        - $ref: '#/components/schemas/HealthDisplay'
-        - $ref: '#/components/schemas/TextDisplay'
-        - $ref: '#/components/schemas/NumericDisplay'
-        - $ref: '#/components/schemas/DurationDisplay'
-        - $ref: '#/components/schemas/ReadyStatusDisplay'
-        - $ref: '#/components/schemas/ContainerImageDisplay'
+        - $ref: 'common_component_presentation.yaml#/components/schemas/MetricChartPDisplay'
+        - $ref: 'common_component_presentation.yaml#/components/schemas/ComponentLinkPDisplay'
+        - $ref: 'common_component_presentation.yaml#/components/schemas/HealthPDisplay'
+        - $ref: 'common_component_presentation.yaml#/components/schemas/TextPDisplay'
+        - $ref: 'common_component_presentation.yaml#/components/schemas/NumericPDisplay'
+        - $ref: 'common_component_presentation.yaml#/components/schemas/DurationPDisplay'
+        - $ref: 'common_component_presentation.yaml#/components/schemas/ReadyStatusPDisplay'
+        - $ref: 'common_component_presentation.yaml#/components/schemas/ContainerImagePDisplay'
       description: 'Display type and value for the column.'
-    MetricChartDisplay:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum: [MetricChartDisplay]
-#        chartType:
-#          type: string
-#          enum: [TimeSeriesChart, BarChart, StatChart, GaugeChart]
-        decimalPlaces:
-          type: integer
-        unit:
-          type: string
-        query:
-          type: string
-        componentIdentifierTemplate:
-          type: string
-        alias:
-          type: string
-      required:
-        - _type
-        - query
-        - componentIdentifierTemplate
-    ComponentLinkDisplay:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum: [ComponentLinkDisplay]
-        name:
-          type: string
-          description: 'Cel expression that returns a string that represents the name of the component to link to'
-        componentIdentifier:
-          type: string
-          description: 'Cel expression that returns a string that represents the componentIdentifier in order to build the link'
-      required:
-        - _type
-        - name
-        - componentIdentifier
-    HealthDisplay:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum: [HealthDisplay]
-        value:
-          type: string
-          description: 'Cel expression that returns a string that represents a valid HealthState'
-      required:
-        - _type
-        - value
-    TextDisplay:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum: [TextDisplay]
-        value:
-          type: string
-          description: 'Cel expression that returns a string'
-      required:
-        - _type
-        - value
-    NumericDisplay:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum: [NumericDisplay]
-        value:
-          type: string
-          description: 'Cel expression that returns a number'
-        unit:
-          type: string
-          nullable: true
-      required:
-        - _type
-        - value
-    DurationDisplay:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum: [DurationDisplay]
-        startDate:
-          type: string
-          description: 'Cel expression that returns a date'
-        endDate:
-          type: string
-          description: 'Cel expression that returns a date'
-      required:
-        - _type
-        - startDate
-    ReadyStatusDisplay:
-      type: object
-      description: 'Helps rendering columns as Ready containers for K8s pods or Completions for K8s jobs'
-      properties:
-        _type:
-          type: string
-          enum: [ReadyStatusDisplay]
-        readyNumber:
-          type: string
-          description: 'Cel expression that returns a number'
-        totalNumber:
-          type: string
-          description: 'Cel expression that returns a number'
-        readyStatus:
-          type: string
-          description: 'Cel expression that returns a string that represents a valid HealthState'
-      required:
-        - _type
-        - readyNumber
-        - totalNumber
-    ContainerImageDisplay:
-      type: object
-      description: 'Helps rendering links for docker images'
-      properties:
-        _type:
-          type: string
-          enum: [ContainerImageDisplay]
-        imageId:
-          type: string
-          description: 'Cel expression that returns a string'
-        imageName:
-          type: string
-          description: 'Cel expression that returns a string'
-      required:
-        - _type
-        - imageId
-        - imageName
   responses:
     ComponentPresentationNotFound:
       description: "Component Presentation with given identifier not found"
