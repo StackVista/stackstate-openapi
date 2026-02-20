@@ -43,6 +43,10 @@ components:
         sessionId:
           type: string
           description: "Unique identifier for the overview session"
+        topologyTime:
+          type: integer
+          format: instant
+          description: "A timestamp at which resources will be queried. If not given the resources are queried at current time."
         filters:
           $ref: '#/components/schemas/OverviewFilters'
         pagination:
@@ -347,8 +351,19 @@ components:
     PaginationResponse:
       type: object
       properties:
+        total:
+          type: integer
+          description: |
+            Total number of items matching the ComponentPresentation
+            before applying column filters or search.
+        filtered:
+          type: integer
+          nullable: true
+          description: |
+            Total number of items after filters/search are applied,
+            but before pagination.
         nextCursor:
           type: string
           nullable: true
-        hasMore:
-          type: boolean
+      required:
+        - total
