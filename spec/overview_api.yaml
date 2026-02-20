@@ -13,6 +13,12 @@ paths:
       operationId: getOverview
       parameters:
         - $ref: "#/components/parameters/presentationOrViewUrn"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OverviewRequest'
       responses:
         '200':
           description: Overview data
@@ -29,8 +35,60 @@ components:
       required: true
       schema:
         $ref: "#/components/schemas/PresentationOrViewIdentifier"
-      description: "A Component Presentation or View Identifier"
+      description: "A Component Presentation Identifier, legacy View URNs are be supported for backward compatibility"
   schemas:
+    OverviewRequest:
+      type: object
+      properties:
+        sessionId:
+          type: string
+          description: "Unique identifier for the overview session"
+        filters:
+          $ref: '#/components/schemas/OverviewFilters'
+        pagination:
+          $ref: '#/components/schemas/OverviewPaginationRequest'
+        sorting:
+          $ref: '#/components/schemas/OverviewSortingRequest'
+      required:
+        - sessionId
+    OverviewFilters:
+      type: object
+      properties:
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/OverviewFilter'
+          description: Column filters and search
+        search:
+          type: string
+          description: Optional search string
+    OverviewFilter:
+      type: object
+      properties:
+        columnId:
+          type: string
+        search:
+          type: string
+    OverviewPaginationRequest:
+      type: object
+      properties:
+        cursor:
+          type: string
+          nullable: true
+          description: Opaque cursor returned from previous request
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 500
+          default: 50
+    OverviewSortingRequest:
+      type: object
+      properties:
+        columnId:
+          type: string
+        direction:
+          type: string
+          enum: [asc, desc]
     PresentationOrViewIdentifier:
       type: string
       pattern: ^urn.*$
@@ -43,6 +101,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OverviewRow'
+        pagination:
+          $ref: '#/components/schemas/PaginationResponse'
     OverviewMetadata:
       type: object
       required:
@@ -58,16 +118,19 @@ components:
         - columnId
         - title
         - display
+        - sortable
+        - searchable
       properties:
         columnId:
           type: string
         title:
           type: string
-        width:
-          type: integer
-          nullable: true
         display:
           $ref: '#/components/schemas/OverviewColumnDisplay'
+        sortable:
+          type: boolean
+        searchable:
+          type: boolean
     OverviewColumnDisplay:
       oneOf:
         - $ref: '#/components/schemas/MetricChartMetaDisplay'
@@ -279,3 +342,11 @@ components:
           type: number
         status:
           $ref: "common.api.yaml#/components/schemas/HealthStateValue"
+    PaginationResponse:
+      type: object
+      properties:
+        nextCursor:
+          type: string
+          nullable: true
+        hasMore:
+          type: boolean

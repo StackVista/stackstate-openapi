@@ -180,9 +180,6 @@ components:
           type: string
         display:
           $ref: '#/components/schemas/OverviewColumnDisplay'
-        options:
-          type: object
-          additionalProperties: true
       required:
         - _type
         - title
@@ -222,6 +219,7 @@ components:
       required:
         - _type
         - query
+        - componentIdentifierTemplate
     ComponentLinkDisplay:
       type: object
       properties:
@@ -236,7 +234,8 @@ components:
           description: 'Cel expression that returns a string that represents the componentIdentifier in order to build the link'
       required:
         - _type
-        - value
+        - name
+        - componentIdentifier
     HealthDisplay:
       type: object
       properties:
