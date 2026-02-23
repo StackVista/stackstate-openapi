@@ -255,23 +255,13 @@ components:
       type: object
       required:
         - _type
-        - value
-        - timestamp
         - individualQuery
       properties:
         _type:
           enum: [MetricCell]
-        value:
-          type: number
-          nullable: true
-          description: Returns the last value of the metric column. When user sorts on a metric column the value would be populated (as we have tu run que query on the BE to have the sorting in place)
         individualQuery:
           type: string
           description: The frontend can use the individual query to refresh the metrics (at interval). Allows to keep the current behaviour of making individual calls for each row.
-        timestamp:
-          type: string
-          format: date-time
-          nullable: true
     LinkCell:
       type: object
       required:

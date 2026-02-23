@@ -14,6 +14,8 @@ components:
         #        chartType:
         #          type: string
         #          enum: [TimeSeriesChart, BarChart, StatChart, GaugeChart]
+        showChart:
+          type: boolean
         decimalPlaces:
           type: integer
         unit:
@@ -56,6 +58,8 @@ components:
       required:
         - _type
         - value
+## Using TextPDisplay as that's the name the generator will be to the classes in the BE, but leaving the enum as enum: [TextDisplay]
+## this is desirable for the StackPack author as they could address as `TextDisplay` 2 representations structurally very similar (overview, highlights)
     TextPDisplay:
       type: object
       properties:
