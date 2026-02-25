@@ -113,6 +113,7 @@ components:
         - $ref: "#/components/schemas/OtelRelationMapping"
         - $ref: "#/components/schemas/ComponentPresentation"
         - $ref: "#/components/schemas/ComponentType"
+        - $ref: "#/components/schemas/RelationType"
         - $ref: "#/components/schemas/Layer"
         - $ref: "#/components/schemas/Domain"
       discriminator:
@@ -1768,6 +1769,33 @@ components:
       required:
         - name
         - bindings
+
+    RelationType:
+      allOf:
+        - $ref: "#/components/schemas/SettingBase"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [RelationType]
+              description: The type of a relation
+            identifier:
+              type: string
+            name:
+              type: string
+            dependencyType:
+              $ref: "#/components/schemas/DependencyType"
+          required:
+            - type
+            - name
+            - dependencyType
+
+    DependencyType:
+      enum:
+        - UNCLASSIFIED
+        - HIERARCHICAL
+        - CONNECTION
+      type: string
 
     Layer:
       allOf:
