@@ -130,12 +130,12 @@ components:
         title:
           type: string
         display:
-          $ref: '#/components/schemas/OverviewColumnDisplay'
+          $ref: '#/components/schemas/OverviewColumnMetaDisplay'
         sortable:
           type: boolean
         searchable:
           type: boolean
-    OverviewColumnDisplay:
+    OverviewColumnMetaDisplay:
       oneOf:
         - $ref: '#/components/schemas/MetricChartMetaDisplay'
         - $ref: '#/components/schemas/ComponentLinkMetaDisplay'
@@ -151,22 +151,18 @@ components:
       type: object
       required:
         - _type
-        - query
-        - componentIdentifierTemplate
       properties:
         _type:
           type: string
           enum: [MetricChartMeta]
-        query:
-          type: string
-          description: Global query used to fetch all metric values
-        componentIdentifierTemplate:
-          type: string
         unit:
           type: string
           nullable: true
         decimalPlaces:
           type: integer
+          nullable: true
+        showChart:
+          type: boolean
           nullable: true
     ComponentLinkMetaDisplay:
       type: object

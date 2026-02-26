@@ -5,12 +5,12 @@ info:
     We declare here the displays as a lot of them can be shared between overview and highlights
 components:
   schemas:
-    MetricChartPDisplay:
+    MetricChartPresentationDisplay:
       type: object
       properties:
         _type:
           type: string
-          enum: [MetricChartDisplay]
+          enum: [MetricChartPresentationDisplay]
         #        chartType:
         #          type: string
         #          enum: [TimeSeriesChart, BarChart, StatChart, GaugeChart]
@@ -22,20 +22,19 @@ components:
           type: string
         query:
           type: string
+          description: "Individual metric query that returns a timeseries for a specific cell."
         componentIdentifierTemplate:
-          type: string
-        alias:
           type: string
       required:
         - _type
         - query
         - componentIdentifierTemplate
-    ComponentLinkPDisplay:
+    ComponentLinkPresentationDisplay:
       type: object
       properties:
         _type:
           type: string
-          enum: [ComponentLinkDisplay]
+          enum: [ComponentLinkPresentationDisplay]
         name:
           type: string
           description: 'Cel expression that returns a string that represents the name of the component to link to'
@@ -46,12 +45,12 @@ components:
         - _type
         - name
         - componentIdentifier
-    HealthPDisplay:
+    HealthPresentationDisplay:
       type: object
       properties:
         _type:
           type: string
-          enum: [HealthDisplay]
+          enum: [HealthPresentationDisplay]
         value:
           type: string
           description: 'Cel expression that returns a string that represents a valid HealthState'
@@ -60,39 +59,41 @@ components:
         - value
 ## Using TextPDisplay as that's the name the generator will be to the classes in the BE, but leaving the enum as enum: [TextDisplay]
 ## this is desirable for the StackPack author as they could address as `TextDisplay` 2 representations structurally very similar (overview, highlights)
-    TextPDisplay:
+    TextPresentationDisplay:
       type: object
       properties:
         _type:
           type: string
-          enum: [TextDisplay]
+          enum: [TextPresentationDisplay]
         value:
           type: string
           description: 'Cel expression that returns a string'
       required:
         - _type
         - value
-    NumericPDisplay:
+    NumericPresentationDisplay:
       type: object
       properties:
         _type:
           type: string
-          enum: [NumericDisplay]
+          enum: [NumericPresentationDisplay]
         value:
           type: string
           description: 'Cel expression that returns a number'
         unit:
           type: string
           nullable: true
+        decimalPlaces:
+          type: integer
       required:
         - _type
         - value
-    DurationPDisplay:
+    DurationPresentationDisplay:
       type: object
       properties:
         _type:
           type: string
-          enum: [DurationDisplay]
+          enum: [DurationPresentationDisplay]
         startDate:
           type: string
           description: 'Cel expression that returns a date'
@@ -102,13 +103,13 @@ components:
       required:
         - _type
         - startDate
-    ReadyStatusPDisplay:
+    ReadyStatusPresentationDisplay:
       type: object
       description: 'Helps rendering columns as Ready containers for K8s pods or Completions for K8s jobs'
       properties:
         _type:
           type: string
-          enum: [ReadyStatusDisplay]
+          enum: [ReadyStatusPresentationDisplay]
         readyNumber:
           type: string
           description: 'Cel expression that returns a number'
@@ -122,13 +123,13 @@ components:
         - _type
         - readyNumber
         - totalNumber
-    ContainerImagePDisplay:
+    ContainerImagePresentationDisplay:
       type: object
       description: 'Helps rendering links for docker images'
       properties:
         _type:
           type: string
-          enum: [ContainerImageDisplay]
+          enum: [ContainerImagePresentationDisplay]
         imageId:
           type: string
           description: 'Cel expression that returns a string'
