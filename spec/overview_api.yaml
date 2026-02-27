@@ -107,6 +107,10 @@ components:
             $ref: '#/components/schemas/OverviewRow'
         pagination:
           $ref: '#/components/schemas/PaginationResponse'
+      required:
+        - metadata
+        - data
+        - pagination
     OverviewMetadata:
       type: object
       required:
@@ -124,6 +128,7 @@ components:
         - display
         - sortable
         - searchable
+        - order
       properties:
         columnId:
           type: string
@@ -135,6 +140,8 @@ components:
           type: boolean
         searchable:
           type: boolean
+        order:
+          type: integer
     OverviewColumnMetaDisplay:
       oneOf:
         - $ref: '#/components/schemas/MetricChartMetaDisplay'
@@ -231,7 +238,6 @@ components:
       properties:
         componentIdentifier:
           type: string
-
         cells:
           type: object
           additionalProperties:
