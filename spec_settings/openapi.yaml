@@ -1575,7 +1575,7 @@ components:
         - $ref: "#/components/schemas/DurationDisplay"
         - $ref: "#/components/schemas/HealthBadgeDisplay"
         - $ref: "#/components/schemas/HealthCircleDisplay"
-        - $ref: "#/components/schemas/PromQLDisplay"
+        - $ref: "#/components/schemas/PromqlDisplay"
         - $ref: "#/components/schemas/RatioDisplay"
         - $ref: "#/components/schemas/ReadyStatusDisplay"
         - $ref: "#/components/schemas/TagDisplay"
@@ -1615,12 +1615,12 @@ components:
             - HealthCircleDisplay
       required:
         - _type
-    PromQLDisplay:
+    PromqlDisplay:
       properties:
         _type:
           type: string
           enum:
-            - PromQLDisplay
+            - PromqlDisplay
       required:
         - _type
     RatioDisplay:
