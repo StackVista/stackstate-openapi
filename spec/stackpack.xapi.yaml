@@ -56,6 +56,35 @@ paths:
                   type: string
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /stackpack/validate:
+    post:
+      tags:
+        - stackpack
+      summary: "Validate API"
+      operationId: stackPackValidate
+      description: "Validate a stackpack's setting declarations"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/StackPackUpload"
+      responses:
+        "200":
+          description: "validation successful"
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /stackpack/{stackPackName}/provision:
     post:
       tags:
@@ -173,6 +202,13 @@ components:
       schema:
         type: integer
         format: int64
+    stackPackVersion:
+      in: query
+      name: version
+      required: false
+      schema:
+        type: string
+      description: "Optional version string (e.g. '1.2.3'). If not provided, validates the latest version."
 
   schemas:
     StackPackUpload:
@@ -427,3 +463,4 @@ components:
         lastUpdateTimestamp:
           type: integer
           format: int64
+

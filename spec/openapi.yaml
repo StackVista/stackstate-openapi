@@ -31,6 +31,7 @@ paths:
   /node/{nodeType}/{nodeId}/islocked: { $ref: "node.xapi.yaml#/paths/%2Fnode%2F%7BnodeType%7D%2F%7BnodeId%7D%2Fislocked" }
   /node/{nodeType}/{nodeId}/unlock: { $ref: "node.xapi.yaml#/paths/%2Fnode%2F%7BnodeType%7D%2F%7BnodeId%7D%2Funlock" }
   /stackpack: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack" }
+  /stackpack/validate: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack%2Fvalidate" }
   /stackpack/{stackPackName}/provision: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack%2F%7BstackPackName%7D%2Fprovision" }
   /stackpack/{stackPackName}/deprovision/{stackPackInstanceId}: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack%2F%7BstackPackName%7D%2Fdeprovision%2F%7BstackPackInstanceId%7D" }
   /stackpack/{stackPackName}/upgrade: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack%2F%7BstackPackName%7D%2Fupgrade" }
