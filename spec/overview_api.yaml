@@ -52,27 +52,29 @@ components:
         pagination:
           $ref: '#/components/schemas/OverviewPaginationRequest'
         sorting:
-          $ref: '#/components/schemas/OverviewSortingRequest'
+          type: array
+          items:
+            $ref: '#/components/schemas/OverviewSortingRequest'
       required:
         - sessionId
     OverviewFilters:
       type: object
       properties:
-        filters:
-          type: array
-          items:
-            $ref: '#/components/schemas/OverviewFilter'
-          description: Column filters and search
-        search:
-          type: string
-          description: Optional search string
-    OverviewFilter:
+        columnFilters:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/OverviewColumnFilter'
+          description: Map of columnId to filter
+    OverviewColumnFilter:
       type: object
       properties:
         columnId:
           type: string
         search:
           type: string
+      required:
+        - columnId
+        - search
     OverviewPaginationRequest:
       type: object
       properties:
@@ -91,8 +93,15 @@ components:
         columnId:
           type: string
         direction:
-          type: string
-          enum: [asc, desc]
+          $ref: '#/components/schemas/OverviewSortingDirection'
+      required:
+        - columnId
+        - direction
+    OverviewSortingDirection:
+      type: string
+      enum:
+        - Ascending
+        - Descending
     PresentationOrViewIdentifier:
       type: string
       pattern: ^urn.*$
@@ -359,3 +368,4 @@ components:
           nullable: true
       required:
         - total
+
