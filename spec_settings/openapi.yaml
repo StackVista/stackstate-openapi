@@ -1305,6 +1305,8 @@ components:
               type: string
             name:
               type: string
+            description:
+              type: string
             binding:
               $ref: "#/components/schemas/ComponentPresentationQueryBinding"
             definition:
@@ -1381,6 +1383,8 @@ components:
             identifier:
               type: string
             name:
+              type: string
+            description:
               type: string
             iconbase64:
               type: string
@@ -1731,6 +1735,8 @@ components:
               type: string
             name:
               type: string
+            description:
+              type: string
             dependencyType:
               $ref: "#/components/schemas/DependencyType"
           required:
@@ -1757,6 +1763,8 @@ components:
               type: string
             name:
               type: string
+            description:
+              type: string
             order:
               type: number
               format: double
@@ -1776,6 +1784,8 @@ components:
             identifier:
               type: string
             name:
+              type: string
+            description:
               type: string
             order:
               type: number
