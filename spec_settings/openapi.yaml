@@ -1391,7 +1391,6 @@ components:
             - name
 
     ComponentTypeHighlights:
-      type: object
       properties:
         namePlural:
           type: string
@@ -1416,7 +1415,7 @@ components:
         metrics:
           type: array
           items:
-            $ref: "#/components/schemas/ComponentTypeMetricCategory"
+            $ref: "#/components/schemas/ComponentHighlightMetrics"
       required:
         - namePlural
         - fields
@@ -1427,9 +1426,15 @@ components:
         - externalComponent
         - relatedResources
         - metrics
-
+    ComponentTypeAbout:
+      properties:
+        fields:
+          type: array
+          items:
+            type: string
+      required:
+        - fields
     ComponentTypeField:
-      type: object
       properties:
         fieldId:
           type: string
@@ -1444,9 +1449,7 @@ components:
         - label
         - valueExtractor
         - display
-
     ComponentTypeLabel:
-      type: object
       properties:
         title:
           type: string
@@ -1454,264 +1457,215 @@ components:
           type: string
       required:
         - title
-
     ComponentTypeValueExtractor:
-      type: object
-      properties:
-        type:
-          type: string
+      discriminator:
+        propertyName: _type
       oneOf:
-        - $ref: "#/components/schemas/NameSource"
         - $ref: "#/components/schemas/ComponentTypeSource"
-        - $ref: "#/components/schemas/TagSource"
-        - $ref: "#/components/schemas/TagsSource"
-        - $ref: "#/components/schemas/HealthSource"
-        - $ref: "#/components/schemas/LastUpdatedTimestampSource"
-        - $ref: "#/components/schemas/IdentifiersSource"
-        - $ref: "#/components/schemas/PropertySource"
         - $ref: "#/components/schemas/CompositeSource"
         - $ref: "#/components/schemas/ConstantSource"
-      discriminator:
-        propertyName: type
-      required:
-        - type
-
-    NameSource:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeValueExtractor"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [NameSource]
-
+        - $ref: "#/components/schemas/HealthSource"
+        - $ref: "#/components/schemas/IdentifiersSource"
+        - $ref: "#/components/schemas/LastUpdatedTimestampSource"
+        - $ref: "#/components/schemas/NameSource"
+        - $ref: "#/components/schemas/PropertySource"
+        - $ref: "#/components/schemas/TagSource"
+        - $ref: "#/components/schemas/TagsSource"
     ComponentTypeSource:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeValueExtractor"
-        - type: object
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [ComponentTypeSource]
-
-    TagSource:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeValueExtractor"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [TagSource]
-            tagName:
-              type: string
-          required:
-            - tagName
-
-    TagsSource:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeValueExtractor"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [TagsSource]
-
-    HealthSource:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeValueExtractor"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [HealthSource]
-
-    LastUpdatedTimestampSource:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeValueExtractor"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [LastUpdatedTimestampSource]
-
-    IdentifiersSource:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeValueExtractor"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [IdentifiersSource]
-
-    PropertySource:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeValueExtractor"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [PropertySource]
-            key:
-              type: string
-            defaultValue:
-              type: string
-          required:
-            - key
-
-    CompositeSource:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeValueExtractor"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [CompositeSource]
-            sources:
-              type: object
-              additionalProperties:
-                $ref: "#/components/schemas/ComponentTypeValueExtractor"
-          required:
-            - sources
-
-    ConstantSource:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeValueExtractor"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [ConstantSource]
-            value:
-              type: string
-          required:
-            - value
-
-    ComponentTypeFieldDisplay:
-      type: object
       properties:
-        type:
+        _type:
           type: string
+          enum:
+            - ComponentTypeSource
+      required:
+        - _type
+    CompositeSource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - CompositeSource
+        sources:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/ComponentTypeValueExtractor"
+      required:
+        - _type
+        - sources
+    ConstantSource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - ConstantSource
+        value:
+          type: string
+      required:
+        - _type
+        - value
+    HealthSource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - HealthSource
+      required:
+        - _type
+    IdentifiersSource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - IdentifiersSource
+      required:
+        - _type
+    LastUpdatedTimestampSource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - LastUpdatedTimestampSource
+      required:
+        - _type
+    NameSource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - NameSource
+      required:
+        - _type
+    PropertySource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - PropertySource
+        key:
+          type: string
+        defaultValue:
+          type: string
+      required:
+        - _type
+        - key
+    TagSource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - TagSource
+        tagName:
+          type: string
+      required:
+        - _type
+        - tagName
+    TagsSource:
+      properties:
+        _type:
+          type: string
+          enum:
+            - TagsSource
+      required:
+        - _type
+    ComponentTypeFieldDisplay:
+      discriminator:
+        propertyName: _type
       oneOf:
-        - $ref: "#/components/schemas/TextDisplay"
-        - $ref: "#/components/schemas/TagDisplay"
+        - $ref: "#/components/schemas/ComponentLinkDisplay"
+        - $ref: "#/components/schemas/DurationDisplay"
         - $ref: "#/components/schemas/HealthBadgeDisplay"
         - $ref: "#/components/schemas/HealthCircleDisplay"
-        - $ref: "#/components/schemas/ViewTimeLink"
-        - $ref: "#/components/schemas/DurationDisplay"
-        - $ref: "#/components/schemas/ReadyStatusDisplay"
-        - $ref: "#/components/schemas/ComponentLinkDisplay"
+        - $ref: "#/components/schemas/PromQLDisplay"
         - $ref: "#/components/schemas/RatioDisplay"
-        - $ref: "#/components/schemas/PromqlDisplay"
-      discriminator:
-        propertyName: type
+        - $ref: "#/components/schemas/ReadyStatusDisplay"
+        - $ref: "#/components/schemas/TagDisplay"
+        - $ref: "#/components/schemas/TextDisplay"
+        - $ref: "#/components/schemas/ViewTimeLink"
       required:
-        - type
-
-    TextDisplay:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeFieldDisplay"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [TextDisplay]
-
-    TagDisplay:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeFieldDisplay"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [TagDisplay]
-            singular:
-              type: string
-
-    HealthBadgeDisplay:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeFieldDisplay"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [HealthBadgeDisplay]
-
-    HealthCircleDisplay:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeFieldDisplay"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [HealthCircleDisplay]
-
-    ViewTimeLink:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeFieldDisplay"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [ViewTimeLink]
-
-    DurationDisplay:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeFieldDisplay"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [DurationDisplay]
-
-    ReadyStatusDisplay:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeFieldDisplay"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [ReadyStatusDisplay]
-
+        - _type
     ComponentLinkDisplay:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeFieldDisplay"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [ComponentLinkDisplay]
-
-    RatioDisplay:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeFieldDisplay"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [RatioDisplay]
-
-    PromqlDisplay:
-      allOf:
-        - $ref: "#/components/schemas/ComponentTypeFieldDisplay"
-        - type: object
-          properties:
-            type:
-              type: string
-              enum: [PromqlDisplay]
-
-    ComponentTypeAbout:
-      type: object
       properties:
-        fields:
-          type: array
-          items:
-            type: string
+        _type:
+          type: string
+          enum:
+            - ComponentLinkDisplay
       required:
-        - fields
-
+        - _type
+    DurationDisplay:
+      properties:
+        _type:
+          type: string
+          enum:
+            - DurationDisplay
+      required:
+        - _type
+    HealthBadgeDisplay:
+      properties:
+        _type:
+          type: string
+          enum:
+            - HealthBadgeDisplay
+      required:
+        - _type
+    HealthCircleDisplay:
+      properties:
+        _type:
+          type: string
+          enum:
+            - HealthCircleDisplay
+      required:
+        - _type
+    PromQLDisplay:
+      properties:
+        _type:
+          type: string
+          enum:
+            - PromQLDisplay
+      required:
+        - _type
+    RatioDisplay:
+      properties:
+        _type:
+          type: string
+          enum:
+            - RatioDisplay
+      required:
+        - _type
+    ReadyStatusDisplay:
+      properties:
+        _type:
+          type: string
+          enum:
+            - RatioDisplay
+      required:
+        - _type
+    TagDisplay:
+      properties:
+        _type:
+          type: string
+          enum:
+            - TagDisplay
+        singular:
+          type: string
+      required:
+        - _type
+    TextDisplay:
+      properties:
+        _type:
+          type: string
+          enum:
+            - TextDisplay
+      required:
+        - _type
+    ViewTimeLink:
+      properties:
+        _type:
+          type: string
+          enum:
+            - ViewTimeLink
+      required:
+        - _type
     ComponentTypeEvents:
-      type: object
       properties:
         showEvents:
           type: boolean
@@ -1719,9 +1673,7 @@ components:
           type: string
       required:
         - showEvents
-
     ComponentTypeExternalComponent:
-      type: object
       properties:
         showConfiguration:
           type: boolean
@@ -1733,9 +1685,7 @@ components:
         - showConfiguration
         - showStatus
         - externalIdSelector
-
     ComponentTypeRelatedResources:
-      type: object
       properties:
         resourceType:
           type: string
@@ -1751,9 +1701,7 @@ components:
         - resourceType
         - title
         - stql
-
-    ComponentTypeMetricCategory:
-      type: object
+    ComponentHighlightMetrics:
       properties:
         name:
           type: string
@@ -1765,10 +1713,10 @@ components:
             type: string
         defaultExpanded:
           type: boolean
-          default: true
       required:
         - name
         - bindings
+        - defaultExpanded
 
     RelationType:
       allOf:
