@@ -111,8 +111,16 @@ components:
           type: string
         mainMenu:
           $ref: "#/components/schemas/PresentationMainMenu"
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/OverviewColumnDefinition'
+      description: |
+        Overview presentation definition. The `columns` field defines the columns to show in the overview table. The `flags` field can be used to enable/disable functionalities.
+        If multiple ComponentPresentations match, columns are merged by `columnId` according to binding rank. Absence of the field means no overview is shown.
       required:
         - title
+        - columns
     PresentationMainMenu:
       type: object
       properties:
@@ -135,15 +143,32 @@ components:
           type: string
         description:
           type: string
+        binding:
+          $ref: "#/components/schemas/ComponentPresentationQueryBinding"
+        rank:
+          type: object
+          properties:
+            specificity:
+              type: number
+              format: double
+              description: 'Determines how much of a "specialization" this presentation is. Higher number means more specific. This is used to determine which presentation to use when multiple presentations match.'
+          required:
+            - specificity
         presentation:
           $ref: "#/components/schemas/PresentationDefinition"
-        expireAfterMs:
-          type: integer
-          format: int64
       required:
         - identifier
         - name
+        - binding
         - presentation
+    ComponentPresentationQueryBinding:
+      type: object
+      properties:
+        query:
+          type: string
+          description: 'Stq query that defines to which components does the presentation applies to.'
+      required:
+        - query
     PresentationDefinition:
       type: object
       properties:
@@ -160,6 +185,29 @@ components:
           type: string
       required:
         - message
+    OverviewColumnDefinition:
+      type: object
+      properties:
+        columnId:
+          type: string
+        title:
+          type: string
+      required:
+        - columnId
+      description: 'Definition of a column in the overview presentation. The `columnId` field is used to identify the column and merge columns from different presentations. If only the `columnId` is provided, the column will be rendered from the next more specific presentation definition.'
+    OverviewColumnDisplay:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: 'common_component_presentation.yaml#/components/schemas/MetricChartPresentationDisplay'
+        - $ref: 'common_component_presentation.yaml#/components/schemas/ComponentLinkPresentationDisplay'
+        - $ref: 'common_component_presentation.yaml#/components/schemas/HealthPresentationDisplay'
+        - $ref: 'common_component_presentation.yaml#/components/schemas/TextPresentationDisplay'
+        - $ref: 'common_component_presentation.yaml#/components/schemas/NumericPresentationDisplay'
+        - $ref: 'common_component_presentation.yaml#/components/schemas/DurationPresentationDisplay'
+        - $ref: 'common_component_presentation.yaml#/components/schemas/ReadyStatusPresentationDisplay'
+        - $ref: 'common_component_presentation.yaml#/components/schemas/ContainerImagePresentationDisplay'
+      description: 'Display type and value for the column.'
   responses:
     ComponentPresentationNotFound:
       description: "Component Presentation with given identifier not found"
