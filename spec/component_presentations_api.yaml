@@ -146,14 +146,7 @@ components:
         binding:
           $ref: "#/components/schemas/ComponentPresentationQueryBinding"
         rank:
-          type: object
-          properties:
-            specificity:
-              type: number
-              format: double
-              description: 'Determines how much of a "specialization" this presentation is. Higher number means more specific. This is used to determine which presentation to use when multiple presentations match.'
-          required:
-            - specificity
+          $ref: "#/components/schemas/ComponentPresentationRank"
         presentation:
           $ref: "#/components/schemas/PresentationDefinition"
       required:
@@ -169,6 +162,15 @@ components:
           description: 'Stq query that defines to which components does the presentation applies to.'
       required:
         - query
+    ComponentPresentationRank:
+      type: object
+      properties:
+        specificity:
+          type: number
+          format: double
+          description: 'Determines how much of a "specialization" this presentation is. Higher number means more specific. This is used to determine which presentation to use when multiple presentations match.'
+      required:
+        - specificity
     PresentationDefinition:
       type: object
       properties:

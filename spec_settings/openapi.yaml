@@ -1332,6 +1332,8 @@ components:
               type: string
             binding:
               $ref: "#/components/schemas/ComponentPresentationQueryBinding"
+            rank:
+              $ref: "#/components/schemas/ComponentPresentationRank"
             definition:
               $ref: "#/components/schemas/PresentationDefinition"
           required:
@@ -1348,6 +1350,16 @@ components:
           type: string
       required:
         - query
+
+    ComponentPresentationRank:
+      type: object
+      properties:
+        specificity:
+          type: number
+          format: double
+          description: 'Determines how much of a "specialization" this presentation is. Higher number means more specific. This is used to determine which presentation to use when multiple presentations match.'
+      required:
+        - specificity
 
     PresentationDefinition:
       type: object
