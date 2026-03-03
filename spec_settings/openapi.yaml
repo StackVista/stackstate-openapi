@@ -117,6 +117,7 @@ components:
         - $ref: "#/components/schemas/Layer"
         - $ref: "#/components/schemas/Domain"
         - $ref: "#/components/schemas/MainMenuGroup"
+        - $ref: "#/components/schemas/ViewType"
       discriminator:
         propertyName: type
       required:
@@ -1855,3 +1856,372 @@ components:
           type: string
       required:
         - viewIdentifier
+
+    ViewType:
+      allOf:
+        - $ref: "#/components/schemas/SettingBase"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [ViewType]
+            identifier:
+              type: string
+            name:
+              type: string
+            description:
+              type: string
+            overview: 
+              $ref: "#/components/schemas/ViewTypeOverview"
+            flags:
+              type: array
+              items:
+                $ref: "#/components/schemas/ViewTypeFlagValue"
+            filters:
+              type: array
+              items:
+                $ref: "#/components/schemas/ViewTypeFilter"
+            iconbase64:
+              type: string
+          required:
+            - type
+            - name
+            - overview
+            - flags
+            - filters
+
+
+    ViewTypeOverview:
+      properties:
+        columns:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewTypeTableCol"
+      required:
+        - columns
+
+    ViewTypeTableCol:
+      properties:
+        _type:
+          type: string
+      oneOf:
+        - $ref: "#/components/schemas/ViewTypeTableColHealth"
+        - $ref: "#/components/schemas/ViewTypeTableColName"
+        - $ref: "#/components/schemas/ViewTypeTableColText"
+        - $ref: "#/components/schemas/ViewTypeTableColNumber"
+        - $ref: "#/components/schemas/ViewTypeTableColTime"
+        - $ref: "#/components/schemas/ViewTypeTableColDuration"
+        - $ref: "#/components/schemas/ViewTypeTableColComponentType"
+        - $ref: "#/components/schemas/ViewTypeTableColComponentLink"
+        - $ref: "#/components/schemas/ViewTypeTableColReadyStatus"
+        - $ref: "#/components/schemas/ViewTypeTableColContainerImageLink"
+        - $ref: "#/components/schemas/ViewTypeTableColPromql"
+        - $ref: "#/components/schemas/ViewTypeTableColRatio"
+        - $ref: "#/components/schemas/ViewTypeTableColMetricBinding"
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+
+    ViewTypeTableColHealth:
+      properties:
+        _type:
+          type: string
+          enum: [ViewTypeTableColHealth]
+      required:
+        - _type
+
+    ViewTypeTableColName:
+      properties:
+        _type:
+          type: string
+          enum: [ViewTypeTableColName]
+        title:
+          type: string
+      required:
+        - _type
+        - title
+
+    ViewTypeTableColText:
+      properties:
+        _type:
+          type: string
+          enum: [ViewTypeTableColText]
+        title:
+          type: string
+        path:
+          type: array
+          items:
+            type: string
+        width:
+          type: number
+          format: integer
+        align:
+          # TBH, only the value "right" is interpreted
+          type: string
+      required:
+        - _type
+        - title
+        - path
+
+    ViewTypeTableColNumber:
+      properties:
+        _type:
+          type: string
+          enum: [ViewTypeTableColNumber]
+        title:
+          type: string
+        path:
+          type: array
+          items:
+            type: string
+        width:
+          type: number
+          format: integer
+        unit:
+          # TBH, only the value "right" is interpreted
+          type: string
+      required:
+        - _type
+        - title
+        - path
+
+    ViewTypeTableColTime:
+      properties:
+        _type:
+          type: string
+          enum: [ViewTypeTableColTime]
+        title:
+          type: string
+        path:
+          type: array
+          items:
+            type: string
+      required:
+        - _type
+        - title
+        - path
+
+    ViewTypeTableColDuration:
+      properties:
+        _type:
+          type: string
+          enum: [ViewTypeTableColDuration]
+        title:
+          type: string
+        path:
+          type: array
+          items:
+            type: string
+        endDatePath:
+          type: array
+          items:
+            type: string
+      required:
+        - _type
+        - title
+        - path
+
+    ViewTypeTableColComponentType:
+      properties:
+        _type:
+          type: string
+          enum: [ViewTypeTableColComponentType]
+        title:
+          type: string
+        width:
+          type: number
+          format: integer
+      required:
+        - _type
+        - title
+
+    ViewTypeTableColComponentLink:
+      properties:
+        _type:
+          type: string
+          enum: [ViewTypeTableColComponentLink]
+        title:
+          type: string
+        labelPrefix:
+          type: string
+        pathToIdentifier:
+          type: array
+          items:
+            type: string
+        width:
+          type: number
+          format: integer
+      required:
+        - _type
+        - title
+        - labelPrefix
+        - pathToIdentifier
+
+    ViewTypeTableColReadyStatus:
+      properties:
+        _type:
+          type: string
+          enum: [ViewTypeTableColComponentReadyStatus]
+        title:
+          type: string
+        readyPath:
+          type: array
+          items:
+            type: string
+        totalPath:
+          type: array
+          items:
+            type: string
+        statusPath:
+          type: array
+          items:
+            type: string
+        width:
+          type: number
+          format: integer
+      required:
+        - _type
+        - title
+        - readyPath
+        - totalPath
+        - statusPath
+
+    ViewTypeTableColContainerImageLink:
+      properties:
+        _type:
+          type: string
+          enum: [ViewTypeTableColContainerImageLink]
+        title:
+          type: string
+        imageIdPath:
+          type: array
+          items:
+            type: string
+        imagePath:
+          type: array
+          items:
+            type: string
+        width:
+          type: number
+          format: integer
+      required:
+        - _type
+        - title
+        - imageIdPath
+        - imagePath
+
+    ViewTypeTableColPromql:
+      properties:
+        _type:
+          type: string
+          enum: [ViewTypeTableColPromql]
+        title:
+          type: string
+        query:
+          type: string
+        componentIdentifierTemplate:
+          type: string
+        unit:
+          type: string
+        width:
+          type: number
+          format: integer
+      required:
+        - _type
+        - title
+        - query
+        - componentIdentifierTemplate
+
+    ViewTypeTableColRatio:
+      properties:
+        _type:
+          type: string
+          enum: [ViewTypeTableColRatio]
+        title:
+          type: string
+        numeratorPath:
+          type: array
+          items:
+            type: string
+        denominatorPath:
+          type: array
+          items:
+            type: string
+      required:
+        - _type
+        - title
+        - numeratorPath
+        - denominatorPath
+
+    ViewTypeTableColMetricBinding:
+      properties:
+        _type:
+          type: string
+          enum: [ViewTypeTableColMetricBinding]
+        title:
+          type: string
+        metricBindingIdentifier:
+          type: string
+        width:
+          type: number
+          format: integer
+        onlyTrendLine:
+          type: boolean
+      required:
+        - _type
+        - title
+        - metricBindingIdentifier
+
+    ViewTypeFlagValue:
+      type: string
+      enum:
+        - NoTopologyFilters
+        - CardsLayout
+
+    ViewTypeFilter:
+      properties:
+        _type:
+          type: string
+      oneOf:
+        - $ref: "#/components/schemas/LabelPrefixedFilter"
+        - $ref: "#/components/schemas/TopologyFilters"
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+
+    LabelPrefixedFilter:
+      properties:
+        _type:
+          type: string
+          enum: [LabelPrefixedFilter]
+        prefix:
+          type: string
+        name:
+          type: string
+      required:
+        - _type
+        - prefix
+        - name
+
+    TopologyFilters:
+      properties:
+        _type:
+          type: string
+          enum: [TopologyFilters]
+        tabs:
+          type: array
+          items:
+            $ref: "#/components/schemas/TopologyFilterValue"
+      required:
+        - _type
+        - tabs
+
+    TopologyFilterValue:
+      type: string
+      enum:
+        - TOPOLOGY
+        - EVENTS
+        - TRACES
+
