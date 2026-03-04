@@ -96,6 +96,11 @@ components:
         - OtelComponentMapping
         - OtelRelationMapping
         - ComponentPresentation
+        - RelationType
+        - Layer
+        - Domain
+        - MainMenuGroup
+        - ViewType
 
     Setting:
       type: object
@@ -798,6 +803,10 @@ components:
             name:
               type: string
               description: The name of the setting.
+            identifier:
+              type: string
+            viewType:
+              type: string
             topologyQuery:
               type: string
           required:
