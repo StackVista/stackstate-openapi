@@ -1389,8 +1389,13 @@ components:
           type: string
         mainMenu:
           $ref: "#/components/schemas/PresentationMainMenu"
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/OverviewColumnDefinition'
       required:
         - title
+        - columns
 
     PresentationMainMenu:
       type: object
@@ -1405,6 +1410,17 @@ components:
       required:
         - group
         - order
+
+    OverviewColumnDefinition:
+      type: object
+      properties:
+        columnId:
+          type: string
+        title:
+          type: string
+      required:
+        - columnId
+      description: 'Definition of a column in the overview presentation. The `columnId` field is used to identify the column and merge columns from different presentations. If only the `columnId` is provided, the column will be rendered from the next more specific presentation definition.'
 
     ComponentType:
       allOf:
