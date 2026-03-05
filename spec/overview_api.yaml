@@ -170,7 +170,7 @@ components:
       properties:
         _type:
           type: string
-          enum: [MetricChartMeta]
+          enum: [MetricChartMetaDisplay]
         unit:
           type: string
           nullable: true
