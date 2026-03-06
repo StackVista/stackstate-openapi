@@ -121,19 +121,6 @@ components:
           type: string
       required:
         - message
-    OverviewColumnDisplay:
-      discriminator:
-        propertyName: _type
-      oneOf:
-        - $ref: 'common_component_presentation.yaml#/components/schemas/MetricChartPresentationDisplay'
-        - $ref: 'common_component_presentation.yaml#/components/schemas/ComponentLinkPresentationDisplay'
-        - $ref: 'common_component_presentation.yaml#/components/schemas/HealthPresentationDisplay'
-        - $ref: 'common_component_presentation.yaml#/components/schemas/TextPresentationDisplay'
-        - $ref: 'common_component_presentation.yaml#/components/schemas/NumericPresentationDisplay'
-        - $ref: 'common_component_presentation.yaml#/components/schemas/DurationPresentationDisplay'
-        - $ref: 'common_component_presentation.yaml#/components/schemas/ReadyStatusPresentationDisplay'
-        - $ref: 'common_component_presentation.yaml#/components/schemas/ContainerImagePresentationDisplay'
-      description: 'Display type and value for the column.'
   responses:
     ComponentPresentationNotFound:
       description: "Component Presentation with given identifier not found"

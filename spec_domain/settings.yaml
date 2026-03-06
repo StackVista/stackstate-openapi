@@ -85,9 +85,161 @@ components:
           type: string
         title:
           type: string
+        display:
+          $ref: "#/components/schemas/OverviewColumnDisplay"
       required:
         - columnId
       description: 'Definition of a column in the overview presentation. The `columnId` field is used to identify the column and merge columns from different presentations. If only the `columnId` is provided, the column will be rendered from the next more specific presentation definition.'
+
+    OverviewColumnDisplay:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: '#/components/schemas/MetricChartPresentationDisplay'
+        - $ref: '#/components/schemas/ComponentLinkPresentationDisplay'
+        - $ref: '#/components/schemas/HealthPresentationDisplay'
+        - $ref: '#/components/schemas/TextPresentationDisplay'
+        - $ref: '#/components/schemas/NumericPresentationDisplay'
+        - $ref: '#/components/schemas/DurationPresentationDisplay'
+        - $ref: '#/components/schemas/ReadyStatusPresentationDisplay'
+        - $ref: '#/components/schemas/ContainerImagePresentationDisplay'
+      description: 'Display type and value for the column.'
+
+    MetricChartPresentationDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [MetricChartPresentationDisplay]
+        #        chartType:
+        #          type: string
+        #          enum: [TimeSeriesChart, BarChart, StatChart, GaugeChart]
+        showChart:
+          type: boolean
+        decimalPlaces:
+          type: integer
+        unit:
+          type: string
+        query:
+          type: string
+          description: "Individual metric query that returns a timeseries for a specific cell."
+        componentIdentifierTemplate:
+          type: string
+      required:
+        - _type
+        - query
+        - componentIdentifierTemplate
+    ComponentLinkPresentationDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [ComponentLinkPresentationDisplay]
+        name:
+          type: string
+          description: 'Cel expression that returns a string that represents the name of the component to link to'
+        componentIdentifier:
+          type: string
+          description: 'Cel expression that returns a string that represents the componentIdentifier in order to build the link'
+      required:
+        - _type
+        - name
+        - componentIdentifier
+    HealthPresentationDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [HealthPresentationDisplay]
+        value:
+          type: string
+          description: 'Cel expression that returns a string that represents a valid HealthState'
+      required:
+        - _type
+        - value
+## Using TextPDisplay as that's the name the generator will be to the classes in the BE, but leaving the enum as enum: [TextDisplay]
+## this is desirable for the StackPack author as they could address as `TextDisplay` 2 representations structurally very similar (overview, highlights)
+    TextPresentationDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [TextPresentationDisplay]
+        value:
+          type: string
+          description: 'Cel expression that returns a string'
+      required:
+        - _type
+        - value
+    NumericPresentationDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [NumericPresentationDisplay]
+        value:
+          type: string
+          description: 'Cel expression that returns a number'
+        unit:
+          type: string
+          nullable: true
+        decimalPlaces:
+          type: integer
+      required:
+        - _type
+        - value
+    DurationPresentationDisplay:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [DurationPresentationDisplay]
+        startDate:
+          type: string
+          description: 'Cel expression that returns a date'
+        endDate:
+          type: string
+          description: 'Cel expression that returns a date'
+      required:
+        - _type
+        - startDate
+    ReadyStatusPresentationDisplay:
+      type: object
+      description: 'Helps rendering columns as Ready containers for K8s pods or Completions for K8s jobs'
+      properties:
+        _type:
+          type: string
+          enum: [ReadyStatusPresentationDisplay]
+        readyNumber:
+          type: string
+          description: 'Cel expression that returns a number'
+        totalNumber:
+          type: string
+          description: 'Cel expression that returns a number'
+        readyStatus:
+          type: string
+          description: 'Cel expression that returns a string that represents a valid HealthState'
+      required:
+        - _type
+        - readyNumber
+        - totalNumber
+    ContainerImagePresentationDisplay:
+      type: object
+      description: 'Helps rendering links for docker images'
+      properties:
+        _type:
+          type: string
+          enum: [ContainerImagePresentationDisplay]
+        imageId:
+          type: string
+          description: 'Cel expression that returns a string'
+        imageName:
+          type: string
+          description: 'Cel expression that returns a string'
+      required:
+        - _type
+        - imageId
+        - imageName
 
     ComponentTypeHighlights:
       properties:
@@ -702,10 +854,12 @@ components:
           format: integer
         onlyTrendLine:
           type: boolean
+          default: false
       required:
         - _type
         - title
         - metricBindingIdentifier
+        - onlyTrendLine
 
     ViewTypeFlagValue:
       type: string
