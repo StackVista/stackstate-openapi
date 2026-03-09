@@ -40,9 +40,6 @@ components:
     OverviewRequest:
       type: object
       properties:
-        sessionId:
-          type: string
-          description: "Unique identifier for the overview session"
         topologyTime:
           type: integer
           format: instant
@@ -54,9 +51,7 @@ components:
         sorting:
           type: array
           items:
-            $ref: '#/components/schemas/OverviewSortingRequest'
-      required:
-        - sessionId
+            $ref: '#/components/schemas/OverviewSorting'
     OverviewFilters:
       type: object
       properties:
@@ -64,7 +59,7 @@ components:
           type: array
           items:
             type: string
-          description: List of tags filters to apply. AND of tags. Common tags are grouped to from ORs
+          description: Tags are grouped by their key.  For each key at least one of the values matches.
         columnFilters:
           type: object
           additionalProperties:
@@ -84,15 +79,30 @@ components:
       type: object
       properties:
         cursor:
-          type: string
-          nullable: true
-          description: Opaque cursor returned from previous request
+          $ref: '#/components/schemas/OverviewPaginationCursor'
         limit:
           type: integer
           minimum: 1
           maximum: 500
           default: 50
-    OverviewSortingRequest:
+    OverviewPaginationCursor:
+      type: object
+      properties:
+        cursor:
+          type: string
+          nullable: true
+          description: Opaque cursor returned from previous request
+        direction:
+          $ref: '#/components/schemas/OverviewPaginationDirection'
+      required:
+        - direction
+        - cursor
+    OverviewPaginationDirection:
+      type: string
+      enum:
+        - Back
+        - Forward
+    OverviewSorting:
       type: object
       properties:
         columnId:
@@ -110,9 +120,12 @@ components:
     PresentationOrViewIdentifier:
       type: string
       pattern: ^urn.*$
-    OverviewPageResponse:
+    OverviewPageResult:
       type: object
       properties:
+        _type:
+          type: string
+          enum: [OverviewPageResult]
         metadata:
           $ref: "#/components/schemas/OverviewMetadata"
         data:
@@ -122,18 +135,104 @@ components:
         pagination:
           $ref: '#/components/schemas/PaginationResponse'
       required:
+        - _type
         - metadata
         - data
         - pagination
+
+    OverviewErrorResponse:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [OverviewErrorResponse]
+        errorMessage:
+          type: string
+          description: Error message describing why the overview request failed.
+      required:
+        - _type
+        - errorMessage
+
+    OverviewFetchTimeout:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [OverviewFetchTimeout]
+        usedTimeoutSeconds:
+          type: integer
+          format: int64
+          description: Timeout used for the overview request (seconds).
+      required:
+        - _type
+        - usedTimeoutSeconds
+
+    OverviewTooManyActiveQueries:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [OverviewTooManyActiveQueries]
+      required:
+        - _type
+
+    OverviewTopologySizeOverflow:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [OverviewTopologySizeOverflow]
+        maxSize:
+          type: integer
+          description: Maximum allowed topology size.
+      required:
+        - _type
+        - maxSize
+
+    OverviewDataUnavailable:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [OverviewDataUnavailable]
+        unavailableAtEpochMs:
+          type: integer
+          format: int64
+          description: Time when data became unavailable (epoch ms).
+        availableSinceEpochMs:
+          type: integer
+          format: int64
+          description: Time when data became available again (epoch ms).
+      required:
+        - _type
+        - unavailableAtEpochMs
+        - availableSinceEpochMs
+
+    OverviewPageResponse:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: '#/components/schemas/OverviewPageResult'
+        - $ref: '#/components/schemas/OverviewFetchTimeout'
+        - $ref: '#/components/schemas/OverviewTooManyActiveQueries'
+        - $ref: '#/components/schemas/OverviewTopologySizeOverflow'
+        - $ref: '#/components/schemas/OverviewDataUnavailable'
     OverviewMetadata:
       type: object
       required:
         - columns
+        - sorting
       properties:
         columns:
           type: array
           items:
             $ref: '#/components/schemas/OverviewColumnMeta'
+        sorting:
+          type: array
+          items:
+            $ref: '#/components/schemas/OverviewSorting'
+          description: |
+            The effective sorting applied to the overview results.
     OverviewColumnMeta:
       type: object
       required:
@@ -368,9 +467,18 @@ components:
           description: |
             Total number of items after filters/search are applied,
             but before pagination.
-        nextCursor:
+        elementName:
+            type: string
+        elementNamePlural:
+            type: string
+        startCursor:
+          type: string
+          nullable: true
+        endCursor:
           type: string
           nullable: true
       required:
         - total
+        - elementName
+        - elementNamePlural
 
