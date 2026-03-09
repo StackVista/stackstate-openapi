@@ -60,6 +60,11 @@ components:
     OverviewFilters:
       type: object
       properties:
+        tagFilters:
+          type: array
+          items:
+            type: string
+          description: List of tags filters to apply. AND of tags. Common tags are grouped to from ORs
         columnFilters:
           type: object
           additionalProperties:
