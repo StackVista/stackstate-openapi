@@ -640,8 +640,8 @@ components:
           items:
             type: string
         width:
-          type: number
-          format: integer
+          type: integer
+          format: int32
         align:
           # TBH, only the value "right" is interpreted
           type: string
@@ -662,8 +662,8 @@ components:
           items:
             type: string
         width:
-          type: number
-          format: integer
+          type: integer
+          format: int32
         unit:
           # TBH, only the value "right" is interpreted
           type: string
@@ -716,8 +716,8 @@ components:
         title:
           type: string
         width:
-          type: number
-          format: integer
+          type: integer
+          format: int32
       required:
         - _type
         - title
@@ -736,8 +736,8 @@ components:
           items:
             type: string
         width:
-          type: number
-          format: integer
+          type: integer
+          format: int32
       required:
         - _type
         - title
@@ -763,9 +763,6 @@ components:
           type: array
           items:
             type: string
-        width:
-          type: number
-          format: integer
       required:
         - _type
         - title
@@ -789,8 +786,8 @@ components:
           items:
             type: string
         width:
-          type: number
-          format: integer
+          type: integer
+          format: int32
       required:
         - _type
         - title
@@ -811,8 +808,8 @@ components:
         unit:
           type: string
         width:
-          type: number
-          format: integer
+          type: integer
+          format: int32
       required:
         - _type
         - title
@@ -850,8 +847,8 @@ components:
         metricBindingIdentifier:
           type: string
         width:
-          type: number
-          format: integer
+          type: integer
+          format: int32
         onlyTrendLine:
           type: boolean
           default: false
