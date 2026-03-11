@@ -34,6 +34,8 @@ components:
           $ref: "#/components/schemas/PresentationName"
         overview:
           $ref: "#/components/schemas/PresentationOverview"
+        highlight:
+          $ref: "#/components/schemas/PresentationHighlight"
 
     PresentationName:
       type: object
@@ -86,12 +88,45 @@ components:
         title:
           type: string
         projection:
-          $ref: "#/components/schemas/OverviewColumnProjection"
+          $ref: "#/components/schemas/PresentationProjection"
       required:
         - columnId
       description: 'Definition of a column in the overview presentation. The `columnId` field is used to identify the column and merge columns from different presentations. If only the `columnId` is provided, the column will be rendered from the next more specific presentation definition.'
 
-    OverviewColumnProjection:
+    PresentationHighlight:
+      type: object
+      properties:
+        title:
+          type: string
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/PresentationHighlightField'
+      description: |
+        Highlight presentation definition. The `fields` define the fields to show in the ab. The `flags` field can be used to enable/disable functionalities.
+        If multiple ComponentPresentations match, columns are merged by `columnId` according to binding rank. Absence of the field means no overview is shown.
+      required:
+        - title
+        - fields
+
+    PresentationHighlightField:
+      type: object
+      properties:
+        fieldId:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        projection:
+          $ref: "#/components/schemas/PresentationProjection"
+      required:
+        - fieldId
+        - title
+        - projection
+      description: 'Definition of a field in the highlight presentation. The `fieldId` field is used to identify the field and merge fields from different presentations.'
+
+    PresentationProjection:
       discriminator:
         propertyName: _type
       oneOf:
@@ -103,7 +138,7 @@ components:
         - $ref: '#/components/schemas/DurationProjection'
         - $ref: '#/components/schemas/ReadyStatusProjection'
         - $ref: '#/components/schemas/ContainerImageProjection'
-      description: 'Display type and value for the column.'
+      description: 'Display type and value for the field.'
 
     MetricChartProjection:
       type: object
@@ -129,6 +164,7 @@ components:
         - _type
         - query
         - componentIdentifierTemplate
+
     ComponentLinkProjection:
       type: object
       properties:
@@ -221,6 +257,7 @@ components:
         - _type
         - readyNumber
         - totalNumber
+
     ContainerImageProjection:
       type: object
       description: 'Helps rendering links for docker images'
