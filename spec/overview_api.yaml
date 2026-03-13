@@ -40,6 +40,9 @@ components:
     OverviewRequest:
       type: object
       properties:
+        query:
+          type: string
+          description: STQL query string to retrieve and project using the presentationOrViewUrn (helpful for related resources)
         topologyTime:
           type: integer
           format: instant
