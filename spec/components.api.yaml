@@ -225,6 +225,10 @@ components:
           type: string
         icon:
           type: string
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentField"
         data:
           $ref: "#/components/schemas/ComponentData"
         highlights:
@@ -241,9 +245,125 @@ components:
           $ref: "#/components/schemas/BoundTraces"
       required:
         - typeName
+        - fields
         - data
         - actions
         - boundMetrics
+
+    ComponentField:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: '#/components/schemas/MetricField'
+        - $ref: '#/components/schemas/LinkField'
+        - $ref: '#/components/schemas/HealthField'
+        - $ref: '#/components/schemas/TextField'
+        - $ref: '#/components/schemas/NumericField'
+        - $ref: '#/components/schemas/DurationField'
+        - $ref: '#/components/schemas/ReadyStatusField'
+        - $ref: '#/components/schemas/ContainerImageField'
+      description: 'Display type and value for the field.'
+
+    MetricField:
+      type: object
+      required:
+        - _type
+        - individualQuery
+      properties:
+        _type:
+          enum: [MetricField]
+        individualQuery:
+          type: string
+          description: The frontend can use the individual query to refresh the metrics (at interval). Allows to keep the current behaviour of making individual calls for each row.
+    LinkField:
+      type: object
+      required:
+        - _type
+        - name
+        - url
+        - external
+      properties:
+        _type:
+          enum: [LinkField]
+        name:
+          type: string
+        url:
+          type: string
+        external:
+          type: boolean
+    HealthField:
+      type: object
+      required:
+        - _type
+        - state
+      properties:
+        _type:
+          enum: [HealthField]
+        state:
+          $ref: "common.api.yaml#/components/schemas/HealthStateValue"
+    TextField:
+      type: object
+      required:
+        - _type
+        - value
+      properties:
+        _type:
+          enum: [TextField]
+        value:
+          type: string
+    NumericField:
+      type: object
+      required:
+        - _type
+        - value
+      properties:
+        _type:
+          enum: [NumericField]
+        value:
+          type: number
+    DurationField:
+      type: object
+      required:
+        - _type
+        - startDate
+      properties:
+        _type:
+          enum: [DurationField]
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+          nullable: true
+    ReadyStatusField:
+      type: object
+      required:
+        - _type
+        - ready
+        - total
+      properties:
+        _type:
+          enum: [ReadyStatusField]
+        ready:
+          type: number
+        total:
+          type: number
+        status:
+          $ref: "common.api.yaml#/components/schemas/HealthStateValue"
+    ContainerImageField:
+      type: object
+      required:
+        - _type
+        - image
+      properties:
+        _type:
+          enum: [ContainerImageField]
+        url:
+          type: string
+        image:
+          type: string
+
     ComponentData:
       properties:
         id:
