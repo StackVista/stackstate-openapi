@@ -446,11 +446,11 @@ components:
         - total
       properties:
         _type:
-          enum: [DurationCell]
+          enum: [ReadyStatusCell]
         ready:
-          type: number
+          type: integer
         total:
-          type: number
+          type: integer
         status:
           $ref: "common.api.yaml#/components/schemas/HealthStateValue"
     PaginationResponse:
