@@ -26,6 +26,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OverviewPageResponse'
+        '400':
+          description: Bad request. The request was invalid or cannot be otherwise served.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OverviewErrorResponse'
 
 components:
   parameters:
@@ -35,7 +41,7 @@ components:
       required: true
       schema:
         $ref: "#/components/schemas/PresentationOrViewIdentifier"
-      description: "A Component Presentation Identifier, legacy View URNs are be supported for backward compatibility"
+      description: "A Component Presentation Identifier, legacy View (QueryView, ViewType) URNs are be supported for backward compatibility"
   schemas:
     OverviewRequest:
       type: object
