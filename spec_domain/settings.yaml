@@ -30,8 +30,6 @@ components:
       properties:
         icon:
           type: string
-        name:
-          $ref: "#/components/schemas/PresentationName"
         overview:
           $ref: "#/components/schemas/PresentationOverview"
         highlight:
@@ -44,15 +42,18 @@ components:
           type: string
         plural:
           type: string
+        title:
+          type: string
       required:
         - singular
         - plural
+        - title
 
     PresentationOverview:
       type: object
       properties:
-        title:
-          type: string
+        name:
+          $ref: "#/components/schemas/PresentationName"
         mainMenu:
           $ref: "#/components/schemas/PresentationMainMenu"
         columns:
@@ -65,6 +66,7 @@ components:
       required:
         - title
         - columns
+        - name
 
     PresentationMainMenu:
       type: object
@@ -146,9 +148,6 @@ components:
         _type:
           type: string
           enum: [MetricChartProjection]
-        #        chartType:
-        #          type: string
-        #          enum: [TimeSeriesChart, BarChart, StatChart, GaugeChart]
         showChart:
           type: boolean
         decimalPlaces:
@@ -158,13 +157,9 @@ components:
         query:
           type: string
           description: "Individual metric query that returns a timeseries for a specific cell."
-        componentIdentifierTemplate:
-          type: string
       required:
         - _type
         - query
-        - componentIdentifierTemplate
-
     ComponentLinkProjection:
       type: object
       properties:
