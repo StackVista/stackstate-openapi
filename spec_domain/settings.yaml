@@ -139,6 +139,7 @@ components:
         - $ref: '#/components/schemas/NumericProjection'
         - $ref: '#/components/schemas/DurationProjection'
         - $ref: '#/components/schemas/ReadyStatusProjection'
+        - $ref: '#/components/schemas/RatioProjection'
         - $ref: '#/components/schemas/ContainerImageProjection'
       description: 'Display type and value for the field.'
 
@@ -252,6 +253,24 @@ components:
         - _type
         - readyNumber
         - totalNumber
+
+    RatioProjection:
+      type: object
+      description: 'Helps rendering columns that summarize success rates'
+      properties:
+        _type:
+          type: string
+          enum: [RatioProjection]
+        numerator:
+          type: string
+          description: 'Cel expression that returns a number'
+        denominator:
+          type: string
+          description: 'Cel expression that returns a number'
+      required:
+        - _type
+        - numerator
+        - denominator
 
     ContainerImageProjection:
       type: object
