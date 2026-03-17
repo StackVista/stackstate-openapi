@@ -262,7 +262,6 @@ components:
         - $ref: '#/components/schemas/DurationField'
         - $ref: '#/components/schemas/ReadyStatusField'
         - $ref: '#/components/schemas/RatioField'
-        - $ref: '#/components/schemas/ContainerImageField'
       description: 'Display type and value for the field.'
 
     BaseComponentField:
@@ -394,20 +393,6 @@ components:
               type: number
             denominator:
               type: number
-    ContainerImageField:
-      allOf:
-        - $ref: '#/components/schemas/BaseComponentField'
-        - type: object
-          required:
-            - _type
-            - image
-          properties:
-            _type:
-              enum: [ContainerImageField]
-            url:
-              type: string
-            image:
-              type: string
 
     ComponentData:
       properties:
