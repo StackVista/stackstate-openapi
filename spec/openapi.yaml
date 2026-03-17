@@ -124,6 +124,7 @@ paths:
   /problems/{problemId}/causing-events: { $ref: "problems.api.yaml#/paths/%2Fproblems%2F%7BproblemId%7D%2Fcausing-events" }
   /metrics/query: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Fquery" }
   /metrics/query_range: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Fquery%5Frange" }
+  /metrics/query_batch: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Fquery%5Fbatch" }
   /metrics/query_exemplars: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Fquery%5Fexemplars" }
   /metrics/labels: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Flabels" }
   /metrics/label/{label}/values: { $ref: "metrics.api.yaml#/paths/%2Fmetrics%2Flabel%2F%7Blabel%7D%2Fvalues" }

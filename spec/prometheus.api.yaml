@@ -87,6 +87,85 @@ components:
           $ref: "#/components/schemas/PromTime"
       required:
         - query
+    ### Batch Query
+    PromBatchQueryRequest:
+      type: object
+      required:
+        - queries
+      properties:
+        queries:
+          type: array
+          description: List of queries to execute.
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/PromBatchQueryItem"
+        timeout:
+          $ref: "#/components/schemas/PromTimeout"
+      description: >
+        Executes multiple query items in one request.
+        If both request-level timeout and item-level timeout are set, item-level timeout takes precedence.
+    PromBatchQueryItem:
+      oneOf:
+        - $ref: "#/components/schemas/PromBatchInstantQuery"
+        - $ref: "#/components/schemas/PromBatchRangeQuery"
+      discriminator:
+        propertyName: _type
+        mapping:
+          instant: "#/components/schemas/PromBatchInstantQuery"
+          range: "#/components/schemas/PromBatchRangeQuery"
+    PromBatchInstantQuery:
+      type: object
+      required:
+        - id
+        - query
+        - _type
+      properties:
+        id:
+          type: string
+        _type:
+          type: string
+          enum: [instant]
+        query:
+          $ref: "#/components/schemas/PromQuery"
+        time:
+          $ref: "#/components/schemas/PromTime"
+        step:
+          $ref: "#/components/schemas/PromStep"
+        timeout:
+          $ref: "#/components/schemas/PromTimeout"
+        post_filter:
+          $ref: "#/components/schemas/PromPostFilter"
+    PromBatchRangeQuery:
+      type: object
+      required:
+        - id
+        - query
+        - _type
+        - start
+        - end
+        - step
+      properties:
+        id:
+          type: string
+        _type:
+          type: string
+          enum: [range]
+        query:
+          $ref: "#/components/schemas/PromQuery"
+        start:
+          $ref: "#/components/schemas/PromTime"
+        end:
+          $ref: "#/components/schemas/PromTime"
+        step:
+          $ref: "#/components/schemas/PromStep"
+        timeout:
+          $ref: "#/components/schemas/PromTimeout"
+        aligned:
+          $ref: "#/components/schemas/PromAligned"
+        maxNumberOfDataPoints:
+          $ref: "#/components/schemas/PromMaxNumberOfDataPoints"
+        post_filter:
+          $ref: "#/components/schemas/PromPostFilter"
     PromSeriesRequest:
       type: object
       properties:
@@ -159,6 +238,52 @@ components:
             type: "string"
       required:
         - status
+    PromBatchEnvelope:
+      type: object
+      required:
+        - results
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/PromBatchResult"
+    PromBatchResult:
+      oneOf:
+        - $ref: "#/components/schemas/PromBatchSuccess"
+        - $ref: "#/components/schemas/PromBatchError"
+      discriminator:
+        propertyName: resultType
+        mapping:
+          success: "#/components/schemas/PromBatchSuccess"
+          error: "#/components/schemas/PromBatchError"
+    PromBatchSuccess:
+      type: object
+      required:
+        - id
+        - data
+        - resultType
+      properties:
+        id:
+          type: string
+        resultType:
+          type: string
+          enum: [ success ]
+        data:
+          $ref: "#/components/schemas/PromEnvelope"
+    PromBatchError:
+      type: object
+      required:
+        - id
+        - error
+        - resultType
+      properties:
+        id:
+          type: string
+        resultType:
+          type: string
+          enum: [error]
+        error:
+          type: string
     PromData:
       type: object
       discriminator:
