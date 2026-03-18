@@ -120,12 +120,15 @@ components:
           type: string
         description:
           type: string
+        order:
+          type: number
+          format: double
         projection:
           $ref: "#/components/schemas/PresentationProjection"
       required:
         - fieldId
         - title
-        - projection
+        - order
       description: 'Definition of a field in the highlight presentation. The `fieldId` field is used to identify the field and merge fields from different presentations.'
 
     PresentationProjection:
