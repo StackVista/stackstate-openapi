@@ -58,6 +58,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OverviewColumnDefinition'
+        fixedColumns:
+          type: integer
       description: |
         Overview presentation definition. The `columns` field defines the columns to show in the overview table. The `flags` field can be used to enable/disable functionalities.
         If multiple ComponentPresentations match, columns are merged by `columnId` according to binding rank. Absence of the field means no overview is shown.
