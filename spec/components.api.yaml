@@ -232,7 +232,7 @@ components:
         data:
           $ref: "#/components/schemas/ComponentData"
         highlights:
-          $ref: "settings.yaml#/components/schemas/ComponentTypeHighlights"
+          $ref: "#/components/schemas/LegacyComponentHighlights"
         actions:
           type: array
           items:
@@ -496,6 +496,34 @@ components:
         - identifiers
         - data
         - syncName
+    LegacyComponentHighlights:
+      properties:
+        namePlural:
+          type: string
+        events:
+          $ref: "settings.yaml#/components/schemas/ComponentTypeEvents"
+        showLogs:
+          type: boolean
+        showLastChange:
+          type: boolean
+        externalComponent:
+          $ref: "settings.yaml#/components/schemas/ComponentTypeExternalComponent"
+        relatedResources:
+          type: array
+          items:
+            $ref: "settings.yaml#/components/schemas/ComponentTypeRelatedResources"
+        metrics:
+          type: array
+          items:
+            $ref: "settings.yaml#/components/schemas/ComponentHighlightMetrics"
+      required:
+        - namePlural
+        - events
+        - showLogs
+        - showLastChange
+        - externalComponent
+        - relatedResources
+        - metrics
     ComponentAction:
       properties:
         id:
