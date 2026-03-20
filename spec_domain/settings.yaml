@@ -203,9 +203,13 @@ components:
         value:
           type: string
           description: 'Cel expression that returns a string'
+        isTag:
+          type: boolean
+          default: false
       required:
         - _type
         - value
+        - isTag
     NumericProjection:
       type: object
       properties:
