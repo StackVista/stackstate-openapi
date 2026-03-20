@@ -24,17 +24,17 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
   schemas:
-    Mode:
+    ApplicationDomain:
       type: string
       enum:
         - Observability
-        - SecurityHub
+        - Security
     ServerInfo:
       type: object
       required:
         - version
         - deploymentMode
-        - modes
+        - applicationDomains
       properties:
         version:
           $ref: "#/components/schemas/ServerVersion"
@@ -45,10 +45,10 @@ components:
             - SelfHosted
         platformVersion:
           $ref: "#/components/schemas/SemanticVersion"
-        modes:
+        applicationDomains:
           type: array
           items:
-            $ref: "#/components/schemas/Mode"
+            $ref: "#/components/schemas/ApplicationDomain"
           minItems: 1
           uniqueItems: true
     ServerVersion:
