@@ -256,6 +256,7 @@ components:
       oneOf:
         - $ref: '#/components/schemas/MetricField'
         - $ref: '#/components/schemas/LinkField'
+        - $ref: '#/components/schemas/ComponentLinkField'
         - $ref: '#/components/schemas/HealthField'
         - $ref: '#/components/schemas/TextField'
         - $ref: '#/components/schemas/NumericField'
@@ -284,13 +285,13 @@ components:
         - type: object
           required:
             - _type
-            - individualQuery
+            - query
           properties:
             _type:
               enum: [MetricField]
-            individualQuery:
+            query:
               type: string
-              description: The frontend can use the individual query to refresh the metrics (at interval). Allows to keep the current behaviour of making individual calls for each row.
+              description: The frontend can use the query to refresh the metrics (at interval). Allows to keep the current behaviour of making individual calls for each row.
     LinkField:
       allOf:
         - $ref: '#/components/schemas/BaseComponentField'
@@ -299,7 +300,6 @@ components:
             - _type
             - name
             - url
-            - external
           properties:
             _type:
               enum: [LinkField]
@@ -307,8 +307,21 @@ components:
               type: string
             url:
               type: string
-            external:
-              type: boolean
+    ComponentLinkField:
+      allOf:
+        - $ref: '#/components/schemas/BaseComponentField'
+        - type: object
+          required:
+            - _type
+            - name
+            - identifier
+          properties:
+            _type:
+              enum: [ComponentLinkField]
+            name:
+              type: string
+            identifier:
+              type: string
     HealthField:
       allOf:
         - $ref: '#/components/schemas/BaseComponentField'
@@ -333,6 +346,8 @@ components:
               enum: [TextField]
             value:
               type: string
+            isTag:
+              type: boolean
     NumericField:
       allOf:
         - $ref: '#/components/schemas/BaseComponentField'
