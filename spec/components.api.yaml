@@ -262,6 +262,7 @@ components:
         - $ref: '#/components/schemas/DurationField'
         - $ref: '#/components/schemas/ReadyStatusField'
         - $ref: '#/components/schemas/RatioField'
+        - $ref: '#/components/schemas/TagsField'
       description: 'Display type and value for the field.'
 
     BaseComponentField:
@@ -393,6 +394,20 @@ components:
               type: number
             denominator:
               type: number
+    TagsField:
+      allOf:
+        - $ref: '#/components/schemas/BaseComponentField'
+        - type: object
+          required:
+            - _type
+            - tags
+          properties:
+            _type:
+              enum: [TagsField]
+            tags:
+              type: object
+              additionalProperties:
+                type: string
 
     ComponentData:
       properties:
