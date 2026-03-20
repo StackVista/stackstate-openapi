@@ -209,7 +209,6 @@ components:
       required:
         - _type
         - value
-        - isTag
     NumericProjection:
       type: object
       properties:
