@@ -231,6 +231,7 @@ components:
       required:
         - columns
         - sorting
+        - fixedColumns
       properties:
         columns:
           type: array
@@ -242,6 +243,8 @@ components:
             $ref: '#/components/schemas/OverviewSorting'
           description: |
             The effective sorting applied to the overview results.
+        fixedColumns:
+          type: integer
     OverviewColumnMeta:
       type: object
       required:
@@ -273,13 +276,14 @@ components:
         - $ref: '#/components/schemas/NumericMetaDisplay'
         - $ref: '#/components/schemas/DurationMetaDisplay'
         - $ref: '#/components/schemas/ReadyStatusMetaDisplay'
-        - $ref: '#/components/schemas/ContainerImageMetaDisplay'
+        - $ref: '#/components/schemas/LinkMetaDisplay'
       discriminator:
         propertyName: _type
     MetricChartMetaDisplay:
       type: object
       required:
         - _type
+        - locked
       properties:
         _type:
           type: string
@@ -293,6 +297,8 @@ components:
         showChart:
           type: boolean
           nullable: true
+        locked:
+          type: boolean
     ComponentLinkMetaDisplay:
       type: object
       required:
@@ -344,14 +350,17 @@ components:
         _type:
           type: string
           enum: [ReadyStatusMetaDisplay]
-    ContainerImageMetaDisplay:
+    LinkMetaDisplay:
       type: object
       required:
         - _type
+        - external
       properties:
         _type:
           type: string
-          enum: [ContainerImageMetaDisplay]
+          enum: [LinkMetaDisplay]
+        external:
+          type: boolean
     OverviewRow:
       type: object
       required:
@@ -368,6 +377,7 @@ components:
       oneOf:
         - $ref: '#/components/schemas/MetricCell'
         - $ref: '#/components/schemas/LinkCell'
+        - $ref: '#/components/schemas/ComponentLinkCell'
         - $ref: '#/components/schemas/HealthCell'
         - $ref: '#/components/schemas/TextCell'
         - $ref: '#/components/schemas/NumericCell'
@@ -386,13 +396,25 @@ components:
         individualQuery:
           type: string
           description: The frontend can use the individual query to refresh the metrics (at interval). Allows to keep the current behaviour of making individual calls for each row.
+    ComponentLinkCell:
+      type: object
+      required:
+        - _type
+        - name
+        - componentId
+      properties:
+        _type:
+          enum: [ComponentLinkCell]
+        name:
+          type: string
+        componentId:
+          type: string
     LinkCell:
       type: object
       required:
         - _type
         - name
         - url
-        - external
       properties:
         _type:
           enum: [LinkCell]
@@ -400,8 +422,6 @@ components:
           type: string
         url:
           type: string
-        external:
-          type: boolean
     HealthCell:
       type: object
       required:
@@ -441,11 +461,11 @@ components:
         _type:
           enum: [DurationCell]
         startDate:
-          type: string
-          format: date-time
+          type: integer
+          format: instant
         endDate:
-          type: string
-          format: date-time
+          type: integer
+          format: instant
           nullable: true
     ReadyStatusCell:
       type: object

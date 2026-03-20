@@ -298,6 +298,31 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
         "503":
           $ref: "#/components/responses/serviceUnavailable"
+  /metrics/query_batch:
+    post:
+      tags:
+        - metric
+      summary: "Batch execution of multiple PromQL queries"
+      description: >
+        Executes multiple PromQL queries in a single request to reduce HTTP overhead.
+        Each query is executed independently and results are returned in a single response.
+        Partial failures are supported: individual queries may fail while others succeed.
+      operationId: postQueryBatch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "prometheus.api.yaml#/components/schemas/PromBatchQueryRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/successBatchEnvelope"
+        "400":
+          $ref: "#/components/responses/invalidParameters"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+        "503":
+          $ref: "#/components/responses/serviceUnavailable"
   /metrics/query_exemplars:
     get:
       tags:
@@ -487,6 +512,12 @@ components:
         application/json:
           schema:
             $ref: "prometheus.api.yaml#/components/schemas/PromEnvelope"
+    successBatchEnvelope:
+      description: "Batch query response"
+      content:
+        application/json:
+          schema:
+            $ref: "prometheus.api.yaml#/components/schemas/PromBatchEnvelope"
     invalidParameters:
       description: "Parameters are missing or incorrect"
       content:
