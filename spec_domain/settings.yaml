@@ -196,13 +196,13 @@ components:
         name:
           type: string
           description: 'Cel expression that returns a string that represents the name of the component to link to'
-        componentIdentifier:
+        identifier:
           type: string
-          description: 'Cel expression that returns a string that represents the componentIdentifier in order to build the link'
+          description: 'Cel expression that returns a string that represents the identifier in order to build the link'
       required:
         - _type
         - name
-        - componentIdentifier
+        - identifier
     TextProjection:
       type: object
       properties:
