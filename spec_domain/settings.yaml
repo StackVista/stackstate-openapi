@@ -57,6 +57,17 @@ components:
         - plural
         - title
 
+    FilterName:
+      type: object
+      properties:
+        singular:
+          type: string
+        plural:
+          type: string
+      required:
+        - singular
+        - plural
+
     PresentationOverview:
       type: object
       properties:
@@ -949,9 +960,7 @@ components:
           description: |
             Stable identity used for deduplication and cross-stackpack compatibility.
         displayName:
-          type: string
-          description: |
-            UI label for this filter. Optional — inherited from less specific presentations if not provided.
+          $ref: "#/components/schemas/FilterName"
         moreTab:
           type: string
           description: |

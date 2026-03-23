@@ -175,7 +175,7 @@ components:
         filterId:
           type: string
         displayName:
-          type: string
+          $ref: "#/components/schemas/ResolvedFilterName"
         tagKey:
           type: string
           description: Tag key to use for filtering.
@@ -184,6 +184,16 @@ components:
         - filterId
         - displayName
         - tagKey
+    ResolvedFilterName:
+        type: object
+        properties:
+          singular:
+              type: string
+          plural:
+            type: string
+        required:
+            - singular
+            - plural
     ComponentPresentationApiError:
       type: object
       properties:
