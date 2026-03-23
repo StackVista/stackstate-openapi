@@ -254,6 +254,7 @@ components:
       discriminator:
         propertyName: _type
       oneOf:
+        - $ref: '#/components/schemas/ErrorField'
         - $ref: '#/components/schemas/MetricField'
         - $ref: '#/components/schemas/LinkField'
         - $ref: '#/components/schemas/ComponentLinkField'
@@ -278,6 +279,19 @@ components:
       required:
         - fieldId
         - title
+
+    ErrorField:
+      allOf:
+        - $ref: '#/components/schemas/BaseComponentField'
+        - type: object
+          required:
+            - _type
+            - message
+          properties:
+            _type:
+              enum: [ErrorField]
+            message:
+              type: string
 
     MetricField:
       allOf:
