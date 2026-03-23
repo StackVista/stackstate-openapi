@@ -137,9 +137,10 @@ components:
       discriminator:
         propertyName: _type
       oneOf:
+        - $ref: '#/components/schemas/HealthProjection'
+        - $ref: '#/components/schemas/TagsProjection'
         - $ref: '#/components/schemas/MetricChartProjection'
         - $ref: '#/components/schemas/ComponentLinkProjection'
-        - $ref: '#/components/schemas/HealthProjection'
         - $ref: '#/components/schemas/TextProjection'
         - $ref: '#/components/schemas/NumericProjection'
         - $ref: '#/components/schemas/DurationProjection'
@@ -148,6 +149,26 @@ components:
         - $ref: '#/components/schemas/ContainerImageProjection'
       description: 'Display type and value for the field.'
 
+    HealthProjection:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [HealthProjection]
+        value:
+          type: string
+          description: 'Cel expression that returns a string that represents a valid HealthState'
+      required:
+        - _type
+        - value
+    TagsProjection:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [TagsProjection]
+      required:
+        - _type
     MetricChartProjection:
       type: object
       properties:
@@ -182,18 +203,6 @@ components:
         - _type
         - name
         - componentIdentifier
-    HealthProjection:
-      type: object
-      properties:
-        _type:
-          type: string
-          enum: [HealthProjection]
-        value:
-          type: string
-          description: 'Cel expression that returns a string that represents a valid HealthState'
-      required:
-        - _type
-        - value
     TextProjection:
       type: object
       properties:
