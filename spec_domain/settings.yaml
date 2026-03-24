@@ -92,7 +92,7 @@ components:
         title:
           type: string
         projection:
-          $ref: "#/components/schemas/ComponentProjection"
+          $ref: "#/components/schemas/ComponentOverviewProjection"
       required:
         - columnId
       description: 'Definition of a column in the overview presentation. The `columnId` field is used to identify the column and merge columns from different presentations. If only the `columnId` is provided, the column will be rendered from the next more specific presentation definition.'
@@ -126,14 +126,14 @@ components:
           type: number
           format: double
         projection:
-          $ref: "#/components/schemas/ComponentProjection"
+          $ref: "#/components/schemas/ComponentHighlightProjection"
       required:
         - fieldId
         - title
         - order
       description: 'Definition of a field in the highlight presentation. The `fieldId` field is used to identify the field and merge fields from different presentations.'
 
-    ComponentProjection:
+    ComponentHighlightProjection:
       discriminator:
         propertyName: _type
       oneOf:
@@ -146,6 +146,20 @@ components:
         - $ref: '#/components/schemas/RatioProjection'
         - $ref: '#/components/schemas/ContainerImageProjection'
         - $ref: '#/components/schemas/MapProjection'
+      description: 'Display type and value for the field.'
+
+    ComponentOverviewProjection:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: '#/components/schemas/HealthProjection'
+        - $ref: '#/components/schemas/MetricProjection'
+        - $ref: '#/components/schemas/ComponentLinkProjection'
+        - $ref: '#/components/schemas/TextProjection'
+        - $ref: '#/components/schemas/NumericProjection'
+        - $ref: '#/components/schemas/DurationProjection'
+        - $ref: '#/components/schemas/RatioProjection'
+        - $ref: '#/components/schemas/ContainerImageProjection'
       description: 'Display type and value for the field.'
 
     HealthProjection:
