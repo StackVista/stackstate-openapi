@@ -262,9 +262,8 @@ components:
         - $ref: '#/components/schemas/TextField'
         - $ref: '#/components/schemas/NumericField'
         - $ref: '#/components/schemas/DurationField'
-        - $ref: '#/components/schemas/ReadyStatusField'
         - $ref: '#/components/schemas/RatioField'
-        - $ref: '#/components/schemas/TagsField'
+        - $ref: '#/components/schemas/MapField'
       description: 'Display type and value for the field.'
 
     BaseComponentField:
@@ -306,6 +305,10 @@ components:
             query:
               type: string
               description: The frontend can use the query to refresh the metrics (at interval). Allows to keep the current behaviour of making individual calls for each row.
+            unit:
+              type: string
+            decimalPlaces:
+              type: integer
     LinkField:
       allOf:
         - $ref: '#/components/schemas/BaseComponentField'
@@ -355,13 +358,13 @@ components:
           required:
             - _type
             - value
-            - isTag
+            - asTag
           properties:
             _type:
               enum: [TextField]
             value:
               type: string
-            isTag:
+            asTag:
               type: boolean
               default: false
     NumericField:
@@ -376,40 +379,27 @@ components:
               enum: [NumericField]
             value:
               type: number
+            unit:
+              type: string
+            decimalPlaces:
+              type: integer
     DurationField:
       allOf:
         - $ref: '#/components/schemas/BaseComponentField'
         - type: object
           required:
             - _type
-            - startDate
+            - startTime
           properties:
             _type:
               enum: [DurationField]
-            startDate:
+            startTime:
               type: integer
               format: instant
-            endDate:
+            endTime:
               type: integer
               format: instant
               nullable: true
-    ReadyStatusField:
-      allOf:
-        - $ref: '#/components/schemas/BaseComponentField'
-        - type: object
-          required:
-            - _type
-            - ready
-            - total
-          properties:
-            _type:
-              enum: [ReadyStatusField]
-            ready:
-              type: number
-            total:
-              type: number
-            status:
-              $ref: "common.api.yaml#/components/schemas/HealthStateValue"
     RatioField:
       allOf:
         - $ref: '#/components/schemas/BaseComponentField'
@@ -425,20 +415,26 @@ components:
               type: number
             denominator:
               type: number
-    TagsField:
+            status:
+              $ref: "common.api.yaml#/components/schemas/HealthStateValue"
+    MapField:
       allOf:
         - $ref: '#/components/schemas/BaseComponentField'
         - type: object
           required:
             - _type
-            - tags
+            - values
+            - asTag
           properties:
             _type:
-              enum: [TagsField]
-            tags:
+              enum: [MapField]
+            values:
               type: object
               additionalProperties:
                 type: string
+            asTag:
+              type: boolean
+              default: false
 
     ComponentData:
       properties:

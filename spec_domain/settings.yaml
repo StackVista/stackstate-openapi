@@ -92,7 +92,7 @@ components:
         title:
           type: string
         projection:
-          $ref: "#/components/schemas/PresentationProjection"
+          $ref: "#/components/schemas/ComponentProjection"
       required:
         - columnId
       description: 'Definition of a column in the overview presentation. The `columnId` field is used to identify the column and merge columns from different presentations. If only the `columnId` is provided, the column will be rendered from the next more specific presentation definition.'
@@ -126,27 +126,26 @@ components:
           type: number
           format: double
         projection:
-          $ref: "#/components/schemas/PresentationProjection"
+          $ref: "#/components/schemas/ComponentProjection"
       required:
         - fieldId
         - title
         - order
       description: 'Definition of a field in the highlight presentation. The `fieldId` field is used to identify the field and merge fields from different presentations.'
 
-    PresentationProjection:
+    ComponentProjection:
       discriminator:
         propertyName: _type
       oneOf:
         - $ref: '#/components/schemas/HealthProjection'
-        - $ref: '#/components/schemas/TagsProjection'
-        - $ref: '#/components/schemas/MetricChartProjection'
+        - $ref: '#/components/schemas/MetricProjection'
         - $ref: '#/components/schemas/ComponentLinkProjection'
         - $ref: '#/components/schemas/TextProjection'
         - $ref: '#/components/schemas/NumericProjection'
         - $ref: '#/components/schemas/DurationProjection'
-        - $ref: '#/components/schemas/ReadyStatusProjection'
         - $ref: '#/components/schemas/RatioProjection'
         - $ref: '#/components/schemas/ContainerImageProjection'
+        - $ref: '#/components/schemas/MapProjection'
       description: 'Display type and value for the field.'
 
     HealthProjection:
@@ -161,20 +160,27 @@ components:
       required:
         - _type
         - value
-    TagsProjection:
+    MapProjection:
       type: object
       properties:
         _type:
           type: string
-          enum: [TagsProjection]
+          enum: [MapProjection]
+        value:
+          type: string
+          description: 'Cel expression that returns a map<string,dyn>'
+        asTags:
+          type: boolean
+          default: true
       required:
         - _type
-    MetricChartProjection:
+        - value
+    MetricProjection:
       type: object
       properties:
         _type:
           type: string
-          enum: [MetricChartProjection]
+          enum: [MetricProjection]
         showChart:
           type: boolean
         decimalPlaces:
@@ -212,9 +218,10 @@ components:
         value:
           type: string
           description: 'Cel expression that returns a string'
-        isTag:
+        asTag:
           type: boolean
           default: false
+          description: 'Should the value be rendered as a tag or as plain text'
       required:
         - _type
         - value
@@ -241,35 +248,15 @@ components:
         _type:
           type: string
           enum: [DurationProjection]
-        startDate:
+        startTime:
           type: string
-          description: 'Cel expression that returns a date'
-        endDate:
+          description: 'Cel expression that returns an ISO8601 formatted timestamp'
+        endTime:
           type: string
-          description: 'Cel expression that returns a date'
+          description: 'Cel expression that returns an ISO8601 formatted timestamp'
       required:
         - _type
-        - startDate
-    ReadyStatusProjection:
-      type: object
-      description: 'Helps rendering columns as Ready containers for K8s pods or Completions for K8s jobs'
-      properties:
-        _type:
-          type: string
-          enum: [ReadyStatusProjection]
-        readyNumber:
-          type: string
-          description: 'Cel expression that returns a number'
-        totalNumber:
-          type: string
-          description: 'Cel expression that returns a number'
-        readyStatus:
-          type: string
-          description: 'Cel expression that returns a string that represents a valid HealthState'
-      required:
-        - _type
-        - readyNumber
-        - totalNumber
+        - startTime
 
     RatioProjection:
       type: object
@@ -284,6 +271,9 @@ components:
         denominator:
           type: string
           description: 'Cel expression that returns a number'
+        status:
+          type: string
+          description: 'Cel expression that returns a string that represents a valid HealthState'
       required:
         - _type
         - numerator
