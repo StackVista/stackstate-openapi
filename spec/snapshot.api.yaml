@@ -67,9 +67,6 @@ components:
     ViewSnapshotRequest:
       type: object
       properties:
-        _type:
-          type: string
-          enum: [ ViewSnapshotRequest ]
         query:
           type: string
           description: STQL query string
