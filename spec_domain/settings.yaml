@@ -961,11 +961,10 @@ components:
             Stable identity used for deduplication and cross-stackpack compatibility.
         displayName:
           $ref: "#/components/schemas/FilterName"
-        moreTab:
+        menuSection:
           type: string
           description: |
-            Label for the tab in the "More" section when this filter overflows the primary filter bar.
-            Inherited from less specific presentations if not provided.
+            Label to group filters in the UI.
         filter:
           $ref: "#/components/schemas/ComponentPresentationFilterDefinition"
       required:
@@ -976,7 +975,7 @@ components:
         Merge semantics for matching ComponentPresentations:
         1) The most specific matching ComponentPresentation's filter list determines which `filterId`s are active.
            Only filters whose `filterId` appears in that list are rendered.
-        2) For each active `filterId`, scalar fields (`displayName`, `moreTab`, `filter`, etc.) are resolved by
+        2) For each active `filterId`, scalar fields (`displayName`, `menuSection`, `filter`, etc.) are resolved by
            falling back through less specific presentations that define the same `filterId`, most specific value wins.
         3) Array position determines display order: earlier items are primary (filter bar),
            later items are secondary ("More" section).

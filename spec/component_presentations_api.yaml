@@ -155,12 +155,12 @@ components:
           description: |
             Presentation filters in display order. Earlier items are primary (filter bar),
             later items are secondary ("More" section).
-        moreTab:
+        menuSection:
           type: string
-          description: Label for the "More" tab when secondary filters are present.
+          description: Label for the section within "More" tab when secondary filters are present.
       required:
         - filters
-        - moreTab
+        - menuSection
     PresentationFilter:
       oneOf:
         - $ref: '#/components/schemas/PresentationTagFilter'
