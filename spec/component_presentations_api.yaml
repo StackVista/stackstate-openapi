@@ -5,7 +5,7 @@ info:
   version: "1.0.0"
 
 paths:
-  /component-presentations:
+  /presentations:
     get:
       tags:
         - componentPresentation
@@ -53,7 +53,7 @@ paths:
         "500":
           $ref: "#/components/responses/ComponentPresentationErrorResponse"
 
-  /component-presentations/{identifier}:
+  /presentations/{identifier}:
     parameters:
       - $ref: "#/components/parameters/identifier"
     get:
@@ -93,7 +93,7 @@ paths:
         "500":
           $ref: "#/components/responses/ComponentPresentationErrorResponse"
 
-  /presentation/{presentationOrViewUrn}/filters:
+  /presentations/{presentationOrViewUrn}/filters:
     parameters:
       - $ref: "#/components/parameters/presentationOrViewUrn"
     get:
@@ -151,9 +151,9 @@ components:
         filters:
           type: array
           items:
-            $ref: '#/components/schemas/ResolvedFilter'
+            $ref: '#/components/schemas/PresentationFilter'
           description: |
-            Resolved filters in display order. Earlier items are primary (filter bar),
+            Presentation filters in display order. Earlier items are primary (filter bar),
             later items are secondary ("More" section).
         moreTab:
           type: string
@@ -161,21 +161,21 @@ components:
       required:
         - filters
         - moreTab
-    ResolvedFilter:
+    PresentationFilter:
       oneOf:
-        - $ref: '#/components/schemas/ResolvedTagFilter'
+        - $ref: '#/components/schemas/PresentationTagFilter'
       discriminator:
         propertyName: _type
-    ResolvedTagFilter:
+    PresentationTagFilter:
       type: object
       properties:
         _type:
           type: string
-          enum: [ResolvedTagFilter]
+          enum: [PresentationTagFilter]
         filterId:
           type: string
         displayName:
-          $ref: "#/components/schemas/ResolvedFilterName"
+          $ref: "#/components/schemas/PresentationFilterName"
         tagKey:
           type: string
           description: Tag key to use for filtering.
@@ -184,7 +184,7 @@ components:
         - filterId
         - displayName
         - tagKey
-    ResolvedFilterName:
+    PresentationFilterName:
         type: object
         properties:
           singular:
