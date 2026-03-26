@@ -269,7 +269,7 @@ components:
           type: integer
     OverviewColumnMetaDisplay:
       oneOf:
-        - $ref: '#/components/schemas/MetricChartMetaDisplay'
+        - $ref: '#/components/schemas/MetricMetaDisplay'
         - $ref: '#/components/schemas/ComponentLinkMetaDisplay'
         - $ref: '#/components/schemas/HealthMetaDisplay'
         - $ref: '#/components/schemas/TextMetaDisplay'
@@ -279,15 +279,16 @@ components:
         - $ref: '#/components/schemas/LinkMetaDisplay'
       discriminator:
         propertyName: _type
-    MetricChartMetaDisplay:
+    MetricMetaDisplay:
       type: object
       required:
         - _type
         - locked
+        - metricId
       properties:
         _type:
           type: string
-          enum: [MetricChartMetaDisplay]
+          enum: [MetricMetaDisplay]
         unit:
           type: string
           nullable: true
@@ -299,6 +300,33 @@ components:
           nullable: true
         locked:
           type: boolean
+        metricId:
+          $ref: '#/components/schemas/MetricId'
+    MetricId:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: '#/components/schemas/MetricBindingId'
+        - $ref: '#/components/schemas/PromQLId'
+    MetricBindingId:
+      type: object
+      required:
+        - _type
+        - identifier
+      properties:
+        _type:
+          type: string
+          enum: [MetricBindingId]
+        identifier:
+          type: string
+    PromQLId:
+      type: object
+      required:
+        - _type
+      properties:
+        _type:
+          type: string
+          enum: [PromqlId]
     ComponentLinkMetaDisplay:
       type: object
       required:
