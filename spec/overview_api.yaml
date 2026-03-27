@@ -284,7 +284,6 @@ components:
       required:
         - _type
         - locked
-        - metricId
       properties:
         _type:
           type: string
@@ -301,32 +300,14 @@ components:
         locked:
           type: boolean
         metricId:
-          $ref: '#/components/schemas/MetricId'
-    MetricId:
-      discriminator:
-        propertyName: _type
-      oneOf:
-        - $ref: '#/components/schemas/MetricBindingId'
-        - $ref: '#/components/schemas/PromQLId'
+          $ref: '#/components/schemas/MetricBindingId'
     MetricBindingId:
       type: object
       required:
-        - _type
         - identifier
       properties:
-        _type:
-          type: string
-          enum: [MetricBindingId]
         identifier:
           type: string
-    PromQLId:
-      type: object
-      required:
-        - _type
-      properties:
-        _type:
-          type: string
-          enum: [PromqlId]
     ComponentLinkMetaDisplay:
       type: object
       required:
