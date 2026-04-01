@@ -124,6 +124,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PresentationHighlightField'
+        source:
+          $ref: '#/components/schemas/PresentationHighlightSource'
       description: |
         Highlight presentation definition. The `fields` define the fields to show in the ab. The `flags` field can be used to enable/disable functionalities.
         If multiple ComponentPresentations match, columns are merged by `columnId` according to binding rank. Absence of the field means no overview is shown.
@@ -1047,4 +1049,17 @@ components:
         - EVENTS
         - TRACES
 
+    PresentationHighlightSource:
+      type: object
+      properties:
+        select:
+          type: string
+          description: 'Cel '
+        showConfiguration:
+          type: boolean
+        showStatus:
+          type: boolean
+      required:
+        - select
+      description: 'Primary source of a component in the highlight presentation. The `select` field is used to identify the mapping data for this presentation.'
 

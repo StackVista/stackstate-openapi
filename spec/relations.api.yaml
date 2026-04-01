@@ -115,10 +115,15 @@ components:
           type: string
         syncName:
           type: string
+        tags:
+          type: array
+          items:
+            type: string
       required:
         - identifiers
         - data
         - syncName
+        - tags
     DependencyDirection:
       enum:
         - one-way
