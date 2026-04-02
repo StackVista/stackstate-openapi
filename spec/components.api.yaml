@@ -229,6 +229,11 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ComponentField"
+        relatedResources:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResolvedRelatedResource"
+          description: 'Resolved related resource definitions in display order. Backend populates from both legacy and new presentation definitions.'
         data:
           $ref: "#/components/schemas/ComponentData"
         highlights:
@@ -246,6 +251,7 @@ components:
       required:
         - typeName
         - fields
+        - relatedResources
         - data
         - actions
         - boundMetrics
@@ -534,6 +540,32 @@ components:
         - externalComponent
         - relatedResources
         - metrics
+    ResolvedRelatedResource:
+      type: object
+      properties:
+        resourceId:
+          type: string
+          description: 'Identity key for this related resource.'
+        title:
+          type: string
+          description: 'Section heading displayed in the UI.'
+        stql:
+          type: string
+          description: 'Resolved STQL query with template variables substituted.'
+        presentationIdentifier:
+          type: string
+          description: 'ComponentPresentation identifier whose overview spec is used for rendering.'
+      required:
+        - resourceId
+        - title
+        - stql
+        - presentationIdentifier
+      description: |
+        A resolved related resource definition returned in the FullComponent response.
+        The backend merges related resources from all matching presentations, resolves template variables
+        in the stql field, and derives the name from the referenced presentation's PresentationName.
+        Array order in the response determines display order.
+
     ComponentAction:
       properties:
         id:

@@ -124,9 +124,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PresentationHighlightField'
+        relatedResources:
+          type: array
+          items:
+            $ref: '#/components/schemas/PresentationRelatedResource'
       description: |
-        Highlight presentation definition. The `fields` define the fields to show in the ab. The `flags` field can be used to enable/disable functionalities.
-        If multiple ComponentPresentations match, columns are merged by `columnId` according to binding rank. Absence of the field means no overview is shown.
+        Highlight presentation definition. The `fields` define the fields to show in the highlight page.
+        If multiple ComponentPresentations match, fields are merged by `fieldId` according to binding rank.
+        Related resources follow the same merge semantics using `resourceId` as the identity key.
       required:
         - title
         - fields
@@ -150,6 +155,45 @@ components:
         - title
         - order
       description: 'Definition of a field in the highlight presentation. The `fieldId` field is used to identify the field and merge fields from different presentations.'
+
+    PresentationRelatedResource:
+      type: object
+      properties:
+        resourceId:
+          type: string
+          description: 'Stable identity key for merging across presentations, analogous to fieldId and filterId.'
+        title:
+          type: string
+          description: 'Section heading displayed in the UI for this related resource.'
+        order:
+          type: number
+          format: double
+          description: 'Display order. Higher value means later in UI. A very negative value hides the related resource (convention).'
+        stql:
+          type: string
+          description: |
+            STQL query scoping the related components. Supports template interpolation with ${component.*} placeholders
+            (e.g. ${component.identifiers[0]}, ${component.tags['namespace']}), aligned with MetricProjection.query.
+            The backend intersects this query with the referenced presentation's binding query.
+            Must resolve to a value after merge.
+        presentationIdentifier:
+          type: string
+          description: |
+            References a ComponentPresentation by identifier to reuse its overview spec (columns, name, filters)
+            for rendering this related resource section. Must be within the same stackpack.
+            Must resolve to a value after merge.
+      required:
+        - resourceId
+        - title
+        - order
+      description: |
+        Related resource definition for the highlight page. Each entry defines a section showing components
+        related to the one being viewed, rendered using the referenced presentation's overview spec.
+        Merge semantics follow highlight field rules:
+        - All presentations whose binding matches the component contribute related resources.
+        - Same resourceId with higher specificity wins (override).
+        - Different resourceId entries are appended.
+        - Display order is determined by the order field.
 
     ComponentHighlightProjection:
       discriminator:
