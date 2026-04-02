@@ -409,11 +409,17 @@ components:
       type: object
       required:
         - _type
-        - name
-        - componentId
       properties:
         _type:
           enum: [ComponentLinkCell]
+        component:
+          $ref: '#/components/schemas/ComponentLink'
+    ComponentLink:
+      type: object
+      required:
+        - name
+        - componentId
+      properties:
         name:
           type: string
         componentId:
