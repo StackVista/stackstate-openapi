@@ -57,11 +57,16 @@ components:
           $ref: "components.api.yaml#/components/schemas/FullComponent"
         typeName:
           type: string
+        synced:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExternalRelation"
       required:
         - data
         - source
         - target
         - typeName
+        - synced
     RelationData:
       properties:
         tags:
@@ -70,10 +75,6 @@ components:
             type: string
         health:
           $ref: "common.api.yaml#/components/schemas/HealthStateValue"
-        synced:
-          type: array
-          items:
-            $ref: "#/components/schemas/ExternalRelation"
         identifiers:
           type: array
           items:
@@ -94,7 +95,6 @@ components:
         - dependencyDirection
         - tags
         - identifiers
-        - synced
     ExternalRelation:
       properties:
         externalId:

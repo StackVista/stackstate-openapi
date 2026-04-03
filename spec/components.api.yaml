@@ -229,6 +229,12 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ComponentField"
+        synced:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExternalComponent"
+        source:
+          $ref: "#/components/schemas/ExternalComponentSelector"
         data:
           $ref: "#/components/schemas/ComponentData"
         highlights:
@@ -246,6 +252,7 @@ components:
       required:
         - typeName
         - fields
+        - synced
         - data
         - actions
         - boundMetrics
@@ -468,10 +475,6 @@ components:
         lastUpdateTimestamp:
           type: integer
           format: int64
-        synced:
-          type: array
-          items:
-            $ref: "#/components/schemas/ExternalComponent"
       required:
         - name
         - tags
@@ -511,6 +514,18 @@ components:
         - data
         - syncName
         - tags
+    ExternalComponentSelector:
+      properties:
+        showConfiguration:
+          type: boolean
+        showStatus:
+          type: boolean
+        externalId:
+          type: string
+      required:
+        - showConfiguration
+        - showStatus
+        - externalId
     LegacyComponentHighlights:
       properties:
         namePlural:
@@ -519,10 +534,6 @@ components:
           $ref: "settings.yaml#/components/schemas/ComponentTypeEvents"
         showLogs:
           type: boolean
-        showLastChange:
-          type: boolean
-        externalComponent:
-          $ref: "settings.yaml#/components/schemas/ComponentTypeExternalComponent"
         relatedResources:
           type: array
           items:
