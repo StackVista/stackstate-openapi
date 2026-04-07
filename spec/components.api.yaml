@@ -232,7 +232,7 @@ components:
         relatedResources:
           type: array
           items:
-            $ref: "#/components/schemas/ResolvedRelatedResource"
+            $ref: "#/components/schemas/RelatedResource"
           description: 'Resolved related resource definitions in display order. Backend populates from both legacy and new presentation definitions.'
         data:
           $ref: "#/components/schemas/ComponentData"
@@ -540,7 +540,7 @@ components:
         - externalComponent
         - relatedResources
         - metrics
-    ResolvedRelatedResource:
+    RelatedResource:
       type: object
       properties:
         resourceId:

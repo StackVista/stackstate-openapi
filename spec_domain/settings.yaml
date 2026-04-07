@@ -168,8 +168,8 @@ components:
         order:
           type: number
           format: double
-          description: 'Display order. Higher value means later in UI. A very negative value hides the related resource (convention).'
-        stql:
+          description: 'Display order. Higher value means it shows first in UI.'
+        topologyQuery:
           type: string
           description: |
             STQL query scoping the related components. Supports template interpolation with ${component.*} placeholders
