@@ -172,16 +172,14 @@ components:
         topologyQuery:
           type: string
           description: |
-            STQL query scoping the related components. Supports template interpolation with ${component.*} placeholders
-            (e.g. ${component.identifiers[0]}, ${component.tags['namespace']}), aligned with MetricProjection.query.
+            STQL query scoping the related components. Supports template interpolation with ${*} placeholders
+            (e.g. ${identifiers[0]}, ${tags['namespace']}).
             The backend intersects this query with the referenced presentation's binding query.
-            Must resolve to a value after merge.
         presentationIdentifier:
           type: string
           description: |
             References a ComponentPresentation by identifier to reuse its overview spec (columns, name, filters)
             for rendering this related resource section. Must be within the same stackpack.
-            Must resolve to a value after merge.
       required:
         - resourceId
         - title
