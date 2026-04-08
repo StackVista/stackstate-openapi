@@ -1059,7 +1059,5 @@ components:
           type: boolean
         showStatus:
           type: boolean
-      required:
-        - externalComponentSelector
       description: 'Provisioning section of a component in the highlight presentation. The `externalComponentSelector` field is used to identify the external component with provisioning details for this component.'
 
