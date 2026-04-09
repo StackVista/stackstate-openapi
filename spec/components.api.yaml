@@ -4,7 +4,7 @@ info:
   title: Monitors API
   version: "1.0.0"
 paths:
-  /components/{componentIdOrUrn}:
+  /components/{componentIdOrIdentifier}:
     get:
       tags:
         - component
@@ -12,14 +12,14 @@ paths:
       description: "Get full component details"
       operationId: getFullComponent
       parameters:
-        - $ref: "#/components/parameters/componentIdOrUrn"
+        - $ref: "#/components/parameters/componentIdOrIdentifier"
         - $ref: "#/components/parameters/topologyTime"
       responses:
         "200":
           $ref: "#/components/responses/fullComponent"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-  /components/{componentIdOrUrn}/healthHistory:
+  /components/{componentIdOrIdentifier}/healthHistory:
     get:
       tags:
         - component
@@ -27,7 +27,7 @@ paths:
       description: "Get a component health history for a defined period of time by id or identifier"
       operationId: getComponentHealthHistory
       parameters:
-        - $ref: "#/components/parameters/componentIdOrUrn"
+        - $ref: "#/components/parameters/componentIdOrIdentifier"
         - $ref: "#/components/parameters/startTime"
         - $ref: "#/components/parameters/endTime"
       responses:
@@ -35,7 +35,7 @@ paths:
           $ref: "#/components/responses/componentHealthHistory"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-  /components/{componentIdOrUrn}/checkStates:
+  /components/{componentIdOrIdentifier}/checkStates:
     get:
       tags:
         - component
@@ -43,7 +43,7 @@ paths:
       description: "Get a component checkstates for a defined period of time by id or identifier"
       operationId: getComponentCheckStates
       parameters:
-        - $ref: "#/components/parameters/componentIdOrUrn"
+        - $ref: "#/components/parameters/componentIdOrIdentifier"
         - $ref: "#/components/parameters/startTime"
         - $ref: "#/components/parameters/endTime"
       responses:
@@ -51,7 +51,7 @@ paths:
           $ref: "#/components/responses/componentCheckStates"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-  /components/{componentIdOrUrn}/bindmetric:
+  /components/{componentIdOrIdentifier}/bindmetric:
     get:
       tags:
         - component
@@ -59,7 +59,7 @@ paths:
       description: "Bind the variables in a metric binding to a component to get valid queries for fetching metric data"
       operationId: getComponentMetricBinding
       parameters:
-        - $ref: "#/components/parameters/componentIdOrUrn"
+        - $ref: "#/components/parameters/componentIdOrIdentifier"
         - $ref: "#/components/parameters/metricBindingIdentifier"
         - $ref: "#/components/parameters/topologyTime"
       responses:
@@ -67,7 +67,7 @@ paths:
           $ref: "#/components/responses/boundMetric"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-  /components/{componentIdOrUrn}/boundMetricsWithData:
+  /components/{componentIdOrIdentifier}/boundMetricsWithData:
     get:
       tags:
         - component
@@ -75,7 +75,7 @@ paths:
       description: "Bound metric bindings for metrics that have data for a component"
       operationId: getComponentMetricsWithData
       parameters:
-        - $ref: "#/components/parameters/componentIdOrUrn"
+        - $ref: "#/components/parameters/componentIdOrIdentifier"
         - $ref: "#/components/parameters/topologyTime"
         - $ref: "#/components/parameters/startTime"
         - $ref: "#/components/parameters/requiredEndTime"
@@ -86,19 +86,19 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
   parameters:
-    componentIdOrUrn:
-      name: componentIdOrUrn
+    componentIdOrIdentifier:
+      name: componentIdOrIdentifier
       in: path
       required: true
       schema:
-        $ref: "#/components/schemas/ComponentIdOrUrn"
+        $ref: "#/components/schemas/ComponentIdOrIdentifier"
       description: "The id or identifier (urn) of a component"
     metricBindingIdentifier:
       name: metricBindingIdentifier
       in: query
       required: true
       schema:
-        $ref: "#/components/schemas/ComponentIdOrUrn"
+        $ref: "#/components/schemas/ComponentIdOrIdentifier"
       description: "The identifier (urn) of a metric binding"
     topologyTime:
       name: topologyTime
@@ -164,9 +164,8 @@ components:
           schema:
             $ref: "#/components/schemas/BoundMetrics"
   schemas:
-    ComponentIdOrUrn:
+    ComponentIdOrIdentifier:
       type: string
-      pattern: ^urn:.+|[0-9]+$
     ComponentHealthHistory:
       properties:
         startTime:

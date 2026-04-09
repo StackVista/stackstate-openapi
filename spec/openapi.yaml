@@ -144,11 +144,11 @@ paths:
   /traces/spans/fields/{field}/values: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fspans%2Ffields%2F%7Bfield%7D%2Fvalues" }
   /traces/components: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fcomponents" }
   /layouts: { $ref: "layouts.api.yaml#/paths/%2Flayouts" }
-  /components/{componentIdOrUrn}: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrUrn%7D" }
-  /components/{componentIdOrUrn}/healthHistory: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrUrn%7D%2FhealthHistory" }
-  /components/{componentIdOrUrn}/checkStates: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrUrn%7D%2FcheckStates" }
-  /components/{componentIdOrUrn}/bindmetric: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrUrn%7D%2Fbindmetric" }
-  /components/{componentIdOrUrn}/boundMetricsWithData: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrUrn%7D%2FboundMetricsWithData" }
+  /components/{componentIdOrIdentifier}: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrIdentifier%7D" }
+  /components/{componentIdOrIdentifier}/healthHistory: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrIdentifier%7D%2FhealthHistory" }
+  /components/{componentIdOrIdentifier}/checkStates: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrIdentifier%7D%2FcheckStates" }
+  /components/{componentIdOrIdentifier}/bindmetric: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrIdentifier%7D%2Fbindmetric" }
+  /components/{componentIdOrIdentifier}/boundMetricsWithData: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrIdentifier%7D%2FboundMetricsWithData" }
   /relations/{relationId}: { $ref: "relations.api.yaml#/paths/%2Frelations%2F%7BrelationId%7D" }
   /agents/{agentId}/checkLease: { $ref: "agent_leases.api.yaml#/paths/%2Fagents%2F%7BagentId%7D%2FcheckLease" }
   /agents: { $ref: "agent_registrations.api.yaml#/paths/%2Fagents" }
