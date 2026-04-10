@@ -239,6 +239,8 @@ components:
           items:
             $ref: "#/components/schemas/RelatedResource"
           description: 'Resolved related resource definitions in display order. Backend populates from both legacy and new presentation definitions.'
+        events:
+          $ref: "#/components/schemas/ComponentEvents"
         data:
           $ref: "#/components/schemas/ComponentData"
         highlights:
@@ -535,8 +537,6 @@ components:
       properties:
         namePlural:
           type: string
-        events:
-          $ref: "settings.yaml#/components/schemas/ComponentTypeEvents"
         showLogs:
           type: boolean
         relatedResources:
@@ -549,10 +549,7 @@ components:
             $ref: "settings.yaml#/components/schemas/ComponentHighlightMetrics"
       required:
         - namePlural
-        - events
         - showLogs
-        - showLastChange
-        - externalComponent
         - relatedResources
         - metrics
     RelatedResource:
@@ -580,6 +577,16 @@ components:
         The backend merges related resources from all matching presentations, resolves template variables
         in the stql field, and derives the name from the referenced presentation's PresentationName.
         Array order in the response determines display order.
+
+    ComponentEvents:
+      properties:
+        showEvents:
+          type: boolean
+        relatedResources:
+          type: string
+          description: 'Topology query for resources related to the highlighted component'
+      required:
+        - showEvents
 
     ComponentAction:
       properties:
