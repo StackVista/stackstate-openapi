@@ -461,7 +461,6 @@ components:
       type: object
       required:
         - _type
-        - value
       properties:
         _type:
           enum: [NumericCell]
@@ -486,8 +485,6 @@ components:
       type: object
       required:
         - _type
-        - ready
-        - total
       properties:
         _type:
           enum: [ReadyStatusCell]
