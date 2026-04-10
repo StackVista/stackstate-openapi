@@ -669,22 +669,6 @@ components:
         - showConfiguration
         - showStatus
         - externalIdSelector
-    ComponentTypeRelatedResources:
-      properties:
-        resourceType:
-          type: string
-        title:
-          type: string
-        stql:
-          type: string
-        hint:
-          type: string
-        viewTypeIdentifier:
-          type: string
-      required:
-        - resourceType
-        - title
-        - stql
     ComponentHighlightMetrics:
       properties:
         name:
