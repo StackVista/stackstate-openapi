@@ -130,6 +130,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PresentationRelatedResource'
+        events:
+          $ref: '#/components/schemas/PresentationHighlightEvents'
       description: |
         Highlight presentation definition. The `fields` define the fields to show in the highlight page.
         If multiple ComponentPresentations match, fields are merged by `fieldId` according to binding rank.
@@ -1087,3 +1089,10 @@ components:
           type: boolean
       description: 'Provisioning section of a component in the highlight presentation. The `externalComponentSelector` field is used to identify the external component with provisioning details for this component.'
 
+    PresentationHighlightEvents:
+      type: object
+      properties:
+        showEvents:
+          type: boolean
+      required:
+        - showEvents
