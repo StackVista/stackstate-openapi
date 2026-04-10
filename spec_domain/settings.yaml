@@ -1110,5 +1110,7 @@ components:
       properties:
         showEvents:
           type: boolean
+        relatedResourcesQuery:
+          type: string
       required:
         - showEvents
