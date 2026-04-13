@@ -539,10 +539,6 @@ components:
           type: string
         showLogs:
           type: boolean
-        relatedResources:
-          type: array
-          items:
-            $ref: "settings.yaml#/components/schemas/ComponentTypeRelatedResources"
         metrics:
           type: array
           items:
