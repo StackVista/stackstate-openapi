@@ -25,6 +25,11 @@ components:
       required:
         - specificity
 
+    ComponentPresentationMetrics:
+      type: array
+      items:
+        $ref: "#/components/schemas/ComponentPresentationMetric"
+
     PresentationDefinition:
       type: object
       properties:
@@ -34,14 +39,14 @@ components:
           $ref: "#/components/schemas/PresentationOverview"
         highlight:
           $ref: "#/components/schemas/PresentationHighlight"
+        summary:
+          $ref: "#/components/schemas/PresentationSummary"
         filters:
           type: array
           items:
             $ref: "#/components/schemas/ComponentPresentationFilter"
-        metrics:
-          type: array
-          items:
-            $ref: "#/components/schemas/ComponentPresentationMetric"
+        metricPerspective:
+          $ref: "#/components/schemas/PresentationMetricPerspective"
       description: |
         Component presentation definition.
         If multiple ComponentPresentations match, `filters` are merged by filter identity with the most specific presentation winning.
@@ -134,6 +139,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PresentationRelatedResource'
+        events:
+          $ref: '#/components/schemas/PresentationHighlightEvents'
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/PresentationHighlightMetricsSection'
       description: |
         Highlight presentation definition. The `fields` define the fields to show in the highlight page.
         If multiple ComponentPresentations match, fields are merged by `fieldId` according to binding rank.
@@ -673,6 +684,22 @@ components:
         - showConfiguration
         - showStatus
         - externalIdSelector
+    ComponentTypeRelatedResources:
+      properties:
+        resourceType:
+          type: string
+        title:
+          type: string
+        stql:
+          type: string
+        hint:
+          type: string
+        viewTypeIdentifier:
+          type: string
+      required:
+        - resourceType
+        - title
+        - stql
     ComponentHighlightMetrics:
       properties:
         name:
@@ -984,6 +1011,14 @@ components:
         - NoTopologyFilters
         - CardsLayout
 
+    PresentationSummary:
+      type: object
+      properties:
+        metrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentPresentationMetric"
+
     ComponentPresentationFilter:
       type: object
       properties:
@@ -1091,10 +1126,24 @@ components:
           type: boolean
       description: 'Provisioning section of a component in the highlight presentation. The `externalComponentSelector` field is used to identify the external component with provisioning details for this component.'
 
+    PresentationHighlightEvents:
+      type: object
+      properties:
+        showEvents:
+          type: boolean
+        relatedResourcesQuery:
+          type: string
+        excludedRelatedResourcesQuery:
+          type: string
+      required:
+        - showEvents
+
     PresentationHighlightMetricsSection:
       type: object
       properties:
-        section:
+        sectionId:
+          type: string
+        title:
           type: string
         order:
           type: number
@@ -1103,6 +1152,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ComponentPresentationMetric"
+      required:
+        - sectionId
+        - title
+        - order
 
     ComponentPresentationMetric:
       type: object
@@ -1113,14 +1166,14 @@ components:
           type: string
         description:
           type: string
-        queries:
+        metricQueries:
           type: array
           items:
             $ref: "#/components/schemas/PresentationMetricQuery"
         unit:
           type: string
         chartType:
-          $ref: "#/components/schemas/PresentationChartType"
+          $ref: "#/components/schemas/ChartType"
         alias:
           type: string
         tags:
@@ -1129,7 +1182,70 @@ components:
             type: string
       required:
         - metricId
-    ComponentChartType:
+
+    PresentationMetricQuery:
+      properties:
+        expression:
+          type: string
+        alias:
+          type: string
+        componentIdentifierTemplate:
+          type: string
+        primary:
+          type: boolean
+      required:
+        - expression
+        - alias
+
+    ChartType:
       type: string
       enum:
         - line
+
+    PresentationMetricPerspective:
+      type: object
+      properties:
+        tabs:
+          type: array
+          items:
+            $ref: "#/components/schemas/PresentationMetricPerspectiveTab"
+      required:
+        - tabs
+
+    PresentationMetricPerspectiveTab:
+      type: object
+      properties:
+        tabId:
+          type: string
+        title:
+          type: string
+        order:
+          type: number
+          format: double
+        sections:
+          type: array
+          items:
+            $ref: "#/components/schemas/PresentationMetricPerspectiveSection"
+      required:
+        - tabId
+        - title
+        - order
+
+    PresentationMetricPerspectiveSection:
+      type: object
+      properties:
+        sectionId:
+          type: string
+        title:
+          type: string
+        order:
+          type: number
+          format: double
+        metrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentPresentationMetric"
+      required:
+        - sectionId
+        - title
+        - order
