@@ -578,7 +578,7 @@ components:
       properties:
         showEvents:
           type: boolean
-        relatedResources:
+        relatedResourcesQuery:
           type: string
           description: 'Topology query for resources related to the highlighted component'
       required:
