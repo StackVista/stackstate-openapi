@@ -38,6 +38,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ComponentPresentationFilter"
+        metrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentPresentationMetric"
       description: |
         Component presentation definition.
         If multiple ComponentPresentations match, `filters` are merged by filter identity with the most specific presentation winning.
@@ -1087,3 +1091,45 @@ components:
           type: boolean
       description: 'Provisioning section of a component in the highlight presentation. The `externalComponentSelector` field is used to identify the external component with provisioning details for this component.'
 
+    PresentationHighlightMetricsSection:
+      type: object
+      properties:
+        section:
+          type: string
+        order:
+          type: number
+          format: double
+        metrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentPresentationMetric"
+
+    ComponentPresentationMetric:
+      type: object
+      properties:
+        metricId:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        queries:
+          type: array
+          items:
+            $ref: "#/components/schemas/PresentationMetricQuery"
+        unit:
+          type: string
+        chartType:
+          $ref: "#/components/schemas/PresentationChartType"
+        alias:
+          type: string
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+      required:
+        - metricId
+    ComponentChartType:
+      type: string
+      enum:
+        - line
