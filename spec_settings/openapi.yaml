@@ -1165,7 +1165,7 @@ components:
         condition:
           $ref: "#/components/schemas/OtelBooleanExpression"
         action:
-          $ref: "#/components/schemas/OtelInputConditionAction"
+          $ref: "#/components/schemas/OtelInputEventAction"
 
     OtelComponentMappingOutput:
       type: object
@@ -1272,6 +1272,18 @@ components:
       enum:
         - CREATE
         - CONTINUE
+
+    OtelInputEventAction:
+      type: object
+      properties:
+        create:
+            $ref: "#/components/schemas/OtelBooleanExpression"
+        delete:
+            $ref: "#/components/schemas/OtelBooleanExpression"
+      description: |-
+        Defines the action to be taken when a condition is evaluated for a given signal. It can specify separate boolean expressions for create and delete events, allowing for granular control over when components or relations should be created or deleted based on the evaluation of the specified conditions.
+      required:
+        - create
 
     OtelInputSignal:
       type: string
