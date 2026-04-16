@@ -523,15 +523,13 @@ components:
         condition:
           $ref: "#/components/schemas/OtelBooleanExpression"
         action:
-          $ref: "#/components/schemas/OtelInputConditionAction"
+          $ref: "#/components/schemas/OtelStringExpression"
+          description: |-
+            A CEL expression that must evaluate to one of the valid OtelInputConditionAction values: `CREATE` or `CONTINUE`.
+            Can be a simple literal (e.g. `'CREATE'`) or a CEL expression (e.g. `condition ? 'CREATE' : 'CONTINUE'`).
+            If omitted, defaults to `CONTINUE`.
         scope:
           $ref: "#/components/schemas/OtelInputScope"
-
-    OtelInputConditionAction:
-      type: string
-      enum:
-        - CREATE
-        - CONTINUE
 
     OtelInputScope:
       type: object
@@ -542,7 +540,11 @@ components:
         condition:
           $ref: "#/components/schemas/OtelBooleanExpression"
         action:
-          $ref: "#/components/schemas/OtelInputConditionAction"
+          $ref: "#/components/schemas/OtelStringExpression"
+          description: |-
+            A CEL expression that must evaluate to one of the valid OtelInputConditionAction values: `CREATE` or `CONTINUE`.
+            Can be a simple literal (e.g. `'CREATE'`) or a CEL expression (e.g. `condition ? 'CREATE' : 'CONTINUE'`).
+            If omitted, defaults to `CONTINUE`.
         metric:
           $ref: "#/components/schemas/OtelInputMetric"
         span:
@@ -559,7 +561,11 @@ components:
         condition:
           $ref: "#/components/schemas/OtelBooleanExpression"
         action:
-          $ref: "#/components/schemas/OtelInputConditionAction"
+          $ref: "#/components/schemas/OtelStringExpression"
+          description: |-
+            A CEL expression that must evaluate to one of the valid OtelInputConditionAction values: `CREATE` or `CONTINUE`.
+            Can be a simple literal (e.g. `'CREATE'`) or a CEL expression (e.g. `condition ? 'CREATE' : 'CONTINUE'`).
+            If omitted, defaults to `CONTINUE`.
         datapoint:
           $ref: "#/components/schemas/OtelInputDatapoint"
 
@@ -572,7 +578,11 @@ components:
         condition:
           $ref: "#/components/schemas/OtelBooleanExpression"
         action:
-          $ref: "#/components/schemas/OtelInputConditionAction"
+          $ref: "#/components/schemas/OtelStringExpression"
+          description: |-
+            A CEL expression that must evaluate to one of the valid OtelInputConditionAction values: `CREATE` or `CONTINUE`.
+            Can be a simple literal (e.g. `'CREATE'`) or a CEL expression (e.g. `condition ? 'CREATE' : 'CONTINUE'`).
+            If omitted, defaults to `CONTINUE`.
 
     OtelInputLog:
       type: object
@@ -583,7 +593,13 @@ components:
         condition:
           $ref: "#/components/schemas/OtelBooleanExpression"
         action:
-          $ref: "#/components/schemas/OtelInputConditionAction"
+          $ref: "#/components/schemas/OtelStringExpression"
+          description: |-
+            A CEL expression that must evaluate to one of the valid OtelInputConditionAction values: `CREATE`, `CONTINUE`, or `DELETE`.
+            The `DELETE` action is only valid at the log level.
+            Can be a simple literal (e.g. `'CREATE'`) or a CEL expression
+            (e.g. `(log.body['type'] == 'ADDED') ? 'CREATE' : (log.body['type'] == 'DELETED' ? 'DELETE' : 'CONTINUE')`).
+            If omitted, defaults to `CONTINUE`.
 
     OtelInputDatapoint:
       type: object
@@ -594,7 +610,11 @@ components:
         condition:
           $ref: "#/components/schemas/OtelBooleanExpression"
         action:
-          $ref: "#/components/schemas/OtelInputConditionAction"
+          $ref: "#/components/schemas/OtelStringExpression"
+          description: |-
+            A CEL expression that must evaluate to one of the valid OtelInputConditionAction values: `CREATE` or `CONTINUE`.
+            Can be a simple literal (e.g. `'CREATE'`) or a CEL expression (e.g. `condition ? 'CREATE' : 'CONTINUE'`).
+            If omitted, defaults to `CONTINUE`.
 
     OtelBooleanExpression:
       type: string
