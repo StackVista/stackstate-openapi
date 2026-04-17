@@ -67,13 +67,13 @@ paths:
           $ref: "#/components/responses/boundMetric"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
-  /components/{componentIdOrIdentifier}/boundMetricsWithData:
+  /components/{componentIdOrIdentifier}/metricPerspectiveData:
     get:
       tags:
         - component
       summary: "Bound metric bindings that have data for a component"
       description: "Bound metric bindings for metrics that have data for a component"
-      operationId: getComponentMetricsWithData
+      operationId: getMetricPerspectiveData
       parameters:
         - $ref: "#/components/parameters/componentIdOrIdentifier"
         - $ref: "#/components/parameters/topologyTime"
@@ -81,7 +81,7 @@ paths:
         - $ref: "#/components/parameters/requiredEndTime"
       responses:
         "200":
-          $ref: "#/components/responses/boundMetrics"
+          $ref: "#/components/responses/metricPerspectiveData"
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
 components:
@@ -157,12 +157,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/BoundMetric"
-    boundMetrics:
+    metricPerspectiveData:
       description: "Bound metrics"
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/BoundMetrics"
+            $ref: "#/components/schemas/MetricPerspectiveData"
   schemas:
     ComponentIdOrIdentifier:
       type: string
@@ -245,14 +245,16 @@ components:
           $ref: "#/components/schemas/ComponentData"
         highlights:
           $ref: "#/components/schemas/LegacyComponentHighlights"
+        summary:
+          $ref: "#/components/schemas/ComponentSummary"
+        highlightMetrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentMetricSection"
         actions:
           type: array
           items:
             $ref: "#/components/schemas/ComponentAction"
-        boundMetrics:
-          type: array
-          items:
-            $ref: "#/components/schemas/BoundMetric"
         boundTraces:
           $ref: "#/components/schemas/BoundTraces"
       required:
@@ -262,7 +264,9 @@ components:
         - relatedResources
         - data
         - actions
-        - boundMetrics
+        - summary
+        - highlightMetrics
+        - metricPerspective
 
     ComponentField:
       discriminator:
@@ -614,14 +618,10 @@ components:
           $ref: "settings.yaml#/components/schemas/ChartType"
         alias:
           type: string
-        valuation:
-          $ref: "#/components/schemas/MetricValuation"
         tags:
           type: object
           additionalProperties:
             type: string
-        layout: 
-          $ref: "#/components/schemas/MetricBindingLayout"
         dummy:
           type: boolean
       required:
@@ -642,42 +642,6 @@ components:
       required:
         - expression
         - alias
-    MetricValuation:
-      type: string
-      enum:
-        - higher-is-better
-        - lower-is-better
-    MetricBindingLayout:
-      properties:
-        metricPerspective: 
-          $ref: "#/components/schemas/MetricPerspectiveLocation"
-        componentHighlight:
-          $ref: "#/components/schemas/ComponentHighlightLocation"
-        componentSummary:
-          $ref: "#/components/schemas/ComponentSummaryLocation"
-    ComponentHighlightLocation:
-      properties:
-        section:
-          type: string
-        weight:
-          type: integer
-      required:
-        - section
-    ComponentSummaryLocation:
-      properties:
-        weight:
-          type: integer
-    MetricPerspectiveLocation:
-      properties:
-        tab:
-          type: string
-        section:
-          type: string
-        weight:
-          type: integer
-      required:
-        - tab
-        - section
     BoundTraces:
       properties:
         filter:
@@ -692,3 +656,51 @@ components:
             $ref: "#/components/schemas/BoundMetric"
       required:
         - boundMetrics
+    ComponentSummary:
+      type: object
+      properties:
+        metrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/BoundMetric"
+      required:
+        - metrics
+    MetricPerspectiveData:
+      type: object
+      properties:
+        tabs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentMetricTab"
+      required:
+        - tabs
+    ComponentMetricTab:
+      type: object
+      properties:
+        tabId:
+          type: string
+        title:
+          type: string
+        sections:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentMetricSection"
+      required:
+        - tabId
+        - title
+        - sections
+    ComponentMetricSection:
+      type: object
+      properties:
+        sectionId:
+          type: string
+        title:
+          type: string
+        metrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/BoundMetric"
+      required:
+        - sectionId
+        - title
+        - metrics
