@@ -539,19 +539,10 @@ components:
         - externalId
     LegacyComponentHighlights:
       properties:
-        namePlural:
-          type: string
         showLogs:
           type: boolean
-        metrics:
-          type: array
-          items:
-            $ref: "settings.yaml#/components/schemas/ComponentHighlightMetrics"
       required:
-        - namePlural
         - showLogs
-        - relatedResources
-        - metrics
     RelatedResource:
       type: object
       properties:
@@ -696,11 +687,16 @@ components:
           type: string
         title:
           type: string
+        description:
+          type: string
         metrics:
           type: array
           items:
             $ref: "#/components/schemas/BoundMetric"
+        defaultExpanded:
+          type: boolean
       required:
         - sectionId
         - title
         - metrics
+        - defaultExpanded

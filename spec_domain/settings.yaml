@@ -1145,6 +1145,10 @@ components:
           type: string
         title:
           type: string
+        description:
+          type: string
+        defaultExpanded:
+          type: boolean
         order:
           type: number
           format: double
