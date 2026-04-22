@@ -593,6 +593,8 @@ components:
         - name
     BoundMetric:
       properties:
+        metricId:
+          type: string
         name:
           type: string
         identifier:
@@ -616,6 +618,7 @@ components:
         dummy:
           type: boolean
       required:
+        - metricId
         - name
         - boundQueries
         - chartType
