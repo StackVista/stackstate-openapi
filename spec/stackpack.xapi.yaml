@@ -168,6 +168,136 @@ paths:
                 type: string
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /stackpack/{stackPackName}/versions:
+    get:
+      tags:
+        - stackpack
+      parameters:
+        - $ref: "#/components/parameters/stackPackName"
+      summary: "List StackPack versions"
+      operationId: stackPackListVersions
+      description: "List all available versions of a StackPack"
+      responses:
+        "200":
+          description: "List of versions"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StackPackVersionInfo"
+        "404":
+          description: "StackPack not found"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+    delete:
+      tags:
+        - stackpack
+      parameters:
+        - $ref: "#/components/parameters/stackPackName"
+        - in: query
+          name: from
+          required: false
+          schema:
+            type: string
+          description: "Inclusive lower bound. Deletes versions >= this version. Can be used alone or combined with 'to' for a range."
+        - in: query
+          name: to
+          required: false
+          schema:
+            type: string
+          description: "Inclusive upper bound. Deletes versions <= this version. Can be used alone or combined with 'from' for a range."
+        - in: query
+          name: all
+          required: false
+          schema:
+            type: boolean
+          description: "Delete all versions. Cannot be combined with 'from' or 'to'."
+        - in: query
+          name: dev
+          required: false
+          schema:
+            type: boolean
+          description: "Filter to development versions only (versions with metadata, e.g. SNAPSHOT). Can be combined with any scope selector."
+      summary: "Delete StackPack versions"
+      operationId: stackPackDeleteVersions
+      description: |
+        Delete versions of a StackPack. Versions currently in use are skipped.
+
+        Supported parameter combinations:
+        - `?to=X` — delete all versions up to and including X
+        - `?from=X` — delete all versions from X onwards
+        - `?from=X&to=Y` — delete versions in the inclusive range [X, Y]
+        - `?all=true` — delete all versions
+        - Any of the above combined with `&dev=true` to restrict to development versions only
+      responses:
+        "200":
+          description: "Batch delete result"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteVersionsResult"
+        "400":
+          description: "Invalid parameters (e.g. invalid version string, incompatible parameter combination)"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "404":
+          description: "StackPack not found"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "409":
+          description: "All targeted versions are currently in use"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteVersionsResult"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /stackpack/{stackPackName}/versions/{version}:
+    delete:
+      tags:
+        - stackpack
+      parameters:
+        - $ref: "#/components/parameters/stackPackName"
+        - $ref: "#/components/parameters/version"
+      summary: "Delete a StackPack version"
+      operationId: stackPackDeleteVersion
+      description: "Delete a specific version of a StackPack. Fails if the version is currently in use."
+      responses:
+        "204":
+          description: "Version deleted successfully"
+        "400":
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "404":
+          description: "Version not found"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /stackpack/{stackPackName}/confirm-manual-steps/{stackPackInstanceId}:
     post:
       tags:
@@ -209,6 +339,13 @@ components:
       schema:
         type: string
       description: "Optional version string (e.g. '1.2.3'). If not provided, validates the latest version."
+    version:
+      in: path
+      name: version
+      required: true
+      schema:
+        type: string
+      description: "Version string (e.g. '1.2.3')"
 
   schemas:
     StackPackUpload:
@@ -447,6 +584,35 @@ components:
           type: boolean
         isCompatible:
           type: boolean
+
+    StackPackVersionInfo:
+      type: object
+      required:
+        - version
+        - isDev
+        - isInUse
+      properties:
+        version:
+          type: string
+        isDev:
+          type: boolean
+        isInUse:
+          type: boolean
+
+    DeleteVersionsResult:
+      type: object
+      required:
+        - deleted
+        - skippedInUse
+      properties:
+        deleted:
+          type: array
+          items:
+            type: string
+        skippedInUse:
+          type: array
+          items:
+            type: string
 
     ProvisionResponse:
       type: object

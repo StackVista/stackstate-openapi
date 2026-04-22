@@ -35,6 +35,8 @@ paths:
   /stackpack/{stackPackName}/provision: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack%2F%7BstackPackName%7D%2Fprovision" }
   /stackpack/{stackPackName}/deprovision/{stackPackInstanceId}: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack%2F%7BstackPackName%7D%2Fdeprovision%2F%7BstackPackInstanceId%7D" }
   /stackpack/{stackPackName}/upgrade: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack%2F%7BstackPackName%7D%2Fupgrade" }
+  /stackpack/{stackPackName}/versions: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack%2F%7BstackPackName%7D%2Fversions" }
+  /stackpack/{stackPackName}/versions/{version}: { $ref: "stackpack.xapi.yaml#/paths/%2Fstackpack%2F%7BstackPackName%7D%2Fversions%2F%7Bversion%7D" }
   /stackpack/{stackPackName}/confirm-manual-steps/{stackPackInstanceId}: {$ref: "stackpack.xapi.yaml#/paths/%2Fstackpack%2F%7BstackPackName%7D%2Fconfirm-manual-steps%2F%7BstackPackInstanceId%7D"}
   /monitors: { $ref: "monitors.api.yaml#/paths/%2Fmonitors" }
   /monitors/{monitorIdOrUrn}: { $ref: "monitors.api.yaml#/paths/%2Fmonitors%2F%7BmonitorIdOrUrn%7D" }
