@@ -1155,11 +1155,20 @@ components:
         metrics:
           type: array
           items:
-            $ref: "#/components/schemas/ComponentPresentationMetric"
+            $ref: "#/components/schemas/OrderedComponentPresentationMetric"
       required:
         - sectionId
         - title
         - order
+
+    OrderedComponentPresentationMetric:
+      allOf:
+        - $ref: "#/components/schemas/ComponentPresentationMetric"
+        - type: object
+          properties:
+            order:
+              type: number
+              format: double
 
     ComponentPresentationMetric:
       type: object
@@ -1248,7 +1257,7 @@ components:
         metrics:
           type: array
           items:
-            $ref: "#/components/schemas/ComponentPresentationMetric"
+            $ref: "#/components/schemas/OrderedComponentPresentationMetric"
       required:
         - sectionId
         - title
