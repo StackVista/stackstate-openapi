@@ -1017,7 +1017,7 @@ components:
         metrics:
           type: array
           items:
-            $ref: "#/components/schemas/ComponentPresentationMetric"
+            $ref: "#/components/schemas/OrderedComponentPresentationMetric"
 
     ComponentPresentationFilter:
       type: object
