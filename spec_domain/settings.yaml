@@ -38,9 +38,13 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ComponentPresentationFilter"
+        topologySettings:
+          $ref: "#/components/schemas/TopologySettings"
       description: |
         Component presentation definition.
         If multiple ComponentPresentations match, `filters` are merged by filter identity with the most specific presentation winning.
+        Scalar fields like `icon` and `topologySettings` follow most-specific-wins semantics across matching presentations.
+        Absence of `topologySettings` means the Topology perspective is not available for this presentation.
         Absence of the field keeps legacy behavior (for example, ViewType-based filters) unchanged.
 
     PresentationName:
@@ -1116,3 +1120,27 @@ components:
           type: string
       required:
         - showEvents
+
+    TopologySettings:
+      type: object
+      description: |
+        Rendering settings for the topology perspective.
+        Near-copy of QueryMetadata used for topology rendering today; differences:
+        - `queryTime` is intentionally absent (request-time state, not a presentation setting).
+        Most-specific-wins merge semantics across matching ComponentPresentations.
+      properties:
+        groupingEnabled:
+          type: boolean
+        showIndirectRelations:
+          type: boolean
+        minGroupSize:
+          type: integer
+          format: int64
+        groupedByLayer:
+          type: boolean
+        groupedByDomain:
+          type: boolean
+        groupedByRelation:
+          type: boolean
+        autoGrouping:
+          type: boolean

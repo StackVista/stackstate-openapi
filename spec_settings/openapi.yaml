@@ -809,10 +809,38 @@ components:
               type: string
             topologyQuery:
               type: string
+            groupingEnabled:
+              type: boolean
+            groupedByLayers:
+              type: boolean
+            groupedByDomains:
+              type: boolean
+            groupedByRelations:
+              type: boolean
+            minimumGroupSize:
+              type: integer
+              format: int64
+            showIndirectRelations:
+              type: boolean
+            autoGrouping:
+              type: boolean
+            connectedComponents:
+              type: boolean
+            neighboringComponents:
+              type: boolean
           required:
             - type
             - name
             - topologyQuery
+            - groupingEnabled
+            - groupedByLayers
+            - groupedByDomains
+            - groupedByRelations
+            - minimumGroupSize
+            - showIndirectRelations
+            - autoGrouping
+            - connectedComponents
+            - neighboringComponents
 
     # Supporting types
     NotificationConfigurationStatus:
