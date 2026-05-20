@@ -1189,10 +1189,6 @@ components:
           $ref: "#/components/schemas/ChartType"
         alias:
           type: string
-        tags:
-          type: object
-          additionalProperties:
-            type: string
       required:
         - metricId
 
@@ -1214,6 +1210,8 @@ components:
       type: string
       enum:
         - line
+        - gauge
+        - stat
 
     PresentationMetricPerspective:
       type: object

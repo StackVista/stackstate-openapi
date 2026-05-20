@@ -611,10 +611,6 @@ components:
           $ref: "settings.yaml#/components/schemas/ChartType"
         alias:
           type: string
-        tags:
-          type: object
-          additionalProperties:
-            type: string
         dummy:
           type: boolean
       required:
@@ -622,7 +618,6 @@ components:
         - name
         - boundQueries
         - chartType
-        - tags
     BoundMetricQuery:
       properties:
         expression:
