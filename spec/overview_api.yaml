@@ -32,6 +32,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OverviewErrorResponse'
+        "404":
+          description: Presentation not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OverviewErrorResponse'
 
 components:
   parameters:
