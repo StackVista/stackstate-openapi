@@ -1133,14 +1133,18 @@ components:
           type: boolean
         showIndirectRelations:
           type: boolean
-        minGroupSize:
+        minimumGroupSize:
           type: integer
           format: int64
-        groupedByLayer:
+        groupedByLayers:
           type: boolean
-        groupedByDomain:
+        groupedByDomains:
           type: boolean
-        groupedByRelation:
+        groupedByRelations:
           type: boolean
         autoGrouping:
+          type: boolean
+        connectedComponents:
+          type: boolean
+        neighboringComponents:
           type: boolean
