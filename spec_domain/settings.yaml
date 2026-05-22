@@ -38,13 +38,13 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ComponentPresentationFilter"
-        topologySettings:
+        topology:
           $ref: "#/components/schemas/TopologySettings"
       description: |
         Component presentation definition.
         If multiple ComponentPresentations match, `filters` are merged by filter identity with the most specific presentation winning.
-        Scalar fields like `icon` and `topologySettings` follow most-specific-wins semantics across matching presentations.
-        Absence of `topologySettings` means the Topology perspective is not available for this presentation.
+        Scalar fields like `icon` and `topology` follow most-specific-wins semantics across matching presentations.
+        Absence of `topology` means the Topology perspective is not available for this presentation.
         Absence of the field keeps legacy behavior (for example, ViewType-based filters) unchanged.
 
     PresentationName:

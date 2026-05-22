@@ -53,7 +53,8 @@ components:
       type: object
       description: |
         The set of perspectives the frontend needs to render a view page in one response.
-        Each entry in `availablePerspectives` carries its own per-perspective config.
+        Each optional field carries the per-perspective config; absence means
+        the perspective is not available for this view.
       properties:
         identifier:
           type: string
@@ -61,60 +62,32 @@ components:
         topologyQuery:
           type: string
           description: STQL query for this view. Used by the shared timeline, the events perspective, and the topology perspective.
-        availablePerspectives:
-          type: array
-          items:
-            $ref: "#/components/schemas/AvailablePerspective"
-          description: Perspectives that are both defined for this view and accessible to the caller, each carrying its own config.
+        overview:
+          $ref: "#/components/schemas/OverviewPerspective"
+        topology:
+          $ref: "#/components/schemas/TopologyPerspective"
+        events:
+          $ref: "#/components/schemas/EventsPerspective"
       required:
         - identifier
         - topologyQuery
-        - availablePerspectives
-
-    AvailablePerspective:
-      oneOf:
-        - $ref: "#/components/schemas/OverviewPerspective"
-        - $ref: "#/components/schemas/TopologyPerspective"
-        - $ref: "#/components/schemas/EventsPerspective"
-      discriminator:
-        propertyName: _type
 
     OverviewPerspective:
       type: object
-      properties:
-        _type:
-          type: string
-          enum: [OverviewPerspective]
-      required:
-        - _type
 
     TopologyPerspective:
       type: object
       description: |
-        Topology perspective. Reuses QueryMetadata from the snapshot API as the rendering
-        spec; the perspectives API does not introduce a separate topology settings shape.
+        Topology perspective config. Reuses QueryMetadata from the snapshot API
+        as the rendering spec.
       properties:
-        _type:
-          type: string
-          enum: [TopologyPerspective]
         queryMetadata:
           $ref: "snapshot.api.yaml#/components/schemas/QueryMetadata"
       required:
-        - _type
         - queryMetadata
 
     EventsPerspective:
       type: object
-      description: |
-        Events perspective. Today the backend synthesizes the events config from the
-        view's STQL plus documented defaults (no extra filters); no per-presentation
-        config is exposed yet.
-      properties:
-        _type:
-          type: string
-          enum: [EventsPerspective]
-      required:
-        - _type
 
     PerspectivesApiError:
       type: object
