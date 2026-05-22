@@ -45,7 +45,6 @@ components:
       required:
         - name
         - defaultOpen
-        - icon
         - items
     MainMenuViewItem:
       properties:
