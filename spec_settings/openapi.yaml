@@ -828,6 +828,13 @@ components:
               type: boolean
             neighboringComponents:
               type: boolean
+            flags:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: "settings.yaml#/components/schemas/QueryViewFlag"
+            ownedBy:
+              type: string
           required:
             - type
             - name
@@ -841,6 +848,7 @@ components:
             - autoGrouping
             - connectedComponents
             - neighboringComponents
+            - flags
 
     # Supporting types
     NotificationConfigurationStatus:

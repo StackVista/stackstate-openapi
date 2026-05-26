@@ -1,0 +1,142 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Views API
+  version: "1.0.0"
+  description: |
+    API for retrieving QueryView settings.
+paths:
+  /views:
+    get:
+      tags:
+        - view
+      summary: "Get a list of views"
+      description: "Get a list of all QueryView settings."
+      operationId: getViews
+      responses:
+        "200":
+          $ref: "#/components/responses/views"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+  /views/{viewIdOrIdentifier}:
+    get:
+      tags:
+        - view
+      summary: "Get a single view"
+      description: "Get a QueryView by its ID or identifier."
+      operationId: getView
+      parameters:
+        - $ref: "#/components/parameters/viewIdOrIdentifier"
+      responses:
+        "200":
+          $ref: "#/components/responses/view"
+        "404":
+          $ref: "#/components/responses/viewNotFoundError"
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+components:
+  parameters:
+    viewIdOrIdentifier:
+      in: path
+      name: viewIdOrIdentifier
+      required: true
+      description: "The system ID or identifier of a QueryView."
+      schema:
+        $ref: "#/components/schemas/ViewIdOrIdentifier"
+  responses:
+    views:
+      description: "List of views"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ViewList"
+    view:
+      description: "A single view"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/View"
+    viewNotFoundError:
+      description: "View not found."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ViewNotFoundError"
+  schemas:
+    ViewIdOrIdentifier:
+      type: string
+      description: "The system ID or identifier of a QueryView."
+    ViewList:
+      type: object
+      properties:
+        views:
+          type: array
+          items:
+            $ref: "#/components/schemas/View"
+      required:
+        - views
+    View:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        identifier:
+          type: string
+        name:
+          type: string
+        viewType:
+          type: string
+        topologyQuery:
+          type: string
+        groupingEnabled:
+          type: boolean
+        groupedByLayers:
+          type: boolean
+        groupedByDomains:
+          type: boolean
+        groupedByRelations:
+          type: boolean
+        minimumGroupSize:
+          type: integer
+          format: int64
+        showIndirectRelations:
+          type: boolean
+        autoGrouping:
+          type: boolean
+        connectedComponents:
+          type: boolean
+        neighboringComponents:
+          type: boolean
+        flags:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: "settings.yaml#/components/schemas/QueryViewFlag"
+        ownedBy:
+          type: string
+      required:
+        - id
+        - name
+        - topologyQuery
+        - groupingEnabled
+        - groupedByLayers
+        - groupedByDomains
+        - groupedByRelations
+        - minimumGroupSize
+        - showIndirectRelations
+        - autoGrouping
+        - connectedComponents
+        - neighboringComponents
+        - flags
+    ViewNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+          description: "A detailed error message describing why the operation failed."
+        viewIdOrIdentifier:
+          type: string
+      required:
+        - message
+        - viewIdOrIdentifier
