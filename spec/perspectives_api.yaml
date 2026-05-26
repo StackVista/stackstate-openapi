@@ -1,0 +1,112 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Perspectives API
+  description: |
+    Resolves a ComponentPresentation identifier or a legacy QueryView/ViewType URN
+    into the perspectives the frontend needs to render the page header, the shared timeline,
+    and any of the three perspective tabs (Overview, Topology, Events).
+  version: "1.0.0"
+
+paths:
+  /perspectives/{presentationOrViewUrn}:
+    parameters:
+      - $ref: "#/components/parameters/presentationOrViewUrn"
+    get:
+      tags:
+        - perspectives
+      summary: Get the perspectives for a view
+      description: |
+        Returns the perspectives, and the per-perspective configs that are available.
+
+        Acts as the canonical view-open permission check: returns 403 when the
+        caller lacks access and 404 when the URN does not resolve.
+      operationId: getPerspectives
+      responses:
+        "200":
+          description: Resolved perspectives
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Perspectives"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          $ref: "#/components/responses/PerspectivesNotFound"
+        "500":
+          $ref: "#/components/responses/PerspectivesErrorResponse"
+
+components:
+  parameters:
+    presentationOrViewUrn:
+      in: path
+      name: presentationOrViewUrn
+      schema:
+        type: string
+      required: true
+      description: "A Component Presentation Identifier, legacy View (QueryView, ViewType) URNs are supported for backward compatibility"
+
+  schemas:
+    Perspectives:
+      type: object
+      description: |
+        The set of perspectives the frontend needs to render a view page in one response.
+        Each optional field carries the per-perspective config; absence means
+        the perspective is not available for this view.
+      properties:
+        identifier:
+          type: string
+          description: The resolved URN (ComponentPresentation identifier or legacy QueryView/ViewType URN).
+        topologyQuery:
+          type: string
+          description: STQL query for this view. Used by the shared timeline, the events perspective, and the topology perspective.
+        overview:
+          $ref: "#/components/schemas/OverviewPerspective"
+        topology:
+          $ref: "#/components/schemas/TopologyPerspective"
+        events:
+          $ref: "#/components/schemas/EventsPerspective"
+      required:
+        - identifier
+        - topologyQuery
+
+    OverviewPerspective:
+      type: object
+
+    TopologyPerspective:
+      type: object
+      description: |
+        Topology perspective config. Reuses QueryMetadata from the snapshot API
+        as the rendering spec.
+      properties:
+        queryMetadata:
+          $ref: "snapshot.api.yaml#/components/schemas/QueryMetadata"
+      required:
+        - queryMetadata
+
+    EventsPerspective:
+      type: object
+
+    PerspectivesApiError:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+
+  responses:
+    PerspectivesNotFound:
+      description: "No ComponentPresentation, QueryView, or ViewType found for the given URN"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PerspectivesApiError"
+    PerspectivesErrorResponse:
+      description: "Error when handling the request on the server side."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PerspectivesApiError"

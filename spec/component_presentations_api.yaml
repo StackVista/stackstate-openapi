@@ -148,6 +148,9 @@ components:
     PresentationFiltersResponse:
       type: object
       properties:
+        topologyFilters:
+          type: boolean
+          description: Whether topology filters are enabled for this presentation.
         filters:
           type: array
           items:
@@ -159,6 +162,7 @@ components:
           type: string
           description: Label for the section within "More" tab when secondary filters are present.
       required:
+        - topologyFilters
         - filters
         - menuSection
     PresentationFilter:

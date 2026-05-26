@@ -47,9 +47,13 @@ components:
             $ref: "#/components/schemas/ComponentPresentationFilter"
         metricPerspective:
           $ref: "#/components/schemas/PresentationMetricPerspective"
+        topology:
+          $ref: "#/components/schemas/TopologySettings"
       description: |
         Component presentation definition.
         If multiple ComponentPresentations match, `filters` are merged by filter identity with the most specific presentation winning.
+        Scalar fields like `icon` and `topology` follow most-specific-wins semantics across matching presentations.
+        Absence of `topology` means the Topology perspective is not available for this presentation.
         Absence of the field keeps legacy behavior (for example, ViewType-based filters) unchanged.
 
     PresentationName:
@@ -1260,3 +1264,31 @@ components:
         - sectionId
         - title
         - order
+
+    TopologySettings:
+      type: object
+      description: |
+        Rendering settings for the topology perspective.
+        Near-copy of QueryMetadata used for topology rendering today; differences:
+        - `queryTime` is intentionally absent (request-time state, not a presentation setting).
+        Most-specific-wins merge semantics across matching ComponentPresentations.
+      properties:
+        groupingEnabled:
+          type: boolean
+        showIndirectRelations:
+          type: boolean
+        minimumGroupSize:
+          type: integer
+          format: int64
+        groupedByLayers:
+          type: boolean
+        groupedByDomains:
+          type: boolean
+        groupedByRelations:
+          type: boolean
+        autoGrouping:
+          type: boolean
+        connectedComponents:
+          type: boolean
+        neighboringComponents:
+          type: boolean
