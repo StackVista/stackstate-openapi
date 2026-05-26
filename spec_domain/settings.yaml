@@ -739,6 +739,12 @@ components:
         - bindings
         - defaultExpanded
 
+    QueryViewFlag:
+      type: string
+      enum:
+        - NotUnlockable
+        - HideFromViewsOverview
+
     DependencyType:
       enum:
         - UNCLASSIFIED
