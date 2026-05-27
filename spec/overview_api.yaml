@@ -305,15 +305,6 @@ components:
           nullable: true
         locked:
           type: boolean
-        metricId:
-          $ref: '#/components/schemas/MetricBindingId'
-    MetricBindingId:
-      type: object
-      required:
-        - identifier
-      properties:
-        identifier:
-          type: string
     ComponentLinkMetaDisplay:
       type: object
       required:

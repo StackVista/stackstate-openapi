@@ -55,12 +55,12 @@ paths:
     get:
       tags:
         - component
-      summary: "Get a bound metric binding to a component"
+      summary: "Get a bound metric for a component"
       description: "Bind the variables in a metric binding to a component to get valid queries for fetching metric data"
-      operationId: getComponentMetricBinding
+      operationId: getComponentBoundMetric
       parameters:
         - $ref: "#/components/parameters/componentIdOrIdentifier"
-        - $ref: "#/components/parameters/metricBindingIdentifier"
+        - $ref: "#/components/parameters/boundMetricId"
         - $ref: "#/components/parameters/topologyTime"
       responses:
         "200":
@@ -93,12 +93,12 @@ components:
       schema:
         $ref: "#/components/schemas/ComponentIdOrIdentifier"
       description: "The id or identifier (urn) of a component"
-    metricBindingIdentifier:
-      name: metricBindingIdentifier
+    boundMetricId:
+      name: boundMetricId
       in: query
       required: true
       schema:
-        $ref: "#/components/schemas/ComponentIdOrIdentifier"
+        $ref: "components.api.yaml#/components/schemas/BoundMetricId"
       description: "The identifier (urn) of a metric binding"
     topologyTime:
       name: topologyTime
@@ -593,11 +593,9 @@ components:
         - name
     BoundMetric:
       properties:
-        metricId:
-          type: string
+        boundMetricId:
+          $ref: "#/components/schemas/BoundMetricId"
         name:
-          type: string
-        identifier:
           type: string
         boundQueries:
           type: array
@@ -614,10 +612,37 @@ components:
         dummy:
           type: boolean
       required:
-        - metricId
         - name
         - boundQueries
         - chartType
+    BoundMetricId:
+      oneOf:
+        - $ref: "#/components/schemas/BoundMetricBindingId"
+        - $ref: "#/components/schemas/BoundPresentationMetricId"
+      discriminator:
+        propertyName: _type
+    BoundPresentationMetricId:
+      properties:
+        _type:
+          type: string
+          enum: [BoundPresentationMetricId]
+        presentationIdentifier:
+          type: string
+        metricId:
+          type: string
+      required:
+        - _type
+        - metricId
+    BoundMetricBindingId:
+      properties:
+        _type:
+          type: string
+          enum: [BoundMetricBindingId]
+        identifier:
+          type: string
+      required:
+        - _type
+        - identifier
     BoundMetricQuery:
       properties:
         expression:
