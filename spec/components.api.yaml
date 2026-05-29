@@ -52,7 +52,7 @@ paths:
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /components/{componentIdOrIdentifier}/bindmetric:
-    get:
+    post:
       tags:
         - component
       summary: "Get a bound metric for a component"
@@ -60,8 +60,13 @@ paths:
       operationId: getComponentBoundMetric
       parameters:
         - $ref: "#/components/parameters/componentIdOrIdentifier"
-        - $ref: "#/components/parameters/boundMetricId"
         - $ref: "#/components/parameters/topologyTime"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "components.api.yaml#/components/schemas/BoundMetricId"
       responses:
         "200":
           $ref: "#/components/responses/boundMetric"
@@ -93,13 +98,6 @@ components:
       schema:
         $ref: "#/components/schemas/ComponentIdOrIdentifier"
       description: "The id or identifier (urn) of a component"
-    boundMetricId:
-      name: boundMetricId
-      in: query
-      required: true
-      schema:
-        $ref: "components.api.yaml#/components/schemas/BoundMetricId"
-      description: "The identifier (urn) of a metric binding"
     topologyTime:
       name: topologyTime
       in: query

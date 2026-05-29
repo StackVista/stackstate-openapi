@@ -305,6 +305,8 @@ components:
           nullable: true
         locked:
           type: boolean
+        boundMetricId:
+          $ref: "components.api.yaml#/components/schemas/BoundMetricId"
     ComponentLinkMetaDisplay:
       type: object
       required:
