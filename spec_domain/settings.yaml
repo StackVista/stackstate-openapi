@@ -294,15 +294,17 @@ components:
         _type:
           type: string
           enum: [MetricProjection]
-        showChart:
-          type: boolean
-        decimalPlaces:
-          type: integer
-        unit:
-          type: string
         query:
           type: string
           description: "Individual metric query that returns a timeseries for a specific cell."
+        unit:
+          type: string
+        decimalPlaces:
+          type: integer
+        sparkline:
+          type: boolean
+        metricId:
+          type: string
       required:
         - _type
         - query
@@ -1045,7 +1047,7 @@ components:
         metrics:
           type: array
           items:
-            $ref: "#/components/schemas/OrderedComponentPresentationMetric"
+            $ref: "#/components/schemas/PresentationSummaryMetric"
 
     ComponentPresentationFilter:
       type: object
@@ -1211,14 +1213,33 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/PresentationMetricQuery"
-        unit:
-          type: string
-        chartType:
-          $ref: "#/components/schemas/ChartType"
+        chart:
+          $ref: "#/components/schemas/PresentationMetricChart"
         alias:
           type: string
       required:
         - metricId
+
+    PresentationSummaryMetric:
+      type: object
+      properties:
+        summaryMetricId:
+          type: string
+        name:
+          type: string
+        order:
+          type: number
+          format: double
+        query:
+          type: string
+        unit:
+          type: string
+        decimalPlaces:
+          type: integer
+        metricId:
+          type: string
+      required:
+        - summaryMetricId
 
     PresentationMetricQuery:
       properties:
@@ -1228,18 +1249,133 @@ components:
           type: string
         componentIdentifierTemplate:
           type: string
-        primary:
-          type: boolean
       required:
         - expression
         - alias
 
-    ChartType:
+    PresentationMetricChart:
+      oneOf:
+        - $ref: "#/components/schemas/PresentationMetricTimeSeriesChart"
+        - $ref: "#/components/schemas/PresentationMetricGaugeChart"
+        - $ref: "#/components/schemas/PresentationMetricBarChart"
+        - $ref: "#/components/schemas/PresentationMetricStatChart"
+      discriminator:
+        propertyName: _type
+
+    PresentationMetricTimeSeriesChart:
+      properties:
+        _type:
+          type: string
+          enum: ["timeseries"]
+        range:
+          $ref: "#/components/schemas/PresentationMetricRange"
+        format:
+          $ref: "#/components/schemas/PresentationMetricFormat"
+        thresholds:
+          $ref: "#/components/schemas/PresentationMetricThresholds"
+      required:
+        - _type
+    PresentationMetricBarChart:
+      properties:
+        _type:
+          type: string
+          enum: ["bar"]
+        range:
+          $ref: "#/components/schemas/PresentationMetricRange"
+        format:
+          $ref: "#/components/schemas/PresentationMetricFormat"
+        thresholds:
+          $ref: "#/components/schemas/PresentationMetricThresholds"
+      required:
+        - _type
+    PresentationMetricGaugeChart:
+      properties:
+        _type:
+          type: string
+          enum: ["gauge"]
+        range:
+          $ref: "#/components/schemas/PresentationMetricRange"
+        format:
+          $ref: "#/components/schemas/PresentationMetricFormat"
+        calculation:
+          $ref: "#/components/schemas/PresentationMetricCalculation"
+      required:
+        - _type
+    PresentationMetricStatChart:
+      properties:
+        _type:
+          type: string
+          enum: ["stat"]
+        sparkline:
+          type: boolean
+        format:
+          $ref: "#/components/schemas/PresentationMetricFormat"
+        calculation:
+          $ref: "#/components/schemas/PresentationMetricCalculation"
+        thresholds:
+          $ref: "#/components/schemas/PresentationMetricStatThresholds"
+      required:
+        - _type
+
+    PresentationMetricCalculation:
       type: string
       enum:
-        - line
-        - gauge
-        - stat
+        - "mean"
+        - "sum"
+        - "min"
+        - "max"
+        - "first"
+        - "first-number"
+        - "last"
+        - "last-number"
+
+    PresentationMetricRange:
+      properties:
+        min:
+          type: number
+          format: double
+        max:
+          type: number
+          format: double
+
+    PresentationMetricFormat:
+      properties:
+        unit:
+          type: string
+        decimalPlaces:
+          type: integer
+
+    PresentationMetricThresholds:
+      properties:
+        mode:
+          type: string
+          enum: ["absolute", "percent"]
+        defaultColor:
+          type: string
+        steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/PresentationMetricThresholdStep"
+
+    PresentationMetricStatThresholds:
+      properties:
+        defaultColor:
+          type: string
+        steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/PresentationMetricThresholdStep"
+
+    PresentationMetricThresholdStep:
+      properties:
+        value:
+          type: number
+        color:
+          type: string
+        name:
+          type: string
+      required:
+        - value
 
     PresentationMetricPerspective:
       type: object

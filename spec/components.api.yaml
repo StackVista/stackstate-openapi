@@ -601,10 +601,8 @@ components:
             $ref: "#/components/schemas/BoundMetricQuery"
         description:
           type: string
-        unit:
-          type: string
-        chartType:
-          $ref: "settings.yaml#/components/schemas/ChartType"
+        chart:
+          $ref: "settings.yaml#/components/schemas/PresentationMetricChart"
         alias:
           type: string
         dummy:
@@ -613,6 +611,21 @@ components:
         - name
         - boundQueries
         - chartType
+    BoundSummaryMetric:
+      properties:
+        boundMetricId:
+          $ref: "#/components/schemas/BoundMetricId"
+        name:
+          type: string
+        query:
+          type: string
+        unit:
+          type: string
+        decimalPlaces:
+          type: integer
+      required:
+        - name
+        - query
     BoundMetricId:
       oneOf:
         - $ref: "#/components/schemas/BoundMetricBindingId"
@@ -674,7 +687,7 @@ components:
         metrics:
           type: array
           items:
-            $ref: "#/components/schemas/BoundMetric"
+            $ref: "#/components/schemas/BoundSummaryMetric"
       required:
         - metrics
     MetricPerspectiveData:
