@@ -1145,14 +1145,14 @@ components:
     PresentationHighlightProvisioning:
       type: object
       properties:
-        externalComponentSelector:
+        topologySourceSelector:
           type: string
           description: 'Cel expression that selects the external component with provisioning details'
         showConfiguration:
           type: boolean
         showStatus:
           type: boolean
-      description: 'Provisioning section of a component in the highlight presentation. The `externalComponentSelector` field is used to identify the external component with provisioning details for this component.'
+      description: 'Provisioning section of a component in the highlight presentation. The `topologySourceSelector` field is used to identify the external component with provisioning details for this component.'
 
     PresentationHighlightEvents:
       type: object
