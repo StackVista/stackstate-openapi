@@ -602,7 +602,7 @@ components:
         description:
           type: string
         chart:
-          $ref: "settings.yaml#/components/schemas/PresentationMetricChart"
+          $ref: "settings.yaml#/components/schemas/Chart"
         alias:
           type: string
         dummy:

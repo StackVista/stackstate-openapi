@@ -1214,7 +1214,7 @@ components:
           items:
             $ref: "#/components/schemas/PresentationMetricQuery"
         chart:
-          $ref: "#/components/schemas/PresentationMetricChart"
+          $ref: "#/components/schemas/Chart"
         alias:
           type: string
       required:
@@ -1253,71 +1253,71 @@ components:
         - expression
         - alias
 
-    PresentationMetricChart:
+    Chart:
       oneOf:
-        - $ref: "#/components/schemas/PresentationMetricTimeSeriesChart"
-        - $ref: "#/components/schemas/PresentationMetricGaugeChart"
-        - $ref: "#/components/schemas/PresentationMetricBarChart"
-        - $ref: "#/components/schemas/PresentationMetricStatChart"
+        - $ref: "#/components/schemas/TimeSeriesChart"
+        - $ref: "#/components/schemas/GaugeChart"
+        - $ref: "#/components/schemas/BarChart"
+        - $ref: "#/components/schemas/StatChart"
       discriminator:
         propertyName: _type
 
-    PresentationMetricTimeSeriesChart:
+    TimeSeriesChart:
       properties:
         _type:
           type: string
-          enum: ["timeseries"]
+          enum: ["TimeSeriesChart"]
         range:
-          $ref: "#/components/schemas/PresentationMetricRange"
+          $ref: "#/components/schemas/ChartRange"
         format:
-          $ref: "#/components/schemas/PresentationMetricFormat"
+          $ref: "#/components/schemas/ChartFormat"
         thresholds:
-          $ref: "#/components/schemas/PresentationMetricThresholds"
+          $ref: "#/components/schemas/ChartThresholds"
       required:
         - _type
-    PresentationMetricBarChart:
+    BarChart:
       properties:
         _type:
           type: string
-          enum: ["bar"]
+          enum: ["BarChart"]
         range:
-          $ref: "#/components/schemas/PresentationMetricRange"
+          $ref: "#/components/schemas/ChartRange"
         format:
-          $ref: "#/components/schemas/PresentationMetricFormat"
+          $ref: "#/components/schemas/ChartFormat"
         thresholds:
-          $ref: "#/components/schemas/PresentationMetricThresholds"
+          $ref: "#/components/schemas/ChartThresholds"
       required:
         - _type
-    PresentationMetricGaugeChart:
+    GaugeChart:
       properties:
         _type:
           type: string
-          enum: ["gauge"]
+          enum: ["GaugeChart"]
         range:
-          $ref: "#/components/schemas/PresentationMetricRange"
+          $ref: "#/components/schemas/ChartRange"
         format:
-          $ref: "#/components/schemas/PresentationMetricFormat"
+          $ref: "#/components/schemas/ChartFormat"
         calculation:
-          $ref: "#/components/schemas/PresentationMetricCalculation"
+          $ref: "#/components/schemas/ChartCalculation"
       required:
         - _type
-    PresentationMetricStatChart:
+    StatChart:
       properties:
         _type:
           type: string
-          enum: ["stat"]
+          enum: ["StatChart"]
         sparkline:
           type: boolean
         format:
-          $ref: "#/components/schemas/PresentationMetricFormat"
+          $ref: "#/components/schemas/ChartFormat"
         calculation:
-          $ref: "#/components/schemas/PresentationMetricCalculation"
+          $ref: "#/components/schemas/ChartCalculation"
         thresholds:
-          $ref: "#/components/schemas/PresentationMetricStatThresholds"
+          $ref: "#/components/schemas/ChartStatThresholds"
       required:
         - _type
 
-    PresentationMetricCalculation:
+    ChartCalculation:
       type: string
       enum:
         - "mean"
@@ -1329,7 +1329,7 @@ components:
         - "last"
         - "last-number"
 
-    PresentationMetricRange:
+    ChartRange:
       properties:
         min:
           type: number
@@ -1338,14 +1338,14 @@ components:
           type: number
           format: double
 
-    PresentationMetricFormat:
+    ChartFormat:
       properties:
         unit:
           type: string
         decimalPlaces:
           type: integer
 
-    PresentationMetricThresholds:
+    ChartThresholds:
       properties:
         mode:
           type: string
@@ -1355,18 +1355,18 @@ components:
         steps:
           type: array
           items:
-            $ref: "#/components/schemas/PresentationMetricThresholdStep"
+            $ref: "#/components/schemas/ChartThresholdStep"
 
-    PresentationMetricStatThresholds:
+    ChartStatThresholds:
       properties:
         defaultColor:
           type: string
         steps:
           type: array
           items:
-            $ref: "#/components/schemas/PresentationMetricThresholdStep"
+            $ref: "#/components/schemas/ChartThresholdStep"
 
-    PresentationMetricThresholdStep:
+    ChartThresholdStep:
       properties:
         value:
           type: number
