@@ -1273,6 +1273,8 @@ components:
           $ref: "#/components/schemas/ChartFormat"
         thresholds:
           $ref: "#/components/schemas/ChartThresholds"
+        visual:
+          $ref: "#/components/schemas/TimeSeriesVisual"
       required:
         - _type
     BarChart:
@@ -1299,6 +1301,8 @@ components:
           $ref: "#/components/schemas/ChartFormat"
         calculation:
           $ref: "#/components/schemas/ChartCalculation"
+        thresholds:
+          $ref: "#/components/schemas/ChartThresholds"
       required:
         - _type
     StatChart:
@@ -1356,6 +1360,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ChartThresholdStep"
+      required:
+        - steps
 
     ChartStatThresholds:
       properties:
@@ -1365,6 +1371,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ChartThresholdStep"
+      required:
+        - steps
 
     ChartThresholdStep:
       properties:
@@ -1376,6 +1384,11 @@ components:
           type: string
       required:
         - value
+
+    TimeSeriesVisual:
+      properties:
+        connectNulls:
+          type: boolean
 
     PresentationMetricPerspective:
       type: object
