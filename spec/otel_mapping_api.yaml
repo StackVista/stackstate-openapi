@@ -631,14 +631,6 @@ components:
           $ref: "#/components/schemas/OtelStringExpression"
         typeIdentifier:
           $ref: "#/components/schemas/OtelStringExpression"
-        layerName:
-          $ref: "#/components/schemas/OtelStringExpression"
-        layerIdentifier:
-          $ref: "#/components/schemas/OtelStringExpression"
-        domainName:
-          $ref: "#/components/schemas/OtelStringExpression"
-        domainIdentifier:
-          $ref: "#/components/schemas/OtelStringExpression"
         required:
           $ref: "#/components/schemas/OtelComponentMappingFieldMapping"
         optional:
@@ -647,8 +639,6 @@ components:
         - identifier
         - name
         - typeName
-        - layerName
-        - domainName
 
     OtelRelationMappingOutput:
       type: object
