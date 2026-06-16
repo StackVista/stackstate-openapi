@@ -588,6 +588,8 @@ components:
           type: array
           items:
             $ref: "arguments.api.yaml#/components/schemas/Argument"
+        intervalSeconds:
+          type: integer
 
     MonitorFunctionTest:
       type: object
@@ -596,8 +598,11 @@ components:
           type: array
           items:
             $ref: "arguments.api.yaml#/components/schemas/Argument"
+        intervalSeconds:
+          type: integer
       required:
         - arguments
+        - intervalSeconds
 
     MonitorValidationError:
       discriminator:
