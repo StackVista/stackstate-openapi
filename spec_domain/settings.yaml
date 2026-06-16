@@ -1267,14 +1267,20 @@ components:
         _type:
           type: string
           enum: ["TimeSeriesChart"]
-        range:
-          $ref: "#/components/schemas/ChartRange"
-        format:
-          $ref: "#/components/schemas/ChartFormat"
+        unit:
+          type: string
+        decimals:
+          type: integer
+        min:
+          type: number
+          format: double
+        max:
+          type: number
+          format: double
+        connectNulls:
+          type: boolean
         thresholds:
           $ref: "#/components/schemas/ChartThresholds"
-        visual:
-          $ref: "#/components/schemas/TimeSeriesVisual"
       required:
         - _type
     BarChart:
@@ -1282,10 +1288,16 @@ components:
         _type:
           type: string
           enum: ["BarChart"]
-        range:
-          $ref: "#/components/schemas/ChartRange"
-        format:
-          $ref: "#/components/schemas/ChartFormat"
+        unit:
+          type: string
+        decimals:
+          type: integer
+        min:
+          type: number
+          format: double
+        max:
+          type: number
+          format: double
         thresholds:
           $ref: "#/components/schemas/ChartThresholds"
       required:
@@ -1295,10 +1307,13 @@ components:
         _type:
           type: string
           enum: ["GaugeChart"]
-        range:
-          $ref: "#/components/schemas/ChartRange"
-        format:
-          $ref: "#/components/schemas/ChartFormat"
+        unit:
+          type: string
+        decimals:
+          type: integer
+        max:
+          type: number
+          format: double
         calculation:
           $ref: "#/components/schemas/ChartCalculation"
         thresholds:
@@ -1310,10 +1325,12 @@ components:
         _type:
           type: string
           enum: ["StatChart"]
+        unit:
+          type: string
+        decimals:
+          type: integer
         sparkline:
           type: boolean
-        format:
-          $ref: "#/components/schemas/ChartFormat"
         calculation:
           $ref: "#/components/schemas/ChartCalculation"
         thresholds:
@@ -1332,22 +1349,6 @@ components:
         - "first-number"
         - "last"
         - "last-number"
-
-    ChartRange:
-      properties:
-        min:
-          type: number
-          format: double
-        max:
-          type: number
-          format: double
-
-    ChartFormat:
-      properties:
-        unit:
-          type: string
-        decimalPlaces:
-          type: integer
 
     ChartThresholds:
       properties:
@@ -1384,11 +1385,6 @@ components:
           type: string
       required:
         - value
-
-    TimeSeriesVisual:
-      properties:
-        connectNulls:
-          type: boolean
 
     PresentationMetricPerspective:
       type: object
