@@ -610,7 +610,6 @@ components:
       required:
         - name
         - boundQueries
-        - chartType
     BoundSummaryMetric:
       properties:
         boundMetricId:
