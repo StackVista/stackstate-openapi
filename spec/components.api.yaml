@@ -622,6 +622,8 @@ components:
           type: string
         decimalPlaces:
           type: integer
+        dummy:
+          type: boolean
       required:
         - name
         - query
