@@ -325,6 +325,10 @@ components:
         expireAfter:
           type: integer
           format: int64
+        specificity:
+          type: number
+          format: double
+          description: 'Determines how much of a "specialization" this mapping is. Higher number means more specific. Used during component merge to pick the winning typeName / name when multiple mappings contribute to the same component identifier.'
       required:
         - _type
         - identifier
@@ -332,6 +336,7 @@ components:
         - input
         - output
         - expireAfter
+        - specificity
     OtelRelationMapping:
       type: object
       properties:
@@ -628,8 +633,6 @@ components:
         name:
           $ref: "#/components/schemas/OtelStringExpression"
         typeName:
-          $ref: "#/components/schemas/OtelStringExpression"
-        typeIdentifier:
           $ref: "#/components/schemas/OtelStringExpression"
         required:
           $ref: "#/components/schemas/OtelComponentMappingFieldMapping"
