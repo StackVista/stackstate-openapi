@@ -1247,8 +1247,6 @@ components:
             $ref: "#/components/schemas/PresentationMetricQuery"
         chart:
           $ref: "#/components/schemas/Chart"
-        alias:
-          type: string
       required:
         - metricId
 
@@ -1412,8 +1410,6 @@ components:
         value:
           type: number
         color:
-          type: string
-        name:
           type: string
       required:
         - value

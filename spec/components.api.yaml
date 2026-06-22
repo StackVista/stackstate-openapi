@@ -603,8 +603,6 @@ components:
           type: string
         chart:
           $ref: "settings.yaml#/components/schemas/Chart"
-        alias:
-          type: string
         dummy:
           type: boolean
       required:
