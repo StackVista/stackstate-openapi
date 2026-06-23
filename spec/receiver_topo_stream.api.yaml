@@ -133,6 +133,7 @@ components:
       required:
         - _type
         - repeat_interval_ms
+        - specificity
 
     TopologyStreamRepeatElementsData:
       type: object
@@ -162,6 +163,7 @@ components:
       required:
         - _type
         - expiry_interval_ms
+        - specificity
 
     TopologyStreamPayload:
       discriminator:
