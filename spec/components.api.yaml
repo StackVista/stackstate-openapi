@@ -280,6 +280,7 @@ components:
         - $ref: '#/components/schemas/DurationField'
         - $ref: '#/components/schemas/RatioField'
         - $ref: '#/components/schemas/MapField'
+        - $ref: '#/components/schemas/ListField'
       description: 'Display type and value for the field.'
 
     BaseComponentField:
@@ -447,6 +448,25 @@ components:
             values:
               type: object
               additionalProperties:
+                type: string
+            asTag:
+              type: boolean
+              default: false
+
+    ListField:
+      allOf:
+        - $ref: '#/components/schemas/BaseComponentField'
+        - type: object
+          required:
+            - _type
+            - values
+            - asTag
+          properties:
+            _type:
+              enum: [ListField]
+            values:
+              type: array
+              items:
                 type: string
             asTag:
               type: boolean
