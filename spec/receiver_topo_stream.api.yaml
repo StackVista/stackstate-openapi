@@ -123,9 +123,17 @@ components:
           type: array
           items:
             type: string
+        specificity:
+          type: number
+          format: double
+          description: |-
+            Mapping-level specificity for components emitted in this batch.
+            Used by the sync service to pick the winning typeName / name during merge.
+            Higher = more specific. Missing/0.0 for legacy emissions and ext-topo sources.
       required:
         - _type
         - repeat_interval_ms
+        - specificity
 
     TopologyStreamRepeatElementsData:
       type: object
@@ -148,9 +156,14 @@ components:
           type: array
           items:
             type: string
+        specificity:
+          type: number
+          format: double
+          description: See description on TopologyStreamSnapshotData.specificity.
       required:
         - _type
         - expiry_interval_ms
+        - specificity
 
     TopologyStreamPayload:
       discriminator:
