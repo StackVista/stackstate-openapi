@@ -70,6 +70,8 @@ components:
           type: string
         name:
           type: string
+        type_name:
+          type: string
         dependency_type:
           type: string
         tags:
@@ -81,6 +83,7 @@ components:
         - source_identifier
         - target_identifier
         - name
+        - type_name
         - dependency_type
 
     TopologyStreamRemove:
