@@ -1553,12 +1553,23 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/MainMenuViewItem"
+            rank:
+                $ref: "#/components/schemas/MainMenuRank"
           required:
             - type
             - name
             - defaultOpen
             - iconbase64
             - items
+
+    MainMenuRank:
+      type: object
+      properties:
+        specificity:
+          type: number
+          format: double
+      required:
+        - specificity
 
     MainMenuViewItem:
       properties:
