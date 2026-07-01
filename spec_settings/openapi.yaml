@@ -1558,9 +1558,6 @@ components:
           required:
             - type
             - name
-            - defaultOpen
-            - iconbase64
-            - items
 
     MainMenuRank:
       type: object
