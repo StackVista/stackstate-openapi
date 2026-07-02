@@ -62,6 +62,12 @@ components:
         topologyQuery:
           type: string
           description: STQL query for this view. Used by the shared timeline, the events perspective, and the topology perspective.
+        readOnly:
+          type: boolean
+          description: |
+            When true, the view is system-managed (e.g. a ComponentPresentation or ViewType) and the
+            frontend must not offer save, save-as, edit, or delete operations. When false, the view is
+            a user-managed QueryView and mutation operations are permitted subject to normal permission checks.
         overview:
           $ref: "#/components/schemas/OverviewPerspective"
         topology:
@@ -71,6 +77,7 @@ components:
       required:
         - identifier
         - topologyQuery
+        - readOnly
 
     OverviewPerspective:
       type: object
