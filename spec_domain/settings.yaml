@@ -161,6 +161,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PresentationRelatedResource'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/PresentationLink'
         events:
           $ref: '#/components/schemas/PresentationHighlightEvents'
         metrics:
@@ -171,6 +175,7 @@ components:
         Highlight presentation definition. The `fields` define the fields to show in the highlight page.
         If multiple ComponentPresentations match, fields are merged by `fieldId` according to binding rank.
         Related resources follow the same merge semantics using `resourceId` as the identity key.
+        Links follow the same merge semantics using `linkId` as the identity key.
       required:
         - title
         - fields
@@ -231,6 +236,48 @@ components:
         - Same resourceId with higher specificity wins (override).
         - Different resourceId entries are appended.
         - Display order is determined by the order field.
+
+    PresentationLink:
+      type: object
+      properties:
+        linkId:
+          type: string
+          description: 'Stable identity key for merging across presentations, analogous to fieldId and resourceId.'
+        title:
+          type: string
+          description: 'CEL expression that returns the displayed link title.'
+        target:
+          type: string
+          description: 'CEL expression that returns a relative or fully-qualified link target.'
+        openInNewTab:
+          type: boolean
+          default: false
+          description: 'Whether the link opens in a new tab. Defaults to false.'
+        tooltip:
+          type: string
+          description: 'Optional CEL expression that returns tooltip text.'
+        filter:
+          type: string
+          description: 'Optional CEL boolean expression deciding whether the link is shown. Missing filters default to true.'
+        order:
+          type: number
+          format: double
+          description: 'Display order. Higher value means it shows first in UI.'
+      required:
+        - linkId
+        - title
+        - target
+        - order
+      description: |
+        Link definition for the highlight page. Each entry defines a navigation link shown for a component.
+        Merge semantics follow related resource rules:
+        - All presentations whose binding matches the component contribute links.
+        - Same linkId with higher specificity wins (override).
+        - Different linkId entries are appended.
+        - Display order is determined by the order field.
+        CEL expressions are evaluated against the component presentation context. The filter is evaluated first;
+        if it evaluates to false the link is omitted. If the filter includes the link but required data cannot be
+        evaluated, the resolved highlight response reports an error link.
 
     ComponentHighlightProjection:
       discriminator:
