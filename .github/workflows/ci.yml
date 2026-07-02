@@ -33,23 +33,13 @@ jobs:
           distribution: temurin
           java-version: '21'
 
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
-        with:
-          node-version: '20'
-
-      - name: Install openapi-generator-cli
-        # This repo has no package.json; openapi-generator-cli is a validation-only
-        # tool with no lockfile needed. Pinning the version in the script is the appropriate control.
-        # zizmor: ignore[adhoc-packages]
-        run: npm install -g @openapitools/openapi-generator-cli
-
       - name: Validate OpenAPI specs
         run: |
-          openapi-generator-cli validate -i spec/openapi.yaml
-          openapi-generator-cli validate -i spec/openapi_admin.yaml
-          openapi-generator-cli validate -i spec/openapi_authorization_sync.yaml
-          openapi-generator-cli validate -i spec/openapi_receiver.yaml
-          openapi-generator-cli validate -i spec_webhook/openapi.yaml
+          npx @openapitools/openapi-generator-cli@2.39.1 validate -i spec/openapi.yaml
+          npx @openapitools/openapi-generator-cli@2.39.1 validate -i spec/openapi_admin.yaml
+          npx @openapitools/openapi-generator-cli@2.39.1 validate -i spec/openapi_authorization_sync.yaml
+          npx @openapitools/openapi-generator-cli@2.39.1 validate -i spec/openapi_receiver.yaml
+          npx @openapitools/openapi-generator-cli@2.39.1 validate -i spec_webhook/openapi.yaml
 
   openapi-lint:
     name: OpenAPI lint (Redocly)
