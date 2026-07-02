@@ -38,6 +38,9 @@ jobs:
           node-version: '20'
 
       - name: Install openapi-generator-cli
+        # This repo has no package.json; openapi-generator-cli is a validation-only
+        # tool with no lockfile needed. Pinning the version in the script is the appropriate control.
+        # zizmor: ignore[adhoc-packages]
         run: npm install -g @openapitools/openapi-generator-cli
 
       - name: Validate OpenAPI specs
