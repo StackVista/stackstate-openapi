@@ -598,7 +598,7 @@ components:
       properties:
         _type:
           type: string
-          enum: [ResolvedPresentationComponentLink]
+          enum: [ResolvedComponentPresentationLink]
         linkId:
           type: string
           description: 'Identity key for this link.'
