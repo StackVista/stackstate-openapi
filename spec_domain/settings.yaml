@@ -265,9 +265,6 @@ components:
           description: 'Display order. Higher value means it shows first in UI.'
       required:
         - linkId
-        - title
-        - target
-        - order
       description: |
         Link definition for the highlight page. Each entry defines a navigation link shown for a component.
         Merge semantics follow related resource rules:
