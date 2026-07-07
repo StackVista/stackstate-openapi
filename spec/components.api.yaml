@@ -626,7 +626,7 @@ components:
       properties:
         _type:
           type: string
-          enum: [ErrorPresentationComponentLink]
+          enum: [ErrorComponentPresentationLink]
         linkId:
           type: string
           description: 'Identity key for this link.'
