@@ -237,6 +237,11 @@ components:
           items:
             $ref: "#/components/schemas/RelatedResource"
           description: 'Resolved related resource definitions in display order. Backend populates from both legacy and new presentation definitions.'
+        links:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentPresentationLink"
+          description: 'Resolved presentation links in display order. Backend populates from matching presentation definitions.'
         events:
           $ref: "#/components/schemas/ComponentEvents"
         data:
@@ -260,6 +265,7 @@ components:
         - fields
         - synced
         - relatedResources
+        - links
         - data
         - actions
         - summary
@@ -578,6 +584,63 @@ components:
         The backend merges related resources from all matching presentations, resolves template variables
         in the stql field, and derives the name from the referenced presentation's PresentationName.
         Array order in the response determines display order.
+
+    ComponentPresentationLink:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: '#/components/schemas/ResolvedComponentPresentationLink'
+        - $ref: '#/components/schemas/ErrorComponentPresentationLink'
+      description: 'A resolved link definition returned in the FullComponent response.'
+
+    ResolvedComponentPresentationLink:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [ResolvedComponentPresentationLink]
+        linkId:
+          type: string
+          description: 'Identity key for this link.'
+        title:
+          type: string
+          description: 'Displayed link title.'
+        target:
+          type: string
+          description: 'Relative or fully-qualified link target.'
+        openInNewTab:
+          type: boolean
+          description: 'Whether the link opens in a new tab.'
+        tooltip:
+          type: string
+          description: 'Optional tooltip text.'
+      required:
+        - _type
+        - linkId
+        - title
+        - target
+        - openInNewTab
+
+    ErrorComponentPresentationLink:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum: [ErrorComponentPresentationLink]
+        linkId:
+          type: string
+          description: 'Identity key for this link.'
+        title:
+          type: string
+          description: 'Displayed link title, or the link identity when the title could not be resolved.'
+        message:
+          type: string
+          description: 'Reason why the link could not be resolved.'
+      required:
+        - _type
+        - linkId
+        - title
+        - message
 
     ComponentEvents:
       properties:
