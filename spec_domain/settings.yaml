@@ -178,7 +178,6 @@ components:
         Links follow the same merge semantics using `linkId` as the identity key.
       required:
         - title
-        - fields
 
     PresentationHighlightField:
       type: object
