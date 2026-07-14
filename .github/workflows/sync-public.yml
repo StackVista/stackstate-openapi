@@ -1,0 +1,62 @@
+# Mirrors all branches and tags from this internal repo (stackstate-openapi-internal)
+# to the public StackVista/stackstate-openapi GitHub repository, replacing the
+# GitLab push-mirror mechanism.
+#
+# Required secrets in this repo:
+#   OPENAPI_PUBLIC_GH_APP_CLIENT_ID    — GitHub App client ID
+#   OPENAPI_PUBLIC_GH_APP_PRIVATE_KEY  — GitHub App private key
+# The GitHub App must be installed on StackVista/stackstate-openapi with
+# contents:write and workflows:write permissions.
+name: Mirror to stackstate-openapi
+run-name: "Mirror: ${{ github.ref_name }}"
+
+on:
+  push:
+    branches: ['**']
+    tags: ['**']
+  workflow_dispatch:
+
+concurrency:
+  group: sync-public
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash --noprofile --norc -euo pipefail {0}
+
+jobs:
+  mirror:
+    if: github.repository == 'StackVista/stackstate-openapi-internal'
+    name: Mirror branches and tags to StackVista/stackstate-openapi
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Generate public repository App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+        with:
+          client-id: ${{ vars.STACKSTATE_OPENAPI_PUBLIC_GH_APP_CLIENT_ID }}
+          private-key: ${{ secrets.STACKSTATE_OPENAPI_PUBLIC_GH_APP_PRIVATE_KEY }}
+          owner: StackVista
+          repositories: stackstate-openapi
+          permission-contents: write
+          permission-workflows: write
+
+      - name: Add public remote
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: git remote add public "https://x-access-token:${GH_TOKEN}@github.com/StackVista/stackstate-openapi.git"
+
+      - name: Sync all branches
+        run: git push --force public '+refs/remotes/origin/*:refs/heads/*'
+
+      - name: Sync all tags
+        run: git push --force public 'refs/tags/*:refs/tags/*'
