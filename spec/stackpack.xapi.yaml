@@ -97,6 +97,7 @@ paths:
           required: true
           schema:
             type: string
+        - $ref: "#/components/parameters/stackPackVersion"
       summary: "Provision API"
       operationId: provisionDetails
       description: "Provision details"
@@ -338,7 +339,7 @@ components:
       required: false
       schema:
         type: string
-      description: "Optional version string (e.g. '1.2.3'). If not provided, validates the latest version."
+      description: "Optional version string (e.g. '1.2.3'). If not provided, the latest version is used. When provisioning, the StackPack cannot already be installed at a different version."
     version:
       in: path
       name: version
