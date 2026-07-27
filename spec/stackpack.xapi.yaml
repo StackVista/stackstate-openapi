@@ -97,6 +97,7 @@ paths:
           required: true
           schema:
             type: string
+        - $ref: "#/components/parameters/stackPackVersion"
       summary: "Provision API"
       operationId: provisionDetails
       description: "Provision details"
@@ -159,6 +160,26 @@ paths:
       summary: "Upgrade API"
       operationId: upgradeStackPack
       description: "Upgrade stackpack"
+      responses:
+        "200":
+          description: "successful"
+          content:
+            application/json:
+              schema:
+                type: string
+        "500":
+          $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
+
+  /stackpack/{stackPackName}/downgrade:
+    post:
+      tags:
+        - stackpack
+      parameters:
+        - $ref: "#/components/parameters/stackPackName"
+        - $ref: "#/components/parameters/requiredStackPackVersion"
+      summary: "Downgrade API"
+      operationId: downgradeStackPack
+      description: "Downgrade a StackPack to an older version. Only supported for StackPacks 2.0; the target version must be lower than the currently installed version."
       responses:
         "200":
           description: "successful"
@@ -338,7 +359,14 @@ components:
       required: false
       schema:
         type: string
-      description: "Optional version string (e.g. '1.2.3'). If not provided, validates the latest version."
+      description: "Optional version string (e.g. '1.2.3'). If not provided, the latest version is used. When provisioning, the StackPack cannot already be installed at a different version."
+    requiredStackPackVersion:
+      in: query
+      name: version
+      required: true
+      schema:
+        type: string
+      description: "Version string (e.g. '1.2.3') to downgrade to. Must be lower than the currently installed version."
     version:
       in: path
       name: version
