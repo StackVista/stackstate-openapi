@@ -176,8 +176,6 @@ components:
         If multiple ComponentPresentations match, fields are merged by `fieldId` according to binding rank.
         Related resources follow the same merge semantics using `resourceId` as the identity key.
         Links follow the same merge semantics using `linkId` as the identity key.
-      required:
-        - title
 
     PresentationHighlightField:
       type: object
