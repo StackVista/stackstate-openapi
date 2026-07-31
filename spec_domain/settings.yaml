@@ -47,6 +47,8 @@ components:
             $ref: "#/components/schemas/ComponentPresentationFilter"
         metricPerspective:
           $ref: "#/components/schemas/PresentationMetricPerspective"
+        tracesPerspective:
+          $ref: "#/components/schemas/PresentationTracesPerspective"
         topology:
           $ref: "#/components/schemas/TopologySettings"
       description: |
@@ -1474,6 +1476,109 @@ components:
         - sectionId
         - title
         - order
+
+    PresentationTracesPerspective:
+      type: object
+      description: |
+        Makes the Traces perspective available on components matched by this presentation.
+        Absence of the field means the Traces perspective is not shown.
+        Most-specific-wins merge semantics across matching ComponentPresentations: the whole
+        section is taken from the most specific presentation that defines it, it is not merged
+        field by field.
+      properties:
+        showTraces:
+          type: boolean
+          description: 'Set to false on a more specific presentation to suppress a Traces perspective enabled by a less specific one.'
+        spanFilter:
+          $ref: "#/components/schemas/PresentationSpanFilter"
+      required:
+        - showTraces
+        - spanFilter
+
+    PresentationSpanFilter:
+      type: object
+      description: |
+        Selects the spans shown in the Traces perspective for a component.
+        String-valued fields are CEL expressions evaluated against the component, using the same
+        context as metric perspective queries, for example `component.tags["service.name"]`.
+        Enum- and duration-valued fields are literals and are not evaluated.
+        Resolution is best effort: a field whose expression fails to parse or evaluate is dropped
+        from the filter and logged, the remaining fields still apply.
+      properties:
+        serviceName:
+          type: array
+          items:
+            type: string
+          description: "Filter spans by service name"
+        spanName:
+          type: array
+          items:
+            type: string
+          description: "Filter spans by name"
+        attributes:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: "Filter spans by 1 or more attributes"
+        spanKind:
+          type: array
+          items:
+            $ref: "#/components/schemas/SpanKind"
+          description: "Filter spans by kind"
+        spanParentType:
+          type: array
+          items:
+            $ref: "#/components/schemas/SpanParentType"
+          description: "Filter spans by parent type"
+        statusCode:
+          type: array
+          items:
+            $ref: "#/components/schemas/SpanStatusCode"
+          description: "Filter spans by status code"
+        durationFromNanos:
+          type: integer
+          format: int64
+          description: "Filter spans by duration >= value, in nanoseconds"
+        durationToNanos:
+          type: integer
+          format: int64
+          description: "Filter spans by duration < value, in nanoseconds"
+        scopeName:
+          type: array
+          items:
+            type: string
+          description: "Filter spans by instrumentation scope name"
+        scopeVersion:
+          type: array
+          items:
+            type: string
+          description: "Filter spans by instrumentation scope version"
+
+    SpanKind:
+      type: string
+      enum:
+        - Client
+        - Consumer
+        - Internal
+        - Producer
+        - Server
+        - Unspecified
+
+    SpanStatusCode:
+      type: string
+      enum:
+        - Error
+        - Ok
+        - Unset
+
+    SpanParentType:
+      type: string
+      enum:
+        - External
+        - Internal
+        - Root
 
     TopologySettings:
       type: object
