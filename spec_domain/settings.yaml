@@ -1499,8 +1499,12 @@ components:
       type: object
       description: |
         Selects the spans shown in the Traces perspective for a component.
-        String-valued fields are CEL expressions evaluated against the component, using the same
-        context as metric perspective queries, for example `component.tags["service.name"]`.
+        String-valued fields are string templates: text is taken literally and any `${...}`
+        placeholder is evaluated as a CEL expression against the component, using the same context
+        as metric perspective queries. For example `orderService` is a literal, while
+        `${tags.singleValue('service.namespace')}` resolves the tag of that name. Note that `tags`
+        maps each key to a list of values, so use `singleValue` inside a placeholder when a single
+        string is required.
         Enum- and duration-valued fields are literals and are not evaluated.
         Resolution is best effort: a field whose expression fails to parse or evaluate is dropped
         from the filter and logged, the remaining fields still apply.
