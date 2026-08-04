@@ -303,27 +303,6 @@ components:
         application/json:
           schema: { $ref: "#/components/schemas/TraceApiSpanNotFound" }
   schemas:
-    SpanKind:
-      type: string
-      enum:
-        - Client
-        - Consumer
-        - Internal
-        - Producer
-        - Server
-        - Unspecified
-    SpanStatusCode:
-      type: string
-      enum:
-        - Error
-        - Ok
-        - Unset
-    SpanParentType:
-      type: string
-      enum:
-        - External
-        - Internal
-        - Root
     TraceQuery:
       description: Find traces that have a span that matches the primary filter and a span that matches the secondary filter. These could be the same, or two different spans of the same trace.
       type: object
@@ -403,14 +382,14 @@ components:
           description: "Filter spans by 1 or more attributes"
         spanKind:
           type: array
-          items: 
-            $ref: "#/components/schemas/SpanKind"
+          items:
+            $ref: "settings.yaml#/components/schemas/SpanKind"
           description: "Filter span by kind"
           example: ["Client"]
         spanParentType:
           type: array
           items:
-            $ref: "#/components/schemas/SpanParentType"
+            $ref: "settings.yaml#/components/schemas/SpanParentType"
           description: "Filter span by parent type"
           example: ["External"]
         durationFromNanos:
@@ -425,8 +404,8 @@ components:
           example: "5000000"
         statusCode:
           type: array
-          items: 
-            $ref: "#/components/schemas/SpanStatusCode"
+          items:
+            $ref: "settings.yaml#/components/schemas/SpanStatusCode"
           description: "Filter spans by the StatusCode"
           example: ["Error"]
         traceId:
@@ -639,10 +618,10 @@ components:
           type: string
         spanKind:
           description: The type of span. Distinguishes between spans generated in a particular context.
-          $ref: "#/components/schemas/SpanKind"
+          $ref: "settings.yaml#/components/schemas/SpanKind"
         spanParentType:
           description: The type of relation of the parent with respect to the span.
-          $ref: "#/components/schemas/SpanParentType"
+          $ref: "settings.yaml#/components/schemas/SpanParentType"
         spanAttributes:
           description: Attributes (key/value pairs) describing the span.
           $ref: "#/components/schemas/Attributes"
@@ -651,7 +630,7 @@ components:
           type: string
         statusCode:
           description: The status of the operation for the span
-          $ref: "#/components/schemas/SpanStatusCode"
+          $ref: "settings.yaml#/components/schemas/SpanStatusCode"
         statusMessage:
           description: Human readable message for the status
           type: string
