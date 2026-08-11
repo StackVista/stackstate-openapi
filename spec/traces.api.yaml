@@ -444,6 +444,12 @@ components:
         spanAttributes:
           description: Attributes (key/value pairs) from the span itself.
           $ref: "#/components/schemas/Attributes"
+        scopeName:
+          description: "The name of the instrumentation scope for the span https://opentelemetry.io/docs/specs/otel/glossary/#instrumentation-scope"
+          type: string
+        scopeVersion:
+          description: "The version for the instrumentation scope for the span https://opentelemetry.io/docs/specs/otel/glossary/#instrumentation-scope"
+          type: string
         instant:
           $ref: "common.api.yaml#/components/schemas/Instant"
       required:
