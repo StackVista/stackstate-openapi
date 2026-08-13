@@ -441,6 +441,27 @@ components:
         resourceAttributes:
           description: Attributes (key/value pairs) describing the resource for the span.
           $ref: "#/components/schemas/Attributes"
+        spanAttributes:
+          description: Attributes (key/value pairs) from the span itself.
+          $ref: "#/components/schemas/Attributes"
+        spanName:
+          description: A description of the span's operation. For example, the name can be a qualified method name or a file name and a line number where the operation is called
+          type: string
+        spanKind:
+          description: The type of span. Distinguishes between spans generated in a particular context.
+          $ref: "settings.yaml#/components/schemas/SpanKind"
+        statusCode:
+          description: The status of the operation for the span
+          $ref: "settings.yaml#/components/schemas/SpanStatusCode"
+        statusMessage:
+          description: Human readable message for the status
+          type: string
+        scopeName:
+          description: "The name of the instrumentation scope for the span https://opentelemetry.io/docs/specs/otel/glossary/#instrumentation-scope"
+          type: string
+        scopeVersion:
+          description: "The version for the instrumentation scope for the span https://opentelemetry.io/docs/specs/otel/glossary/#instrumentation-scope"
+          type: string
         instant:
           $ref: "common.api.yaml#/components/schemas/Instant"
       required:
