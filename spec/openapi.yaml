@@ -54,6 +54,8 @@ paths:
   /monitor/checkStatus/{identifier}: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7Bidentifier%7D" }
   /monitor/checkStatus/{identifier}/relatedFailures: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7Bidentifier%7D%2FrelatedFailures" }
   /monitor/checkStatus/{identifier}/healthHistory: { $ref: "monitors_check_status.api.yaml#/paths/%2Fmonitor%2FcheckStatus%2F%7Bidentifier%7D%2FhealthHistory" }
+  /suppressions: { $ref: "suppressions.api.yaml#/paths/%2Fsuppressions" }
+  /suppressions/{suppressionIdentifier}: { $ref: "suppressions.api.yaml#/paths/%2Fsuppressions%2F%7BsuppressionIdentifier%7D" }
   /notifications/channels/slack/oauth-redirect: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2Foauth-redirect" }
   /notifications/channels/slack/oauth-callback: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2Foauth-callback" }
   /notifications/channels/slack/{channelId}: { $ref: "notification_channels.api.yaml#/paths/%2Fnotifications%2Fchannels%2Fslack%2F%7BchannelId%7D" }

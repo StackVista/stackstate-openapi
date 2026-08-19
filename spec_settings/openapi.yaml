@@ -101,6 +101,7 @@ components:
         - Domain
         - MainMenuGroup
         - ViewType
+        - UserSuppression
 
     Setting:
       type: object
@@ -123,6 +124,7 @@ components:
         - $ref: "#/components/schemas/Domain"
         - $ref: "#/components/schemas/MainMenuGroup"
         - $ref: "#/components/schemas/ViewType"
+        - $ref: "#/components/schemas/UserSuppression"
       discriminator:
         propertyName: type
       required:
@@ -1607,3 +1609,64 @@ components:
             - overview
             - flags
             - filters
+
+    # User suppressions
+    UserSuppression:
+      allOf:
+        - $ref: "#/components/schemas/SettingBase"
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [UserSuppression]
+              description: The combination of type+id is a unique identification for a setting
+            identifier:
+              type: string
+              description: Unique URN for this suppression (defaults to urn://<vertexId>). Used as a unique index in StackGraph.
+            note:
+              type: string
+              description: Human-readable reason for the suppression.
+            expiryEpochS:
+              type: integer
+              format: int64
+              description: Unix epoch (seconds) at which this suppression expires. Maximum is 6 hours from creation time.
+            selector:
+              $ref: "#/components/schemas/UserSuppressionSelector"
+          required:
+            - type
+            - identifier
+            - note
+            - selector
+
+    UserSuppressionSelector:
+      type: object
+      description: Selects what to suppress. Discriminated by `type` to allow future selector variants.
+      properties:
+        type:
+          type: string
+      oneOf:
+        - $ref: "#/components/schemas/MonitorCheckStateSelector"
+      discriminator:
+        propertyName: type
+      required:
+        - type
+
+    MonitorCheckStateSelector:
+      type: object
+      description: Selects a single monitor check state identified by monitor + checkStateId.
+      properties:
+        type:
+          type: string
+          enum: [MonitorCheckStateSelector]
+        monitorId:
+          $ref: "#/components/schemas/MonitorPresentationId"
+        checkStateId:
+          type: string
+          description: The check state id within the monitor's output.
+        subStream:
+          type: string
+          description: The sub-stream identifier (always absent for Monitors, present for ExternalMonitors).
+      required:
+        - type
+        - monitorId
+        - checkStateId

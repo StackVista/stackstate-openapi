@@ -162,6 +162,8 @@ components:
           format: instant
         dummy:
           type: boolean
+        userSuppression:
+          $ref: "#/components/schemas/MonitorCheckStatusUserSuppression"
       required:
         - id
         - identifier
@@ -312,6 +314,23 @@ components:
           type: string
       required:
         - message
+    MonitorCheckStatusUserSuppression:
+      type: object
+      description: "Configured user suppression on this check state id."
+      properties:
+        identifier:
+          type: string
+          description: "The unique identifier (URN) of the suppression."
+        note:
+          type: string
+          description: "Human-readable reason for the suppression."
+        expiryEpochS:
+          type: integer
+          format: int64
+          description: "Unix epoch (seconds) at which the suppression expires."
+      required:
+        - identifier
+        - note
     MonitorCheckStatusNotFoundError:
       type: object
       properties:
