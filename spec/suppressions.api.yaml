@@ -34,7 +34,7 @@ paths:
         "500":
           $ref: "#/components/responses/suppressionApiError"
 
-  /suppressions/{suppressionIdentifier}:
+  /suppressions/{identifier}:
     delete:
       tags:
         - suppression
@@ -42,7 +42,7 @@ paths:
       description: "Remove a user suppression by its identifier."
       operationId: deleteUserSuppression
       parameters:
-        - $ref: "#/components/parameters/suppressionIdentifier"
+        - $ref: "#/components/parameters/identifier"
       responses:
         "204":
           description: "Suppression removed"
@@ -55,9 +55,9 @@ paths:
 
 components:
   parameters:
-    suppressionIdentifier:
+    identifier:
       in: path
-      name: suppressionIdentifier
+      name: identifier
       required: true
       schema:
         type: string
