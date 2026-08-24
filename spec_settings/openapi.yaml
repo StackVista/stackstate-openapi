@@ -101,7 +101,7 @@ components:
         - Domain
         - MainMenuGroup
         - ViewType
-        - UserSuppression
+        - SilencingRule
 
     Setting:
       type: object
@@ -124,7 +124,7 @@ components:
         - $ref: "#/components/schemas/Domain"
         - $ref: "#/components/schemas/MainMenuGroup"
         - $ref: "#/components/schemas/ViewType"
-        - $ref: "#/components/schemas/UserSuppression"
+        - $ref: "#/components/schemas/SilencingRule"
       discriminator:
         propertyName: type
       required:
@@ -1610,37 +1610,37 @@ components:
             - flags
             - filters
 
-    # User suppressions
-    UserSuppression:
+    # Silencing rules
+    SilencingRule:
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
           properties:
             type:
               type: string
-              enum: [UserSuppression]
+              enum: [SilencingRule]
               description: The combination of type+id is a unique identification for a setting
             identifier:
               type: string
-              description: Unique URN for this suppression (defaults to urn://<vertexId>). Used as a unique index in StackGraph.
+              description: Unique URN for this silencing rule (defaults to urn://<vertexId>). Used as a unique index in StackGraph.
             note:
               type: string
-              description: Human-readable reason for the suppression.
+              description: Human-readable reason for the silencing rule.
             expiryEpochS:
               type: integer
               format: int64
-              description: Unix epoch (seconds) at which this suppression expires. Maximum is 6 hours from creation time.
+              description: Unix epoch (seconds) at which this silencing rule expires. Maximum is 6 hours from creation time.
             selector:
-              $ref: "#/components/schemas/UserSuppressionSelector"
+              $ref: "#/components/schemas/SilencingRuleSelector"
           required:
             - type
             - identifier
             - note
             - selector
 
-    UserSuppressionSelector:
+    SilencingRuleSelector:
       type: object
-      description: Selects what to suppress. Discriminated by `type` to allow future selector variants.
+      description: Selects what to silence. Discriminated by `type` to allow future selector variants.
       properties:
         type:
           type: string

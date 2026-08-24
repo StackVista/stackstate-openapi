@@ -168,8 +168,8 @@ components:
           format: instant
         dummy:
           type: boolean
-        userSuppression:
-          $ref: "#/components/schemas/MonitorCheckStatusUserSuppression"
+        silencingRule:
+          $ref: "#/components/schemas/MonitorCheckStatusSilencingRule"
       required:
         - id
         - identifier
@@ -321,20 +321,20 @@ components:
           type: string
       required:
         - message
-    MonitorCheckStatusUserSuppression:
+    MonitorCheckStatusSilencingRule:
       type: object
-      description: "Configured user suppression on this check state id."
+      description: "Configured silencing rule on this check state id."
       properties:
         identifier:
           type: string
-          description: "The unique identifier (URN) of the suppression."
+          description: "The unique identifier (URN) of the silencing rule."
         note:
           type: string
-          description: "Human-readable reason for the suppression."
+          description: "Human-readable reason for the silencing rule."
         expiryEpochS:
           type: integer
           format: int64
-          description: "Unix epoch (seconds) at which the suppression expires."
+          description: "Unix epoch (seconds) at which the silencing rule expires."
       required:
         - identifier
         - note
