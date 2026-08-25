@@ -1626,7 +1626,7 @@ components:
             note:
               type: string
               description: Human-readable reason for the silencing rule.
-            expiryEpochS:
+            expiryEpochSeconds:
               type: integer
               format: int64
               description: Unix epoch (seconds) at which this silencing rule expires. Maximum is 6 hours from creation time.
