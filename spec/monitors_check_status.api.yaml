@@ -151,6 +151,12 @@ components:
           $ref: "#/components/schemas/MonitorCheckStatusComponent"
         monitorId:
           $ref: "common.api.yaml#/components/schemas/MonitorReferenceId"
+        checkStateId:
+          type: string
+          description: "The check state id within the monitor's output."
+        subStream:
+          type: string
+          description: "The sub-stream identifier (present for ExternalMonitors only)."
         monitorName:
           type: string
         monitorDescription:
@@ -162,6 +168,8 @@ components:
           format: instant
         dummy:
           type: boolean
+        silencingRule:
+          $ref: "#/components/schemas/MonitorCheckStatusSilencingRule"
       required:
         - id
         - identifier
@@ -170,6 +178,7 @@ components:
         - triggeredTimestamp
         - metrics
         - monitorId
+        - checkStateId
         - monitorName
         - topologyTime
         - component
@@ -312,6 +321,23 @@ components:
           type: string
       required:
         - message
+    MonitorCheckStatusSilencingRule:
+      type: object
+      description: "Configured silencing rule on this check state id."
+      properties:
+        identifier:
+          type: string
+          description: "The unique identifier (URN) of the silencing rule."
+        note:
+          type: string
+          description: "Human-readable reason for the silencing rule."
+        expiryEpochSeconds:
+          type: integer
+          format: int64
+          description: "Unix epoch (seconds) at which the silencing rule expires."
+      required:
+        - identifier
+        - note
     MonitorCheckStatusNotFoundError:
       type: object
       properties:
