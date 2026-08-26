@@ -130,7 +130,7 @@ components:
           description: "Unique URN for this silencing rule."
         note:
           type: string
-        expiryEpochS:
+        expiryEpochSeconds:
           type: integer
           format: int64
         selector:
