@@ -129,11 +129,16 @@ components:
         lastUpdateTimestamp:
           type: integer
           format: int64
+        silenced:
+          type: array
+          items:
+            $ref: common.api.yaml#/components/schemas/SyncedSilencingNode
       required:
         - checkStateId
         - healthState
         - componentIdentifier
         - lastUpdateTimestamp
+        - silenced
     HealthStreamError:
       type: object
       properties:

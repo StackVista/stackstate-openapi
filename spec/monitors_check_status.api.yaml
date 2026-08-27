@@ -168,8 +168,14 @@ components:
           format: instant
         dummy:
           type: boolean
-        silencingRule:
-          $ref: "#/components/schemas/MonitorCheckStatusSilencingRule"
+        silenced:
+          type: array
+          items:
+            $ref: "common.api.yaml#/components/schemas/SyncedSilencingNode"
+        silencingRules:
+          type: array
+          items:
+            $ref: "#/components/schemas/MonitorCheckStatusSilencingRule"
       required:
         - id
         - identifier
@@ -183,6 +189,8 @@ components:
         - topologyTime
         - component
         - dummy
+        - silenced
+        - silencingRules
     MonitorCheckStatusMetric:
       type: object
       properties:
@@ -331,10 +339,6 @@ components:
         note:
           type: string
           description: "Human-readable reason for the silencing rule."
-        expiryEpochSeconds:
-          type: integer
-          format: int64
-          description: "Unix epoch (seconds) at which the silencing rule expires."
       required:
         - identifier
         - note

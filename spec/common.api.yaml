@@ -108,6 +108,36 @@ components:
       required:
         - _type
         - id
+    SyncedSilencingNode:
+      type: object
+      description: "Projection of a silencing rule (or external silencing) applied to a monitor check status."
+      properties:
+        _type:
+          type: string
+        note:
+          type: string
+      oneOf:
+        - $ref: "#/components/schemas/SyncedSilencing"
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+        - note
+    SyncedSilencing:
+      type: object
+      description: "A silencing rules applied to a monitor check status."
+      properties:
+        _type:
+          type: string
+          enum: [SyncedSilencing]
+        silencingRuleIdentifier:
+          type: string
+        note:
+          type: string
+      required:
+        - _type
+        - silencingRuleIdentifier
+        - note
     Instant:
       description: Date/time representation in milliseconds since epoch (1970-01-01 00:00:00)
       type: integer

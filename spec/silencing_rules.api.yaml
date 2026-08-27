@@ -111,10 +111,6 @@ components:
         note:
           type: string
           description: "Human-readable reason for the silencing rule."
-        expiryEpochSeconds:
-          type: integer
-          format: int64
-          description: "Unix epoch (seconds) at which this silencing rule expires. Maximum is 6 hours from now."
         selector:
           $ref: "#/components/schemas/SilencingRuleSelector"
       required:
@@ -130,9 +126,6 @@ components:
           description: "Unique URN for this silencing rule."
         note:
           type: string
-        expiryEpochSeconds:
-          type: integer
-          format: int64
         selector:
           $ref: "#/components/schemas/SilencingRuleSelector"
       required:
@@ -142,22 +135,22 @@ components:
 
     SilencingRuleSelector:
       type: object
-      description: "Selects what to silence. Discriminated by `type` to allow future selector variants."
+      description: "Selects what to silence. Discriminated by `_type` to allow future selector variants."
       properties:
-        type:
+        _type:
           type: string
       oneOf:
         - $ref: "#/components/schemas/MonitorCheckStateSelector"
       discriminator:
-        propertyName: type
+        propertyName: _type
       required:
-        - type
+        - _type
 
     MonitorCheckStateSelector:
       type: object
       description: "Selects a single monitor check state identified by monitor + checkStateId."
       properties:
-        type:
+        _type:
           type: string
           enum: [MonitorCheckStateSelector]
         monitorId:
@@ -169,7 +162,7 @@ components:
           type: string
           description: "The sub-stream identifier (always absent for Monitors, present for ExternalMonitors)."
       required:
-        - type
+        - _type
         - monitorId
         - checkStateId
 
