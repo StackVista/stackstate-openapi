@@ -114,6 +114,9 @@ components:
       properties:
         _type:
           type: string
+        startTimeEpochMs:
+          type: integer
+          format: int64
         note:
           type: string
       oneOf:
@@ -123,6 +126,7 @@ components:
       required:
         - _type
         - note
+        - startTimeEpochMs
     SyncedSilencing:
       type: object
       description: "A silencing rules applied to a monitor check status."
