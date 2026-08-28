@@ -136,11 +136,28 @@ components:
           enum: [SyncedSilencing]
         silencingRuleIdentifier:
           type: string
+        startTimeEpochMs:
+          type: integer
+          format: int64
         note:
           type: string
       required:
         - _type
         - silencingRuleIdentifier
+        - startTimeEpochMs
+        - note
+    MonitorCheckStatusSilencingRule:
+      type: object
+      description: "Configured silencing rule on this check state id."
+      properties:
+        identifier:
+          type: string
+          description: "The unique identifier (URN) of the silencing rule."
+        note:
+          type: string
+          description: "Human-readable reason for the silencing rule."
+      required:
+        - identifier
         - note
     Instant:
       description: Date/time representation in milliseconds since epoch (1970-01-01 00:00:00)

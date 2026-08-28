@@ -133,12 +133,17 @@ components:
           type: array
           items:
             $ref: common.api.yaml#/components/schemas/SyncedSilencingNode
+        silencingRules:
+          type: array
+          items:
+            $ref: common.api.yaml#/components/schemas/MonitorCheckStatusSilencingRule
       required:
         - checkStateId
         - healthState
         - componentIdentifier
         - lastUpdateTimestamp
         - silenced
+        - silencingRules
     HealthStreamError:
       type: object
       properties:

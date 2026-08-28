@@ -175,7 +175,7 @@ components:
         silencingRules:
           type: array
           items:
-            $ref: "#/components/schemas/MonitorCheckStatusSilencingRule"
+            $ref: "common.api.yaml#/components/schemas/MonitorCheckStatusSilencingRule"
       required:
         - id
         - identifier
@@ -329,19 +329,6 @@ components:
           type: string
       required:
         - message
-    MonitorCheckStatusSilencingRule:
-      type: object
-      description: "Configured silencing rule on this check state id."
-      properties:
-        identifier:
-          type: string
-          description: "The unique identifier (URN) of the silencing rule."
-        note:
-          type: string
-          description: "Human-readable reason for the silencing rule."
-      required:
-        - identifier
-        - note
     MonitorCheckStatusNotFoundError:
       type: object
       properties:
