@@ -108,6 +108,12 @@ components:
       type: object
       description: "Request body for creating a silencing rule"
       properties:
+        startTimeEpochMs:
+          type: integer
+          format: int64
+        endTimeEpochMs:
+          type: integer
+          format: int64
         note:
           type: string
           description: "Human-readable reason for the silencing rule."
@@ -126,12 +132,20 @@ components:
           description: "Unique URN for this silencing rule."
         note:
           type: string
+        startTimeEpochMs:
+          type: integer
+          format: int64
+        endTimeEpochMs:
+          type: integer
+          format: int64
         selector:
           $ref: "#/components/schemas/SilencingRuleSelector"
       required:
         - identifier
         - note
         - selector
+        - startTimeEpochMs
+        - endTimeEpochMs
 
     SilencingRuleSelector:
       type: object

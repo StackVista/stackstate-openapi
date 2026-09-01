@@ -1623,6 +1623,12 @@ components:
             identifier:
               type: string
               description: Unique URN for this silencing rule (defaults to urn://<vertexId>). Used as a unique index in StackGraph.
+            startTimeEpochMs:
+              type: integer
+              format: int64
+            endTimeEpochMs:
+              type: integer
+              format: int64
             note:
               type: string
               description: Human-readable reason for the silencing rule.
@@ -1631,6 +1637,8 @@ components:
           required:
             - type
             - identifier
+            - startTimeEpochMs
+            - endTimeEpochMs
             - note
             - selector
 
