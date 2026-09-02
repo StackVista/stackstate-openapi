@@ -156,9 +156,17 @@ components:
         note:
           type: string
           description: "Human-readable reason for the silencing rule."
+        startTimeEpochMs:
+          type: integer
+          format: int64
+        endTimeEpochMs:
+          type: integer
+          format: int64
       required:
         - identifier
         - note
+        - startTimeEpochMs
+        - endTimeEpochMs
     Instant:
       description: Date/time representation in milliseconds since epoch (1970-01-01 00:00:00)
       type: integer
