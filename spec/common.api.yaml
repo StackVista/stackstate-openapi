@@ -126,9 +126,19 @@ components:
         - note
         - startTimeEpochMs
     MonitorCheckStatusSilencingRule:
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/MonitorCheckStatusConfiguredSilencingRule"
+        - $ref: "#/components/schemas/MonitorCheckStatusExternalSilencingRule"
+    MonitorCheckStatusConfiguredSilencingRule:
       type: object
       description: "Configured silencing rule on this check state id."
       properties:
+        _type:
+          type: string
+          enum:
+            - MonitorCheckStatusConfiguredSilencingRule
         identifier:
           type: string
           description: "The unique identifier (URN) of the silencing rule."
@@ -142,10 +152,29 @@ components:
           type: integer
           format: int64
       required:
+        - _type
         - identifier
         - note
         - startTimeEpochMs
         - endTimeEpochMs
+    MonitorCheckStatusExternalSilencingRule:
+      type: object
+      description: "Projected external silencing on this check state id."
+      properties:
+        _type:
+          type: string
+          enum:
+            - MonitorCheckStatusExternalSilencingRule
+        note:
+          type: string
+          description: "Human-readable reason for the external silencing."
+        startTimeEpochMs:
+          type: integer
+          format: int64
+      required:
+        - _type
+        - note
+        - startTimeEpochMs
     Instant:
       description: Date/time representation in milliseconds since epoch (1970-01-01 00:00:00)
       type: integer
