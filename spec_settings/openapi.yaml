@@ -1657,20 +1657,14 @@ components:
 
     MonitorCheckStateSelector:
       type: object
-      description: Selects a single monitor check state identified by monitor + checkStateId.
+      description: Selects a single monitor check state, identified by its already-resolved SyncedCheckState identifier.
       properties:
         type:
           type: string
           enum: [MonitorCheckStateSelector]
-        monitorId:
-          $ref: "#/components/schemas/MonitorPresentationId"
-        checkStateId:
+        checkStateIdentifier:
           type: string
-          description: The check state id within the monitor's output.
-        subStream:
-          type: string
-          description: The sub-stream identifier (always absent for Monitors, present for ExternalMonitors).
+          description: The FullCheckStateId string identifying the targeted check state (see SyncedCheckState.identifier).
       required:
         - type
-        - monitorId
-        - checkStateId
+        - checkStateIdentifier

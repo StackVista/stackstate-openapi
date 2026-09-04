@@ -112,17 +112,12 @@ components:
       type: object
       description: "Projection of a silencing rule (or external silencing) applied to a monitor check status."
       properties:
-        _type:
-          type: string
         startTimeEpochMs:
           type: integer
           format: int64
         note:
           type: string
-      discriminator:
-        propertyName: _type
       required:
-        - _type
         - note
         - startTimeEpochMs
     MonitorCheckStatusSilencingRule:
