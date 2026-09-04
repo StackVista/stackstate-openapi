@@ -108,7 +108,7 @@ components:
       required:
         - _type
         - id
-    SyncedSilencingNode:
+    SyncedSilencing:
       type: object
       description: "Projection of a silencing rule (or external silencing) applied to a monitor check status."
       properties:
@@ -119,33 +119,12 @@ components:
           format: int64
         note:
           type: string
-      oneOf:
-        - $ref: "#/components/schemas/SyncedSilencing"
       discriminator:
         propertyName: _type
       required:
         - _type
         - note
         - startTimeEpochMs
-    SyncedSilencing:
-      type: object
-      description: "A silencing rules applied to a monitor check status."
-      properties:
-        _type:
-          type: string
-          enum: [SyncedSilencing]
-        silencingRuleIdentifier:
-          type: string
-        startTimeEpochMs:
-          type: integer
-          format: int64
-        note:
-          type: string
-      required:
-        - _type
-        - silencingRuleIdentifier
-        - startTimeEpochMs
-        - note
     MonitorCheckStatusSilencingRule:
       type: object
       description: "Configured silencing rule on this check state id."
