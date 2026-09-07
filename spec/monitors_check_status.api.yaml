@@ -171,7 +171,7 @@ components:
         silenced:
           type: array
           items:
-            $ref: "common.api.yaml#/components/schemas/SyncedSilencingNode"
+            $ref: "common.api.yaml#/components/schemas/SyncedSilencing"
         silencingRules:
           type: array
           items:
