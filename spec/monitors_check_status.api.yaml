@@ -307,11 +307,17 @@ components:
           items:
             $ref: "#/components/schemas/MonitorCheckStatusHealthChange"
           description: "List of health state changes ordered from most recent to oldest."
+        muteIntervals:
+          type: array
+          items:
+            $ref: "#/components/schemas/MonitorCheckStatusMuteInterval"
+          description: "List of mute intervals ordered from most recent to oldest."
       required:
         - identifier
         - startTime
         - endTime
         - healthStateChanges
+        - muteIntervals
     MonitorCheckStatusHealthChange:
       properties:
         timestamp:
@@ -322,6 +328,17 @@ components:
       required:
         - timestamp
         - newHealth
+    MonitorCheckStatusMuteInterval:
+      properties:
+        startTimestamp:
+          type: integer
+          format: int64
+        endTimestamp:
+          type: integer
+          format: int64
+      required:
+        - startTimestamp
+        - endTimestamp
     MonitorCheckStatusApiError:
       type: object
       properties:
