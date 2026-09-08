@@ -77,6 +77,13 @@ components:
         - FLAPPING
         - CRITICAL
       type: string
+    SilencingValue:
+      description: 'Secondary state, independent of the health state. MUTED when the element is failing and every one of its failing health states is silenced. UNINITIALIZED until it has been calculated.'
+      enum:
+        - UNINITIALIZED
+        - MUTED
+        - UNMUTED
+      type: string
     MonitorReferenceId:
       type: object
       discriminator:
