@@ -174,6 +174,8 @@ components:
               type: string
             notifyOnHealthStates:
               $ref: "#/components/schemas/NotifyOnOptions"
+            notifyOnSilencing:
+              type: boolean
             notifyMonitors:
               type: array
               items:
@@ -205,6 +207,7 @@ components:
             - type
             - name
             - notifyOnHealthStates
+            - notifyOnSilencing
             - notifyMonitors
             - notifyMonitorTags
             - componentTypes

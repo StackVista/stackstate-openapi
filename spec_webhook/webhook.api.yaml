@@ -127,7 +127,10 @@ components:
             - ComponentRemoved
             - ComponentChanged
             - HealthStateResolved
+            - HealthStateSilenced
             - ChannelRemoved
+        silencingNote:
+          type: string
       required:
         - type
         - reason
