@@ -77,13 +77,38 @@ components:
         - FLAPPING
         - CRITICAL
       type: string
-    SilencingValue:
-      description: 'Secondary state, independent of the health state. MUTED when the element is failing and every one of its failing health states is silenced. UNINITIALIZED until it has been calculated.'
-      enum:
-        - UNINITIALIZED
-        - MUTED
-        - UNMUTED
-      type: string
+    SilencingState:
+      description: "Silencing of an element, independent of its health state. Absent while it is unknown, which is the case for an element without state and for one whose silencing has not been calculated."
+      discriminator:
+        propertyName: _type
+      oneOf:
+        - $ref: "#/components/schemas/SilencingUnmuted"
+        - $ref: "#/components/schemas/SilencingMuted"
+    SilencingUnmuted:
+      type: object
+      description: "The element is not silenced: it is not failing, or at least one of its failing health states is not silenced."
+      properties:
+        _type:
+          type: string
+          enum:
+            - SilencingUnmuted
+      required:
+        - _type
+    SilencingMuted:
+      type: object
+      description: "The element is failing and every one of its failing health states is silenced."
+      properties:
+        _type:
+          type: string
+          enum:
+            - SilencingMuted
+        sinceTimestamp:
+          description: "Start of the silencing that muted the element."
+          type: integer
+          format: int64
+      required:
+        - _type
+        - sinceTimestamp
     MonitorReferenceId:
       type: object
       discriminator:
