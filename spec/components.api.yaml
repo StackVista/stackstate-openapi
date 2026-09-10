@@ -499,12 +499,8 @@ components:
           type: string
         health:
           $ref: "common.api.yaml#/components/schemas/HealthStateValue"
-        silenced:
-          $ref: "common.api.yaml#/components/schemas/SilencingValue"
-        silencedSinceTimestamp:
-          description: Start of the oldest silencing covering a failing check state. Zero while the component is not silenced.
-          type: integer
-          format: int64
+        silencing:
+          $ref: "common.api.yaml#/components/schemas/SilencingState"
         lastUpdateTimestamp:
           type: integer
           format: int64
