@@ -278,6 +278,7 @@ components:
         - $ref: '#/components/schemas/MetricMetaDisplay'
         - $ref: '#/components/schemas/ComponentLinkMetaDisplay'
         - $ref: '#/components/schemas/HealthMetaDisplay'
+        - $ref: '#/components/schemas/MutedMetaDisplay'
         - $ref: '#/components/schemas/TextMetaDisplay'
         - $ref: '#/components/schemas/NumericMetaDisplay'
         - $ref: '#/components/schemas/DurationMetaDisplay'
@@ -323,6 +324,14 @@ components:
         _type:
           type: string
           enum: [HealthMetaDisplay]
+    MutedMetaDisplay:
+      type: object
+      required:
+        - _type
+      properties:
+        _type:
+          type: string
+          enum: [MutedMetaDisplay]
     TextMetaDisplay:
       type: object
       required:
@@ -387,6 +396,7 @@ components:
         - $ref: '#/components/schemas/LinkCell'
         - $ref: '#/components/schemas/ComponentLinkCell'
         - $ref: '#/components/schemas/HealthCell'
+        - $ref: '#/components/schemas/MutedCell'
         - $ref: '#/components/schemas/TextCell'
         - $ref: '#/components/schemas/NumericCell'
         - $ref: '#/components/schemas/DurationCell'
@@ -446,6 +456,17 @@ components:
           enum: [HealthCell]
         state:
           $ref: "common.api.yaml#/components/schemas/HealthStateValue"
+    MutedCell:
+      type: object
+      description: Backend-derived component muted state.
+      required:
+        - _type
+        - muted
+      properties:
+        _type:
+          enum: [MutedCell]
+        muted:
+          type: boolean
     TextCell:
       type: object
       required:
