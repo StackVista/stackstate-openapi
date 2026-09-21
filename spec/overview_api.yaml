@@ -458,15 +458,14 @@ components:
           $ref: "common.api.yaml#/components/schemas/HealthStateValue"
     MutedCell:
       type: object
-      description: Backend-derived component muted state.
+      description: Backend-derived component silencing state. Absent silencing means the state is unknown.
       required:
         - _type
-        - muted
       properties:
         _type:
           enum: [MutedCell]
-        muted:
-          type: boolean
+        silencing:
+          $ref: "common.api.yaml#/components/schemas/SilencingState"
     TextCell:
       type: object
       required:
