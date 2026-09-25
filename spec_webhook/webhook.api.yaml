@@ -100,6 +100,7 @@ components:
           enum:
             - DEVIATING
             - CRITICAL
+            - MUTED
         title:
           type: string
         triggeredTimeMs:
@@ -122,13 +123,14 @@ components:
         reason:
           type: string
           enum:
-            - ConfigRemoved
-            - ConfigChanged
+            - ConfigurationRemoved
+            - ConfigurationChanged
             - ComponentRemoved
             - ComponentChanged
             - HealthStateResolved
             - HealthStateSilenced
             - ChannelRemoved
+            - MonitorChangedOrRemoved
         silencingNote:
           type: string
       required:
