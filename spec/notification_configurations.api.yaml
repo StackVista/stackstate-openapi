@@ -247,7 +247,6 @@ components:
       required:
         - name
         - notifyHealthStates
-        - notifyOnSilencing
         - monitors
         - monitorTags
         - componentTypeNames
