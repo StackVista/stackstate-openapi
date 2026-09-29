@@ -137,6 +137,8 @@ components:
           type: array
           items:
             $ref: common.api.yaml#/components/schemas/MonitorCheckStatusSilencingRule
+        identifier:
+          type: string
       required:
         - checkStateId
         - healthState
