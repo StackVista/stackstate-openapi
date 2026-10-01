@@ -177,10 +177,15 @@ components:
           items:
             $ref: "#/components/schemas/ComponentHealthChange"
           description: "List of health state changes ordered from most recent to oldest."
+        muteIntervals:
+          type: array
+          items:
+            $ref: "common.api.yaml#/components/schemas/MuteInterval"
       required:
         - startTime
         - endTime
         - healthStateChanges
+        - muteIntervals
     ComponentHealthChange:
       properties:
         timestamp:
