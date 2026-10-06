@@ -130,12 +130,17 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/TimelineSummaryHealthChange"
+        mutedIntervals:
+          type: array
+          items:
+            $ref: "common.api.yaml#/components/schemas/MuteInterval"
         fromTime:
           type: integer
           format: int64
       required:
         - buckets
         - healthHistory
+        - mutedIntervals
         - fromTime
     TimelineSummaryEventBucket:
       type: object

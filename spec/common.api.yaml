@@ -109,6 +109,17 @@ components:
       required:
         - _type
         - sinceTimestamp
+    MuteInterval:
+      properties:
+        startTimestamp:
+          type: integer
+          format: int64
+        endTimestamp:
+          type: integer
+          format: int64
+      required:
+        - startTimestamp
+        - endTimestamp
     MonitorReferenceId:
       type: object
       discriminator:
