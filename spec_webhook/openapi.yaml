@@ -1,7 +1,8 @@
 openapi: 3.0.3
 info:
-  description: StackState's Webhook API specification
-  version: 0.0.1
+  description: |
+    StackState's Webhook API specification. This is a supported API, documented in the [webhook channel documentation](https://documentation.suse.com/cloudnative/suse-observability/latest/en/use/alerting/notifications/channels/webhook.html).
+  version: 1.0.0
   title: StackState Webhook API
   license:
     name: "Apache 2.0"

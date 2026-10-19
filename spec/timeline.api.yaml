@@ -6,6 +6,7 @@ info:
 paths:
   /timeline/summary:
     post:
+      x-stability: internal
       tags:
         - timeline
       requestBody:

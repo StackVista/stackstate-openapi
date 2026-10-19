@@ -7,6 +7,7 @@ info:
 paths:
   /otel-component-mappings:
     get:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Get all otel component mappings."
@@ -27,6 +28,7 @@ paths:
         "500":
           $ref: "#/components/responses/OtelMappingErrorResponse"
     put:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Upserts (creates/updates) an OTel Component Mappings."
@@ -52,6 +54,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/identifier"
     get:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Get an OTel Component Mapping."
@@ -72,6 +75,7 @@ paths:
         "500":
           $ref: "#/components/responses/OtelMappingErrorResponse"
     delete:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Deletes an OTel Component Mapping."
@@ -91,6 +95,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/identifier"
     get:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Get the status of an otel component mapping synchronization."
@@ -112,6 +117,7 @@ paths:
           $ref: "#/components/responses/OtelMappingErrorResponse"
   /otel-relation-mappings:
     get:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Get all otel relation mappings."
@@ -132,6 +138,7 @@ paths:
         "500":
           $ref: "#/components/responses/OtelMappingErrorResponse"
     put:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Upserts (creates/updates) an OTel Relation Mappings."
@@ -157,6 +164,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/identifier"
     get:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Get an OTel Relation Mapping."
@@ -177,6 +185,7 @@ paths:
         "500":
           $ref: "#/components/responses/OtelMappingErrorResponse"
     delete:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Deletes an OTel Relation Mapping."
@@ -196,6 +205,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/identifier"
     get:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Get the status of an otel relation mapping synchronization."

@@ -7,6 +7,7 @@ info:
 paths:
   /dashboards:
     get:
+      x-stability: internal
       tags:
         - dashboards
       summary: "Get a list of dashboards"
@@ -20,6 +21,7 @@ paths:
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     post:
+      x-stability: internal
       tags:
         - dashboards
       summary: "Create a new dashboard"
@@ -36,6 +38,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /dashboards/{dashboardIdOrUrn}:
     get:
+      x-stability: internal
       tags:
         - dashboards
       summary: "Get a single dashboard"
@@ -54,6 +57,7 @@ paths:
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     patch:
+      x-stability: internal
       tags:
         - dashboards
       summary: "Patch a dashboard"
@@ -75,6 +79,7 @@ paths:
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     delete:
+      x-stability: internal
       tags:
         - dashboards
       summary: "Delete a dashboard"
@@ -95,6 +100,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /dashboards/{dashboardIdOrUrn}/clone:
     post:
+      x-stability: internal
       tags:
         - dashboards
       summary: "Clone a dashboard"

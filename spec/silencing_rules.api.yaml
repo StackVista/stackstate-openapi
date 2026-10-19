@@ -6,6 +6,7 @@ info:
 paths:
   /silencing-rules:
     get:
+      x-stability: internal
       tags:
         - silencing-rule
       summary: "List silencing rules"
@@ -17,6 +18,7 @@ paths:
         "500":
           $ref: "#/components/responses/silencingRuleApiError"
     post:
+      x-stability: internal
       tags:
         - silencing-rule
       summary: "Create a silencing rule"
@@ -36,6 +38,7 @@ paths:
 
   /silencing-rules/{identifier}:
     delete:
+      x-stability: internal
       tags:
         - silencing-rule
       summary: "Delete a silencing rule"

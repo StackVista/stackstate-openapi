@@ -6,6 +6,7 @@ info:
 paths:
   /stackpack:
     post:
+      x-stability: internal
       tags:
         - stackpack
       summary: "StackPack API"
@@ -34,6 +35,7 @@ paths:
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     get:
+      x-stability: internal
       tags:
         - stackpack
       summary: "StackPack API"
@@ -58,6 +60,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /stackpack/validate:
     post:
+      x-stability: internal
       tags:
         - stackpack
       summary: "Validate API"
@@ -87,6 +90,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /stackpack/{stackPackName}/provision:
     post:
+      x-stability: internal
       tags:
         - stackpack
       parameters:
@@ -119,6 +123,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /stackpack/{stackPackName}/deprovision/{stackPackInstanceId}:
     post:
+      x-stability: internal
       tags:
         - stackpack
       parameters:
@@ -147,6 +152,7 @@ paths:
 
   /stackpack/{stackPackName}/upgrade:
     post:
+      x-stability: internal
       tags:
         - stackpack
       parameters:
@@ -172,6 +178,7 @@ paths:
 
   /stackpack/{stackPackName}/downgrade:
     post:
+      x-stability: internal
       tags:
         - stackpack
       parameters:
@@ -191,6 +198,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /stackpack/{stackPackName}/versions:
     get:
+      x-stability: internal
       tags:
         - stackpack
       parameters:
@@ -218,6 +226,7 @@ paths:
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     delete:
+      x-stability: internal
       tags:
         - stackpack
       parameters:
@@ -290,6 +299,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /stackpack/{stackPackName}/versions/{version}:
     delete:
+      x-stability: internal
       tags:
         - stackpack
       parameters:
@@ -321,6 +331,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /stackpack/{stackPackName}/confirm-manual-steps/{stackPackInstanceId}:
     post:
+      x-stability: internal
       tags:
         - stackpack
       parameters:

@@ -6,6 +6,7 @@ info:
 paths:
   /notifications/channels/slack/{channelId}:
     get:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       tags:
@@ -23,6 +24,7 @@ paths:
         "500":
           $ref: "#/components/responses/notificationChannelError"
     delete:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       tags:
@@ -42,6 +44,7 @@ paths:
 
   /notifications/channels/slack/oauth-redirect:
     get:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/redirectPath"
       tags:
@@ -54,6 +57,7 @@ paths:
           description: "Redirects to Slack to start an OAuth2 flow that will return to the slack channel configuration afterwards. In case of an error redirects back to the Slack channel configuration with an `error` and a `channelId` parameter."
   /notifications/channels/slack/oauth-callback:
     get:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/oauthCode"
         - $ref: "#/components/parameters/oauthState"
@@ -68,6 +72,7 @@ paths:
           description: "Redirects back to the Slack channel configuration, in case of an error it includes an `error` query parameter. If known also a `channelId` parameter will be included."
   /notifications/channels/slack/{channelId}/listSlackChannels:
     get:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
         - $ref: "#/components/parameters/cursor"
@@ -87,6 +92,7 @@ paths:
           $ref: "#/components/responses/notificationChannelError"
   /notifications/channels/slack/{channelId}/slackChannelDetails/{slackChannelId}:
     get:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
         - $ref: "#/components/parameters/slackChannelId"
@@ -106,6 +112,7 @@ paths:
           $ref: "#/components/responses/notificationChannelError"
   /notifications/channels/slack/{channelId}/joinSlackChannel:
     post:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       requestBody:
@@ -126,6 +133,7 @@ paths:
           $ref: "#/components/responses/notificationChannelError"
   /notifications/channels/slack/{channelId}/test:
     post:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       tags:
@@ -145,6 +153,7 @@ paths:
 
   /notifications/channels/webhook:
     post:
+      x-stability: internal
       requestBody:
         $ref: "#/components/requestBodies/webhookChannelWrite"
       tags:
@@ -161,6 +170,7 @@ paths:
           $ref: "#/components/responses/notificationChannelError"
   /notifications/channels/webhook/{channelId}:
     get:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       tags:
@@ -178,6 +188,7 @@ paths:
         "500":
           $ref: "#/components/responses/notificationChannelError"
     put:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       requestBody:
@@ -197,6 +208,7 @@ paths:
         "500":
           $ref: "#/components/responses/notificationChannelError"
     delete:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       tags:
@@ -215,6 +227,7 @@ paths:
           $ref: "#/components/responses/notificationChannelError"
   /notifications/channels/webhook/{channelId}/test:
     post:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       tags:
@@ -234,6 +247,7 @@ paths:
 
   /notifications/channels/opsgenie:
     post:
+      x-stability: internal
       requestBody:
         $ref: "#/components/requestBodies/opsgenieChannelWrite"
       tags:
@@ -250,6 +264,7 @@ paths:
           $ref: "#/components/responses/notificationChannelError"
   /notifications/channels/opsgenie/responders:
     get:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/genieKey"
         - $ref: "#/components/parameters/region"
@@ -267,6 +282,7 @@ paths:
           $ref: "#/components/responses/notificationChannelError"
   /notifications/channels/opsgenie/{channelId}:
     get:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       tags:
@@ -284,6 +300,7 @@ paths:
         "500":
           $ref: "#/components/responses/notificationChannelError"
     put:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       requestBody:
@@ -303,6 +320,7 @@ paths:
         "500":
           $ref: "#/components/responses/notificationChannelError"
     delete:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       tags:
@@ -321,6 +339,7 @@ paths:
           $ref: "#/components/responses/notificationChannelError"
   /notifications/channels/opsgenie/{channelId}/test:
     post:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       tags:
@@ -340,6 +359,7 @@ paths:
 
   /notifications/channels/teams:
     post:
+      x-stability: internal
       requestBody:
         $ref: "#/components/requestBodies/teamsChannelWrite"
       tags:
@@ -356,6 +376,7 @@ paths:
           $ref: "#/components/responses/notificationChannelError"
   /notifications/channels/teams/{channelId}:
     get:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       tags:
@@ -373,6 +394,7 @@ paths:
         "500":
           $ref: "#/components/responses/notificationChannelError"
     put:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       requestBody:
@@ -392,6 +414,7 @@ paths:
         "500":
           $ref: "#/components/responses/notificationChannelError"
     delete:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       tags:
@@ -410,6 +433,7 @@ paths:
           $ref: "#/components/responses/notificationChannelError"
   /notifications/channels/teams/{channelId}/test:
     post:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       tags:
@@ -429,6 +453,7 @@ paths:
 
   /notifications/channels/email:
     post:
+      x-stability: internal
       requestBody:
         $ref: "#/components/requestBodies/emailChannelWrite"
       tags:
@@ -445,6 +470,7 @@ paths:
           $ref: "#/components/responses/notificationChannelError"
   /notifications/channels/email/status:
     get:
+      x-stability: internal
       tags:
         - notification_channels
       summary: "Email Notification channel status"
@@ -459,6 +485,7 @@ paths:
           $ref: "#/components/responses/notificationChannelError"
   /notifications/channels/email/{channelId}:
     get:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       tags:
@@ -476,6 +503,7 @@ paths:
         "500":
           $ref: "#/components/responses/notificationChannelError"
     put:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       requestBody:
@@ -495,6 +523,7 @@ paths:
         "500":
           $ref: "#/components/responses/notificationChannelError"
     delete:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       tags:
@@ -513,6 +542,7 @@ paths:
           $ref: "#/components/responses/notificationChannelError"
   /notifications/channels/email/{channelId}/test:
     post:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/channelId"
       tags:

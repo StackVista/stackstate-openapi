@@ -8,6 +8,7 @@ info:
 paths:
   /agents:
     get:
+      x-stability: internal
       tags:
         - agentRegistrations
       summary: "Overview of registered agents"

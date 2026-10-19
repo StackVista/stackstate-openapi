@@ -6,6 +6,7 @@ info:
 paths:
   /topology/debug:
     post:
+      x-stability: internal
       tags:
         - receiverTopologyStream
       summary: Submit a topology stream message

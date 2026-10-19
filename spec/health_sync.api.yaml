@@ -6,6 +6,7 @@ info:
 paths:
   /synchronization/health/streams:
     get:
+      x-stability: internal
       tags:
         - healthSynchronization
       summary: "List health sync streams"
@@ -22,6 +23,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/healthStreamUrn"
     get:
+      x-stability: internal
       tags:
         - healthSynchronization
       summary: "Get health sync stream status"
@@ -42,6 +44,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/healthStreamUrn"
     post:
+      x-stability: internal
       tags:
         - healthSynchronization
       summary: "Clear health sync stream errors"
@@ -58,6 +61,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/healthStreamUrn"
     delete:
+      x-stability: internal
       tags:
         - healthSynchronization
       summary: "Delete health sync stream"
@@ -74,6 +78,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/healthStreamUrn"
     get:
+      x-stability: internal
       tags:
         - healthSynchronization
       summary: "List health sync sub-streams"
@@ -94,6 +99,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/healthStreamUrn"
     get:
+      x-stability: internal
       tags:
         - healthSynchronization
       summary: "List health sync stream check-states"
@@ -115,6 +121,7 @@ paths:
       - $ref: "#/components/parameters/healthStreamUrn"
       - $ref: "#/components/parameters/healthSyncSubStreamId"
     get:
+      x-stability: internal
       tags:
         - healthSynchronization
       summary: "Get health sync sub-stream status"
@@ -136,6 +143,7 @@ paths:
       - $ref: "#/components/parameters/healthStreamUrn"
       - $ref: "#/components/parameters/healthSyncSubStreamId"
     get:
+      x-stability: internal
       tags:
         - healthSynchronization
       summary: "List health sync sub-stream check-states"

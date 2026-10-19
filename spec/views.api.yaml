@@ -8,6 +8,7 @@ info:
 paths:
   /views:
     get:
+      x-stability: internal
       tags:
         - view
       summary: "Get a list of views"
@@ -20,6 +21,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /views/{viewIdOrIdentifier}:
     get:
+      x-stability: internal
       tags:
         - view
       summary: "Get a single view"

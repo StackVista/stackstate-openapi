@@ -1,8 +1,12 @@
 openapi: 3.0.3
 info:
   description: |
-    This API documentation page describes the SUSE Observability receiver API.
-  version: 5.2.0
+    **Internal API: not supported and subject to change without notice.** The SUSE Observability UI and CLI use this API; it is not a contract for integrations. Only interfaces documented in the [SUSE Observability documentation](https://documentation.suse.com/cloudnative/suse-observability/latest/en/classic.html) are supported.
+
+    To send data to SUSE Observability, use [OpenTelemetry](https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/otel/overview.html) with [OTel component and relation mappings](https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/getting-started.html).
+
+    This page describes parts of the SUSE Observability receiver API.
+  version: 5.2.0-internal
   title: SUSE Observability Receiver API
   license:
     name: "Apache 2.0"

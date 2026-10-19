@@ -6,6 +6,7 @@ info:
 paths:
   /events:
     post:
+      x-stability: internal
       tags:
         - event
       summary: "Get events"
@@ -26,6 +27,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /events/{eventId}:
     get:
+      x-stability: internal
       tags:
         - event
       summary: "Get single event"
@@ -65,6 +67,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /eventTypes:
     get:
+      x-stability: internal
       tags:
         - event
       summary: "Get event types"
@@ -144,6 +147,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /eventSources:
     get:
+      x-stability: internal
       tags:
         - event
       operationId: getEventSources
@@ -222,6 +226,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /eventTags:
     get:
+      x-stability: internal
       tags:
         - event
       summary: "Get event tags"
@@ -300,6 +305,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /eventsHistogram:
     post:
+      x-stability: internal
       tags:
         - event
       summary: "Get events histogram"

@@ -6,6 +6,7 @@ info:
 paths:
   /topic:
     get:
+      x-stability: internal
       tags:
         - topic
       summary: "List topics"
@@ -22,6 +23,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /topic/{topic}:
     get:
+      x-stability: internal
       tags:
         - topic
       summary: "Describe a topic"

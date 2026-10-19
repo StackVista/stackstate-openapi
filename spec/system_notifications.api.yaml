@@ -7,6 +7,7 @@ info:
 paths:
   /system/notifications:
     get:
+      x-stability: internal
       tags:
         - systemNotifications
       summary: "Overview of system notifications"

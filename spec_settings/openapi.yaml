@@ -1,6 +1,9 @@
 openapi: 3.0.3
 info:
-  description: Protocol for distributing settings between different SUSE Observability services
+  description: |
+    Protocol for distributing settings between different SUSE Observability services.
+
+    Stability is declared per schema with `x-stability`. Schemas marked `stable` are the settings types documented in the [SUSE Observability documentation](https://documentation.suse.com/cloudnative/suse-observability/latest/en/classic.html); the protocol envelope and all other schemas are internal and can change without notice.
   version: 0.0.1
   title: SUSE Observability Settings protocol
   license:
@@ -20,6 +23,7 @@ paths: {}
 components:
   schemas:
     SettingsProtocol:
+      x-stability: internal
       properties:
         type:
           type: string
@@ -34,6 +38,7 @@ components:
         - id
 
     SettingsSnapshotStart:
+      x-stability: internal
       type: object
       properties:
         type:
@@ -50,6 +55,7 @@ components:
         - settingType
 
     SettingsSnapshotStop:
+      x-stability: internal
       type: object
       properties:
         type:
@@ -63,6 +69,7 @@ components:
         - id
 
     SettingsEnvelope:
+      x-stability: internal
       type: object
       properties:
         type:
@@ -81,6 +88,7 @@ components:
     # Base types
 
     SettingType:
+      x-stability: internal
       type: string
       enum:
         - NotificationConfiguration
@@ -104,6 +112,7 @@ components:
         - SilencingRule
 
     Setting:
+      x-stability: internal
       type: object
       properties:
         type:
@@ -134,14 +143,17 @@ components:
         - createdTimeStamp
 
     Shard:
+      x-stability: stable
       type: integer
       format: int32
 
     SettingId:
+      x-stability: stable
       type: string
       description: A Setting is uniquely identified by the combination of type+id
 
     SettingBase:
+      x-stability: stable
       type: object
       properties:
         id:
@@ -159,6 +171,7 @@ components:
 
     # Notification configurations
     NotificationConfiguration:
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -216,6 +229,7 @@ components:
             - channelIds
 
     NotificationChannelId:
+      x-stability: internal
       type: object
       oneOf:
         - $ref: "#/components/schemas/SlackNotificationChannelId"
@@ -229,6 +243,7 @@ components:
         - type
 
     SlackNotificationChannelId:
+      x-stability: internal
       type: object
       properties:
         id:
@@ -241,6 +256,7 @@ components:
         - type
 
     WebhookNotificationChannelId:
+      x-stability: internal
       type: object
       properties:
         id:
@@ -253,6 +269,7 @@ components:
         - type
 
     OpsgenieNotificationChannelId:
+      x-stability: internal
       type: object
       properties:
         id:
@@ -265,6 +282,7 @@ components:
         - type
 
     TeamsNotificationChannelId:
+      x-stability: internal
       type: object
       properties:
         id:
@@ -277,6 +295,7 @@ components:
         - type
 
     EmailNotificationChannelId:
+      x-stability: internal
       type: object
       properties:
         id:
@@ -289,6 +308,7 @@ components:
         - type
 
     NotificationChannelType:
+      x-stability: internal
       type: string
       enum:
         - EmailNotificationChannel
@@ -298,6 +318,7 @@ components:
         - WebhookNotificationChannel
 
     NotificationChannel:
+      x-stability: internal
       type: object
       oneOf:
         - $ref: "#/components/schemas/EmailNotificationChannel"
@@ -311,6 +332,7 @@ components:
         - type
 
     EmailNotificationChannel:
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -339,6 +361,7 @@ components:
             - to
             - cc
     OpsgenieNotificationChannel:
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -370,10 +393,12 @@ components:
             - priority
 
     OpsgenieRegion:
+      x-stability: internal
       type: string
       enum: [EU, US]
 
     OpsgenieResponder:
+      x-stability: internal
       type: object
       properties:
         responder:
@@ -385,6 +410,7 @@ components:
         - responderType
 
     OpsgenieResponderType:
+      x-stability: internal
       type: string
       enum:
         - TEAM
@@ -393,10 +419,12 @@ components:
         - ESCALATION
 
     OpsgeniePriority:
+      x-stability: internal
       type: string
       enum: [P1, P2, P3, P4, P5]
 
     SlackNotificationChannel:
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -424,6 +452,7 @@ components:
             - slackWorkspace
 
     TeamsNotificationChannel:
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -444,6 +473,7 @@ components:
             - url
 
     WebhookNotificationChannel:
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -476,6 +506,7 @@ components:
 
     # Synchronization
     Sync:
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -528,6 +559,7 @@ components:
             - autoExpireElements
             - expireElementsAfterMs
     SyncAction:
+      x-stability: internal
       properties:
         actionType:
           type: string
@@ -542,6 +574,7 @@ components:
         - actionType
 
     SyncActionCreate:
+      x-stability: internal
       oneOf:
         - $ref: "#/components/schemas/SyncActionCreateComponent"
         - $ref: "#/components/schemas/SyncActionCreateRelation"
@@ -549,18 +582,21 @@ components:
         propertyName: actionType
 
     SyncActionComponent:
+      x-stability: internal
       oneOf:
         - $ref: "#/components/schemas/SyncActionCreateComponent"
         - $ref: "#/components/schemas/SyncActionCreateOnMerge"
       discriminator:
         propertyName: actionType
     SyncActionRelation:
+      x-stability: internal
       oneOf:
         - $ref: "#/components/schemas/SyncActionCreateRelation"
         - $ref: "#/components/schemas/SyncActionCreateOnMerge"
       discriminator:
         propertyName: actionType
     SyncActionCreateComponent:
+      x-stability: internal
       type: object
       properties:
         actionType:
@@ -580,6 +616,7 @@ components:
         - templateFunction
         - mergeStrategy
     SyncActionCreateRelation:
+      x-stability: internal
       type: object
       properties:
         actionType:
@@ -599,6 +636,7 @@ components:
         - templateFunction
         - mergeStrategy
     SyncActionCreateOnMerge:
+      x-stability: internal
       type: object
       properties:
         actionType:
@@ -612,6 +650,7 @@ components:
 
     # Monitors and External Monitors
     Monitor:
+      x-stability: stable
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -649,6 +688,7 @@ components:
             - status
 
     ExternalMonitor:
+      x-stability: stable
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -678,6 +718,7 @@ components:
             - tags
 
     MonitorPresentation:
+      x-stability: internal
       type: object
       oneOf:
         - $ref: "#/components/schemas/Monitor"
@@ -688,6 +729,7 @@ components:
         - type
 
     MonitorPresentationId:
+      x-stability: internal
       oneOf:
         - $ref: "#/components/schemas/MonitorId"
         - $ref: "#/components/schemas/ExternalMonitorId"
@@ -695,6 +737,7 @@ components:
         propertyName: type
 
     MonitorId:
+      x-stability: internal
       type: object
       properties:
         type:
@@ -706,6 +749,7 @@ components:
         - type
         - id
     ExternalMonitorId:
+      x-stability: internal
       type: object
       properties:
         type:
@@ -718,12 +762,14 @@ components:
         - id
 
     FunctionCall:
+      x-stability: internal
       oneOf:
         - $ref: "#/components/schemas/MonitorFunctionCall"
       discriminator:
         propertyName: type
 
     MonitorFunctionCall:
+      x-stability: stable
       type: object
       properties:
         body:
@@ -741,6 +787,7 @@ components:
         - type
 
     FunctionBody:
+      x-stability: internal
       properties:
         functionType:
           type: string
@@ -757,12 +804,14 @@ components:
         - functionType
 
     MonitorFunctionBody:
+      x-stability: stable
       oneOf:
         - $ref: "#/components/schemas/NativeFunctionBody"
         - $ref: "#/components/schemas/GroovyFunctionBody"
       discriminator:
         propertyName: functionType
     IdExtractorFunctionBody:
+      x-stability: internal
       oneOf:
         - $ref: "#/components/schemas/NativeFunctionBody"
         - $ref: "#/components/schemas/GroovyFunctionBody"
@@ -770,6 +819,7 @@ components:
         propertyName: functionType
 
     Argument:
+      x-stability: internal
       properties:
         argumentType:
           type: string
@@ -781,6 +831,7 @@ components:
         - argumentType
 
     MonitorArgument:
+      x-stability: stable
       oneOf:
         - $ref: "#/components/schemas/ArgumentBoolean"
         - $ref: "#/components/schemas/ArgumentDouble"
@@ -797,6 +848,7 @@ components:
 
     # Queryview
     QueryView:
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -857,25 +909,32 @@ components:
 
     # Supporting types
     NotificationConfigurationStatus:
+      x-stability: internal
       type: string
       enum: [ENABLED, DISABLED]
     NotifyOnOptions:
+      x-stability: internal
       type: string
       enum: [CRITICAL, DEVIATING_AND_CRITICAL]
     MergeStrategy:
+      x-stability: internal
       type: string
       enum: [UseTheirs, MergePreferTheirs, MergePreferMine, UseMine]
     MonitorStatus:
+      x-stability: stable
       type: string
       enum: [ENABLED, DISABLED]
     ComparatorWithoutEquality:
+      x-stability: stable
       type: string
       enum: [LT, LTE, GTE, GT]
     FailingHealthState:
+      x-stability: stable
       type: string
       enum: [CRITICAL, DEVIATING, UNKNOWN]
 
     NativeFunctionBody:
+      x-stability: stable
       type: object
       properties:
         functionType:
@@ -890,6 +949,7 @@ components:
         - name
         - functionRef
     GroovyFunctionBody:
+      x-stability: stable
       type: object
       properties:
         functionType:
@@ -904,6 +964,7 @@ components:
         - name
         - functionBody
     HandlebarsFunctionBody:
+      x-stability: internal
       type: object
       properties:
         functionType:
@@ -919,6 +980,7 @@ components:
         - functionBody
 
     ArgumentBoolean:
+      x-stability: stable
       type: object
       properties:
         argumentType:
@@ -930,6 +992,7 @@ components:
         - argumentType
         - value
     ArgumentDouble:
+      x-stability: stable
       type: object
       properties:
         argumentType:
@@ -942,6 +1005,7 @@ components:
         - argumentType
         - value
     ArgumentLong:
+      x-stability: stable
       type: object
       properties:
         argumentType:
@@ -954,6 +1018,7 @@ components:
         - argumentType
         - value
     ArgumentString:
+      x-stability: stable
       type: object
       properties:
         argumentType:
@@ -965,6 +1030,7 @@ components:
         - argumentType
         - value
     ArgumentTimeWindow:
+      x-stability: stable
       type: object
       properties:
         argumentType:
@@ -977,6 +1043,7 @@ components:
         - argumentType
         - valueMs
     ArgumentPromQLMetric:
+      x-stability: stable
       type: object
       properties:
         argumentType:
@@ -994,6 +1061,7 @@ components:
         - unit
         - aliasTemplate
     ArgumentComparatorWithoutEquality:
+      x-stability: stable
       type: object
       properties:
         argumentType:
@@ -1005,6 +1073,7 @@ components:
         - argumentType
         - value
     ArgumentFailingHealthState:
+      x-stability: stable
       type: object
       properties:
         argumentType:
@@ -1016,6 +1085,7 @@ components:
         - argumentType
         - value
     ArgumentTopologyQuery:
+      x-stability: stable
       type: object
       properties:
         argumentType:
@@ -1027,6 +1097,7 @@ components:
         - argumentType
         - value
     ArgumentTopologyPromQLMetric:
+      x-stability: stable
       type: object
       properties:
         argumentType:
@@ -1050,6 +1121,7 @@ components:
     # OTel topology synchronization
 
     OtelMapping:
+      x-stability: internal
       oneOf:
         - $ref: "#/components/schemas/OtelComponentMapping"
         - $ref: "#/components/schemas/OtelRelationMapping"
@@ -1057,6 +1129,7 @@ components:
         propertyName: type
 
     OtelComponentMapping:
+      x-stability: stable
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -1092,6 +1165,7 @@ components:
             - rank
 
     OtelComponentMappingRank:
+      x-stability: stable
       type: object
       properties:
         specificity:
@@ -1102,6 +1176,7 @@ components:
         - specificity
 
     OtelRelationMapping:
+      x-stability: stable
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -1134,6 +1209,7 @@ components:
             - expireAfterMs
 
     OtelInput:
+      x-stability: stable
       type: object
       description: Combines input signals and conditional resource/scope/metric/span mappings.
       properties:
@@ -1146,6 +1222,7 @@ components:
         - resource
 
     OtelInputResource:
+      x-stability: stable
       type: object
       description: |-
         Defines the conditional mapping at the resource level.
@@ -1163,6 +1240,7 @@ components:
           $ref: "#/components/schemas/OtelInputScope"
 
     OtelInputScope:
+      x-stability: stable
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope level.
@@ -1184,6 +1262,7 @@ components:
           $ref: "#/components/schemas/OtelInputLog"
 
     OtelInputMetric:
+      x-stability: stable
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> metric level.
@@ -1201,6 +1280,7 @@ components:
           $ref: "#/components/schemas/OtelInputDatapoint"
 
     OtelInputDatapoint:
+      x-stability: stable
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> metric -> datapoint level.
@@ -1216,6 +1296,7 @@ components:
             If omitted, defaults to `CONTINUE`.
 
     OtelInputSpan:
+      x-stability: stable
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> span level.
@@ -1231,6 +1312,7 @@ components:
             If omitted, defaults to `CONTINUE`.
 
     OtelInputLog:
+      x-stability: stable
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> log level.
@@ -1248,6 +1330,7 @@ components:
             If omitted, defaults to `CONTINUE`.
 
     OtelComponentMappingOutput:
+      x-stability: stable
       type: object
       properties:
         identifier:
@@ -1266,6 +1349,7 @@ components:
         - typeName
 
     OtelTagMapping:
+      x-stability: stable
       type: object
       description: Defines how a tag should be mapped from an input source to an output target, optionally using a regex pattern.
       properties:
@@ -1283,6 +1367,7 @@ components:
         - target
 
     OtelComponentMappingFieldMapping:
+      x-stability: stable
       type: object
       properties:
         additionalIdentifiers:
@@ -1309,6 +1394,7 @@ components:
             Note: component health state (CLEAR / DEVIATING / CRITICAL) is not derived from this field — it is determined downstream by monitors configured on the component.
 
     OtelRelationMappingOutput:
+      x-stability: stable
       type: object
       properties:
         sourceId:
@@ -1326,6 +1412,7 @@ components:
         - dependencyType
 
     OtelVariableMapping:
+      x-stability: stable
       type: object
       properties:
         name:
@@ -1337,6 +1424,7 @@ components:
         - value
 
     OtelInputSignal:
+      x-stability: stable
       type: string
       description: |-
         Signals exported by OpenTelemetry, which determine which data models and
@@ -1376,12 +1464,14 @@ components:
         - LOGS
 
     OtelInputSignalList:
+      x-stability: stable
       type: array
       items:
         $ref: '#/components/schemas/OtelInputSignal'
       minItems: 1
 
     OtelStringExpression:
+      x-stability: stable
       type: object
       description: |-
         An expression that must produce a string. It must be one of these formats:
@@ -1394,6 +1484,7 @@ components:
         - expression
 
     OtelAnyExpression:
+      x-stability: stable
       type: object
       description: |-
         An expression that can produce any type. 
@@ -1406,6 +1497,7 @@ components:
         - expression
 
     OtelBooleanExpression:
+      x-stability: stable
       type: object
       description: A Cel expression that must return a boolean
       properties:
@@ -1415,6 +1507,7 @@ components:
         - expression
 
     ComponentPresentation:
+      x-stability: stable
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -1445,6 +1538,7 @@ components:
             - definition
 
     ComponentType:
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -1468,6 +1562,7 @@ components:
             - name
 
     Layer:
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -1490,6 +1585,7 @@ components:
             - order
 
     Domain:
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -1512,6 +1608,7 @@ components:
             - order
 
     RelationType:
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -1534,6 +1631,7 @@ components:
             - dependencyType
 
     MainMenuGroup:
+      x-stability: stable
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -1565,6 +1663,7 @@ components:
             - name
 
     MainMenuRank:
+      x-stability: stable
       type: object
       properties:
         specificity:
@@ -1574,6 +1673,7 @@ components:
         - specificity
 
     MainMenuViewItem:
+      x-stability: stable
       properties:
         viewIdentifier:
           type: string
@@ -1581,6 +1681,7 @@ components:
         - viewIdentifier
 
     ViewType:
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -1615,6 +1716,7 @@ components:
 
     # Silencing rules
     SilencingRule:
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -1646,6 +1748,7 @@ components:
             - selector
 
     SilencingRuleSelector:
+      x-stability: internal
       type: object
       description: Selects what to silence. Discriminated by `type` to allow future selector variants.
       properties:
@@ -1659,6 +1762,7 @@ components:
         - type
 
     MonitorCheckStateSelector:
+      x-stability: internal
       type: object
       description: Selects a single monitor check state, identified by its already-resolved SyncedCheckState identifier.
       properties:

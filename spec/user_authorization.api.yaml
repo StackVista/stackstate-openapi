@@ -6,6 +6,7 @@ info:
 paths:
   /user/authorization/for:
     get:
+      x-stability: internal
       tags:
         - userAuthorization
       summary: "Is the current user authorized for the provided permission and resource"
