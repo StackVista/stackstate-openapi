@@ -3,8 +3,8 @@ info:
   description: |
     Protocol for distributing settings between different SUSE Observability services.
 
-    Stability is declared per schema with `x-stability`. Schemas marked `stable` are the settings types documented in the [SUSE Observability documentation](https://documentation.suse.com/cloudnative/suse-observability/latest/en/classic.html); the protocol envelope and all other schemas are internal and can change without notice.
-  version: 0.0.1
+    **Internal protocol: not supported and subject to change without notice.** StackPack settings files are not parsed with these schemas; their documented format is described in the [SUSE Observability documentation](https://documentation.suse.com/cloudnative/suse-observability/latest/en/classic.html).
+  version: 0.0.1-internal
   title: SUSE Observability Settings protocol
   license:
     name: "Apache 2.0"
@@ -143,17 +143,17 @@ components:
         - createdTimeStamp
 
     Shard:
-      x-stability: stable
+      x-stability: internal
       type: integer
       format: int32
 
     SettingId:
-      x-stability: stable
+      x-stability: internal
       type: string
       description: A Setting is uniquely identified by the combination of type+id
 
     SettingBase:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         id:
@@ -650,7 +650,7 @@ components:
 
     # Monitors and External Monitors
     Monitor:
-      x-stability: stable
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -688,7 +688,7 @@ components:
             - status
 
     ExternalMonitor:
-      x-stability: stable
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -769,7 +769,7 @@ components:
         propertyName: type
 
     MonitorFunctionCall:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         body:
@@ -804,7 +804,7 @@ components:
         - functionType
 
     MonitorFunctionBody:
-      x-stability: stable
+      x-stability: internal
       oneOf:
         - $ref: "#/components/schemas/NativeFunctionBody"
         - $ref: "#/components/schemas/GroovyFunctionBody"
@@ -831,7 +831,7 @@ components:
         - argumentType
 
     MonitorArgument:
-      x-stability: stable
+      x-stability: internal
       oneOf:
         - $ref: "#/components/schemas/ArgumentBoolean"
         - $ref: "#/components/schemas/ArgumentDouble"
@@ -921,20 +921,20 @@ components:
       type: string
       enum: [UseTheirs, MergePreferTheirs, MergePreferMine, UseMine]
     MonitorStatus:
-      x-stability: stable
+      x-stability: internal
       type: string
       enum: [ENABLED, DISABLED]
     ComparatorWithoutEquality:
-      x-stability: stable
+      x-stability: internal
       type: string
       enum: [LT, LTE, GTE, GT]
     FailingHealthState:
-      x-stability: stable
+      x-stability: internal
       type: string
       enum: [CRITICAL, DEVIATING, UNKNOWN]
 
     NativeFunctionBody:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         functionType:
@@ -949,7 +949,7 @@ components:
         - name
         - functionRef
     GroovyFunctionBody:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         functionType:
@@ -980,7 +980,7 @@ components:
         - functionBody
 
     ArgumentBoolean:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         argumentType:
@@ -992,7 +992,7 @@ components:
         - argumentType
         - value
     ArgumentDouble:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         argumentType:
@@ -1005,7 +1005,7 @@ components:
         - argumentType
         - value
     ArgumentLong:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         argumentType:
@@ -1018,7 +1018,7 @@ components:
         - argumentType
         - value
     ArgumentString:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         argumentType:
@@ -1030,7 +1030,7 @@ components:
         - argumentType
         - value
     ArgumentTimeWindow:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         argumentType:
@@ -1043,7 +1043,7 @@ components:
         - argumentType
         - valueMs
     ArgumentPromQLMetric:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         argumentType:
@@ -1061,7 +1061,7 @@ components:
         - unit
         - aliasTemplate
     ArgumentComparatorWithoutEquality:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         argumentType:
@@ -1073,7 +1073,7 @@ components:
         - argumentType
         - value
     ArgumentFailingHealthState:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         argumentType:
@@ -1085,7 +1085,7 @@ components:
         - argumentType
         - value
     ArgumentTopologyQuery:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         argumentType:
@@ -1097,7 +1097,7 @@ components:
         - argumentType
         - value
     ArgumentTopologyPromQLMetric:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         argumentType:
@@ -1129,7 +1129,7 @@ components:
         propertyName: type
 
     OtelComponentMapping:
-      x-stability: stable
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -1165,7 +1165,7 @@ components:
             - rank
 
     OtelComponentMappingRank:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         specificity:
@@ -1176,7 +1176,7 @@ components:
         - specificity
 
     OtelRelationMapping:
-      x-stability: stable
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -1209,7 +1209,7 @@ components:
             - expireAfterMs
 
     OtelInput:
-      x-stability: stable
+      x-stability: internal
       type: object
       description: Combines input signals and conditional resource/scope/metric/span mappings.
       properties:
@@ -1222,7 +1222,7 @@ components:
         - resource
 
     OtelInputResource:
-      x-stability: stable
+      x-stability: internal
       type: object
       description: |-
         Defines the conditional mapping at the resource level.
@@ -1240,7 +1240,7 @@ components:
           $ref: "#/components/schemas/OtelInputScope"
 
     OtelInputScope:
-      x-stability: stable
+      x-stability: internal
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope level.
@@ -1262,7 +1262,7 @@ components:
           $ref: "#/components/schemas/OtelInputLog"
 
     OtelInputMetric:
-      x-stability: stable
+      x-stability: internal
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> metric level.
@@ -1280,7 +1280,7 @@ components:
           $ref: "#/components/schemas/OtelInputDatapoint"
 
     OtelInputDatapoint:
-      x-stability: stable
+      x-stability: internal
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> metric -> datapoint level.
@@ -1296,7 +1296,7 @@ components:
             If omitted, defaults to `CONTINUE`.
 
     OtelInputSpan:
-      x-stability: stable
+      x-stability: internal
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> span level.
@@ -1312,7 +1312,7 @@ components:
             If omitted, defaults to `CONTINUE`.
 
     OtelInputLog:
-      x-stability: stable
+      x-stability: internal
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> log level.
@@ -1330,7 +1330,7 @@ components:
             If omitted, defaults to `CONTINUE`.
 
     OtelComponentMappingOutput:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         identifier:
@@ -1349,7 +1349,7 @@ components:
         - typeName
 
     OtelTagMapping:
-      x-stability: stable
+      x-stability: internal
       type: object
       description: Defines how a tag should be mapped from an input source to an output target, optionally using a regex pattern.
       properties:
@@ -1367,7 +1367,7 @@ components:
         - target
 
     OtelComponentMappingFieldMapping:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         additionalIdentifiers:
@@ -1394,7 +1394,7 @@ components:
             Note: component health state (CLEAR / DEVIATING / CRITICAL) is not derived from this field — it is determined downstream by monitors configured on the component.
 
     OtelRelationMappingOutput:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         sourceId:
@@ -1412,7 +1412,7 @@ components:
         - dependencyType
 
     OtelVariableMapping:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         name:
@@ -1424,7 +1424,7 @@ components:
         - value
 
     OtelInputSignal:
-      x-stability: stable
+      x-stability: internal
       type: string
       description: |-
         Signals exported by OpenTelemetry, which determine which data models and
@@ -1464,14 +1464,14 @@ components:
         - LOGS
 
     OtelInputSignalList:
-      x-stability: stable
+      x-stability: internal
       type: array
       items:
         $ref: '#/components/schemas/OtelInputSignal'
       minItems: 1
 
     OtelStringExpression:
-      x-stability: stable
+      x-stability: internal
       type: object
       description: |-
         An expression that must produce a string. It must be one of these formats:
@@ -1484,7 +1484,7 @@ components:
         - expression
 
     OtelAnyExpression:
-      x-stability: stable
+      x-stability: internal
       type: object
       description: |-
         An expression that can produce any type. 
@@ -1497,7 +1497,7 @@ components:
         - expression
 
     OtelBooleanExpression:
-      x-stability: stable
+      x-stability: internal
       type: object
       description: A Cel expression that must return a boolean
       properties:
@@ -1507,7 +1507,7 @@ components:
         - expression
 
     ComponentPresentation:
-      x-stability: stable
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -1631,7 +1631,7 @@ components:
             - dependencyType
 
     MainMenuGroup:
-      x-stability: stable
+      x-stability: internal
       allOf:
         - $ref: "#/components/schemas/SettingBase"
         - type: object
@@ -1663,7 +1663,7 @@ components:
             - name
 
     MainMenuRank:
-      x-stability: stable
+      x-stability: internal
       type: object
       properties:
         specificity:
@@ -1673,7 +1673,7 @@ components:
         - specificity
 
     MainMenuViewItem:
-      x-stability: stable
+      x-stability: internal
       properties:
         viewIdentifier:
           type: string

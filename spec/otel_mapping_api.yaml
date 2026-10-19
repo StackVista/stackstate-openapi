@@ -315,6 +315,7 @@ components:
       required: true
   schemas:
     OtelComponentMapping:
+      x-stability: internal
       type: object
       properties:
         _type:
@@ -349,6 +350,7 @@ components:
         - expireAfter
         - rank
     OtelComponentMappingRank:
+      x-stability: stable
       type: object
       properties:
         specificity:
@@ -358,6 +360,7 @@ components:
       required:
         - specificity
     OtelRelationMapping:
+      x-stability: internal
       type: object
       properties:
         _type:
@@ -389,6 +392,7 @@ components:
         - output
         - expireAfter
     OtelMappingStatus:
+      x-stability: internal
       type: object
       properties:
         item:
@@ -401,16 +405,19 @@ components:
         - item
         - errorDetails
     MetricBucketValue:
+      x-stability: internal
       type: object
       properties:
         value:
           type: number
           format: double
     MetricBucketValues:
+      x-stability: internal
       type: array
       items:
         $ref: "#/components/schemas/MetricBucketValue"
     OtelMappingStreamError:
+      x-stability: internal
       type: object
       properties:
         level:
@@ -423,10 +430,12 @@ components:
         - level
         - message
     OtelMappingErrors:
+      x-stability: internal
       type: array
       items:
         $ref: "#/components/schemas/OtelMappingError"
     OtelMappingMetrics:
+      x-stability: internal
       type: object
       properties:
         bucketSizeSeconds:
@@ -436,6 +445,7 @@ components:
       required:
         - bucketSizeSeconds
     OtelMappingItem:
+      x-stability: internal
       type: object
       properties:
         name:
@@ -445,6 +455,7 @@ components:
       required:
         - name
     OtelMappingStatusItem:
+      x-stability: internal
       type: object
       properties:
         name:
@@ -463,6 +474,7 @@ components:
         - relationCount
         - status
     OtelMappingError:
+      x-stability: internal
       type: object
       properties:
         level:
@@ -475,6 +487,7 @@ components:
         - level
         - message
     OtelMappingApiError:
+      x-stability: internal
       type: object
       properties:
         message:
@@ -483,6 +496,7 @@ components:
         - message
 
     OtelInput:
+      x-stability: stable
       type: object
       description: Combines input signals and conditional resource/scope/metric/span mappings.
       properties:
@@ -495,12 +509,14 @@ components:
         - resource
 
     OtelInputSignalList:
+      x-stability: stable
       type: array
       items:
         $ref: '#/components/schemas/OtelInputSignal'
       minItems: 1
 
     OtelInputSignal:
+      x-stability: stable
       type: string
       description: |-
         Signals exported by OpenTelemetry, which determine which data models and
@@ -540,6 +556,7 @@ components:
         - LOGS
 
     OtelInputResource:
+      x-stability: stable
       type: object
       description: |-
         Defines the conditional mapping at the resource level.
@@ -557,6 +574,7 @@ components:
           $ref: "#/components/schemas/OtelInputScope"
 
     OtelInputScope:
+      x-stability: stable
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope level.
@@ -578,6 +596,7 @@ components:
           $ref: "#/components/schemas/OtelInputLog"
 
     OtelInputMetric:
+      x-stability: stable
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> metric level.
@@ -595,6 +614,7 @@ components:
           $ref: "#/components/schemas/OtelInputDatapoint"
 
     OtelInputSpan:
+      x-stability: stable
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> span level.
@@ -610,6 +630,7 @@ components:
             If omitted, defaults to `CONTINUE`.
 
     OtelInputLog:
+      x-stability: stable
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> log level.
@@ -627,6 +648,7 @@ components:
             If omitted, defaults to `CONTINUE`.
 
     OtelInputDatapoint:
+      x-stability: stable
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> metric -> datapoint level.
@@ -642,10 +664,12 @@ components:
             If omitted, defaults to `CONTINUE`.
 
     OtelBooleanExpression:
+      x-stability: stable
       type: string
       description: A Cel expression that must return a boolean
 
     OtelComponentMappingOutput:
+      x-stability: stable
       type: object
       properties:
         identifier:
@@ -664,6 +688,7 @@ components:
         - typeName
 
     OtelRelationMappingOutput:
+      x-stability: stable
       type: object
       properties:
         sourceId:
@@ -681,6 +706,7 @@ components:
         - dependencyType
 
     OtelStringExpression:
+      x-stability: stable
       type: string
       description: |-
         An expression that must produce a string. It must be one of these formats:
@@ -688,6 +714,7 @@ components:
           - A cel expression that must return a string, for example: `resource.attributes['service.namespace']`
 
     OtelComponentMappingFieldMapping:
+      x-stability: stable
       type: object
       properties:
         additionalIdentifiers:
@@ -714,6 +741,7 @@ components:
             Note: component health state (CLEAR / DEVIATING / CRITICAL) is not derived from this field — it is determined downstream by monitors configured on the component.
 
     OtelTagMapping:
+      x-stability: stable
       type: object
       description: Defines how a tag should be mapped from an input source to an output target, optionally using a regex pattern.
       properties:
@@ -731,6 +759,7 @@ components:
         - target
 
     OtelAnyExpression:
+      x-stability: stable
       type: string
       description: |-
         An expression that can produce any type. 
@@ -738,6 +767,7 @@ components:
         it the expression `resource.attributes['service.namespace'] == 'test'`. The variable can now be used directly in the conditions like this: `vars.inTestNamespace`.
 
     OtelVariableMapping:
+      x-stability: stable
       type: object
       properties:
         name:

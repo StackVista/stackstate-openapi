@@ -29,7 +29,7 @@ components:
         - specificity
 
     ComponentPresentationMetrics:
-      x-stability: stable
+      x-stability: internal
       type: array
       items:
         $ref: "#/components/schemas/ComponentPresentationMetric"

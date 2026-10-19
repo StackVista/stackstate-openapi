@@ -9,7 +9,7 @@ import yaml
 METHODS = {"get", "put", "post", "delete", "options", "head", "patch", "trace"}
 LEVELS = {"stable", "internal"}
 DOCS_PREFIX = "https://documentation.suse.com/"
-SCHEMA_FILES = ["spec_settings/openapi.yaml", "spec_domain/settings.yaml"]
+SCHEMA_FILES = ["spec_settings/openapi.yaml", "spec_domain/settings.yaml", "spec/otel_mapping_api.yaml"]
 
 
 def check_operations(path, doc, errors):
