@@ -14,7 +14,7 @@ This repository contains the OpenAPI specifications for SUSE Observability. Code
 
 Every operation, and every schema in `spec_settings`, `spec_domain` and `spec/otel_mapping_api.yaml`, declares `x-stability`:
 
-- `stable`: documented in the SUSE Observability documentation. Stable operations also carry `x-docs-url`.
+- `stable`: documented in the SUSE Observability documentation. Stable operations must carry `x-docs-url` pointing at that documentation; stable schemas should.
 - `internal`: used by SUSE Observability itself; can change or disappear in any release.
 
 | Specification | Stability |
@@ -30,4 +30,4 @@ Internal specifications carry an `-internal` suffix on `info.version`. New opera
 
 ## Publishing
 
-Rendered documentation is published by `.github/workflows/publish.yml` when a `v<semver>` tag is pushed.
+Rendered documentation is published by `.github/workflows/publish.yml` when a `v<semver>` tag is pushed. `scripts/render_stability.py` adds the `x-stability` level to operation and schema descriptions in a copy of the specs before rendering.

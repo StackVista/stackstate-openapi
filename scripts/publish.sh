@@ -25,9 +25,16 @@ checkForVariable() {
 # checkForVariable AWS_ACCESS_KEY_ID
 # checkForVariable AWS_SECRET_ACCESS_KEY
 
-npx redoc-cli@0.13.21 bundle spec/openapi.yaml -o "dist/$MAIN_OUTPUT_FILE"
-npx redoc-cli@0.13.21 bundle spec/openapi_admin.yaml -o "dist/$ADMIN_OUTPUT_FILE"
-npx redoc-cli@0.13.21 bundle spec_webhook/openapi.yaml -o "dist/$WEBHOOK_OUTPUT_FILE"
+# Render from a copy so x-stability can be surfaced in descriptions without touching the source specs.
+rm -rf dist/render dist/venv && mkdir -p dist/render
+cp -R spec spec_domain spec_settings spec_webhook dist/render/
+python3 -m venv dist/venv
+dist/venv/bin/pip install --quiet pyyaml==6.0.3
+dist/venv/bin/python scripts/render_stability.py dist/render
+
+npx redoc-cli@0.13.21 bundle dist/render/spec/openapi.yaml -o "dist/$MAIN_OUTPUT_FILE"
+npx redoc-cli@0.13.21 bundle dist/render/spec/openapi_admin.yaml -o "dist/$ADMIN_OUTPUT_FILE"
+npx redoc-cli@0.13.21 bundle dist/render/spec_webhook/openapi.yaml -o "dist/$WEBHOOK_OUTPUT_FILE"
 
 MAIN_DEST="s3://cli-dl.stackstate.com/stackstate-openapi/$MAJOR_MINOR/$MAIN_OUTPUT_FILE"
 echo "Uploading docs version $VERSION to $MAIN_DEST"

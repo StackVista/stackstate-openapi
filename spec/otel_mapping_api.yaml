@@ -351,6 +351,7 @@ components:
         - rank
     OtelComponentMappingRank:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       properties:
         specificity:
@@ -497,6 +498,7 @@ components:
 
     OtelInput:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       description: Combines input signals and conditional resource/scope/metric/span mappings.
       properties:
@@ -510,6 +512,7 @@ components:
 
     OtelInputSignalList:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: array
       items:
         $ref: '#/components/schemas/OtelInputSignal'
@@ -517,6 +520,7 @@ components:
 
     OtelInputSignal:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: string
       description: |-
         Signals exported by OpenTelemetry, which determine which data models and
@@ -557,6 +561,7 @@ components:
 
     OtelInputResource:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       description: |-
         Defines the conditional mapping at the resource level.
@@ -575,6 +580,7 @@ components:
 
     OtelInputScope:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope level.
@@ -597,6 +603,7 @@ components:
 
     OtelInputMetric:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> metric level.
@@ -615,6 +622,7 @@ components:
 
     OtelInputSpan:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> span level.
@@ -631,6 +639,7 @@ components:
 
     OtelInputLog:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> log level.
@@ -649,6 +658,7 @@ components:
 
     OtelInputDatapoint:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> metric -> datapoint level.
@@ -665,11 +675,13 @@ components:
 
     OtelBooleanExpression:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: string
       description: A Cel expression that must return a boolean
 
     OtelComponentMappingOutput:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       properties:
         identifier:
@@ -689,6 +701,7 @@ components:
 
     OtelRelationMappingOutput:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       properties:
         sourceId:
@@ -707,6 +720,7 @@ components:
 
     OtelStringExpression:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: string
       description: |-
         An expression that must produce a string. It must be one of these formats:
@@ -715,6 +729,7 @@ components:
 
     OtelComponentMappingFieldMapping:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       properties:
         additionalIdentifiers:
@@ -742,6 +757,7 @@ components:
 
     OtelTagMapping:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       description: Defines how a tag should be mapped from an input source to an output target, optionally using a regex pattern.
       properties:
@@ -760,6 +776,7 @@ components:
 
     OtelAnyExpression:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: string
       description: |-
         An expression that can produce any type. 
@@ -768,6 +785,7 @@ components:
 
     OtelVariableMapping:
       x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       properties:
         name:

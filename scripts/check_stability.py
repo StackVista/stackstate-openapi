@@ -29,8 +29,15 @@ def check_operations(path, doc, errors):
 
 def check_schemas(path, doc, errors):
     for name, schema in ((doc.get("components") or {}).get("schemas") or {}).items():
-        if isinstance(schema, dict) and schema.get("x-stability") not in LEVELS:
+        if not isinstance(schema, dict):
+            continue
+        if schema.get("x-stability") not in LEVELS:
             errors.append(f"{path}: schema {name}: x-stability must be one of {sorted(LEVELS)}")
+        docs = schema.get("x-docs-url")
+        if docs is not None and not str(docs).startswith(DOCS_PREFIX):
+            errors.append(f"{path}: schema {name}: x-docs-url must point into the product documentation")
+        elif schema.get("x-stability") == "stable" and docs is None:
+            print(f"warning: {path}: stable schema {name} has no x-docs-url")
 
 
 def main():
