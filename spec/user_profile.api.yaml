@@ -6,6 +6,7 @@ info:
 paths:
   /user/profile:
     get:
+      x-stability: internal
       tags:
         - userProfile
       summary: "Get current user profile"
@@ -23,6 +24,7 @@ paths:
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     put:
+      x-stability: internal
       tags:
         - userProfile
       summary: "Save current user profile"
@@ -47,6 +49,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /user/profile/tokens:
     get:
+      x-stability: internal
       tags:
         - apiToken
       summary: "Get current user's API tokens"

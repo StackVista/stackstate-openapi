@@ -1,11 +1,33 @@
 # StackState OpenAPI
 
-This repository contains the OpenAPI specification for the StackState api. Code generation is not done in this repository but should be done by the clients (who will bridge the spec to the language used). The openapi specification lives in the `spec` directory.
+> [!IMPORTANT]
+> **Mostly internal — not a supported API.** Apart from the contracts listed under
+> [API stability](#api-stability), the specifications in this repository describe
+> internal APIs that can change in any release without notice. Only interfaces
+> documented in the
+> [SUSE Observability documentation](https://documentation.suse.com/cloudnative/suse-observability/latest/en/classic.html)
+> are supported. Do not build integrations against anything else here.
 
-## Versioning and releasing
+This repository contains the OpenAPI specifications for SUSE Observability. Code generation is not done here; consumers generate code from a pinned commit. Changes are made in `StackVista/stackstate-openapi-internal` and mirrored to the public `StackVista/stackstate-openapi`.
 
-This repository is managed by release-keeper for versioning, tagging and releasing. Client libraries are expected to pull directly from this git repository using possibly a specific tag version.
+## API stability
+
+Every operation, and every schema in `spec_settings`, `spec_domain` and `spec/otel_mapping_api.yaml`, declares `x-stability`:
+
+- `stable`: documented in the SUSE Observability documentation. Stable operations must carry `x-docs-url` pointing at that documentation; stable schemas should.
+- `internal`: used by SUSE Observability itself; can change or disappear in any release.
+
+| Specification | Stability |
+| --- | --- |
+| `spec_webhook/openapi.yaml` (webhook notification channel) | Stable, see the [webhook documentation](https://documentation.suse.com/cloudnative/suse-observability/latest/en/use/alerting/notifications/channels/webhook.html) |
+| `spec_domain/settings.yaml`, OTel mapping schemas in `spec/otel_mapping_api.yaml` | Per schema: the schemas that StackPack settings files are parsed with (component presentations and their projections, filters and charts; OTel component and relation mappings) are stable, as documented in the product documentation; all other schemas are internal |
+| `spec_settings/openapi.yaml` (inter-service settings protocol) | Internal |
+| `spec/openapi.yaml` (server API) | Internal |
+| `spec/openapi_admin.yaml`, `spec/openapi_internal.yaml`, `spec/openapi_authorization_sync.yaml` | Internal |
+| `spec/openapi_receiver.yaml` | Internal. To send data, use [OpenTelemetry](https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/otel/overview.html) with [OTel component and relation mappings](https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/getting-started.html) |
+
+Internal specifications carry an `-internal` suffix on `info.version`. New operations and settings schemas must declare `x-stability`; `scripts/check_stability.py` enforces this in CI. Mark something `stable` only when it is documented in the product documentation, and link that page in `x-docs-url`.
 
 ## Publishing
 
-To create new docs for the OpenAPI push a tag that has the following format `v<semver>`, e.g. `v5.0.0`. Gitlab will automatically publish the docs. The URL to the new docs can be found at the end of the output of the `publish` job in the CI pipeline for the tag.
+Rendered documentation is published by `.github/workflows/publish.yml` when a `v<semver>` tag is pushed. `scripts/render_stability.py` adds the `x-stability` level to operation and schema descriptions in a copy of the specs before rendering.

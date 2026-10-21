@@ -1,4 +1,8 @@
 # HTTP call examples for some of the APIs
+
+> [!IMPORTANT]
+> These are development examples for internal APIs, not usage examples for a supported API. The requests can stop working in any release.
+
 The http files in this directory contains example requests that can be run using the ["Rest Client" plugin for VS Code](https://marketplace.visualstudio.com/items?itemName=humao.rest-client).
 
 To define the variables create an environments section in the workspace vscode settings (that is in the `.gitignore`) that looks like this (use your own api tokens of course):

@@ -6,6 +6,7 @@ info:
 paths:
   /security/subjects:
     get:
+      x-stability: internal
       tags:
         - subject
       summary: "List subjects"
@@ -22,6 +23,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /security/subjects/{subject}:
     get:
+      x-stability: internal
       tags:
         - subject
       summary: "Get subject"
@@ -41,6 +43,7 @@ paths:
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     put:
+      x-stability: internal
       tags:
         - subject
       summary: "Create a subject"
@@ -63,6 +66,7 @@ paths:
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     delete:
+      x-stability: internal
       tags:
         - subject
       summary: "Delete a subject"

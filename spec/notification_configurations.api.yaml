@@ -6,6 +6,7 @@ info:
 paths:
   /notifications/configurations:
     get:
+      x-stability: internal
       tags:
         - notification_configurations
       summary: "Get all notification configurations"
@@ -19,6 +20,7 @@ paths:
         "500":
           $ref: "#/components/responses/notificationConfigurationError"
     post:
+      x-stability: internal
       tags:
         - notification_configurations
       requestBody:
@@ -35,6 +37,7 @@ paths:
           $ref: "#/components/responses/notificationConfigurationError"
   /notifications/configurations/{notificationConfigurationIdOrUrn}:
     get:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/notificationConfigurationIdOrUrn"
       tags:
@@ -52,6 +55,7 @@ paths:
         "500":
           $ref: "#/components/responses/notificationConfigurationError"
     put:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/notificationConfigurationIdOrUrn"
       requestBody:
@@ -71,6 +75,7 @@ paths:
         "500":
           $ref: "#/components/responses/notificationConfigurationError"    
     delete:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/notificationConfigurationIdOrUrn"
       tags:
@@ -89,6 +94,7 @@ paths:
           $ref: "#/components/responses/notificationConfigurationError"  
   /notifications/configurations/{notificationConfigurationIdOrUrn}/channels:
     get:
+      x-stability: internal
       parameters:
         - $ref: "#/components/parameters/notificationConfigurationIdOrUrn"
       tags:

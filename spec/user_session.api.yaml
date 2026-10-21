@@ -6,6 +6,7 @@ info:
 paths:
   /user/session/availableRoles:
     get:
+      x-stability: internal
       tags:
         - userSession
       summary: "Get a list of available roles for this session"
@@ -22,6 +23,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /user/session/assumedRole:
     get:
+      x-stability: internal
       tags:
         - userSession
       summary: "Get the assumed a role for the current session"
@@ -37,6 +39,7 @@ paths:
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     put:
+      x-stability: internal
       tags:
         - userSession
       summary: "Set the assumed role for the current session"

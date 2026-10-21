@@ -1,15 +1,10 @@
 openapi: 3.0.3
 info:
   description: |
-    This API documentation page describes the StackState server API. The StackState UI and CLI use the StackState server API to configure and query StackState. 
-    You can use the API for similar purposes.
+    **Internal API: not supported and subject to change without notice.** The SUSE Observability UI and CLI use this API; it is not a contract for integrations. Only interfaces documented in the [SUSE Observability documentation](https://documentation.suse.com/cloudnative/suse-observability/latest/en/classic.html) are supported.
 
-    Each request sent to the StackState server API must be authenticated using one of the available authentication methods. 
-    
-    *Note that the StackState receiver API, used to send topology, telemetry and traces to StackState, is not described on this page and requires a different authentication method.*
-
-    For more information on StackState, refer to the [StackState documentation](https://docs.stackstate.com).
-  version: 5.2.0
+    This page describes the SUSE Observability server API. Each request must be authenticated using one of the available authentication methods.
+  version: 5.2.0-internal
   title: StackState API
   license:
     name: "Apache 2.0"

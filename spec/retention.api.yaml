@@ -6,6 +6,7 @@ info:
 paths:
   /retention/window:
     get:
+      x-stability: internal
       tags:
         - retention
       summary: "Get retention window"
@@ -23,6 +24,7 @@ paths:
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     post:
+      x-stability: internal
       tags:
         - retention
       summary: "Set retention window"
@@ -51,6 +53,7 @@ paths:
 
   /retention/currentEpoch:
     get:
+      x-stability: internal
       tags:
         - retention
       summary: "Get retention epoch"
@@ -70,6 +73,7 @@ paths:
 
   /retention/removeExpiredData:
     post:
+      x-stability: internal
       tags:
         - retention
       summary: "Remove expired data from StackGraph"

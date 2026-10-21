@@ -6,6 +6,7 @@ info:
 paths:
   /security/tokens:
     get:
+      x-stability: internal
       tags:
         - serviceToken
       summary: "Get service tokens"
@@ -17,6 +18,7 @@ paths:
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     post:
+      x-stability: internal
       tags:
         - serviceToken
       summary: "Create new service token"
@@ -45,6 +47,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /security/tokens/{serviceTokenId}:
     delete:
+      x-stability: internal
       tags:
         - serviceToken
       summary: "Delete service token"

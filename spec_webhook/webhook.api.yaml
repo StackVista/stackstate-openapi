@@ -6,6 +6,8 @@ info:
 paths:
   /webhook:
     post:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/use/alerting/notifications/channels/webhook.html
       tags:
         - webhook
       summary: "Handle StackState event"

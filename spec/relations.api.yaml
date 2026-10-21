@@ -6,6 +6,7 @@ info:
 paths:
   /relations/{relationId}:
     get:
+      x-stability: internal
       tags:
         - relation
       summary: "Get full relation"

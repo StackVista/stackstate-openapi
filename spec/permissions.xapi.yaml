@@ -6,6 +6,7 @@ info:
 paths:
   /security/permissions/list:
     get:
+      x-stability: internal
       tags:
         - permissions
       summary: "List permissions"
@@ -22,6 +23,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /security/permissions/{subject}:
     get:
+      x-stability: internal
       tags:
         - permissions
       summary: "Describe permissions"
@@ -44,6 +46,7 @@ paths:
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     post:
+      x-stability: internal
       tags:
         - permissions
       summary: "Grant permissions"
@@ -67,6 +70,7 @@ paths:
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     delete:
+      x-stability: internal
       tags:
         - permissions
       summary: "Revoke permissions"

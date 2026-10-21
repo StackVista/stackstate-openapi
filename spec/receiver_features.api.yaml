@@ -6,6 +6,7 @@ info:
 paths:
   /stsAgent/features:
     get:
+      x-stability: internal
       tags:
         - features
       summary: "Get supported features from the receiver"

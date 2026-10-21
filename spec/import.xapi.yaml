@@ -6,6 +6,7 @@ info:
 paths:
   /import:
     post:
+      x-stability: internal
       tags:
         - import
       summary: "Import settings"

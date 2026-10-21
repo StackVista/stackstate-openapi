@@ -6,6 +6,7 @@ info:
 paths:
   /traces/query:
     post:
+      x-stability: internal
       tags: 
         - traces
       parameters:
@@ -28,6 +29,7 @@ paths:
 
   /traces/duration/histogram:
     post:
+      x-stability: internal
       tags: 
         - traces
       parameters:
@@ -49,6 +51,7 @@ paths:
 
   /traces/{traceId}:
     get:
+      x-stability: internal
       tags: 
         - traces
       parameters:
@@ -66,6 +69,7 @@ paths:
 
   /traces/{traceId}/spans/{spanId}:
     get:
+      x-stability: internal
       tags: 
         - traces
       parameters:
@@ -84,6 +88,7 @@ paths:
 
   /traces/spans/fields/attributes:
     get:  
+      x-stability: internal
       tags: 
         - traces
       parameters:
@@ -103,6 +108,7 @@ paths:
           $ref: "#/components/responses/traceApiError"
   /traces/spans/fields/attributes/{attributeName}/values:
     get:  
+      x-stability: internal
       tags: 
         - traces
       parameters:
@@ -128,6 +134,7 @@ paths:
           $ref: "#/components/responses/traceApiError"
   /traces/spans/fields/{field}/values:
     get:  
+      x-stability: internal
       tags:
         - traces
       parameters:
@@ -149,6 +156,7 @@ paths:
 
   /traces/components:
     post:
+      x-stability: internal
       tags:
         - traces
       requestBody:

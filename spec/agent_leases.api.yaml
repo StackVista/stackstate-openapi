@@ -8,6 +8,7 @@ info:
 paths:
   /agents/{agentId}/checkLease:
     post:
+      x-stability: internal
       tags:
         - agentLeases
       summary: "Check the lease of an agent."

@@ -6,6 +6,7 @@ info:
 paths:
   /node:
     get:
+      x-stability: internal
       tags:
         - node
       summary: "Node API"
@@ -22,6 +23,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /node/{nodeType}:
     get:
+      x-stability: internal
       tags:
         - node
       parameters:
@@ -50,6 +52,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /node/{nodeType}/{nodeId}:
     delete:
+      x-stability: internal
       tags:
         - node
       parameters:
@@ -72,6 +75,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /node/{nodeType}/{nodeIdOrUrn}/clone:
     post:
+      x-stability: internal
       tags:
         - node
       parameters:
@@ -93,6 +97,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /node/{nodeType}/{nodeId}/islocked:
     get:
+      x-stability: internal
       tags:
         - node
       parameters:
@@ -112,6 +117,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /node/{nodeType}/{nodeId}/unlock:
     post:
+      x-stability: internal
       tags:
         - node
       parameters:

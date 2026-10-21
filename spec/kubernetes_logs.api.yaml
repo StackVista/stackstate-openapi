@@ -7,6 +7,7 @@ info:
 paths:
   /k8s/logs:
     get:
+      x-stability: internal
       tags:
         - kubernetes_logs
       summary: "Get Kubernetes logs"
@@ -32,6 +33,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /k8s/logs/histogram:
     get:
+      x-stability: internal
       tags:
         - kubernetes_logs
       summary: "Get Kubernetes logs histogram"
@@ -55,6 +57,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /k8s/logs/autocomplete:
     get:
+      x-stability: internal
       tags:
         - kubernetes_logs
       summary: "Get Kubernetes logs autocomplete values"

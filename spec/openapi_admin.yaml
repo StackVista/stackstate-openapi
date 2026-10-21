@@ -1,7 +1,10 @@
 openapi: 3.0.3
 info:
-  description: StackState's Admin API specification
-  version: 0.0.1
+  description: |
+    **Internal API: not supported and subject to change without notice.** The SUSE Observability UI and CLI use this API; it is not a contract for integrations. Only interfaces documented in the [SUSE Observability documentation](https://documentation.suse.com/cloudnative/suse-observability/latest/en/classic.html) are supported.
+
+    StackState's Admin API specification.
+  version: 0.0.1-internal
   title: StackState Admin API
   license:
     name: "Apache 2.0"

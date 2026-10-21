@@ -7,6 +7,7 @@ info:
 paths:
   /presentations:
     get:
+      x-stability: internal
       tags:
         - componentPresentation
       summary: List all component presentations
@@ -27,6 +28,7 @@ paths:
         "500":
           $ref: "#/components/responses/ComponentPresentationErrorResponse"
     put:
+      x-stability: internal
       tags:
         - componentPresentation
       operationId: upsertComponentPresentations
@@ -57,6 +59,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/identifier"
     get:
+      x-stability: internal
       tags:
         - componentPresentation
       operationId: getComponentPresentationByIdentifier
@@ -77,6 +80,7 @@ paths:
         "500":
           $ref: "#/components/responses/ComponentPresentationErrorResponse"
     delete:
+      x-stability: internal
       tags:
         - componentPresentation
       operationId: deleteComponentPresentationByIdentifier
@@ -97,6 +101,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/presentationOrViewUrn"
     get:
+      x-stability: internal
       tags:
         - componentPresentation
       summary: Get resolved filters for a presentation

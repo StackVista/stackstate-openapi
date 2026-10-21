@@ -6,6 +6,7 @@ info:
 paths:
   /subscription:
     get:
+      x-stability: internal
       tags:
         - subscription
       summary: "Get subscription info"
@@ -21,6 +22,7 @@ paths:
         "500":
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
     post:
+      x-stability: internal
       tags:
         - subscription
       summary: "Submit a new license to update the subscription"

@@ -1,8 +1,10 @@
 openapi: 3.0.3
 info:
   description: |
-    This API documentation page describes the SUSE Observability authorization sync API.
-  version: 5.2.0
+    **Internal API: not supported and subject to change without notice.** The SUSE Observability UI and CLI use this API; it is not a contract for integrations. Only interfaces documented in the [SUSE Observability documentation](https://documentation.suse.com/cloudnative/suse-observability/latest/en/classic.html) are supported.
+
+    This page describes the SUSE Observability authorization sync API.
+  version: 5.2.0-internal
   title: SUSE Observability Authorization Sync API
   license:
     name: "Apache 2.0"
@@ -17,6 +19,7 @@ info:
 paths:
   /rbac/instance:
     post:
+      x-stability: internal
       tags:
         - authorizationSyncRbacInstance
       summary: "Create instance RBAC objects"
@@ -41,6 +44,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/genericErrorsResponse"
   /rbac/scope:
     post:
+      x-stability: internal
       tags:
         - authorizationSyncRbacScope
       summary: "Create scope RBAC objects"

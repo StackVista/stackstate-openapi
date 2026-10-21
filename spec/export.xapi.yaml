@@ -6,6 +6,7 @@ info:
 paths:
   /export:
       post:
+        x-stability: internal
         tags:
           - export
         summary: "Export settings"

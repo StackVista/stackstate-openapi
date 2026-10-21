@@ -6,6 +6,7 @@ info:
 paths:
   /monitors:
     get:
+      x-stability: internal
       tags:
         - monitor
       summary: "List monitors"
@@ -19,6 +20,7 @@ paths:
 
   /monitors/{monitorIdOrUrn}:
     get:
+      x-stability: internal
       tags:
         - monitor
       summary: "Get a monitor"
@@ -37,6 +39,7 @@ paths:
           $ref: "#/components/responses/monitorApiError"
 
     patch:
+      x-stability: internal
       tags:
         - monitor
       parameters:
@@ -57,6 +60,7 @@ paths:
           $ref: "#/components/responses/monitorApiError"
 
     delete:
+      x-stability: internal
       tags:
         - monitor
       summary: "Delete a monitor"
@@ -76,6 +80,7 @@ paths:
 
   /monitors/{monitorIdOrUrn}/run:
     post:
+      x-stability: internal
       tags:
         - monitor
       parameters:
@@ -96,6 +101,7 @@ paths:
 
   /monitors/{monitorIdOrUrn}/preview:
     post:
+      x-stability: internal
       tags:
         - monitor
       parameters:
@@ -117,6 +123,7 @@ paths:
 
   /monitors/{monitorIdOrUrn}/preview/checkStates:
     post:
+      x-stability: internal
       tags:
         - monitor
       parameters:
@@ -140,6 +147,7 @@ paths:
 
   /monitors/{monitorFunctionIdOrUrn}/test:
     post:
+      x-stability: internal
       tags:
         - monitor
       parameters:
@@ -161,6 +169,7 @@ paths:
 
   /monitors/{monitorFunctionIdOrUrn}/test/checkStates:
     post:
+      x-stability: internal
       tags:
         - monitor
       parameters:
@@ -184,6 +193,7 @@ paths:
 
   /monitors/identifierLookup:
     post:
+      x-stability: internal
       tags:
         - monitor
       summary: "Multiple component identifier lookup"
@@ -201,6 +211,7 @@ paths:
 
   /monitors/{monitorIdOrUrn}/status:
     get:
+      x-stability: internal
       tags:
         - monitor
       summary: "Get a monitor with stream information"
@@ -221,6 +232,7 @@ paths:
 
   /monitors/{monitorIdOrUrn}/checkStates:
     get:
+      x-stability: internal
       tags:
         - monitor
       summary: "Get the check states for a monitor"
@@ -243,6 +255,7 @@ paths:
 
   /monitors/{monitorIdOrUrn}/publish:
     post:
+      x-stability: internal
       tags:
         - monitor
       summary: "Post monitor health states"
@@ -264,6 +277,7 @@ paths:
 
   /monitors/overview:
     get:
+      x-stability: internal
       tags:
         - monitor
       summary: "List monitors overview"

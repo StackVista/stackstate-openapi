@@ -7,6 +7,7 @@ info:
 paths:
   /otel-component-mappings:
     get:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Get all otel component mappings."
@@ -27,6 +28,7 @@ paths:
         "500":
           $ref: "#/components/responses/OtelMappingErrorResponse"
     put:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Upserts (creates/updates) an OTel Component Mappings."
@@ -52,6 +54,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/identifier"
     get:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Get an OTel Component Mapping."
@@ -72,6 +75,7 @@ paths:
         "500":
           $ref: "#/components/responses/OtelMappingErrorResponse"
     delete:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Deletes an OTel Component Mapping."
@@ -91,6 +95,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/identifier"
     get:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Get the status of an otel component mapping synchronization."
@@ -112,6 +117,7 @@ paths:
           $ref: "#/components/responses/OtelMappingErrorResponse"
   /otel-relation-mappings:
     get:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Get all otel relation mappings."
@@ -132,6 +138,7 @@ paths:
         "500":
           $ref: "#/components/responses/OtelMappingErrorResponse"
     put:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Upserts (creates/updates) an OTel Relation Mappings."
@@ -157,6 +164,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/identifier"
     get:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Get an OTel Relation Mapping."
@@ -177,6 +185,7 @@ paths:
         "500":
           $ref: "#/components/responses/OtelMappingErrorResponse"
     delete:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Deletes an OTel Relation Mapping."
@@ -196,6 +205,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/identifier"
     get:
+      x-stability: internal
       tags:
         - otelMapping
       summary: "Get the status of an otel relation mapping synchronization."
@@ -305,6 +315,7 @@ components:
       required: true
   schemas:
     OtelComponentMapping:
+      x-stability: internal
       type: object
       properties:
         _type:
@@ -339,6 +350,8 @@ components:
         - expireAfter
         - rank
     OtelComponentMappingRank:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       properties:
         specificity:
@@ -348,6 +361,7 @@ components:
       required:
         - specificity
     OtelRelationMapping:
+      x-stability: internal
       type: object
       properties:
         _type:
@@ -379,6 +393,7 @@ components:
         - output
         - expireAfter
     OtelMappingStatus:
+      x-stability: internal
       type: object
       properties:
         item:
@@ -391,16 +406,19 @@ components:
         - item
         - errorDetails
     MetricBucketValue:
+      x-stability: internal
       type: object
       properties:
         value:
           type: number
           format: double
     MetricBucketValues:
+      x-stability: internal
       type: array
       items:
         $ref: "#/components/schemas/MetricBucketValue"
     OtelMappingStreamError:
+      x-stability: internal
       type: object
       properties:
         level:
@@ -413,10 +431,12 @@ components:
         - level
         - message
     OtelMappingErrors:
+      x-stability: internal
       type: array
       items:
         $ref: "#/components/schemas/OtelMappingError"
     OtelMappingMetrics:
+      x-stability: internal
       type: object
       properties:
         bucketSizeSeconds:
@@ -426,6 +446,7 @@ components:
       required:
         - bucketSizeSeconds
     OtelMappingItem:
+      x-stability: internal
       type: object
       properties:
         name:
@@ -435,6 +456,7 @@ components:
       required:
         - name
     OtelMappingStatusItem:
+      x-stability: internal
       type: object
       properties:
         name:
@@ -453,6 +475,7 @@ components:
         - relationCount
         - status
     OtelMappingError:
+      x-stability: internal
       type: object
       properties:
         level:
@@ -465,6 +488,7 @@ components:
         - level
         - message
     OtelMappingApiError:
+      x-stability: internal
       type: object
       properties:
         message:
@@ -473,6 +497,8 @@ components:
         - message
 
     OtelInput:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       description: Combines input signals and conditional resource/scope/metric/span mappings.
       properties:
@@ -485,12 +511,16 @@ components:
         - resource
 
     OtelInputSignalList:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: array
       items:
         $ref: '#/components/schemas/OtelInputSignal'
       minItems: 1
 
     OtelInputSignal:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: string
       description: |-
         Signals exported by OpenTelemetry, which determine which data models and
@@ -530,6 +560,8 @@ components:
         - LOGS
 
     OtelInputResource:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       description: |-
         Defines the conditional mapping at the resource level.
@@ -547,6 +579,8 @@ components:
           $ref: "#/components/schemas/OtelInputScope"
 
     OtelInputScope:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope level.
@@ -568,6 +602,8 @@ components:
           $ref: "#/components/schemas/OtelInputLog"
 
     OtelInputMetric:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> metric level.
@@ -585,6 +621,8 @@ components:
           $ref: "#/components/schemas/OtelInputDatapoint"
 
     OtelInputSpan:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> span level.
@@ -600,6 +638,8 @@ components:
             If omitted, defaults to `CONTINUE`.
 
     OtelInputLog:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> log level.
@@ -617,6 +657,8 @@ components:
             If omitted, defaults to `CONTINUE`.
 
     OtelInputDatapoint:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       description: |-
         Defines conditional mapping at the resource -> scope -> metric -> datapoint level.
@@ -632,10 +674,14 @@ components:
             If omitted, defaults to `CONTINUE`.
 
     OtelBooleanExpression:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: string
       description: A Cel expression that must return a boolean
 
     OtelComponentMappingOutput:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       properties:
         identifier:
@@ -654,6 +700,8 @@ components:
         - typeName
 
     OtelRelationMappingOutput:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       properties:
         sourceId:
@@ -671,6 +719,8 @@ components:
         - dependencyType
 
     OtelStringExpression:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: string
       description: |-
         An expression that must produce a string. It must be one of these formats:
@@ -678,6 +728,8 @@ components:
           - A cel expression that must return a string, for example: `resource.attributes['service.namespace']`
 
     OtelComponentMappingFieldMapping:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       properties:
         additionalIdentifiers:
@@ -704,6 +756,8 @@ components:
             Note: component health state (CLEAR / DEVIATING / CRITICAL) is not derived from this field — it is determined downstream by monitors configured on the component.
 
     OtelTagMapping:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       description: Defines how a tag should be mapped from an input source to an output target, optionally using a regex pattern.
       properties:
@@ -721,6 +775,8 @@ components:
         - target
 
     OtelAnyExpression:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: string
       description: |-
         An expression that can produce any type. 
@@ -728,6 +784,8 @@ components:
         it the expression `resource.attributes['service.namespace'] == 'test'`. The variable can now be used directly in the conditions like this: `vars.inTestNamespace`.
 
     OtelVariableMapping:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/otelmappings/schemas-ref.html
       type: object
       properties:
         name:

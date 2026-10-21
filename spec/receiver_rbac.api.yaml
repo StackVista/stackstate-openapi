@@ -6,6 +6,7 @@ info:
 paths:
   /stsAgent/rbac/instance:
     post:
+      x-stability: internal
       tags:
         - receiverRbacInstance
       summary: "Create instance RBAC objects"
@@ -30,6 +31,7 @@ paths:
           $ref: "generic_error_handling.xapi.yaml#/components/responses/receiverGenericErrorsResponse"
   /stsAgent/rbac/scope:
     post:
+      x-stability: internal
       tags:
         - receiverRbacScope
       summary: "Create scope RBAC objects"

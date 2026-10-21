@@ -2,11 +2,14 @@
 openapi: 3.0.3
 info:
   title: Structures common to settings and api
+  description: "Stability is declared per schema with `x-stability`; schemas not marked `stable` are internal and can change without notice."
   version: "1.0.0"
 
 components:
   schemas:
     ComponentPresentationQueryBinding:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         query:
@@ -16,6 +19,8 @@ components:
         - query
 
     ComponentPresentationRank:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         specificity:
@@ -26,11 +31,14 @@ components:
         - specificity
 
     ComponentPresentationMetrics:
+      x-stability: internal
       type: array
       items:
         $ref: "#/components/schemas/ComponentPresentationMetric"
 
     PresentationDefinition:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         icon:
@@ -59,6 +67,8 @@ components:
         Absence of the field keeps legacy behavior (for example, ViewType-based filters) unchanged.
 
     PresentationName:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         singular:
@@ -73,6 +83,8 @@ components:
         - title
 
     FilterName:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         singular:
@@ -84,6 +96,8 @@ components:
         - plural
 
     PresentationOverviewSorting:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         columnId:
@@ -93,11 +107,15 @@ components:
       required:
         - columnId
     PresentationOverviewSortingDirection:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: string
       enum:
         - Ascending
         - Descending
     PresentationOverview:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         name:
@@ -122,6 +140,8 @@ components:
         - name
 
     PresentationMainMenu:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         group:
@@ -136,6 +156,8 @@ components:
         - order
 
     OverviewColumnDefinition:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         columnId:
@@ -149,6 +171,8 @@ components:
       description: 'Definition of a column in the overview presentation. The `columnId` field is used to identify the column and merge columns from different presentations. If only the `columnId` is provided, the column will be rendered from the next more specific presentation definition.'
 
     PresentationHighlight:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         fields:
@@ -178,6 +202,8 @@ components:
         Links follow the same merge semantics using `linkId` as the identity key.
 
     PresentationHighlightField:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         fieldId:
@@ -198,6 +224,8 @@ components:
       description: 'Definition of a field in the highlight presentation. The `fieldId` field is used to identify the field and merge fields from different presentations.'
 
     PresentationRelatedResource:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         resourceId:
@@ -235,6 +263,8 @@ components:
         - Display order is determined by the order field.
 
     PresentationLink:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         linkId:
@@ -274,6 +304,8 @@ components:
         evaluated, the resolved highlight response reports an error link.
 
     ComponentHighlightProjection:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       discriminator:
         propertyName: _type
       oneOf:
@@ -290,6 +322,8 @@ components:
       description: 'Display type and value for the field.'
 
     ComponentOverviewProjection:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       discriminator:
         propertyName: _type
       oneOf:
@@ -304,6 +338,8 @@ components:
       description: 'Display type and value for the field.'
 
     HealthProjection:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         _type:
@@ -316,6 +352,8 @@ components:
         - _type
         - value
     MapProjection:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         _type:
@@ -328,6 +366,8 @@ components:
         - _type
         - value
     TagProjection:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         _type:
@@ -336,6 +376,8 @@ components:
       required:
         - _type
     MetricProjection:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         _type:
@@ -356,6 +398,8 @@ components:
         - _type
         - query
     ComponentLinkProjection:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         _type:
@@ -372,6 +416,8 @@ components:
         - name
         - identifier
     TextProjection:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         _type:
@@ -388,6 +434,8 @@ components:
         - _type
         - value
     NumericProjection:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         _type:
@@ -405,6 +453,8 @@ components:
         - _type
         - value
     DurationProjection:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         _type:
@@ -421,6 +471,8 @@ components:
         - startTime
 
     RatioProjection:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       description: 'Helps rendering columns that summarize success rates'
       properties:
@@ -442,6 +494,8 @@ components:
         - denominator
 
     ContainerImageProjection:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       description: 'Helps rendering links for docker images'
       properties:
@@ -460,6 +514,7 @@ components:
         - imageName
 
     ComponentTypeHighlights:
+      x-stability: internal
       properties:
         namePlural:
           type: string
@@ -497,6 +552,7 @@ components:
         - metrics
 
     ComponentTypeAbout:
+      x-stability: internal
       properties:
         fields:
           type: array
@@ -505,6 +561,7 @@ components:
       required:
         - fields
     ComponentTypeField:
+      x-stability: internal
       properties:
         fieldId:
           type: string
@@ -520,6 +577,7 @@ components:
         - valueExtractor
         - display
     ComponentTypeLabel:
+      x-stability: internal
       properties:
         title:
           type: string
@@ -528,6 +586,7 @@ components:
       required:
         - title
     ComponentTypeValueExtractor:
+      x-stability: internal
       discriminator:
         propertyName: _type
       oneOf:
@@ -542,6 +601,7 @@ components:
         - $ref: "#/components/schemas/TagSource"
         - $ref: "#/components/schemas/TagsSource"
     ComponentTypeSource:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -550,6 +610,7 @@ components:
       required:
         - _type
     CompositeSource:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -563,6 +624,7 @@ components:
         - _type
         - sources
     ConstantSource:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -574,6 +636,7 @@ components:
         - _type
         - value
     HealthSource:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -582,6 +645,7 @@ components:
       required:
         - _type
     IdentifiersSource:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -590,6 +654,7 @@ components:
       required:
         - _type
     LastUpdatedTimestampSource:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -598,6 +663,7 @@ components:
       required:
         - _type
     NameSource:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -606,6 +672,7 @@ components:
       required:
         - _type
     PropertySource:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -619,6 +686,7 @@ components:
         - _type
         - key
     TagSource:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -630,6 +698,7 @@ components:
         - _type
         - tagName
     TagsSource:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -638,6 +707,7 @@ components:
       required:
         - _type
     ComponentTypeFieldDisplay:
+      x-stability: internal
       discriminator:
         propertyName: _type
       oneOf:
@@ -654,6 +724,7 @@ components:
       required:
         - _type
     ComponentLinkDisplay:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -662,6 +733,7 @@ components:
       required:
         - _type
     DurationDisplay:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -670,6 +742,7 @@ components:
       required:
         - _type
     HealthBadgeDisplay:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -678,6 +751,7 @@ components:
       required:
         - _type
     HealthCircleDisplay:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -686,6 +760,7 @@ components:
       required:
         - _type
     PromqlDisplay:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -694,6 +769,7 @@ components:
       required:
         - _type
     RatioDisplay:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -702,6 +778,7 @@ components:
       required:
         - _type
     ReadyStatusDisplay:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -710,6 +787,7 @@ components:
       required:
         - _type
     TagDisplay:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -720,6 +798,7 @@ components:
       required:
         - _type
     TextDisplay:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -728,6 +807,7 @@ components:
       required:
         - _type
     ViewTimeLink:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -736,6 +816,7 @@ components:
       required:
         - _type
     ComponentTypeEvents:
+      x-stability: internal
       properties:
         showEvents:
           type: boolean
@@ -744,6 +825,7 @@ components:
       required:
         - showEvents
     ComponentTypeExternalComponent:
+      x-stability: internal
       properties:
         showConfiguration:
           type: boolean
@@ -756,6 +838,7 @@ components:
         - showStatus
         - externalIdSelector
     ComponentTypeRelatedResources:
+      x-stability: internal
       properties:
         resourceType:
           type: string
@@ -772,6 +855,7 @@ components:
         - title
         - stql
     ComponentHighlightMetrics:
+      x-stability: internal
       properties:
         name:
           type: string
@@ -789,12 +873,14 @@ components:
         - defaultExpanded
 
     QueryViewFlag:
+      x-stability: internal
       type: string
       enum:
         - NotUnlockable
         - HideFromViewsOverview
 
     DependencyType:
+      x-stability: internal
       enum:
         - UNCLASSIFIED
         - HIERARCHICAL
@@ -802,6 +888,7 @@ components:
       type: string
 
     ViewTypeOverview:
+      x-stability: internal
       properties:
         columns:
           type: array
@@ -811,6 +898,7 @@ components:
         - columns
 
     ViewTypeTableCol:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -834,6 +922,7 @@ components:
         - _type
 
     ViewTypeTableColHealth:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -842,6 +931,7 @@ components:
         - _type
 
     ViewTypeTableColName:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -853,6 +943,7 @@ components:
         - title
 
     ViewTypeTableColText:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -875,6 +966,7 @@ components:
         - path
 
     ViewTypeTableColNumber:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -897,6 +989,7 @@ components:
         - path
 
     ViewTypeTableColTime:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -913,6 +1006,7 @@ components:
         - path
 
     ViewTypeTableColDuration:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -933,6 +1027,7 @@ components:
         - path
 
     ViewTypeTableColComponentType:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -947,6 +1042,7 @@ components:
         - title
 
     ViewTypeTableColComponentLink:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -969,6 +1065,7 @@ components:
         - pathToIdentifier
 
     ViewTypeTableColReadyStatus:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -995,6 +1092,7 @@ components:
         - statusPath
 
     ViewTypeTableColContainerImageLink:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -1019,6 +1117,7 @@ components:
         - imagePath
 
     ViewTypeTableColPromql:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -1041,6 +1140,7 @@ components:
         - componentIdentifierTemplate
 
     ViewTypeTableColRatio:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -1062,6 +1162,7 @@ components:
         - denominatorPath
 
     ViewTypeTableColMetricBinding:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -1083,12 +1184,15 @@ components:
         - onlyTrendLine
 
     ViewTypeFlagValue:
+      x-stability: internal
       type: string
       enum:
         - NoTopologyFilters
         - CardsLayout
 
     PresentationSummary:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         metrics:
@@ -1097,6 +1201,8 @@ components:
             $ref: "#/components/schemas/PresentationSummaryMetric"
 
     ComponentPresentationFilter:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         filterId:
@@ -1125,12 +1231,16 @@ components:
            later items are secondary ("More" section).
 
     ComponentPresentationFilterDefinition:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       oneOf:
         - $ref: "#/components/schemas/TagFilter"
       discriminator:
         propertyName: _type
 
     TagFilter:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         _type:
@@ -1146,6 +1256,7 @@ components:
         Tag-based filter. Uses indexed tags via `tagKey`.
 
     ViewTypeFilter:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -1158,6 +1269,7 @@ components:
         - _type
 
     LabelPrefixedFilter:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -1172,6 +1284,7 @@ components:
         - name
 
     TopologyFilters:
+      x-stability: internal
       properties:
         _type:
           type: string
@@ -1185,6 +1298,7 @@ components:
         - tabs
 
     TopologyFilterValue:
+      x-stability: internal
       type: string
       enum:
         - TOPOLOGY
@@ -1192,6 +1306,8 @@ components:
         - TRACES
 
     PresentationHighlightProvisioning:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         topologySourceSelector:
@@ -1204,6 +1320,8 @@ components:
       description: 'Provisioning section of a component in the highlight presentation. The `topologySourceSelector` field is used to identify the external component with provisioning details for this component.'
 
     PresentationHighlightEvents:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         showEvents:
@@ -1216,6 +1334,8 @@ components:
         - showEvents
 
     PresentationHighlightMetricsSection:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         sectionId:
@@ -1239,6 +1359,8 @@ components:
         - order
 
     OrderedComponentPresentationMetric:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       allOf:
         - $ref: "#/components/schemas/ComponentPresentationMetric"
         - type: object
@@ -1248,6 +1370,8 @@ components:
               format: double
 
     ComponentPresentationMetric:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         metricId:
@@ -1266,6 +1390,8 @@ components:
         - metricId
 
     PresentationSummaryMetric:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         summaryMetricId:
@@ -1287,6 +1413,8 @@ components:
         - summaryMetricId
 
     PresentationMetricQuery:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       properties:
         expression:
           type: string
@@ -1299,6 +1427,8 @@ components:
         - alias
 
     Chart:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       oneOf:
         - $ref: "#/components/schemas/TimeSeriesChart"
         - $ref: "#/components/schemas/GaugeChart"
@@ -1308,6 +1438,8 @@ components:
         propertyName: _type
 
     TimeSeriesChart:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       properties:
         _type:
           type: string
@@ -1329,6 +1461,8 @@ components:
       required:
         - _type
     BarChart:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       properties:
         _type:
           type: string
@@ -1348,6 +1482,8 @@ components:
       required:
         - _type
     GaugeChart:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       properties:
         _type:
           type: string
@@ -1366,6 +1502,8 @@ components:
       required:
         - _type
     StatChart:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       properties:
         _type:
           type: string
@@ -1384,6 +1522,8 @@ components:
         - _type
 
     ChartCalculation:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: string
       enum:
         - "mean"
@@ -1396,6 +1536,8 @@ components:
         - "last-number"
 
     ChartThresholds:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       properties:
         mode:
           type: string
@@ -1410,6 +1552,8 @@ components:
         - steps
 
     ChartStatThresholds:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       properties:
         defaultColor:
           type: string
@@ -1421,6 +1565,8 @@ components:
         - steps
 
     ChartThresholdStep:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       properties:
         value:
           type: number
@@ -1430,6 +1576,8 @@ components:
         - value
 
     PresentationMetricPerspective:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         tabs:
@@ -1440,6 +1588,8 @@ components:
         - tabs
 
     PresentationMetricPerspectiveTab:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         tabId:
@@ -1459,6 +1609,8 @@ components:
         - order
 
     PresentationMetricPerspectiveSection:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       properties:
         sectionId:
@@ -1478,6 +1630,8 @@ components:
         - order
 
     PresentationTracesPerspective:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       description: |
         Makes the Traces perspective available on components matched by this presentation.
@@ -1496,6 +1650,8 @@ components:
         - spanFilter
 
     PresentationSpanFilter:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       description: |
         Selects the spans shown in the Traces perspective for a component.
@@ -1561,6 +1717,8 @@ components:
           description: "Filter spans by instrumentation scope version"
 
     SpanKind:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: string
       enum:
         - Client
@@ -1571,6 +1729,8 @@ components:
         - Unspecified
 
     SpanStatusCode:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: string
       enum:
         - Error
@@ -1578,6 +1738,8 @@ components:
         - Unset
 
     SpanParentType:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: string
       enum:
         - External
@@ -1585,6 +1747,8 @@ components:
         - Root
 
     TopologySettings:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
       type: object
       description: |
         Rendering settings for the topology perspective.

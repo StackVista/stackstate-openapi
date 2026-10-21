@@ -40,6 +40,8 @@ jobs:
           npx @openapitools/openapi-generator-cli@2.39.1 validate -i spec/openapi_authorization_sync.yaml
           npx @openapitools/openapi-generator-cli@2.39.1 validate -i spec/openapi_receiver.yaml
           npx @openapitools/openapi-generator-cli@2.39.1 validate -i spec_webhook/openapi.yaml
+          npx @openapitools/openapi-generator-cli@2.39.1 validate -i spec/openapi_internal.yaml
+          npx @openapitools/openapi-generator-cli@2.39.1 validate -i spec_settings/openapi.yaml
 
   openapi-lint:
     name: OpenAPI lint (Redocly)
@@ -61,12 +63,30 @@ jobs:
           npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec/openapi_receiver.yaml
           npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec/openapi_authorization_sync.yaml
           npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec_webhook/openapi.yaml
+          npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec/openapi_internal.yaml
+          npx @redocly/openapi-cli@1.0.0-beta.94 lint --config lint_config.yaml spec_settings/openapi.yaml
+
+  stability-markers:
+    name: API stability markers (x-stability)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+
+      - name: Check x-stability on operations and settings schemas
+        run: |
+          python3 -m venv "$RUNNER_TEMP/venv"
+          "$RUNNER_TEMP/venv/bin/pip" install --quiet pyyaml==6.0.3
+          "$RUNNER_TEMP/venv/bin/python" scripts/check_stability.py
 
   ci-success:
     if: ${{ always() }}
     needs:
       - openapi-validate
       - openapi-lint
+      - stability-markers
     runs-on: ubuntu-latest
     steps:
       - name: Evaluate workflow results
