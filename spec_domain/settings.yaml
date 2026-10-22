@@ -1538,6 +1538,10 @@ components:
         sort:
           type: string
           enum: ["asc", "desc"]
+        type:
+          type: string
+          enum: ["pie", "donut"]
+          description: Display as a pie or donut chart. Defaults to pie when omitted.
       required:
         - _type
 
