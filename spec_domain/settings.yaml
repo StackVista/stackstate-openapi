@@ -1434,6 +1434,7 @@ components:
         - $ref: "#/components/schemas/GaugeChart"
         - $ref: "#/components/schemas/BarChart"
         - $ref: "#/components/schemas/StatChart"
+        - $ref: "#/components/schemas/PieChart"
       discriminator:
         propertyName: _type
 
@@ -1518,6 +1519,25 @@ components:
           $ref: "#/components/schemas/ChartCalculation"
         thresholds:
           $ref: "#/components/schemas/ChartStatThresholds"
+      required:
+        - _type
+
+    PieChart:
+      x-stability: stable
+      x-docs-url: https://documentation.suse.com/cloudnative/suse-observability/latest/en/setup/custom-integrations/presentation/schemas-ref.html
+      properties:
+        _type:
+          type: string
+          enum: ["PieChart"]
+        unit:
+          type: string
+        decimals:
+          type: integer
+        calculation:
+          $ref: "#/components/schemas/ChartCalculation"
+        sort:
+          type: string
+          enum: ["asc", "desc"]
       required:
         - _type
 
