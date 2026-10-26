@@ -43,8 +43,6 @@ components:
           type: string
         type_name:
           type: string
-        type_identifier:
-          type: string
         resource_definition:
           type: object
         status_data:
