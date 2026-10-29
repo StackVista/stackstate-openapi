@@ -679,6 +679,10 @@ components:
               $ref: "#/components/schemas/MonitorStatus"
             dummy:
               type: boolean
+            lastUpdateTimestamp:
+              type: integer
+              format: int64
+              description: The timestamp of when the monitor was last updated. Identifies the version of the monitor definition.
           required:
             - type
             - name
