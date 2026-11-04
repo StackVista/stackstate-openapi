@@ -1,0 +1,502 @@
+# OpenApi header is included in this file to support code highlighting in VSCode
+openapi: 3.0.3
+info:
+  title: Telemetry Query API
+  version: "1.0.0"
+paths:
+  /logs/query:
+    post:
+      x-stability: internal
+      tags:
+        - otelQuery
+      requestBody:
+        $ref: "#/components/requestBodies/otelQuery"
+      summary: Query logs
+      description: Evaluates a telemetry query language query over logs. Records and tables read one input interval; series read at one evaluation time. Results only contain logs within the caller's `get-logs` permission scope.
+      operationId: queryLogs
+      responses:
+        "200":
+          $ref: "#/components/responses/otelQueryResponse"
+        "400":
+          $ref: "#/components/responses/otelQueryBadRequest"
+        "422":
+          $ref: "#/components/responses/otelQueryWithheld"
+        "500":
+          $ref: "#/components/responses/otelQueryError"
+
+components:
+  requestBodies:
+    otelQuery:
+      description: The query and how to evaluate it
+      required: true
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/OtelQueryRequest" }
+
+  responses:
+    otelQueryResponse:
+      description: The query result, with diagnostics and the cost of evaluating it
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/OtelQueryResponse" }
+    otelQueryBadRequest:
+      description: The request or the query is invalid, unsupported, or exceeds the request budget
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/OtelQueryBadRequest" }
+    otelQueryWithheld:
+      description: The stored data cannot answer the query reliably, so no values are returned
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/OtelQueryWithheld" }
+    otelQueryError:
+      description: Server error response
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/OtelQueryError" }
+
+  schemas:
+    OtelQueryRequest:
+      type: object
+      description: A query and how to evaluate it. The signal is the endpoint's, never part of the request.
+      properties:
+        query:
+          type: string
+          description: The query text.
+        languageVersion:
+          type: string
+          description: The query language version the text is written in.
+          example: "1"
+        input: { $ref: "#/components/schemas/OtelQueryInput" }
+        options: { $ref: "#/components/schemas/OtelQueryOptions" }
+      required:
+        - query
+        - languageVersion
+        - input
+
+    OtelQueryInput:
+      description: An input interval for records and tables, or an evaluation time for series.
+      oneOf:
+        - $ref: "#/components/schemas/OtelQueryInterval"
+        - $ref: "#/components/schemas/OtelQueryEvaluationTime"
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+
+    OtelQueryInterval:
+      type: object
+      description: Records whose time is at or after `start` and before `end`.
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelQueryInterval
+        start: { $ref: "common.api.yaml#/components/schemas/Instant" }
+        end: { $ref: "common.api.yaml#/components/schemas/Instant" }
+      required:
+        - _type
+        - start
+        - end
+
+    OtelQueryEvaluationTime:
+      type: object
+      description: One series evaluation at `at`; each window ends at `at`.
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelQueryEvaluationTime
+        at: { $ref: "common.api.yaml#/components/schemas/Instant" }
+      required:
+        - _type
+        - at
+
+    OtelQueryOptions:
+      type: object
+      properties:
+        typeMismatchCounts:
+          type: boolean
+          default: false
+          description: Adds a diagnostic per comparison counting values stored with another type than the compared value. It reads the input again, which counts toward the request budget; results are the same either way.
+
+    OtelQueryResponse:
+      type: object
+      properties:
+        result: { $ref: "#/components/schemas/OtelQueryResult" }
+        diagnostics:
+          type: array
+          items: { $ref: "#/components/schemas/OtelQueryDiagnostic" }
+        cost: { $ref: "#/components/schemas/OtelQueryCost" }
+      required:
+        - result
+        - diagnostics
+        - cost
+
+    OtelQueryResult:
+      oneOf:
+        - $ref: "#/components/schemas/OtelQueryRecords"
+        - $ref: "#/components/schemas/OtelQueryTable"
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+
+    OtelQueryRecords:
+      type: object
+      description: One row per selected record.
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelQueryRecords
+        columns:
+          type: array
+          items: { $ref: "#/components/schemas/OtelQueryColumn" }
+        rows:
+          type: array
+          description: Each row has one value per column, in column order.
+          items:
+            type: array
+            items: { $ref: "#/components/schemas/OtelValue" }
+      required:
+        - _type
+        - columns
+        - rows
+
+    OtelQueryTable:
+      type: object
+      description: One row per aggregate group.
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelQueryTable
+        columns:
+          type: array
+          items: { $ref: "#/components/schemas/OtelQueryColumn" }
+        rows:
+          type: array
+          description: Each row has one value per column, in column order.
+          items:
+            type: array
+            items: { $ref: "#/components/schemas/OtelValue" }
+      required:
+        - _type
+        - columns
+        - rows
+
+    OtelQueryColumn:
+      type: object
+      properties:
+        name:
+          type: string
+        valueType: { $ref: "#/components/schemas/OtelValueType" }
+      required:
+        - name
+        - valueType
+
+    OtelValueType:
+      type: string
+      description: The type of a column's values. A `dynamic` column, such as an attribute, holds values of varying types, each carrying its own.
+      enum:
+        - int64
+        - float64
+        - bool
+        - string
+        - bytes
+        - timestamp
+        - duration
+        - structured
+        - dynamic
+
+    OtelValue:
+      description: One result value. Every value is tagged with its type, so a column of type `dynamic` needs no further metadata.
+      oneOf:
+        - $ref: "#/components/schemas/OtelEmptyValue"
+        - $ref: "#/components/schemas/OtelInt64Value"
+        - $ref: "#/components/schemas/OtelFloat64Value"
+        - $ref: "#/components/schemas/OtelNonFiniteFloat64Value"
+        - $ref: "#/components/schemas/OtelBoolValue"
+        - $ref: "#/components/schemas/OtelTextValue"
+        - $ref: "#/components/schemas/OtelBytesValue"
+        - $ref: "#/components/schemas/OtelTimestampValue"
+        - $ref: "#/components/schemas/OtelDurationValue"
+        - $ref: "#/components/schemas/OtelStructuredValue"
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+
+    OtelEmptyValue:
+      type: object
+      description: A missing or null-like value.
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelEmptyValue
+      required:
+        - _type
+
+    OtelInt64Value:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelInt64Value
+        value:
+          type: string
+          description: A 64-bit integer in decimal. A string because JavaScript numbers are exact only up to 2^53.
+          pattern: "^-?[0-9]+$"
+          example: "9007199254740993"
+      required:
+        - _type
+        - value
+
+    OtelFloat64Value:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelFloat64Value
+        value:
+          type: number
+          format: double
+      required:
+        - _type
+        - value
+
+    OtelNonFiniteFloat64Value:
+      type: object
+      description: A double that JSON numbers cannot represent.
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelNonFiniteFloat64Value
+        value:
+          type: string
+          enum:
+            - NaN
+            - Infinity
+            - -Infinity
+      required:
+        - _type
+        - value
+
+    OtelBoolValue:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelBoolValue
+        value:
+          type: boolean
+      required:
+        - _type
+        - value
+
+    OtelTextValue:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelTextValue
+        value:
+          type: string
+      required:
+        - _type
+        - value
+
+    OtelBytesValue:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelBytesValue
+        value:
+          type: string
+          format: byte
+          description: Base64-encoded bytes.
+      required:
+        - _type
+        - value
+
+    OtelTimestampValue:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelTimestampValue
+        value: { $ref: "common.api.yaml#/components/schemas/InstantNanoPrecision" }
+      required:
+        - _type
+        - value
+
+    OtelDurationValue:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelDurationValue
+        nanos:
+          type: string
+          description: The duration in nanoseconds, in decimal; a string for the same reason as `OtelInt64Value`.
+          pattern: "^-?[0-9]+$"
+      required:
+        - _type
+        - nanos
+
+    OtelStructuredValue:
+      type: object
+      description: An array, key-value list or bytes value, kept in its original OpenTelemetry type.
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelStructuredValue
+        value:
+          type: object
+          description: The value as an OTLP JSON AnyValue, for example `{"arrayValue":{"values":[{"intValue":"1"}]}}`.
+          additionalProperties: true
+      required:
+        - _type
+        - value
+
+    OtelQueryDiagnostic:
+      type: object
+      properties:
+        category:
+          type: string
+          description: Where the diagnostic comes from, for example `syntax`, `validation`, `capability`, `budget`, `guard`, `value` or `result`.
+        code:
+          type: string
+          description: A stable identifier for the diagnostic, for example `TYPE_MISMATCH` or `TRUNCATED`.
+        message:
+          type: string
+      required:
+        - category
+        - code
+        - message
+
+    OtelQueryCost:
+      type: object
+      description: What evaluating the query read, summed over all of its statements.
+      properties:
+        readRows:
+          type: integer
+          format: int64
+        readBytes:
+          type: integer
+          format: int64
+        elapsedNanos:
+          type: integer
+          format: int64
+      required:
+        - readRows
+        - readBytes
+        - elapsedNanos
+
+    OtelQueryBadRequest:
+      oneOf:
+        - $ref: "#/components/schemas/OtelQueryInvalidRequest"
+        - $ref: "#/components/schemas/OtelQueryInvalidQuery"
+        - $ref: "#/components/schemas/OtelQueryIncompatibleInput"
+        - $ref: "#/components/schemas/OtelQueryUnsupported"
+        - $ref: "#/components/schemas/OtelQueryBudgetExceeded"
+      discriminator:
+        propertyName: _type
+      required:
+        - _type
+
+    OtelQueryInvalidRequest:
+      type: object
+      description: The request parameters, not the query text, are invalid.
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelQueryInvalidRequest
+        message:
+          type: string
+      required:
+        - _type
+        - message
+
+    OtelQueryInvalidQuery:
+      type: object
+      description: The query text is not valid in the requested language version.
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelQueryInvalidQuery
+        diagnostic: { $ref: "#/components/schemas/OtelQueryDiagnostic" }
+      required:
+        - _type
+        - diagnostic
+
+    OtelQueryIncompatibleInput:
+      type: object
+      description: The query's result shape needs another input, for example an interval where an evaluation time was given.
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelQueryIncompatibleInput
+        message:
+          type: string
+      required:
+        - _type
+        - message
+
+    OtelQueryUnsupported:
+      type: object
+      description: The query is valid, but this server cannot evaluate it yet.
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelQueryUnsupported
+        diagnostic: { $ref: "#/components/schemas/OtelQueryDiagnostic" }
+      required:
+        - _type
+        - diagnostic
+
+    OtelQueryBudgetExceeded:
+      type: object
+      description: The query needs more than the request may read, return or take.
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelQueryBudgetExceeded
+        message:
+          type: string
+      required:
+        - _type
+        - message
+
+    OtelQueryWithheld:
+      type: object
+      description: A correctness check on the stored data failed, so no values are returned. Not a fault in the query; for example, resource metadata is missing for some records.
+      properties:
+        diagnostic: { $ref: "#/components/schemas/OtelQueryDiagnostic" }
+      required:
+        - diagnostic
+
+    OtelQueryError:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
