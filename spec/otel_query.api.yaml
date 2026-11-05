@@ -12,7 +12,7 @@ paths:
       requestBody:
         $ref: "#/components/requestBodies/otelQuery"
       summary: Query logs
-      description: Evaluates a telemetry query language query over logs. Records and tables read one input interval; series read at one evaluation time. Results only contain logs within the caller's `get-logs` permission scope.
+      description: Evaluates a telemetry query language query over logs. Records and tables read one input interval; series read at one evaluation time. Returned logs are restricted by the caller's `get-logs` scope. Queries accessing related spans also apply the caller's `get-traces` scope.
       operationId: queryLogs
       responses:
         "200":
@@ -118,7 +118,7 @@ components:
         typeMismatchCounts:
           type: boolean
           default: false
-          description: Adds a diagnostic per comparison counting values stored with another type than the compared value. It reads the input again, which counts toward the request budget; results are the same either way.
+          description: Adds counts of values with incompatible types for each comparison. For example, comparing `latency_ms > 100` counts string values such as `"150"` as type mismatches. Results are unchanged; the additional reads count toward the request budget.
 
     OtelQueryResponse:
       type: object
@@ -322,7 +322,6 @@ components:
             - OtelBytesValue
         value:
           type: string
-          format: byte
           description: Base64-encoded bytes.
       required:
         - _type
@@ -363,13 +362,12 @@ components:
           type: string
           enum:
             - OtelStructuredValue
-        value:
-          type: object
-          description: The value as an OTLP JSON AnyValue, for example `{"arrayValue":{"values":[{"intValue":"1"}]}}`.
-          additionalProperties: true
+        json:
+          type: string
+          description: The value as OTLP JSON AnyValue, for example `{"arrayValue":{"values":[{"intValue":"1"}]}}`.
       required:
         - _type
-        - value
+        - json
 
     OtelQueryDiagnostic:
       type: object
@@ -473,7 +471,7 @@ components:
 
     OtelQueryBudgetExceeded:
       type: object
-      description: The query needs more than the request may read, return or take.
+      description: The query exceeds a request limit, such as data read, result size, execution time, input window, statement count or grouping fields.
       properties:
         _type:
           type: string
