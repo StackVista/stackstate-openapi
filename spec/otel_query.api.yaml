@@ -257,6 +257,7 @@ components:
 
     OtelFloat64Value:
       type: object
+      description: A finite double. Negative zero is normalized to zero in API responses.
       properties:
         _type:
           type: string
@@ -380,10 +381,27 @@ components:
           description: A stable identifier for the diagnostic, for example `TYPE_MISMATCH` or `TRUNCATED`.
         message:
           type: string
+        range: { $ref: "#/components/schemas/OtelQueryRange" }
       required:
         - category
         - code
         - message
+
+    OtelQueryRange:
+      type: object
+      description: The part of the query text a diagnostic is about, as 0-based UTF-16 code unit offsets with an exclusive end, the units JavaScript string indexes use. Diagnostics about the data or the request, such as budget, guard and result diagnostics, have no range.
+      properties:
+        start:
+          type: integer
+          format: int32
+          minimum: 0
+        end:
+          type: integer
+          format: int32
+          minimum: 0
+      required:
+        - start
+        - end
 
     OtelQueryCost:
       type: object
