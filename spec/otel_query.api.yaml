@@ -381,15 +381,15 @@ components:
           description: A stable identifier for the diagnostic, for example `TYPE_MISMATCH` or `TRUNCATED`.
         message:
           type: string
-        range: { $ref: "#/components/schemas/OtelQueryRange" }
+        location: { $ref: "#/components/schemas/OtelQuerySourceLocation" }
       required:
         - category
         - code
         - message
 
-    OtelQueryRange:
+    OtelQuerySourceLocation:
       type: object
-      description: The part of the query text a diagnostic is about, as 0-based UTF-16 code unit offsets with an exclusive end, the units JavaScript string indexes use. Diagnostics about the data or the request, such as budget, guard and result diagnostics, have no range.
+      description: The part of the query text a diagnostic is about, as 0-based UTF-16 code unit offsets with an exclusive end, the units JavaScript string indexes use. Diagnostics about the data or the request, such as budget, guard and result diagnostics, have no location.
       properties:
         start:
           type: integer
