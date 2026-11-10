@@ -349,7 +349,7 @@ components:
             - OtelDurationValue
         nanos:
           type: string
-          description: The duration in nanoseconds, in decimal. Exact durations use integer nanoseconds; calculated averages and estimates may have fractional nanoseconds. A string preserves precision.
+          description: The duration in nanoseconds, in decimal; a string for the same reason as `OtelInt64Value`.
           pattern: "^-?[0-9]+([.][0-9]+)?$"
       required:
         - _type
