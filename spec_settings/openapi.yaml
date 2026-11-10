@@ -847,6 +847,7 @@ components:
         - $ref: "#/components/schemas/ArgumentFailingHealthState"
         - $ref: "#/components/schemas/ArgumentTopologyQuery"
         - $ref: "#/components/schemas/ArgumentTopologyPromQLMetric"
+        - $ref: "#/components/schemas/ArgumentCelExpression"
       discriminator:
         propertyName: argumentType
 
@@ -1095,6 +1096,18 @@ components:
         argumentType:
           type: string
           enum: [ArgumentTopologyQuery]
+        value:
+          type: string
+      required:
+        - argumentType
+        - value
+    ArgumentCelExpression:
+      x-stability: internal
+      type: object
+      properties:
+        argumentType:
+          type: string
+          enum: [ArgumentCelExpression]
         value:
           type: string
       required:

@@ -40,6 +40,7 @@ components:
         - $ref: "#/components/schemas/ArgumentPromQLMetricVal"
         - $ref: "#/components/schemas/ArgumentTopologyQueryVal"
         - $ref: "#/components/schemas/ArgumentTopologyPromQLMetricVal"
+        - $ref: "#/components/schemas/ArgumentCelExpressionVal"
       required:
         - _type
     ArgumentStringVal:
@@ -221,6 +222,28 @@ components:
         - _type
         - parameter
         - query
+    ArgumentCelExpressionVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentCelExpressionVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        expression:
+          type: string
+      required:
+        - _type
+        - parameter
+        - expression
     ArgumentNodeIdVal:
       type: object
       properties:
