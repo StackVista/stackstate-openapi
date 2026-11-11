@@ -144,10 +144,10 @@ components:
         start: { $ref: "common.api.yaml#/components/schemas/Instant" }
         end: { $ref: "common.api.yaml#/components/schemas/Instant" }
         stepNanos:
-          type: integer
-          format: int64
-          minimum: 1
-          description: Distance between evaluations, in nanoseconds; independent of an explicit query lookback window.
+          type: string
+          pattern: '^[1-9][0-9]*$'
+          example: '300000000000'
+          description: Positive Int64 decimal string giving the distance between evaluations in nanoseconds; independent of an explicit query lookback window.
       required:
         - _type
         - start
@@ -220,6 +220,7 @@ components:
 
     OtelQuerySeriesLabel:
       type: object
+      description: Label names use public dotted field names, such as resource.identity or resource.attributes.service.name. Explicit query aliases retain their names.
       properties:
         name:
           type: string
