@@ -192,6 +192,16 @@ components:
         name:
           type: string
         valueType: { $ref: "#/components/schemas/OtelValueType" }
+        unit:
+          type: string
+          description: Declared unit of the numeric values. Values retain this unit without implicit rescaling.
+          enum:
+            - ns
+            - us
+            - ms
+            - s
+            - records
+            - records/s
       required:
         - name
         - valueType
