@@ -200,8 +200,8 @@ components:
             - us
             - ms
             - s
-            - By
-            - By/s
+            - bytes
+            - Bps
             - records
             - records/s
       required:
