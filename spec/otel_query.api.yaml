@@ -24,6 +24,26 @@ paths:
         "500":
           $ref: "#/components/responses/otelQueryError"
 
+  /logs/query_range:
+    post:
+      x-stability: internal
+      tags:
+        - otelQuery
+      requestBody:
+        $ref: "#/components/requestBodies/otelQuery"
+      summary: Query log series over a range
+      description: Evaluates a series query on a grid. Each sample reads its full lookback window; the caller's `get-logs` scope applies to every sample and group. Records and table queries are rejected.
+      operationId: queryLogsRange
+      responses:
+        "200":
+          $ref: "#/components/responses/otelQueryResponse"
+        "400":
+          $ref: "#/components/responses/otelQueryBadRequest"
+        "422":
+          $ref: "#/components/responses/otelQueryWithheld"
+        "500":
+          $ref: "#/components/responses/otelQueryError"
+
 components:
   requestBodies:
     otelQuery:
@@ -75,10 +95,11 @@ components:
         - input
 
     OtelQueryInput:
-      description: An input interval for records and tables, or an evaluation time for series.
+      description: An input interval for records and tables, or an evaluation time or range for series.
       oneOf:
         - $ref: "#/components/schemas/OtelQueryInterval"
         - $ref: "#/components/schemas/OtelQueryEvaluationTime"
+        - $ref: "#/components/schemas/OtelQueryRange"
       discriminator:
         propertyName: _type
       required:
@@ -112,6 +133,27 @@ components:
         - _type
         - at
 
+    OtelQueryRange:
+      type: object
+      description: A series grid on /logs/query_range. Explicit windows evaluate first at start; omitted windows equal step and evaluate first at start plus step. Only full steps are returned.
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelQueryRange
+        start: { $ref: "common.api.yaml#/components/schemas/Instant" }
+        end: { $ref: "common.api.yaml#/components/schemas/Instant" }
+        stepNanos:
+          type: string
+          pattern: '^[1-9][0-9]*$'
+          example: '300000000000'
+          description: Positive Int64 decimal string giving the distance between evaluations in nanoseconds; independent of an explicit query lookback window.
+      required:
+        - _type
+        - start
+        - end
+        - stepNanos
+
     OtelQueryOptions:
       type: object
       properties:
@@ -137,10 +179,77 @@ components:
       oneOf:
         - $ref: "#/components/schemas/OtelQueryRecords"
         - $ref: "#/components/schemas/OtelQueryTable"
+        - $ref: "#/components/schemas/OtelQuerySeriesFrame"
       discriminator:
         propertyName: _type
       required:
         - _type
+
+    OtelQuerySeriesFrame:
+      type: object
+      description: One series per group and selected measure. Every retained series has a sample at each evaluation, including empty windows.
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelQuerySeriesFrame
+        series:
+          type: array
+          items: { $ref: "#/components/schemas/OtelQuerySeries" }
+      required:
+        - _type
+        - series
+
+    OtelQuerySeries:
+      type: object
+      properties:
+        measure:
+          type: string
+        valueType: { $ref: "#/components/schemas/OtelValueType" }
+        unit:
+          type: string
+          description: Declared unit of the numeric values. Values retain this unit without implicit rescaling.
+          enum:
+            - ns
+            - us
+            - ms
+            - s
+            - By
+            - By/s
+            - records
+            - records/s
+        labels:
+          type: array
+          items: { $ref: "#/components/schemas/OtelQuerySeriesLabel" }
+        samples:
+          type: array
+          items: { $ref: "#/components/schemas/OtelQuerySample" }
+      required:
+        - measure
+        - valueType
+        - labels
+        - samples
+
+    OtelQuerySeriesLabel:
+      type: object
+      description: Label names use public dotted field names, such as resource.identity or resource.attributes.service.name. Explicit query aliases retain their names.
+      properties:
+        name:
+          type: string
+        value: { $ref: "#/components/schemas/OtelValue" }
+      required:
+        - name
+        - value
+
+    OtelQuerySample:
+      type: object
+      description: A value at an evaluation timestamp. Empty values preserve gaps; counts and rates are zero for an empty window.
+      properties:
+        at: { $ref: "common.api.yaml#/components/schemas/InstantNanoPrecision" }
+        value: { $ref: "#/components/schemas/OtelValue" }
+      required:
+        - at
+        - value
 
     OtelQueryRecords:
       type: object
