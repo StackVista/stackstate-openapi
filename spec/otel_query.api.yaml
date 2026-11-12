@@ -214,8 +214,8 @@ components:
             - us
             - ms
             - s
-            - By
-            - By/s
+            - B
+            - B/s
             - records
             - records/s
         labels:
