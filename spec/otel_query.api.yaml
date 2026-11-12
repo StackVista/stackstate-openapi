@@ -301,6 +301,18 @@ components:
         name:
           type: string
         valueType: { $ref: "#/components/schemas/OtelValueType" }
+        unit:
+          type: string
+          description: Declared unit of the numeric values. Values retain this unit without implicit rescaling.
+          enum:
+            - ns
+            - us
+            - ms
+            - s
+            - B
+            - B/s
+            - records
+            - records/s
       required:
         - name
         - valueType
@@ -459,7 +471,7 @@ components:
         nanos:
           type: string
           description: The duration in nanoseconds, in decimal; a string for the same reason as `OtelInt64Value`.
-          pattern: "^-?[0-9]+$"
+          pattern: "^-?[0-9]+([.][0-9]+)?$"
       required:
         - _type
         - nanos
