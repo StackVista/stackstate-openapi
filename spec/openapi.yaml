@@ -145,6 +145,7 @@ paths:
   /traces/spans/fields/{field}/values: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fspans%2Ffields%2F%7Bfield%7D%2Fvalues" }
   /traces/components: { $ref: "traces.api.yaml#/paths/%2Ftraces%2Fcomponents" }
   /logs/query: { $ref: "otel_query.api.yaml#/paths/%2Flogs%2Fquery" }
+  /logs/query_range: { $ref: "otel_query.api.yaml#/paths/%2Flogs%2Fquery_range" }
   /components/{componentIdOrIdentifier}: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrIdentifier%7D" }
   /components/{componentIdOrIdentifier}/healthHistory: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrIdentifier%7D%2FhealthHistory" }
   /components/{componentIdOrIdentifier}/checkStates: { $ref: "components.api.yaml#/paths/%2Fcomponents%2F%7BcomponentIdOrIdentifier%7D%2FcheckStates" }
