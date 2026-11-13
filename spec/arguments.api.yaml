@@ -41,6 +41,7 @@ components:
         - $ref: "#/components/schemas/ArgumentTopologyQueryVal"
         - $ref: "#/components/schemas/ArgumentTopologyPromQLMetricVal"
         - $ref: "#/components/schemas/ArgumentCelExpressionVal"
+        - $ref: "#/components/schemas/ArgumentCelBindingsVal"
       required:
         - _type
     ArgumentStringVal:
@@ -244,6 +245,31 @@ components:
         - _type
         - parameter
         - expression
+    ArgumentCelBindingsVal:
+      type: object
+      properties:
+        _type:
+          type: string
+          enum:
+            - ArgumentCelBindingsVal
+        id:
+          type: integer
+          format: int64
+        lastUpdateTimestamp:
+          type: integer
+          format: int64
+        parameter:
+          type: integer
+          format: int64
+        bindings:
+          description: CEL expressions by the name they are bound to.
+          type: object
+          additionalProperties:
+            type: string
+      required:
+        - _type
+        - parameter
+        - bindings
     ArgumentNodeIdVal:
       type: object
       properties:

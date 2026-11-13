@@ -848,6 +848,7 @@ components:
         - $ref: "#/components/schemas/ArgumentTopologyQuery"
         - $ref: "#/components/schemas/ArgumentTopologyPromQLMetric"
         - $ref: "#/components/schemas/ArgumentCelExpression"
+        - $ref: "#/components/schemas/ArgumentCelBindings"
       discriminator:
         propertyName: argumentType
 
@@ -1110,6 +1111,20 @@ components:
           enum: [ArgumentCelExpression]
         value:
           type: string
+      required:
+        - argumentType
+        - value
+    ArgumentCelBindings:
+      x-stability: internal
+      type: object
+      properties:
+        argumentType:
+          type: string
+          enum: [ArgumentCelBindings]
+        value:
+          type: object
+          additionalProperties:
+            type: string
       required:
         - argumentType
         - value
