@@ -167,6 +167,36 @@ paths:
         "500":
           $ref: "#/components/responses/monitorApiError"
 
+  /monitors/{monitorFunctionIdOrUrn}/test/sourceComponentData:
+    post:
+      x-stability: internal
+      tags:
+        - monitor
+      parameters:
+        - $ref: "#/components/parameters/monitorFunctionIdOrUrn"
+      summary: "Preview a source component data monitor for one component"
+      description: "Evaluates the CEL arguments of a source component data monitor function for one component, and returns the value or error of every binding and result field"
+      operationId: testSourceComponentData
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SourceComponentDataTest"
+      responses:
+        "200":
+          description: "The evaluation of the arguments for the component"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SourceComponentDataTestResult"
+        "400":
+          $ref: "#/components/responses/invalidMonitorIdentifierError"
+        "404":
+          $ref: "#/components/responses/monitorFunctionNotFoundError"
+        "500":
+          $ref: "#/components/responses/monitorApiError"
+
   /monitors/{monitorFunctionIdOrUrn}/test/checkStates:
     post:
       x-stability: internal
@@ -605,6 +635,107 @@ components:
         intervalSeconds:
           type: integer
 
+    SourceComponentDataTest:
+      type: object
+      properties:
+        arguments:
+          type: array
+          items:
+            $ref: "arguments.api.yaml#/components/schemas/Argument"
+        componentIdentifier:
+          type: string
+      required:
+        - arguments
+        - componentIdentifier
+    SourceComponentDataTestResult:
+      type: object
+      properties:
+        errors:
+          description: "Errors in the arguments; when present, nothing is evaluated"
+          type: array
+          items:
+            type: string
+        component:
+          $ref: "#/components/schemas/SourceComponentDataTestComponent"
+        sources:
+          type: array
+          items:
+            $ref: "#/components/schemas/SourceComponentDataTestSource"
+        vars:
+          type: array
+          items:
+            $ref: "#/components/schemas/SourceComponentDataTestValue"
+        error:
+          description: "Why no results were evaluated, for example because no source matched or items failed"
+          type: string
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/SourceComponentDataTestOutcome"
+      required:
+        - errors
+        - sources
+        - vars
+        - results
+    SourceComponentDataTestComponent:
+      type: object
+      properties:
+        identifier:
+          type: string
+        name:
+          type: string
+      required:
+        - identifier
+        - name
+    SourceComponentDataTestSource:
+      type: object
+      properties:
+        externalId:
+          type: string
+        syncName:
+          type: string
+        selected:
+          description: "Whether this is the first source that matches the sourceSelector"
+          type: boolean
+        matched:
+          type: boolean
+        error:
+          type: string
+      required:
+        - syncName
+        - selected
+        - matched
+    SourceComponentDataTestValue:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          description: "Any JSON value"
+          type: object
+        error:
+          type: string
+      required:
+        - name
+    SourceComponentDataTestOutcome:
+      type: object
+      properties:
+        id:
+          type: string
+        whenEmpty:
+          description: "Whether the fields are the whenEmpty fields, because items returned an empty list"
+          type: boolean
+        item:
+          description: "Any JSON value"
+          type: object
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/SourceComponentDataTestValue"
+      required:
+        - id
+        - whenEmpty
+        - fields
     MonitorFunctionTest:
       type: object
       properties:
