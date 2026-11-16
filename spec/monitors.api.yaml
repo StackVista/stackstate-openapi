@@ -661,10 +661,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/SourceComponentDataTestSource"
-        vars:
-          type: array
-          items:
-            $ref: "#/components/schemas/SourceComponentDataTestValue"
         error:
           description: "Why no results were evaluated, for example because no source matched or items failed"
           type: string
@@ -675,7 +671,6 @@ components:
       required:
         - errors
         - sources
-        - vars
         - results
     SourceComponentDataTestComponent:
       type: object
@@ -728,6 +723,11 @@ components:
         item:
           description: "Any JSON value"
           type: object
+        vars:
+          description: "The bindings, evaluated for this item"
+          type: array
+          items:
+            $ref: "#/components/schemas/SourceComponentDataTestValue"
         fields:
           type: array
           items:
@@ -735,6 +735,7 @@ components:
       required:
         - id
         - whenEmpty
+        - vars
         - fields
     MonitorFunctionTest:
       type: object
