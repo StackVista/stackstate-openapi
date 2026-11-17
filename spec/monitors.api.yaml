@@ -694,12 +694,16 @@ components:
           type: boolean
         matched:
           type: boolean
+        source:
+          description: "The source variable as the expressions see it"
+          type: object
         error:
           type: string
       required:
         - syncName
         - selected
         - matched
+        - source
     SourceComponentDataTestValue:
       type: object
       properties:
