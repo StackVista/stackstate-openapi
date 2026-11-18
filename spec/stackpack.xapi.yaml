@@ -129,6 +129,14 @@ paths:
       parameters:
         - $ref: "#/components/parameters/stackPackName"
         - $ref: "#/components/parameters/stackPackInstanceId"
+        - in: query
+          name: unlocked
+          description: "Strategy for handling unlocked resources during uninstallation."
+          allowReserved: true
+          required: false
+          schema:
+            type: string
+            default: fail
       summary: "Provision API"
       operationId: provisionUninstall
       description: "Provision details"
