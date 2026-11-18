@@ -214,8 +214,8 @@ components:
             - us
             - ms
             - s
-            - By
-            - By/s
+            - B
+            - B/s
             - records
             - records/s
         labels:
@@ -328,6 +328,7 @@ components:
         - bytes
         - timestamp
         - duration
+        - histogram
         - structured
         - dynamic
 
@@ -343,6 +344,7 @@ components:
         - $ref: "#/components/schemas/OtelBytesValue"
         - $ref: "#/components/schemas/OtelTimestampValue"
         - $ref: "#/components/schemas/OtelDurationValue"
+        - $ref: "#/components/schemas/OtelHistogramValue"
         - $ref: "#/components/schemas/OtelStructuredValue"
       discriminator:
         propertyName: _type
@@ -475,6 +477,54 @@ components:
       required:
         - _type
         - nanos
+
+    OtelHistogramValue:
+      type: object
+      description: A duration distribution over authorized primary records. Bucket counts are exact; bounds are lower-inclusive and upper-exclusive.
+      properties:
+        _type:
+          type: string
+          enum:
+            - OtelHistogramValue
+        unit:
+          type: string
+          enum:
+            - ns
+            - us
+            - ms
+            - s
+        totalValidCount:
+          type: string
+          pattern: "^[0-9]+$"
+          description: The sum of all bucket counts, as a decimal integer.
+        buckets:
+          type: array
+          minItems: 3
+          maxItems: 512
+          items: { $ref: "#/components/schemas/OtelHistogramBucket" }
+      required:
+        - _type
+        - unit
+        - totalValidCount
+        - buckets
+
+    OtelHistogramBucket:
+      type: object
+      properties:
+        lower:
+          type: string
+          pattern: "^-?[0-9]+([.][0-9]+)?$"
+          description: Inclusive bound in the histogram unit. Absent for the underflow bucket.
+        upper:
+          type: string
+          pattern: "^-?[0-9]+([.][0-9]+)?$"
+          description: Exclusive bound in the histogram unit. Absent for the overflow bucket.
+        count:
+          type: string
+          pattern: "^[0-9]+$"
+          description: Exact observation count, as a decimal integer.
+      required:
+        - count
 
     OtelStructuredValue:
       type: object
