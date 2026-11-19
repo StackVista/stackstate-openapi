@@ -162,6 +162,11 @@ components:
           default: false
           description: Adds counts of values with incompatible types for each comparison. For example, comparing `latency_ms > 100` counts string values such as `"150"` as type mismatches. Results are unchanged; the additional reads count toward the request budget.
 
+        resolveLinkedSpans:
+          type: boolean
+          default: false
+          description: Adds a structured linked_span column to log Records, using exact trace and span IDs from returned rows. Reads apply the caller's get-traces scope and retained span storage, independently of the log interval. Limits do not change log selection. Explicit related_span predicates still enforce their own limits and errors.
+
     OtelQueryResponse:
       type: object
       properties:
@@ -170,10 +175,17 @@ components:
           type: array
           items: { $ref: "#/components/schemas/OtelQueryDiagnostic" }
         cost: { $ref: "#/components/schemas/OtelQueryCost" }
+        linkedSpanResolution:
+          $ref: "#/components/schemas/OtelLinkedSpanResolution"
       required:
         - result
         - diagnostics
         - cost
+
+    OtelLinkedSpanResolution:
+      type: string
+      enum: [resolved, limit_exceeded]
+      description: Present when resolveLinkedSpans is requested. resolved means the authorized linked-span read completed; missing spans produce empty records. limit_exceeded preserves logs and reports incomplete or omitted span output. The linked_span cell contains records and truncated fields. Output is limited to one span per log; duplicate versions use deterministic ordering. Storage failures remain errors.
 
     OtelQueryResult:
       oneOf:
