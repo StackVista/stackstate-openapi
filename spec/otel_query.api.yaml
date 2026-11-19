@@ -59,6 +59,19 @@ components:
       content:
         application/json:
           schema: { $ref: "#/components/schemas/OtelQueryResponse" }
+          examples:
+            linkedSpan:
+              summary: One authorized span; duration is 2000000 nanoseconds.
+              value: {"result":{"_type":"OtelQueryRecords","columns":[{"name":"body","valueType":"string"},{"name":"linked_span","valueType":"structured"}],"rows":[[{"_type":"OtelTextValue","value":"checkout failed"},{"_type":"OtelStructuredValue","json":"{\"kvlistValue\":{\"values\":[{\"key\":\"records\",\"value\":{\"arrayValue\":{\"values\":[{\"kvlistValue\":{\"values\":[{\"key\":\"span.trace_id\",\"value\":{\"stringValue\":\"00000000000000000000000000000001\"}},{\"key\":\"span.span_id\",\"value\":{\"stringValue\":\"0000000000000002\"}},{\"key\":\"span.start_time\",\"value\":{\"stringValue\":\"2026-11-19T10:00:00Z\"}},{\"key\":\"span.name\",\"value\":{\"stringValue\":\"checkout\"}},{\"key\":\"span.kind\",\"value\":{\"stringValue\":\"server\"}},{\"key\":\"span.status\",\"value\":{\"stringValue\":\"error\"}},{\"key\":\"span.duration\",\"value\":{\"stringValue\":\"2000000\"}}]}}]}}},{\"key\":\"truncated\",\"value\":{\"boolValue\":false}}]}}"}]]},"diagnostics":[],"cost":{"readRows":2,"readBytes":512,"elapsedNanos":1000000},"linkedSpanResolution":"resolved"}
+            missingLinkedSpan:
+              summary: No authorized linked span; records is empty.
+              value: {"result":{"_type":"OtelQueryRecords","columns":[{"name":"body","valueType":"string"},{"name":"linked_span","valueType":"structured"}],"rows":[[{"_type":"OtelTextValue","value":"checkout failed"},{"_type":"OtelStructuredValue","json":"{\"kvlistValue\":{\"values\":[{\"key\":\"records\",\"value\":{\"arrayValue\":{\"values\":[]}}},{\"key\":\"truncated\",\"value\":{\"boolValue\":false}}]}}"}]]},"diagnostics":[],"cost":{"readRows":2,"readBytes":512,"elapsedNanos":1000000},"linkedSpanResolution":"resolved"}
+            truncatedLinkedSpan:
+              summary: One retained version; further span output was truncated.
+              value: {"result":{"_type":"OtelQueryRecords","columns":[{"name":"body","valueType":"string"},{"name":"linked_span","valueType":"structured"}],"rows":[[{"_type":"OtelTextValue","value":"checkout failed"},{"_type":"OtelStructuredValue","json":"{\"kvlistValue\":{\"values\":[{\"key\":\"records\",\"value\":{\"arrayValue\":{\"values\":[{\"kvlistValue\":{\"values\":[{\"key\":\"span.trace_id\",\"value\":{\"stringValue\":\"00000000000000000000000000000001\"}},{\"key\":\"span.span_id\",\"value\":{\"stringValue\":\"0000000000000002\"}},{\"key\":\"span.start_time\",\"value\":{\"stringValue\":\"2026-11-19T10:00:00Z\"}},{\"key\":\"span.name\",\"value\":{\"stringValue\":\"checkout\"}},{\"key\":\"span.kind\",\"value\":{\"stringValue\":\"server\"}},{\"key\":\"span.status\",\"value\":{\"stringValue\":\"error\"}},{\"key\":\"span.duration\",\"value\":{\"stringValue\":\"2000000\"}}]}}]}}},{\"key\":\"truncated\",\"value\":{\"boolValue\":true}}]}}"}]]},"diagnostics":[],"cost":{"readRows":2,"readBytes":512,"elapsedNanos":1000000},"linkedSpanResolution":"limit_exceeded"}
+            omittedLinkedSpan:
+              summary: Optional resolution was skipped or cancelled; completed logs remain.
+              value: {"result":{"_type":"OtelQueryRecords","columns":[{"name":"body","valueType":"string"}],"rows":[[{"_type":"OtelTextValue","value":"checkout failed"}]]},"diagnostics":[],"cost":{"readRows":2,"readBytes":512,"elapsedNanos":1000000},"linkedSpanResolution":"limit_exceeded"}
     otelQueryBadRequest:
       description: The request or the query is invalid, unsupported, or exceeds the request budget
       content:
@@ -165,7 +178,7 @@ components:
         resolveLinkedSpans:
           type: boolean
           default: false
-          description: Adds a structured linked_span column to log Records, using exact trace and span IDs from returned rows. Reads apply the caller's get-traces scope and retained span storage, independently of the log interval. Limits do not change log selection. Explicit related_span predicates still enforce their own limits and errors.
+          description: Adds a structured linked_span column to log Records, using exact trace and span IDs from returned rows. Reads apply the caller's get-traces scope and retained span storage, independently of the log interval. The server byte limit counts the UTF-8 JSON bytes added by structured API values, column metadata, and array separators, including JSON string escaping; existing log values and the response envelope are excluded. Time limits reserve time to return completed logs; cancellation cleanup can finish in the background. Limits do not change log selection. Explicit related_span predicates still enforce their own limits and errors.
 
     OtelQueryResponse:
       type: object
@@ -185,7 +198,7 @@ components:
     OtelLinkedSpanResolution:
       type: string
       enum: [resolved, limit_exceeded]
-      description: Present when resolveLinkedSpans is requested. resolved means the authorized linked-span read completed; missing spans produce empty records. limit_exceeded preserves logs and reports incomplete or omitted span output. The linked_span cell contains records and truncated fields. Output is limited to one span per log; duplicate versions use deterministic ordering. Storage failures remain errors.
+      description: Present when resolveLinkedSpans is requested. resolved means the authorized linked-span read completed; missing spans produce empty records. limit_exceeded preserves logs and reports incomplete or omitted span output. The linked_span cell uses OTLP AnyValue JSON inside OtelStructuredValue.json, with records and truncated fields. Span fields are span.trace_id and span.span_id (lowercase hexadecimal), span.start_time (ISO 8601 UTC), span.name, span.kind, span.status, and span.duration (decimal nanoseconds). Output is limited to one span per log; duplicate versions use deterministic ordering. Storage failures remain errors.
 
     OtelQueryResult:
       oneOf:
@@ -588,7 +601,7 @@ components:
 
     OtelQueryCost:
       type: object
-      description: What evaluating the query read, summed over all of its statements.
+      description: Known costs summed over completed statements. Failed or cancelled optional linked-span reads are excluded, so limit_exceeded can report incomplete cost accounting. elapsedNanos is the sum of completed statement durations, not the request duration.
       properties:
         readRows:
           type: integer
