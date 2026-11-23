@@ -174,25 +174,16 @@ components:
       required: [field, value]
 
     OtelSamplesResponse:
+      description: Samples are read again with the caller's current access; late arrivals and retention can change the result. Records are ordered by effective log time descending, then trace and span IDs. Equal keys have no guaranteed tie order; duplicate occurrences remain separate.
       allOf:
         - $ref: "#/components/schemas/OtelQueryResponseMetadata"
         - type: object
           properties:
             result: { $ref: "#/components/schemas/OtelQueryRecords" }
-            target: { $ref: "#/components/schemas/OtelSampleTarget" }
-            input: { $ref: "#/components/schemas/OtelQueryInterval" }
             truncated:
               type: boolean
               description: The server count or byte limit omitted available records. Read-budget failures return an error.
-            consistency:
-              type: string
-              enum: [reevaluated]
-              description: Samples reflect the current authorized input; late arrivals and retention can change the result.
-            selection:
-              type: string
-              enum: [latest_then_linkage]
-              description: Newest effective log time first, then trace and span IDs. Equal keys have no guaranteed tie order. Duplicate occurrences remain separate.
-          required: [result, target, input, truncated, consistency, selection]
+          required: [result, truncated]
 
     OtelQueryRequest:
       allOf:
