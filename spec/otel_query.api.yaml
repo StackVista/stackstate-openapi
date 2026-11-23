@@ -12,7 +12,7 @@ paths:
       requestBody:
         $ref: "#/components/requestBodies/otelQuery"
       summary: Query logs
-      description: Evaluates a telemetry query language query over logs. Records and tables read one input interval; series read at one evaluation time. Returned logs are restricted by the caller's `get-logs` scope. Queries accessing related spans also apply the caller's `get-traces` scope.
+      description: Evaluates a log query over an input interval or at one evaluation time. The caller's log access applies.
       operationId: queryLogs
       responses:
         "200":
@@ -32,7 +32,7 @@ paths:
       requestBody:
         $ref: "#/components/requestBodies/otelQuery"
       summary: Query log series over a range
-      description: Evaluates a series query on a grid. Each sample reads its full lookback window; the caller's `get-logs` scope applies to every sample and group. Records and table queries are rejected.
+      description: Evaluates a log series query at each time on the requested grid. The caller's log access applies.
       operationId: queryLogsRange
       responses:
         "200":
@@ -50,7 +50,7 @@ paths:
       tags:
         - otelQuery
       summary: Retrieve contributing log samples
-      description: Re-evaluates a selected Table/count() group using the caller's current get-logs scope and an independent read budget. Supports count() without a field argument. Group fields must remain in the table output. Initial group targets support strings, finite numbers, booleans, empty values, and integral durations; timestamp and fractional-duration groups are unsupported. Series and other measures are rejected. Samples are bounded examples, not random samples or saved evaluation evidence. Late arrivals and retention can change the result. No samples are collected by ordinary query or monitor evaluation. Span enrichment is not supported initially.
+      description: Returns example logs for a selected count() group over an input interval. The caller's current log access applies.
       operationId: sampleLogs
       requestBody:
         required: true
@@ -63,7 +63,6 @@ paths:
               input: { _type: OtelQueryInterval, start: "2026-11-23T10:00:00Z", end: "2026-11-23T10:05:00Z" }
               target: { measure: errors, group: [{ field: log.severity_text, value: { _type: OtelTextValue, value: ERROR } }] }
               maxRecords: 5
-              maxRecordsBytes: 65536
       responses:
         "200":
           description: Contributing logs available during this request; empty if the group no longer qualifies or no contributors remain.
@@ -122,32 +121,48 @@ components:
           schema: { $ref: "#/components/schemas/OtelQueryError" }
 
   schemas:
-    OtelSamplesRequest:
+    OtelQueryDefinition:
       type: object
       properties:
-        query: { type: string }
-        languageVersion: { type: string, example: "1" }
-        input: { $ref: "#/components/schemas/OtelQueryInterval" }
-        target: { $ref: "#/components/schemas/OtelSampleTarget" }
-        maxRecords:
-          type: integer
-          format: int32
-          minimum: 1
-          description: Maximum returned records; capped by server output policy.
-        maxRecordsBytes:
-          type: integer
-          format: int64
-          minimum: 1
-          description: UTF-8 wire bytes of the Records object, including escaped values, column metadata, and delimiters. Excludes the outer response. Capped by server response policy.
-      required: [query, languageVersion, input, target, maxRecords, maxRecordsBytes]
+        query:
+          type: string
+          description: The query text.
+        languageVersion:
+          type: string
+          description: The query language version.
+          example: "1"
+      required: [query, languageVersion]
+
+    OtelQueryResponseMetadata:
+      type: object
+      properties:
+        diagnostics:
+          type: array
+          items: { $ref: "#/components/schemas/OtelQueryDiagnostic" }
+        cost: { $ref: "#/components/schemas/OtelQueryCost" }
+      required: [diagnostics, cost]
+
+    OtelSamplesRequest:
+      allOf:
+        - $ref: "#/components/schemas/OtelQueryDefinition"
+        - type: object
+          properties:
+            input: { $ref: "#/components/schemas/OtelQueryInterval" }
+            target: { $ref: "#/components/schemas/OtelSampleTarget" }
+            maxRecords:
+              type: integer
+              format: int32
+              minimum: 1
+              description: Maximum requested records; server count and byte limits also apply.
+          required: [input, target, maxRecords]
 
     OtelSampleTarget:
       type: object
       properties:
-        measure: { type: string, description: Selected count measure alias. }
+        measure: { type: string, description: Alias of a count() measure without a field argument. }
         group:
           type: array
-          description: Every grouping field and its value; empty for an ungrouped count.
+          description: Every grouping field and its value; empty for an ungrouped count. Group fields must remain in the query result.
           items: { $ref: "#/components/schemas/OtelSampleGroupValue" }
       required: [measure, group]
 
@@ -159,39 +174,34 @@ components:
       required: [field, value]
 
     OtelSamplesResponse:
-      type: object
-      properties:
-        target: { $ref: "#/components/schemas/OtelSampleTarget" }
-        input: { $ref: "#/components/schemas/OtelQueryInterval" }
-        records: { $ref: "#/components/schemas/OtelQueryRecords" }
-        truncated:
-          type: boolean
-          description: More records were available than the count or wire-byte limit permits. Read-budget failures return an error rather than partial samples.
-        consistency: { type: string, enum: [reevaluated] }
-        selection: { type: string, enum: [latest_then_linkage], description: "Newest effective log time first, then trace and span IDs. Equal keys have no guaranteed tie order. Duplicate occurrences remain separate." }
-        cost: { $ref: "#/components/schemas/OtelQueryCost" }
-        diagnostics:
-          type: array
-          items: { $ref: "#/components/schemas/OtelQueryDiagnostic" }
-      required: [target, input, records, truncated, consistency, selection, cost, diagnostics]
+      allOf:
+        - $ref: "#/components/schemas/OtelQueryResponseMetadata"
+        - type: object
+          properties:
+            result: { $ref: "#/components/schemas/OtelQueryRecords" }
+            target: { $ref: "#/components/schemas/OtelSampleTarget" }
+            input: { $ref: "#/components/schemas/OtelQueryInterval" }
+            truncated:
+              type: boolean
+              description: The server count or byte limit omitted available records. Read-budget failures return an error.
+            consistency:
+              type: string
+              enum: [reevaluated]
+              description: Samples reflect the current authorized input; late arrivals and retention can change the result.
+            selection:
+              type: string
+              enum: [latest_then_linkage]
+              description: Newest effective log time first, then trace and span IDs. Equal keys have no guaranteed tie order. Duplicate occurrences remain separate.
+          required: [result, target, input, truncated, consistency, selection]
 
     OtelQueryRequest:
-      type: object
-      description: A query and how to evaluate it. The signal is the endpoint's, never part of the request.
-      properties:
-        query:
-          type: string
-          description: The query text.
-        languageVersion:
-          type: string
-          description: The query language version the text is written in.
-          example: "1"
-        input: { $ref: "#/components/schemas/OtelQueryInput" }
-        options: { $ref: "#/components/schemas/OtelQueryOptions" }
-      required:
-        - query
-        - languageVersion
-        - input
+      allOf:
+        - $ref: "#/components/schemas/OtelQueryDefinition"
+        - type: object
+          properties:
+            input: { $ref: "#/components/schemas/OtelQueryInput" }
+            options: { $ref: "#/components/schemas/OtelQueryOptions" }
+          required: [input]
 
     OtelQueryInput:
       description: An input interval for records and tables, or an evaluation time or range for series.
@@ -267,19 +277,13 @@ components:
           description: Adds a structured linked_span column to log Records, using exact trace and span IDs from returned rows. Reads apply the caller's get-traces scope and retained span storage, independently of the log interval. The server byte limit counts the UTF-8 JSON bytes added by structured API values, column metadata, and array separators, including JSON string escaping; existing log values and the response envelope are excluded. Time limits reserve time to return completed logs; cancellation cleanup can finish in the background. Limits do not change log selection. Explicit related_span predicates still enforce their own limits and errors.
 
     OtelQueryResponse:
-      type: object
-      properties:
-        result: { $ref: "#/components/schemas/OtelQueryResult" }
-        diagnostics:
-          type: array
-          items: { $ref: "#/components/schemas/OtelQueryDiagnostic" }
-        cost: { $ref: "#/components/schemas/OtelQueryCost" }
-        linkedSpanResolution:
-          $ref: "#/components/schemas/OtelLinkedSpanResolution"
-      required:
-        - result
-        - diagnostics
-        - cost
+      allOf:
+        - $ref: "#/components/schemas/OtelQueryResponseMetadata"
+        - type: object
+          properties:
+            result: { $ref: "#/components/schemas/OtelQueryResult" }
+            linkedSpanResolution: { $ref: "#/components/schemas/OtelLinkedSpanResolution" }
+          required: [result]
 
     OtelLinkedSpanResolution:
       type: string
