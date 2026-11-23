@@ -50,19 +50,30 @@ paths:
       tags:
         - otelQuery
       summary: Retrieve contributing log samples
-      description: Returns example logs for a selected count() group over an input interval. The caller's current log access applies.
+      description: Returns example logs for a selected count() group over an input interval or at one series evaluation point. The caller's current log access applies.
       operationId: sampleLogs
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: "#/components/schemas/OtelSamplesRequest" }
-            example:
-              query: '* | stats count() as errors by(log.severity_text)'
-              languageVersion: "1"
-              input: { _type: OtelQueryInterval, start: "2026-11-23T10:00:00Z", end: "2026-11-23T10:05:00Z" }
-              target: { measure: errors, group: [{ field: log.severity_text, value: { _type: OtelTextValue, value: ERROR } }] }
-              maxRecords: 5
+            examples:
+              table:
+                summary: Logs contributing to a table count
+                value:
+                  query: '* | stats count() as errors by(log.severity_text)'
+                  languageVersion: "1"
+                  input: { _type: OtelQueryInterval, start: 1795428000000, end: 1795428300000 }
+                  target: { measure: errors, group: [{ field: log.severity_text, value: { _type: OtelTextValue, value: ERROR } }] }
+                  maxRecords: 5
+              series:
+                summary: Logs contributing to one range point
+                value:
+                  query: '* | stats_over_time[5m] count() as errors by(log.severity_text)'
+                  languageVersion: "1"
+                  input: { _type: OtelQueryRange, start: 1795428000000, end: 1795428900000, stepNanos: '300000000000' }
+                  target: { measure: errors, group: [{ field: log.severity_text, value: { _type: OtelTextValue, value: ERROR } }], at: { timestamp: 1795428300000, offsetNanos: 0 } }
+                  maxRecords: 5
       responses:
         "200":
           description: Contributing logs available during this request; empty if the group no longer qualifies or no contributors remain.
@@ -147,7 +158,7 @@ components:
         - $ref: "#/components/schemas/OtelQueryDefinition"
         - type: object
           properties:
-            input: { $ref: "#/components/schemas/OtelQueryInterval" }
+            input: { $ref: "#/components/schemas/OtelQueryInput" }
             target: { $ref: "#/components/schemas/OtelSampleTarget" }
             maxRecords:
               type: integer
@@ -158,12 +169,14 @@ components:
 
     OtelSampleTarget:
       type: object
+      description: Select a group and measure. Range inputs require at to select one grid point; omit at for Interval and EvaluationTime inputs.
       properties:
         measure: { type: string, description: Alias of a count() measure without a field argument. }
         group:
           type: array
-          description: Every grouping field and its value; empty for an ungrouped count. Group fields must remain in the query result.
+          description: Every grouping field and its value; empty for an ungrouped count. Table group fields must remain in the query result. Series groups use their query field names; omitted by uses resource.identity.
           items: { $ref: "#/components/schemas/OtelSampleGroupValue" }
+        at: { $ref: "common.api.yaml#/components/schemas/InstantNanoPrecision" }
       required: [measure, group]
 
     OtelSampleGroupValue:
