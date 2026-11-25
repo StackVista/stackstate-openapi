@@ -50,7 +50,7 @@ paths:
       tags:
         - otelQuery
       summary: Retrieve contributing log samples
-      description: Returns example logs for a selected count() group over an input interval. The caller's current log access applies.
+      description: Returns contributing logs for a selected aggregate group over an input interval. The caller's current log access applies.
       operationId: sampleLogs
       requestBody:
         required: true
@@ -150,11 +150,16 @@ components:
     OtelSampleTarget:
       type: object
       properties:
-        measure: { type: string, description: Alias of a count() measure without a field argument. }
+        measure: { type: string, description: Alias of the selected aggregate measure. The measure must remain in the query result. }
         group:
           type: array
-          description: Every grouping field and its value; empty for an ungrouped count. Group fields must remain in the query result.
+          description: Every grouping field and its value; empty for an ungrouped aggregate. Group fields must remain in the query result.
           items: { $ref: "#/components/schemas/OtelSampleGroupValue" }
+        bucket:
+          type: integer
+          format: int32
+          minimum: 0
+          description: Zero-based histogram bucket index; required for histogram measures and omitted otherwise.
       required: [measure, group]
 
     OtelSampleGroupValue:
@@ -165,7 +170,7 @@ components:
       required: [field, value]
 
     OtelSamplesResponse:
-      description: Samples are read again with the caller's current access; late arrivals and retention can change the result. Records are ordered by effective log time descending, then trace and span IDs. Equal keys have no guaranteed tie order; duplicate occurrences remain separate.
+      description: Min/max samples match the extreme value. Quantile samples cover valid inputs. Distinct counts return one record per distinct value. Histogram samples belong to the selected bucket. Samples are read again with the caller's current access; late arrivals and retention can change the result. Records are ordered by effective log time descending, then trace and span IDs. Equal keys have no guaranteed tie order; duplicate occurrences remain separate.
       allOf:
         - $ref: "#/components/schemas/OtelQueryResponseMetadata"
         - type: object
