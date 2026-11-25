@@ -50,7 +50,14 @@ paths:
       tags:
         - otelQuery
       summary: Retrieve contributing log samples
-      description: Returns example logs for a selected count() group over an input interval or at one series evaluation point. The caller's current log access applies.
+          description: Every grouping field and its value; empty for an ungrouped aggregate. Table group fields must remain in the query result. Series groups use their query field names; omitted by uses resource.identity.
+          items: { $ref: "#/components/schemas/OtelSampleGroupValue" }
+        at: { $ref: "common.api.yaml#/components/schemas/InstantNanoPrecision" }
+        bucket:
+          type: integer
+          format: int32
+          minimum: 0
+          description: Zero-based histogram bucket index; required for histogram measures and omitted otherwise.
       operationId: sampleLogs
       requestBody:
         required: true
@@ -162,12 +169,22 @@ components:
       type: object
       description: Select a group and measure. Range inputs require at to select one grid point; omit at for Interval and EvaluationTime inputs.
       properties:
-        measure: { type: string, description: Alias of a count() measure without a field argument. }
+        measure: { type: string, description: Alias of the selected aggregate measure. The measure must remain in the query result. }
         group:
           type: array
+<<<<<<< HEAD
           description: Every grouping field and its value; empty for an ungrouped count. Table group fields must remain in the query result. Series groups use their query field names; omitted by uses resource.identity.
           items: { $ref: "#/components/schemas/OtelSampleGroupValue" }
         at: { $ref: "common.api.yaml#/components/schemas/InstantNanoPrecision" }
+=======
+          description: Every grouping field and its value; empty for an ungrouped aggregate. Group fields must remain in the query result.
+          items: { $ref: "#/components/schemas/OtelSampleGroupValue" }
+        bucket:
+          type: integer
+          format: int32
+          minimum: 0
+          description: Zero-based histogram bucket index; required for histogram measures and omitted otherwise.
+>>>>>>> origin/1086-samples-api
       required: [measure, group]
 
     OtelSampleGroupValue:
@@ -178,7 +195,7 @@ components:
       required: [field, value]
 
     OtelSamplesResponse:
-      description: Samples are read again with the caller's current access; late arrivals and retention can change the result. Records are ordered by effective log time descending, then trace and span IDs. Equal keys have no guaranteed tie order; duplicate occurrences remain separate.
+      description: Min/max samples match the extreme value. Quantile samples cover valid inputs. Distinct counts return one record per distinct value. Histogram samples belong to the selected bucket. Samples are read again with the caller's current access; late arrivals and retention can change the result. Records are ordered by effective log time descending, then trace and span IDs. Equal keys have no guaranteed tie order; duplicate occurrences remain separate.
       allOf:
         - $ref: "#/components/schemas/OtelQueryResponseMetadata"
         - type: object
