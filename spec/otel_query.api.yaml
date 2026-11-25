@@ -74,6 +74,7 @@ paths:
                   input: { _type: OtelQueryRange, start: 1795428000000, end: 1795428900000, stepNanos: '300000000000' }
                   target: { measure: errors, group: [{ field: log.severity_text, value: { _type: OtelTextValue, value: ERROR } }], at: { timestamp: 1795428300000, offsetNanos: 0 } }
                   maxRecords: 5
+
       responses:
         "200":
           description: Contributing logs available during this request; empty if the group no longer qualifies or no contributors remain.
