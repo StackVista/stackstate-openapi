@@ -50,14 +50,7 @@ paths:
       tags:
         - otelQuery
       summary: Retrieve contributing log samples
-          description: Every grouping field and its value; empty for an ungrouped aggregate. Table group fields must remain in the query result. Series groups use their query field names; omitted by uses resource.identity.
-          items: { $ref: "#/components/schemas/OtelSampleGroupValue" }
-        at: { $ref: "common.api.yaml#/components/schemas/InstantNanoPrecision" }
-        bucket:
-          type: integer
-          format: int32
-          minimum: 0
-          description: Zero-based histogram bucket index; required for histogram measures and omitted otherwise.
+      description: Returns example logs for a selected aggregate group over an input interval or at one series evaluation point. The caller's current log access applies.
       operationId: sampleLogs
       requestBody:
         required: true
@@ -172,19 +165,14 @@ components:
         measure: { type: string, description: Alias of the selected aggregate measure. The measure must remain in the query result. }
         group:
           type: array
-<<<<<<< HEAD
-          description: Every grouping field and its value; empty for an ungrouped count. Table group fields must remain in the query result. Series groups use their query field names; omitted by uses resource.identity.
+          description: Every grouping field and its value; empty for an ungrouped aggregate. Table group fields must remain in the query result. Series groups use their query field names; omitted by uses resource.identity.
           items: { $ref: "#/components/schemas/OtelSampleGroupValue" }
         at: { $ref: "common.api.yaml#/components/schemas/InstantNanoPrecision" }
-=======
-          description: Every grouping field and its value; empty for an ungrouped aggregate. Group fields must remain in the query result.
-          items: { $ref: "#/components/schemas/OtelSampleGroupValue" }
         bucket:
           type: integer
           format: int32
           minimum: 0
           description: Zero-based histogram bucket index; required for histogram measures and omitted otherwise.
->>>>>>> origin/1086-samples-api
       required: [measure, group]
 
     OtelSampleGroupValue:
