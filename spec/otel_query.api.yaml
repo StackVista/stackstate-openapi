@@ -60,7 +60,7 @@ paths:
             example:
               query: '* | stats count() as errors by(log.severity_text)'
               languageVersion: "1"
-              input: { _type: OtelQueryInterval, start: "2026-11-23T10:00:00Z", end: "2026-11-23T10:05:00Z" }
+              input: { _type: OtelQueryInterval, start: 1795428000000, end: 1795428300000 }
               target: { measure: errors, group: [{ field: log.severity_text, value: { _type: OtelTextValue, value: ERROR } }] }
               maxRecords: 5
       responses:
@@ -164,13 +164,14 @@ components:
 
     OtelSampleGroupValue:
       type: object
+      description: Values support empty, text, boolean, finite numeric, and duration values that represent integral Int64 nanoseconds. Timestamp, bytes, structured, histogram, and non-finite group values are not supported.
       properties:
         field: { type: string }
         value: { $ref: "#/components/schemas/OtelValue" }
       required: [field, value]
 
     OtelSamplesResponse:
-      description: Min/max samples match the extreme value. Quantile samples cover valid inputs. Distinct counts return one record per distinct value. Histogram samples belong to the selected bucket. Samples are read again with the caller's current access; late arrivals and retention can change the result. Records are ordered by effective log time descending, then trace and span IDs. Equal keys have no guaranteed tie order; duplicate occurrences remain separate.
+      description: Min/max samples match the extreme value, including infinity; a NaN result selects NaN inputs. Quantile samples cover valid inputs. Distinct counts return one record per distinct value. Histogram samples belong to the selected bucket. Samples are read again with the caller's current access; late arrivals and retention can change the result. Records are ordered by effective log time descending, then trace and span IDs. Equal keys have no guaranteed tie order; duplicate occurrences remain separate except that count_distinct returns one representative per distinct value.
       allOf:
         - $ref: "#/components/schemas/OtelQueryResponseMetadata"
         - type: object
@@ -178,7 +179,7 @@ components:
             result: { $ref: "#/components/schemas/OtelQueryRecords" }
             truncated:
               type: boolean
-              description: The server count or byte limit omitted available records. Read-budget failures return an error.
+              description: The server count or byte limit omitted available records. The byte limit covers the serialized Records object, including column metadata and JSON escaping, and excludes the outer response envelope. Read-budget failures return an error.
           required: [result, truncated]
 
     OtelQueryRequest:
