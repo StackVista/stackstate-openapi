@@ -294,6 +294,19 @@ components:
           default: false
           description: Adds counts of values with incompatible types for each comparison. For example, comparing `latency_ms > 100` counts string values such as `"150"` as type mismatches. Results are unchanged; the additional reads count toward the request budget.
 
+        includePredicateWitnesses:
+          type: boolean
+          default: false
+          description: >-
+            Adds structured correlation_witness_<clauseId> columns to log Records for each related_span clause occurrence.
+            Each value contains clauseId, records, and truncated, encoded as OTLP JSON in an OtelStructuredValue string.
+            Only returned log rows are enriched. Span reads apply the caller's get-traces scope and retained storage,
+            independently of the log interval. Server per-row/per-clause count and added response-byte limits apply.
+            The byte limit includes structured API values, column metadata, and separators, including JSON escaping;
+            existing log values and the response envelope are excluded.
+            Display limits do not change predicate truth. Inactive clauses and true negations return no display records.
+            Witness reads share the query budget; failures remain errors. Table and series results are rejected.
+
         resolveLinkedSpans:
           type: boolean
           default: false
