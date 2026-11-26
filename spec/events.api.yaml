@@ -427,7 +427,6 @@ components:
         - Changes
         - Deployments
         - Alerts
-        - Anomalies
         - Activities
         - Others
     EventElement:
