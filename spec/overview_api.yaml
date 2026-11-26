@@ -14,6 +14,8 @@ paths:
       operationId: getOverview
       parameters:
         - $ref: "#/components/parameters/presentationOrViewUrn"
+        - $ref: "common.api.yaml#/components/parameters/TimeMode"
+        - $ref: "common.api.yaml#/components/parameters/ClientTime"
       requestBody:
         required: true
         content:
@@ -150,6 +152,8 @@ components:
             $ref: '#/components/schemas/OverviewRow'
         pagination:
           $ref: '#/components/schemas/PaginationResponse'
+        servedTopologyTime:
+          $ref: "common.api.yaml#/components/schemas/ServedTopologyTime"
       required:
         - _type
         - metadata

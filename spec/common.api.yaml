@@ -12,6 +12,30 @@ paths:
         "400":
           $ref: "#/components/responses/stackElementNotFound"
 components:
+  parameters:
+    TimeMode:
+      name: X-Sts-Time-Mode
+      in: header
+      required: false
+      description: |
+        The UI's timeframe mode. `live` answers with the latest topology the server has, and ignores the topology time in the request.
+        `past` reads the topology exactly at the requested time, which is then required. Without the header the request is handled as before:
+        an exact read when it has a topology time, the latest topology when it doesn't. Any other value is rejected with a 400.
+      schema:
+        type: string
+        enum:
+          - live
+          - past
+    ClientTime:
+      name: X-Sts-Client-Time
+      in: header
+      required: false
+      description: |
+        The client's clock in milliseconds since epoch when it sent the request. The server only uses it to report clock skew,
+        and ignores it when it is not an integer.
+      schema:
+        type: integer
+        format: int64
   responses:
     genericServerError:
       description: "Error when handling the request on the server side."
@@ -220,6 +244,10 @@ components:
         - startTimeEpochMs
     Instant:
       description: Date/time representation in milliseconds since epoch (1970-01-01 00:00:00)
+      type: integer
+      format: instant
+    ServedTopologyTime:
+      description: The time, in milliseconds since epoch, of the topology the response was computed from. In live mode this can be older than the time in the request.
       type: integer
       format: instant
     InstantNanoPrecision:

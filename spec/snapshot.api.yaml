@@ -14,6 +14,8 @@ paths:
         - snapshot
       parameters:
         - $ref: "#/components/parameters/timeout-ms"
+        - $ref: "common.api.yaml#/components/parameters/TimeMode"
+        - $ref: "common.api.yaml#/components/parameters/ClientTime"
       requestBody:
         $ref: "#/components/requestBodies/ViewSnapshotRequest"
       responses:
@@ -58,7 +60,7 @@ components:
           schema:
             $ref: '#/components/schemas/QuerySnapshotResult'
     viewQueryParsingFailure:
-      description: Query parsing failed
+      description: Query parsing failed, or the time mode is invalid
       content:
         application/json:
           schema:
@@ -178,6 +180,8 @@ components:
           type: integer
           format: int64
           description: View identifier that was provided in the ViewSnapshotRequest. Preserved for compatibility when this API got moved to OpenAPI. Not used for any processing.
+        servedTopologyTime:
+          $ref: "common.api.yaml#/components/schemas/ServedTopologyTime"
       required:
         - _type
         - viewSnapshotResponse

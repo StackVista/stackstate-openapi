@@ -12,6 +12,9 @@ paths:
       summary: "Get events"
       description: "Gets you a list of events that exist for topology and time selections."
       operationId: getEvents
+      parameters:
+        - $ref: "common.api.yaml#/components/parameters/TimeMode"
+        - $ref: "common.api.yaml#/components/parameters/ClientTime"
       requestBody:
         $ref: "#/components/requestBodies/EventListBody"
       responses:
@@ -34,6 +37,8 @@ paths:
       description: "Retrieves a specific event by its identifier."
       operationId: getEvent
       parameters:
+        - $ref: "common.api.yaml#/components/parameters/TimeMode"
+        - $ref: "common.api.yaml#/components/parameters/ClientTime"
         - $ref: "#/components/parameters/eventId"
         - name: startTimestampMs
           in: query
@@ -74,6 +79,8 @@ paths:
       description: "Get a list of event types for a certain STQL query."
       operationId: getEventTypes
       parameters:
+        - $ref: "common.api.yaml#/components/parameters/TimeMode"
+        - $ref: "common.api.yaml#/components/parameters/ClientTime"
         - name: startTimestampMs
           in: query
           required: true
@@ -154,6 +161,8 @@ paths:
       summary: "Get event sources"
       description: "Get a list of event sources."
       parameters:
+        - $ref: "common.api.yaml#/components/parameters/TimeMode"
+        - $ref: "common.api.yaml#/components/parameters/ClientTime"
         - name: startTimestampMs
           in: query
           required: true
@@ -233,6 +242,8 @@ paths:
       description: "Gets a list of tags that exist in a list of events."
       operationId: getEventTags
       parameters:
+        - $ref: "common.api.yaml#/components/parameters/TimeMode"
+        - $ref: "common.api.yaml#/components/parameters/ClientTime"
         - name: startTimestampMs
           in: query
           required: true
@@ -311,6 +322,9 @@ paths:
       summary: "Get events histogram"
       description: "Gets you a histogram of events that exist for topology and time selections."
       operationId: getEventsHistogram
+      parameters:
+        - $ref: "common.api.yaml#/components/parameters/TimeMode"
+        - $ref: "common.api.yaml#/components/parameters/ClientTime"
       requestBody:
         $ref: "#/components/requestBodies/EventsHistogramBody"
       responses:
@@ -619,6 +633,8 @@ components:
         total:
           type: integer
           format: int64
+        servedTopologyTime:
+          $ref: "common.api.yaml#/components/schemas/ServedTopologyTime"
       required:
         - items
         - total

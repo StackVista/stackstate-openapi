@@ -14,9 +14,14 @@ paths:
       summary: "Timeline summary"
       description: "Event summary and aggregated health changes for a topology over a range of time"
       operationId: getTimelineSummary
+      parameters:
+        - $ref: "common.api.yaml#/components/parameters/TimeMode"
+        - $ref: "common.api.yaml#/components/parameters/ClientTime"
       responses:
         "200":
           $ref: "#/components/responses/timelineSummaryResponse"
+        "400":
+          $ref: "#/components/responses/timelineSummaryBadRequestResponse"
         "413": # Used to denote an overflow. This can happen when a limit is reached (like traversal/topology limit).
           $ref: "#/components/responses/timelineSummaryOverflowResponse"
         "500":
@@ -40,6 +45,12 @@ components:
             $ref: "#/components/schemas/TimelineSummary"
     timelineSummaryErrorResponse:
       description: "Errors when computing events and health state"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TimelineSummaryError"
+    timelineSummaryBadRequestResponse:
+      description: "The time mode is invalid"
       content:
         application/json:
           schema:
@@ -138,6 +149,8 @@ components:
         fromTime:
           type: integer
           format: int64
+        servedTopologyTime:
+          $ref: "common.api.yaml#/components/schemas/ServedTopologyTime"
       required:
         - buckets
         - healthHistory
