@@ -175,7 +175,9 @@ components:
       type: object
       description: Values support empty, text, boolean, finite numeric, and duration values that represent integral Int64 nanoseconds. Timestamp, bytes, structured, histogram, and non-finite group values are not supported.
       properties:
-        field: { type: string, description: Field name declared in by(...), even if its output column is renamed. }
+        field:
+          type: string
+          description: Field name declared in by(...), even if its output column is renamed.
         value: { $ref: "#/components/schemas/OtelValue" }
       required: [field, value]
 
