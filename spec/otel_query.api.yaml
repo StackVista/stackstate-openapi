@@ -12,7 +12,7 @@ paths:
       requestBody:
         $ref: "#/components/requestBodies/otelQuery"
       summary: Query logs
-      description: Evaluates a log query over an input interval or at one evaluation time. The caller's log access applies.
+      description: Evaluates a log query over an input interval or at one evaluation time. The caller's log access applies; queries that access spans also apply the caller's span access.
       operationId: queryLogs
       responses:
         "200":
@@ -32,7 +32,7 @@ paths:
       requestBody:
         $ref: "#/components/requestBodies/otelQuery"
       summary: Query log series over a range
-      description: Evaluates a log series query at each time on the requested grid. The caller's log access applies.
+      description: Evaluates a log series query at each time on the requested grid. Each point uses its full lookback window. The caller's log access applies.
       operationId: queryLogsRange
       responses:
         "200":
@@ -58,10 +58,10 @@ paths:
           application/json:
             schema: { $ref: "#/components/schemas/OtelSamplesRequest" }
             example:
-              query: '* | stats count() as errors by(log.severity_text)'
+              query: '* | stats count() as n by(log.severity_text) | n as total'
               languageVersion: "1"
               input: { _type: OtelQueryInterval, start: 1795428000000, end: 1795428300000 }
-              target: { measure: errors, group: [{ field: log.severity_text, value: { _type: OtelTextValue, value: ERROR } }] }
+              target: { measure: n, group: [{ field: log.severity_text, value: { _type: OtelTextValue, value: ERROR } }] }
               maxRecords: 5
       responses:
         "200":
@@ -151,10 +151,18 @@ components:
     OtelSampleTarget:
       type: object
       properties:
-        measure: { type: string, description: Alias of the selected aggregate measure. The measure must remain in the query result. }
+        measure:
+          type: string
+          description: >-
+            Alias declared for the measure in stats, even if its output column is renamed.
+            For stats count() as n followed by n as total, use n. The measure must remain in the query result.
+            Min/max samples match the extreme value, including infinity; a NaN result selects NaN inputs.
+            Quantile samples are recent valid contributing inputs, not records nearest the selected percentile.
+            Distinct counts select one representative per distinct value, subject to count and byte limits.
+            Histogram samples belong to the selected bucket.
         group:
           type: array
-          description: Every grouping field and its value; empty for an ungrouped aggregate. Group fields must remain in the query result.
+          description: Every field declared in by(...) and its value; empty for an ungrouped aggregate. Group fields must remain in the query result, including through output renames.
           items: { $ref: "#/components/schemas/OtelSampleGroupValue" }
         bucket:
           type: integer
@@ -167,12 +175,17 @@ components:
       type: object
       description: Values support empty, text, boolean, finite numeric, and duration values that represent integral Int64 nanoseconds. Timestamp, bytes, structured, histogram, and non-finite group values are not supported.
       properties:
-        field: { type: string }
+        field: { type: string, description: Field name declared in by(...), even if its output column is renamed. }
         value: { $ref: "#/components/schemas/OtelValue" }
       required: [field, value]
 
     OtelSamplesResponse:
-      description: Min/max samples match the extreme value, including infinity; a NaN result selects NaN inputs. Quantile samples cover valid inputs. Distinct counts return one record per distinct value. Histogram samples belong to the selected bucket. Samples are read again with the caller's current access; late arrivals and retention can change the result. Records are ordered by effective log time descending, then trace and span IDs. Equal keys have no guaranteed tie order; duplicate occurrences remain separate except that count_distinct returns one representative per distinct value.
+      description: >-
+        Bounded contributing log records, read with the caller's current access.
+        Late arrivals and retention can change the result.
+        Records are ordered by effective log time descending, then trace and span IDs; equal keys have no guaranteed tie order.
+        Duplicate occurrences remain separate except for count_distinct representatives.
+        Selection rules are described by OtelSampleTarget.measure.
       allOf:
         - $ref: "#/components/schemas/OtelQueryResponseMetadata"
         - type: object
