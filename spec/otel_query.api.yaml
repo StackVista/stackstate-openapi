@@ -120,9 +120,10 @@ components:
           description: The query text.
         languageVersion:
           type: string
-          description: The query language version.
+          description: The query language version. If omitted, version 1 is used.
+          default: "1"
           example: "1"
-      required: [query, languageVersion]
+      required: [query]
 
     OtelQueryResponseMetadata:
       type: object
